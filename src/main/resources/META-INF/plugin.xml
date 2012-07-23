@@ -1,0 +1,25 @@
+<idea-plugin version="2">
+  <name>Fitnesse IDEA</name>
+  <description>${project.description}</description>
+  <version>${project.version}</version>
+  <vendor>George Shakhnazaryan</vendor>
+  <!--<idea-version since-build="${idea.build}"/>-->
+  <idea-version since-build="117.418"/>
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+  </project-components>
+
+  <module-components>
+  </module-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+  </extensions>
+</idea-plugin>
