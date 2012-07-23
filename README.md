@@ -18,7 +18,7 @@ I am building the plugin locally using IntelliJ 11.1.2 (Build 117.418). To build
 
 You'll also need the patched [maven-jflex-plugin]. See that readme for installation instructions.
 
-[maven-jflex-plugin] https://github.com/gshakhn/maven-jflex-plugin
+[maven-jflex-plugin]: https://github.com/gshakhn/maven-jflex-plugin
 
 Building
 --------
