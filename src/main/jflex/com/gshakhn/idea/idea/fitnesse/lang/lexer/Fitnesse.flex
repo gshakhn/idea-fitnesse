@@ -13,12 +13,9 @@ import com.intellij.psi.tree.IElementType;
 %eof{  return;
 %eof}
 
-WIKIWORD = ([A-Z][a-z]+)+([A-Z][a-z]+)
+WIKIWORD = ([A-Z][a-z0-9]+)+([A-Z][a-z0-9]+)
 
 %%
 
-<YYINITIAL> {
-
-  {WIKIWORD} {return FitnesseElementType.WIKI_WORD();}
-
-}
+<YYINITIAL> {WIKIWORD}  {return FitnesseElementType.WIKI_WORD();}
+<YYINITIAL> .           {return FitnesseElementType.REGULAR_TEXT();}
