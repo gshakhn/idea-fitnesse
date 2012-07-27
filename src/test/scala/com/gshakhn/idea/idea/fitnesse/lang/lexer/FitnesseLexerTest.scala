@@ -19,7 +19,8 @@ class FitnesseLexerTest extends FunSuite {
 
   test("Single word") {
     doTest("Hello",
-      List(("Fitnesse:REGULAR_TEXT", "H"),
+      List(
+        ("Fitnesse:REGULAR_TEXT", "H"),
         ("Fitnesse:REGULAR_TEXT", "e"),
         ("Fitnesse:REGULAR_TEXT", "l"),
         ("Fitnesse:REGULAR_TEXT", "l"),
@@ -29,7 +30,8 @@ class FitnesseLexerTest extends FunSuite {
 
   test("Single word with number") {
     doTest("Hello1",
-      List(("Fitnesse:REGULAR_TEXT", "H"),
+      List(
+        ("Fitnesse:REGULAR_TEXT", "H"),
         ("Fitnesse:REGULAR_TEXT", "e"),
         ("Fitnesse:REGULAR_TEXT", "l"),
         ("Fitnesse:REGULAR_TEXT", "l"),
@@ -40,7 +42,8 @@ class FitnesseLexerTest extends FunSuite {
 
   test("Two words") {
     doTest("Foo bar",
-      List(("Fitnesse:REGULAR_TEXT", "F"),
+      List(
+        ("Fitnesse:REGULAR_TEXT", "F"),
         ("Fitnesse:REGULAR_TEXT", "o"),
         ("Fitnesse:REGULAR_TEXT", "o"),
         ("Fitnesse:REGULAR_TEXT", " "),
@@ -52,7 +55,8 @@ class FitnesseLexerTest extends FunSuite {
 
   test("Number") {
     doTest("123",
-      List(("Fitnesse:REGULAR_TEXT", "1"),
+      List(
+        ("Fitnesse:REGULAR_TEXT", "1"),
         ("Fitnesse:REGULAR_TEXT", "2"),
         ("Fitnesse:REGULAR_TEXT", "3")
       ))
