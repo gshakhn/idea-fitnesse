@@ -2,23 +2,25 @@ package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
 class MiscSuite extends LexerSuite {
   test("Regular text followed by Wiki Word") {
-    doTest("Some text and WikiWord",
+    expect(
       List(
-        ("Fitnesse:REGULAR_TEXT", "S"),
-        ("Fitnesse:REGULAR_TEXT", "o"),
-        ("Fitnesse:REGULAR_TEXT", "m"),
-        ("Fitnesse:REGULAR_TEXT", "e"),
-        ("Fitnesse:REGULAR_TEXT", " "),
-        ("Fitnesse:REGULAR_TEXT", "t"),
-        ("Fitnesse:REGULAR_TEXT", "e"),
-        ("Fitnesse:REGULAR_TEXT", "x"),
-        ("Fitnesse:REGULAR_TEXT", "t"),
-        ("Fitnesse:REGULAR_TEXT", " "),
-        ("Fitnesse:REGULAR_TEXT", "a"),
-        ("Fitnesse:REGULAR_TEXT", "n"),
-        ("Fitnesse:REGULAR_TEXT", "d"),
-        ("Fitnesse:REGULAR_TEXT", " "),
-        ("Fitnesse:WIKI_WORD", "WikiWord")
-      ))
+        (FitnesseElementType.REGULAR_TEXT, "S"),
+        (FitnesseElementType.REGULAR_TEXT, "o"),
+        (FitnesseElementType.REGULAR_TEXT, "m"),
+        (FitnesseElementType.REGULAR_TEXT, "e"),
+        (FitnesseElementType.REGULAR_TEXT, " "),
+        (FitnesseElementType.REGULAR_TEXT, "t"),
+        (FitnesseElementType.REGULAR_TEXT, "e"),
+        (FitnesseElementType.REGULAR_TEXT, "x"),
+        (FitnesseElementType.REGULAR_TEXT, "t"),
+        (FitnesseElementType.REGULAR_TEXT, " "),
+        (FitnesseElementType.REGULAR_TEXT, "a"),
+        (FitnesseElementType.REGULAR_TEXT, "n"),
+        (FitnesseElementType.REGULAR_TEXT, "d"),
+        (FitnesseElementType.REGULAR_TEXT, " "),
+        (FitnesseElementType.WIKI_WORD, "WikiWord")
+      )) {
+      lex("Some text and WikiWord")
+    }
   }
 }
