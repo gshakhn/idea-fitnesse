@@ -10,4 +10,5 @@ class FitnesseElementType(debugName: String) extends IElementType(debugName, com
 object FitnesseElementType {
   final val WIKI_WORD: IElementType = new FitnesseElementType("WIKI_WORD")
   final val REGULAR_TEXT: IElementType = new FitnesseElementType("REGULAR_TEXT")
+  final val LINE_TERMINATOR: IElementType = new FitnesseElementType("LINE_TERMINATOR")
 }
