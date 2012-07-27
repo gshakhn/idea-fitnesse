@@ -14,10 +14,10 @@ import com.intellij.psi.tree.IElementType;
 %eof}
 
 LINE_TERMINATOR = \n|\r\n
-WIKI_WORD = ([A-Z][a-z0-9]+)+([A-Z][a-z0-9]+)
+WIKI_WORD =       ([A-Z][a-z0-9]+)+([A-Z][a-z0-9]+)
 
 %%
 
 <YYINITIAL> {LINE_TERMINATOR}  {return FitnesseElementType.LINE_TERMINATOR();}
-<YYINITIAL> {WIKI_WORD}  {return FitnesseElementType.WIKI_WORD();}
-<YYINITIAL> .           {return FitnesseElementType.REGULAR_TEXT();}
+<YYINITIAL> {WIKI_WORD}        {return FitnesseElementType.WIKI_WORD();}
+<YYINITIAL> .                  {return FitnesseElementType.REGULAR_TEXT();}
