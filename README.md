@@ -32,13 +32,8 @@ The resulting zip file will be located in the target folder.
 License
 =======
 
-This plugin is licensed under [LGPL Version 3].
+This plugin is licensed under [Apache License, V2.0].
 
 Feel free to fork and submit pull requests. I'll try to get them into the mainline ASAP.
 
-
-This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-In other words, this plugin won't break your computer as far as I know, but use at your own risk.
-
-[LGPL Version 3]: http://www.gnu.org/licenses/lgpl-3.0.txt
+[Apache License, V2.0]: http://www.apache.org/licenses/LICENSE-2.0
