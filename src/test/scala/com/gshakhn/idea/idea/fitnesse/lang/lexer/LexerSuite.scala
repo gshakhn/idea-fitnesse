@@ -16,6 +16,6 @@ trait LexerSuite extends FunSuite with ShouldMatchers {
       lexedTokens += new Tuple2(tokenType, tokenText)
       lexer.advance()
     }
-    lexedTokens
+    lexedTokens.toList
   }
 }
