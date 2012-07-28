@@ -4,24 +4,37 @@ class TableSuite extends LexerSuite {
   test("Decision table") {
     expect(
       List(
-        (FitnesseElementType.DECISION_TABLE, "|"),
-        (FitnesseElementType.TABLE_HEADER_CELL, "header1"),
+        (FitnesseElementType.DECISION_TABLE_START, "|"),
+        (FitnesseElementType.DECISION_TABLE_CLASS, "Class"),
         (FitnesseElementType.CELL_DELIM, "|"),
-        (FitnesseElementType.TABLE_HEADER_CELL, "header2"),
-        (FitnesseElementType.TABLE_HEADER_END, "|\n"),
+        (FitnesseElementType.DECISION_TABLE_ARGUMENT, "Arg1"),
         (FitnesseElementType.CELL_DELIM, "|"),
-        (FitnesseElementType.CELL_TEXT, "row1 col1"),
+        (FitnesseElementType.DECISION_TABLE_ARGUMENT, "Arg2"),
+        (FitnesseElementType.DECISION_TABLE_HEADER_END, "|\n"),
+        (FitnesseElementType.DECISION_TABLE_COLUMN_ROW_START, "|"),
+        (FitnesseElementType.DECISION_TABLE_COLUMN_CELL, "numerator"),
         (FitnesseElementType.CELL_DELIM, "|"),
-        (FitnesseElementType.CELL_TEXT, "row1 col2"),
-        (FitnesseElementType.ROW_END, "|\n"),
+        (FitnesseElementType.DECISION_TABLE_COLUMN_CELL, "denominator"),
         (FitnesseElementType.CELL_DELIM, "|"),
-        (FitnesseElementType.CELL_TEXT, "row2 col1"),
+        (FitnesseElementType.DECISION_TABLE_COLUMN_CELL, "quotient?"),
+        (FitnesseElementType.DECISION_TABLE_COLUMN_ROW_END, "|\n"),
+        (FitnesseElementType.DECISION_TABLE_DATA_ROW_START, "|"),
+        (FitnesseElementType.DECISION_TABLE_DATA_CELL, "10"),
         (FitnesseElementType.CELL_DELIM, "|"),
-        (FitnesseElementType.CELL_TEXT, "row2 col2"),
-        (FitnesseElementType.ROW_END, "|\n"),
-        (FitnesseElementType.TABLE_END, "\n")
+        (FitnesseElementType.DECISION_TABLE_DATA_CELL, "5"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.DECISION_TABLE_DATA_CELL, "2"),
+        (FitnesseElementType.DECISION_TABLE_DATA_ROW_END, "|\n"),
+        (FitnesseElementType.DECISION_TABLE_DATA_ROW_START, "|"),
+        (FitnesseElementType.DECISION_TABLE_DATA_CELL, "20"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.DECISION_TABLE_DATA_CELL, "4"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.DECISION_TABLE_DATA_CELL, "5"),
+        (FitnesseElementType.DECISION_TABLE_DATA_ROW_END, "|\n"),
+        (FitnesseElementType.DECISION_TABLE_END, "\n")
       )) {
-      lex("|header1|header2|\n|row1 col1|row1 col2|\n|row2 col1|row2 col2|\n\n")
+      lex("|Class|Arg1|Arg2|\n|numerator|denominator|quotient?|\n|10|5|2|\n|20|4|5|\n\n")
     }
   }
 
