@@ -182,4 +182,52 @@ class TableSuite extends LexerSuite {
       lex("|SuBsEt QuErY:some stuff|with param1|\n|Col1|Col2|\n|Result 1 Col1|Result 1 Col2|\n\n")
     }
   }
+
+  test("Table table") {
+    expect(
+      List(
+        (FitnesseElementType.TABLE_TABLE, "|Table:"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "Some Table"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row1 col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row1 col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.ROW_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row2 col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row2 col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_END, "\n\n")
+      )) {
+      lex("|Table:Some Table|\n|row1 col1|row1 col2|\n|row2 col1|row2 col2|\n\n")
+    }
+  }
+
+  test("Table table in a different case") {
+    expect(
+      List(
+        (FitnesseElementType.TABLE_TABLE, "|tAbLe:"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "Some Table"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row1 col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row1 col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.ROW_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row2 col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "row2 col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_END, "\n\n")
+      )) {
+      lex("|tAbLe:Some Table|\n|row1 col1|row1 col2|\n|row2 col1|row2 col2|\n\n")
+    }
+  }
 }

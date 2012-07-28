@@ -29,6 +29,7 @@ WIKI_WORD =       ([A-Z][a-z0-9]+)+([A-Z][a-z0-9]+)
 <YYINITIAL> "\|Ordered query:"  {yybegin(QUERY_TABLE_HEADER); return FitnesseElementType.ORDERED_QUERY_TABLE();}
 <YYINITIAL> "\|Subset query:"   {yybegin(QUERY_TABLE_HEADER); return FitnesseElementType.SUBSET_QUERY_TABLE();}
 <YYINITIAL> "|Query:"           {yybegin(QUERY_TABLE_HEADER); return FitnesseElementType.QUERY_TABLE();}
+<YYINITIAL> "|Table:"           {yybegin(TABLE_HEADER); return FitnesseElementType.TABLE_TABLE();}
 <YYINITIAL> "|"                 {yybegin(TABLE_HEADER); return FitnesseElementType.DECISION_TABLE();}
 <YYINITIAL> .                   {return FitnesseElementType.REGULAR_TEXT();}
 

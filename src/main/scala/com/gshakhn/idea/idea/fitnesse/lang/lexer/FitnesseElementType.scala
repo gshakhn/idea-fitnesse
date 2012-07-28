@@ -16,6 +16,7 @@ object FitnesseElementType {
   final val QUERY_TABLE: IElementType = new FitnesseElementType("QUERY_TABLE")
   final val ORDERED_QUERY_TABLE: IElementType = new FitnesseElementType("ORDERED_QUERY_TABLE")
   final val SUBSET_QUERY_TABLE: IElementType = new FitnesseElementType("SUBSET_QUERY_TABLE")
+  final val TABLE_TABLE: IElementType = new FitnesseElementType("TABLE_TABLE")
 
   final val CELL_DELIM: IElementType = new FitnesseElementType("CELL_DELIM")
   final val CELL_TEXT: IElementType = new FitnesseElementType("CELL_TEXT")
