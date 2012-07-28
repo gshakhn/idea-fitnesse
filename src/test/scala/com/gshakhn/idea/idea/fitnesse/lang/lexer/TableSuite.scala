@@ -52,4 +52,56 @@ class TableSuite extends LexerSuite {
       lex("|Query:some stuff|with param1|\n|Col1|Col2|\n|Result 1 Col1|Result 1 Col2|\n\n")
     }
   }
+
+  test("Ordered Query table") {
+    expect(
+      List(
+        (FitnesseElementType.ORDERED_QUERY_TABLE, "|Ordered query:"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "some stuff"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "with param1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_CELL, "Col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_CELL, "Col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_ROW_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "Result 1 Col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "Result 1 Col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_END, "\n\n")
+      )) {
+      lex("|Ordered query:some stuff|with param1|\n|Col1|Col2|\n|Result 1 Col1|Result 1 Col2|\n\n")
+    }
+  }
+
+  test("Subset Query table") {
+    expect(
+      List(
+        (FitnesseElementType.SUBSET_QUERY_TABLE, "|Subset query:"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "some stuff"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "with param1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_CELL, "Col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_CELL, "Col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_ROW_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "Result 1 Col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "Result 1 Col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_END, "\n\n")
+      )) {
+      lex("|Subset query:some stuff|with param1|\n|Col1|Col2|\n|Result 1 Col1|Result 1 Col2|\n\n")
+    }
+  }
 }
