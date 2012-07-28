@@ -17,6 +17,7 @@ object FitnesseElementType {
   final val ORDERED_QUERY_TABLE: IElementType = new FitnesseElementType("ORDERED_QUERY_TABLE")
   final val SUBSET_QUERY_TABLE: IElementType = new FitnesseElementType("SUBSET_QUERY_TABLE")
   final val TABLE_TABLE: IElementType = new FitnesseElementType("TABLE_TABLE")
+  final val IMPORT_TABLE: IElementType = new FitnesseElementType("IMPORT_TABLE")
 
   final val CELL_DELIM: IElementType = new FitnesseElementType("CELL_DELIM")
   final val CELL_TEXT: IElementType = new FitnesseElementType("CELL_TEXT")
@@ -29,4 +30,7 @@ object FitnesseElementType {
   final val ROW_END: IElementType = new FitnesseElementType("ROW_END")
   final val TABLE_END: IElementType = new FitnesseElementType("TABLE_END")
 
+  final val IMPORT_CELL: IElementType = new FitnesseElementType("IMPORT_CELL")
+  final val IMPORT_ROW_END: IElementType = new FitnesseElementType("IMPORT_ROW_END")
+  final val IMPORT_TABLE_END: IElementType = new FitnesseElementType("IMPORT_TABLE_END")
 }

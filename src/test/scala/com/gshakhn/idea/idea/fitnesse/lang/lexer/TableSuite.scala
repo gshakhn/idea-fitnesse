@@ -230,4 +230,64 @@ class TableSuite extends LexerSuite {
       lex("|tAbLe:Some Table|\n|row1 col1|row1 col2|\n|row2 col1|row2 col2|\n\n")
     }
   }
+
+  test("Import Table") {
+    expect(
+      List(
+        (FitnesseElementType.IMPORT_TABLE, "|Import|\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import1"),
+        (FitnesseElementType.IMPORT_ROW_END, "|\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import2"),
+        (FitnesseElementType.IMPORT_TABLE_END, "|\n\n")
+      )) {
+      lex("|Import|\n|import1|\n|import2|\n\n")
+    }
+  }
+
+  test("Import Table in a different case") {
+    expect(
+      List(
+        (FitnesseElementType.IMPORT_TABLE, "|iMpOrT|\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import1"),
+        (FitnesseElementType.IMPORT_ROW_END, "|\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import2"),
+        (FitnesseElementType.IMPORT_TABLE_END, "|\n\n")
+      )) {
+      lex("|iMpOrT|\n|import1|\n|import2|\n\n")
+    }
+  }
+
+  test("Import Table with spaces in header") {
+    expect(
+      List(
+        (FitnesseElementType.IMPORT_TABLE, "|Import  |\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import1"),
+        (FitnesseElementType.IMPORT_ROW_END, "|\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import2"),
+        (FitnesseElementType.IMPORT_TABLE_END, "|\n\n")
+      )) {
+      lex("|Import  |\n|import1|\n|import2|\n\n")
+    }
+  }
+
+  test("Import Table with tabs in header") {
+    expect(
+      List(
+        (FitnesseElementType.IMPORT_TABLE, "|Import\t\t|\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import1"),
+        (FitnesseElementType.IMPORT_ROW_END, "|\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.IMPORT_CELL, "import2"),
+        (FitnesseElementType.IMPORT_TABLE_END, "|\n\n")
+      )) {
+      lex("|Import\t\t|\n|import1|\n|import2|\n\n")
+    }
+  }
 }
