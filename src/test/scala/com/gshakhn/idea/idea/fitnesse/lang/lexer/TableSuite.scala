@@ -5,9 +5,9 @@ class TableSuite extends LexerSuite {
     expect(
       List(
         (FitnesseElementType.DECISION_TABLE, "|"),
-        (FitnesseElementType.CELL_TEXT, "header1"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "header1"),
         (FitnesseElementType.CELL_DELIM, "|"),
-        (FitnesseElementType.CELL_TEXT, "header2"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "header2"),
         (FitnesseElementType.CELL_DELIM, "|"),
         (FitnesseElementType.TABLE_HEADER_END, "\n"),
         (FitnesseElementType.CELL_DELIM, "|"),
@@ -24,6 +24,32 @@ class TableSuite extends LexerSuite {
         (FitnesseElementType.TABLE_END, "\n\n")
       )) {
       lex("|header1|header2|\n|row1 col1|row1 col2|\n|row2 col1|row2 col2|\n\n")
+    }
+  }
+
+  test("Query table") {
+    expect(
+      List(
+        (FitnesseElementType.QUERY_TABLE, "|Query:"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "some stuff"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_CELL, "with param1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_HEADER_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_CELL, "Col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_CELL, "Col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.QUERY_COLUMN_ROW_END, "\n"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "Result 1 Col1"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "Result 1 Col2"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.TABLE_END, "\n\n")
+      )) {
+      lex("|Query:some stuff|with param1|\n|Col1|Col2|\n|Result 1 Col1|Result 1 Col2|\n\n")
     }
   }
 }
