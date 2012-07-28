@@ -8,6 +8,7 @@ import com.intellij.psi.tree.IElementType;
 %class _FitnesseLexer
 %implements FlexLexer
 %unicode
+%ignorecase
 %function advance
 %type IElementType
 %eof{  return;
