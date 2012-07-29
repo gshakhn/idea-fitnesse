@@ -191,7 +191,22 @@ class TableSuite extends LexerSuite {
         (FitnesseElementType.TABLE_END, "\n")
       )) {
       lex("|Import|\n|import1|\n|import2|\n\n")
-//      lex("|Import|\n|")
+    }
+  }
+
+  test("Table with empty cell") {
+    expect(
+      List(
+        (FitnesseElementType.TABLE_START, ""),
+        (FitnesseElementType.ROW_START, ""),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "Some table"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.ROW_END, "\n"),
+        (FitnesseElementType.TABLE_END, "\n")
+      )) {
+      lex("|Some table||\n\n")
     }
   }
 }
