@@ -1,10 +1,9 @@
 package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
 import com.intellij.psi.tree.IElementType
-import com.intellij.psi.TokenType
-import com.intellij.lang.Language
+import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
 
-class FitnesseElementType(debugName: String) extends IElementType(debugName, com.intellij.openapi.fileTypes.StdFileTypes.PROPERTIES.getLanguage) {
+class FitnesseElementType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
   override def toString = "Fitnesse:" + this.debugName
 }
 
