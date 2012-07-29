@@ -87,6 +87,7 @@
         <directory>src/main/resources/</directory>
         <includes>
           <include>META-INF/plugin.xml</include>
+          <include>com/gshakhn/idea/idea/fitnesse/FitNesseLogo.png</include>
         </includes>
         <filtering>true</filtering>
       </resource>
