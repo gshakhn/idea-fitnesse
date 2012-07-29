@@ -1,6 +1,54 @@
 package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
 class TableSuite extends LexerSuite {
+  test("Simple table") {
+    expect(
+      List(
+        (FitnesseElementType.TABLE_START, ""),
+        (FitnesseElementType.ROW_START, ""),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "A"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "B"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.ROW_END, "\n"),
+        (FitnesseElementType.ROW_START, ""),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "C"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "D"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.ROW_END, "\n"),
+        (FitnesseElementType.TABLE_END, "\n")
+      )) {
+      lex("|A|B|\n|C|D|\n\n")
+    }
+  }
+
+  test("Simple table with CRLF") {
+    expect(
+      List(
+        (FitnesseElementType.TABLE_START, ""),
+        (FitnesseElementType.ROW_START, ""),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "A"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "B"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.ROW_END, "\r\n"),
+        (FitnesseElementType.ROW_START, ""),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "C"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.CELL_TEXT, "D"),
+        (FitnesseElementType.CELL_DELIM, "|"),
+        (FitnesseElementType.ROW_END, "\r\n"),
+        (FitnesseElementType.TABLE_END, "\r\n")
+      )) {
+      lex("|A|B|\r\n|C|D|\r\n\r\n")
+    }
+  }
+
   test("Decision table") {
     expect(
       List(
