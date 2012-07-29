@@ -9,7 +9,8 @@ class FitnesseHighlighter extends SyntaxHighlighterBase {
 
   def getTokenHighlights(p1: IElementType) = {
     p1 match {
-      case FitnesseElementType.WIKI_WORD => Array(FitnesseHighlighterColors.WIKIWORD)
+      case FitnesseElementType.WIKI_WORD => Array(FitnesseHighlighterColors.WIKI_WORD)
+      case FitnesseElementType.CELL_TEXT => Array(FitnesseHighlighterColors.CELL_TEXT)
       case _ => Array.empty
     }
   }

@@ -5,7 +5,6 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.TextAttributes
 
 object FitnesseHighlighterColors {
-  final val DARK_GREEN = new Color(0.00f, 0.60f, 0.00f)
-
-  final val WIKIWORD = TextAttributesKey.createTextAttributesKey("FITNESSE.WIKIWORD", new TextAttributes(DARK_GREEN, null, null, null, 0))
+  final val WIKI_WORD = TextAttributesKey.createTextAttributesKey("FITNESSE.WIKI_WORD", new TextAttributes(Color.BLUE, null, null, null, 0))
+  final val CELL_TEXT = TextAttributesKey.createTextAttributesKey("FITNESSE.CELL_TEXT", new TextAttributes(Color.ORANGE, null, null, null, 0))
 }
