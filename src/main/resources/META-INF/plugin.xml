@@ -21,5 +21,6 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
+    <fileTypeFactory implementation="com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileTypeFactory"/>
   </extensions>
 </idea-plugin>

@@ -17,6 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/jflex" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/scala" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
@@ -24,6 +25,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.scala-lang:scala-compiler:2.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.scalatest:scalatest_2.9.1:1.8" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="intellij-community" level="project" />
   </component>
 </module>
 
