@@ -22,5 +22,6 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileTypeFactory"/>
+    <syntaxHighlighter key="Fitnesse" implementationClass="com.gshakhn.idea.idea.fitnesse.lang.highlighting.FitnesseHighlighter"/>
   </extensions>
 </idea-plugin>
