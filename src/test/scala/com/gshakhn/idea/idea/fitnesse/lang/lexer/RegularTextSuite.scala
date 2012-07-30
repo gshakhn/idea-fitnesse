@@ -44,12 +44,36 @@ class RegularTextSuite extends LexerSuite {
   }
 
   test("Number") {
-    expect(List(
+    expect(
+      List(
         (FitnesseElementType.REGULAR_TEXT, "1"),
         (FitnesseElementType.REGULAR_TEXT, "2"),
         (FitnesseElementType.REGULAR_TEXT, "3")
       )) {
       lex("123")
+    }
+  }
+
+  test("CamelCase word where first letter is lower case") {
+    expect(List(
+      (FitnesseElementType.REGULAR_TEXT, "t"),
+      (FitnesseElementType.REGULAR_TEXT, "h"),
+      (FitnesseElementType.REGULAR_TEXT, "i"),
+      (FitnesseElementType.REGULAR_TEXT, "s"),
+      (FitnesseElementType.REGULAR_TEXT, "I"),
+      (FitnesseElementType.REGULAR_TEXT, "s"),
+      (FitnesseElementType.REGULAR_TEXT, "C"),
+      (FitnesseElementType.REGULAR_TEXT, "a"),
+      (FitnesseElementType.REGULAR_TEXT, "m"),
+      (FitnesseElementType.REGULAR_TEXT, "e"),
+      (FitnesseElementType.REGULAR_TEXT, "l"),
+      (FitnesseElementType.REGULAR_TEXT, "C"),
+      (FitnesseElementType.REGULAR_TEXT, "a"),
+      (FitnesseElementType.REGULAR_TEXT, "s"),
+      (FitnesseElementType.REGULAR_TEXT, "e")
+
+    )) {
+      lex("thisIsCamelCase")
     }
   }
 }

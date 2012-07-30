@@ -14,6 +14,10 @@ import com.intellij.psi.tree.IElementType;
 %eof{  return;
 %eof}
 
+%{
+Character lastChar = null;
+%}
+
 LINE_TERMINATOR = \n|\r\n
 WIKI_WORD =       ([A-Z][a-z0-9]+)+([A-Z][a-z0-9]+)
 
@@ -25,9 +29,8 @@ WIKI_WORD =       ([A-Z][a-z0-9]+)+([A-Z][a-z0-9]+)
 %%
 
 <YYINITIAL> {LINE_TERMINATOR}  {return FitnesseElementType.LINE_TERMINATOR();}
-<YYINITIAL> {WIKI_WORD}        {return FitnesseElementType.WIKI_WORD();}
 <YYINITIAL> "|"                {yybegin(TABLE_START); yypushback(1); return FitnesseElementType.TABLE_START();}
-<YYINITIAL> .                  {return FitnesseElementType.REGULAR_TEXT();}
+<YYINITIAL> .                  {lastChar = yycharat(0); return FitnesseElementType.REGULAR_TEXT();}
 
 <TABLE_START> "|"              {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
 
@@ -39,3 +42,13 @@ WIKI_WORD =       ([A-Z][a-z0-9]+)+([A-Z][a-z0-9]+)
 
 <ROW_END> {LINE_TERMINATOR}    {yybegin(YYINITIAL); return FitnesseElementType.TABLE_END();}
 <ROW_END> "|"                  {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
+
+<YYINITIAL> {WIKI_WORD}        {
+                                 if (lastChar != null && Character.isJavaIdentifierPart(lastChar)) {
+                                     yypushback(yylength() - 1);
+                                     lastChar = yycharat(0);
+                                     return FitnesseElementType.REGULAR_TEXT();
+                                   } else {
+                                     return FitnesseElementType.WIKI_WORD();
+                                  }
+                                }
