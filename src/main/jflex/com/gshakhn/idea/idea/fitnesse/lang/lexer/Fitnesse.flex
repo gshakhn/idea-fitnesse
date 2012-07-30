@@ -19,7 +19,6 @@ Character lastChar = null;
 %}
 
 LINE_TERMINATOR = \n|\r\n
-WORD            = ([A-Z][a-z0-9]+)
 
 %state TABLE_START
 %state ROW_START
@@ -44,7 +43,7 @@ WORD            = ([A-Z][a-z0-9]+)
 <ROW_END> "|"                  {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
 
 
-<YYINITIAL> ({WORD}) (  (({WORD})+[A-Z]?) | [A-Z]  )
+<YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+
                                 {
                                  if (lastChar != null && Character.isJavaIdentifierPart(lastChar)) {
                                      yypushback(yylength() - 1);
