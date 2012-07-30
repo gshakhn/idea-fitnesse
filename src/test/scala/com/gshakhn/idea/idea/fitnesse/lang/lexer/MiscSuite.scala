@@ -23,4 +23,44 @@ class MiscSuite extends LexerSuite {
       lex("Some text and WikiWord")
     }
   }
+
+  test("Wiki Word followed by a LF") {
+    expect(
+      List(
+        (FitnesseElementType.WIKI_WORD, "WikWord"),
+        (FitnesseElementType.LINE_TERMINATOR, "\n")
+      )) {
+      lex("WikWord\n")
+    }
+  }
+
+  test("Wiki Word followed by a CR LF") {
+    expect(
+      List(
+        (FitnesseElementType.WIKI_WORD, "WikWord"),
+        (FitnesseElementType.LINE_TERMINATOR, "\n")
+      )) {
+      lex("WikWord\n")
+    }
+  }
+
+  test("Wiki Word that ends in a capital letter followed by a LF") {
+    expect(
+      List(
+        (FitnesseElementType.WIKI_WORD, "WikiWordThisIsA"),
+        (FitnesseElementType.LINE_TERMINATOR, "\n")
+      )) {
+      lex("WikiWordThisIsA\n")
+    }
+  }
+
+  test("Wiki Word that ends in a capital letter followed by a CR LF") {
+    expect(
+      List(
+        (FitnesseElementType.WIKI_WORD, "WikiWordThisIsA"),
+        (FitnesseElementType.LINE_TERMINATOR, "\r\n")
+      )) {
+      lex("WikiWordThisIsA\r\n")
+    }
+  }
 }

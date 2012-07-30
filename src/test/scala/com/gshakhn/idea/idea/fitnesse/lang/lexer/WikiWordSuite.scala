@@ -18,4 +18,10 @@ class WikiWordSuite extends LexerSuite {
       lex("LongerWikiWord")
     }
   }
+
+  test("Wiki Word that ends in a capital letter") {
+    expect(List((FitnesseElementType.WIKI_WORD, "WikiWordThisIsA"))) {
+      lex("WikiWordThisIsA")
+    }
+  }
 }
