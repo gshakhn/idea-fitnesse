@@ -9,7 +9,9 @@ class FitnesseElementType(debugName: String) extends IElementType(debugName, Fit
 
 object FitnesseElementType {
   final val WIKI_WORD: IElementType = new FitnesseElementType("WIKI_WORD")
-  final val REGULAR_TEXT: IElementType = new FitnesseElementType("REGULAR_TEXT")
+  final val WORD: IElementType = new FitnesseElementType("REGULAR_TEXT")
+  final val WHITE_SPACE: IElementType = new FitnesseElementType("WHITE_SPACE")
+
   final val CELL_DELIM: IElementType = new FitnesseElementType("CELL_DELIM")
   final val CELL_TEXT: IElementType = new FitnesseElementType("CELL_TEXT")
 

@@ -14,10 +14,6 @@ import com.intellij.psi.tree.IElementType;
 %eof{  return;
 %eof}
 
-%{
-Character lastChar = null;
-%}
-
 LINE_TERMINATOR = \n|\r\n
 
 %state TABLE_START
@@ -27,29 +23,22 @@ LINE_TERMINATOR = \n|\r\n
 
 %%
 
-<YYINITIAL> {LINE_TERMINATOR}  {return FitnesseElementType.LINE_TERMINATOR();}
-<YYINITIAL> "|"                {yybegin(TABLE_START); yypushback(1); return FitnesseElementType.TABLE_START();}
-<YYINITIAL> .                  {lastChar = yycharat(0); return FitnesseElementType.REGULAR_TEXT();}
+<YYINITIAL> {LINE_TERMINATOR}               {return FitnesseElementType.LINE_TERMINATOR();}
+<YYINITIAL> " "                             {return FitnesseElementType.WHITE_SPACE();}
+<YYINITIAL> \t                              {return FitnesseElementType.WHITE_SPACE();}
+<YYINITIAL> "|"                             {yybegin(TABLE_START); yypushback(1); return FitnesseElementType.TABLE_START();}
+<YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+ {return FitnesseElementType.WIKI_WORD();}
+<YYINITIAL> [:jletterdigit:]+               {return FitnesseElementType.WORD();}
 
-<TABLE_START> "|"              {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
+<TABLE_START> "|"                           {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
 
-<ROW_START> "|"                {yybegin(ROW); return FitnesseElementType.CELL_DELIM();}
+<ROW_START> "|"                             {yybegin(ROW); return FitnesseElementType.CELL_DELIM();}
 
-<ROW> "|"                      {return FitnesseElementType.CELL_DELIM();}
-<ROW> [^\n\r\|]+               {return FitnesseElementType.CELL_TEXT();}
-<ROW> {LINE_TERMINATOR}        {yybegin(ROW_END); return FitnesseElementType.ROW_END();}
+<ROW> "|"                                   {return FitnesseElementType.CELL_DELIM();}
+<ROW> [^\n\r\|]+                            {return FitnesseElementType.CELL_TEXT();}
+<ROW> {LINE_TERMINATOR}                     {yybegin(ROW_END); return FitnesseElementType.ROW_END();}
 
-<ROW_END> {LINE_TERMINATOR}    {yybegin(YYINITIAL); return FitnesseElementType.TABLE_END();}
-<ROW_END> "|"                  {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
+<ROW_END> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); return FitnesseElementType.TABLE_END();}
+<ROW_END> "|"                               {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
 
 
-<YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+
-                                {
-                                 if (lastChar != null && Character.isJavaIdentifierPart(lastChar)) {
-                                     yypushback(yylength() - 1);
-                                     lastChar = yycharat(0);
-                                     return FitnesseElementType.REGULAR_TEXT();
-                                   } else {
-                                     return FitnesseElementType.WIKI_WORD();
-                                  }
-                                }

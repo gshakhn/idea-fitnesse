@@ -4,11 +4,7 @@ class RegularTextSuite extends LexerSuite {
   test("Single word") {
     expect(
       List(
-        (FitnesseElementType.REGULAR_TEXT, "H"),
-        (FitnesseElementType.REGULAR_TEXT, "e"),
-        (FitnesseElementType.REGULAR_TEXT, "l"),
-        (FitnesseElementType.REGULAR_TEXT, "l"),
-        (FitnesseElementType.REGULAR_TEXT, "o")
+        (FitnesseElementType.WORD, "Hello")
       )) {
       lex("Hello")
     }
@@ -17,12 +13,7 @@ class RegularTextSuite extends LexerSuite {
   test("Single word with number") {
     expect(
       List(
-        (FitnesseElementType.REGULAR_TEXT, "H"),
-        (FitnesseElementType.REGULAR_TEXT, "e"),
-        (FitnesseElementType.REGULAR_TEXT, "l"),
-        (FitnesseElementType.REGULAR_TEXT, "l"),
-        (FitnesseElementType.REGULAR_TEXT, "o"),
-        (FitnesseElementType.REGULAR_TEXT, "1")
+        (FitnesseElementType.WORD, "Hello1")
       )) {
       lex("Hello1")
     }
@@ -31,13 +22,9 @@ class RegularTextSuite extends LexerSuite {
   test("Two words") {
     expect(
       List(
-        (FitnesseElementType.REGULAR_TEXT, "F"),
-        (FitnesseElementType.REGULAR_TEXT, "o"),
-        (FitnesseElementType.REGULAR_TEXT, "o"),
-        (FitnesseElementType.REGULAR_TEXT, " "),
-        (FitnesseElementType.REGULAR_TEXT, "b"),
-        (FitnesseElementType.REGULAR_TEXT, "a"),
-        (FitnesseElementType.REGULAR_TEXT, "r")
+        (FitnesseElementType.WORD, "Foo"),
+        (FitnesseElementType.WHITE_SPACE, " "),
+        (FitnesseElementType.WORD, "bar")
       )) {
       lex("Foo bar")
     }
@@ -46,9 +33,7 @@ class RegularTextSuite extends LexerSuite {
   test("Number") {
     expect(
       List(
-        (FitnesseElementType.REGULAR_TEXT, "1"),
-        (FitnesseElementType.REGULAR_TEXT, "2"),
-        (FitnesseElementType.REGULAR_TEXT, "3")
+        (FitnesseElementType.WORD, "123")
       )) {
       lex("123")
     }
@@ -56,24 +41,28 @@ class RegularTextSuite extends LexerSuite {
 
   test("CamelCase word where first letter is lower case") {
     expect(List(
-      (FitnesseElementType.REGULAR_TEXT, "t"),
-      (FitnesseElementType.REGULAR_TEXT, "h"),
-      (FitnesseElementType.REGULAR_TEXT, "i"),
-      (FitnesseElementType.REGULAR_TEXT, "s"),
-      (FitnesseElementType.REGULAR_TEXT, "I"),
-      (FitnesseElementType.REGULAR_TEXT, "s"),
-      (FitnesseElementType.REGULAR_TEXT, "C"),
-      (FitnesseElementType.REGULAR_TEXT, "a"),
-      (FitnesseElementType.REGULAR_TEXT, "m"),
-      (FitnesseElementType.REGULAR_TEXT, "e"),
-      (FitnesseElementType.REGULAR_TEXT, "l"),
-      (FitnesseElementType.REGULAR_TEXT, "C"),
-      (FitnesseElementType.REGULAR_TEXT, "a"),
-      (FitnesseElementType.REGULAR_TEXT, "s"),
-      (FitnesseElementType.REGULAR_TEXT, "e")
+      (FitnesseElementType.WORD, "thisIsCamelCase")
 
     )) {
       lex("thisIsCamelCase")
+    }
+  }
+
+  test("Word that looks like a WikiWord but has 2 capital letters in a row ") {
+    expect(
+      List(
+        (FitnesseElementType.WORD, "ThisIsNotAWikiWord")
+      )) {
+      lex("ThisIsNotAWikiWord")
+    }
+  }
+
+  test("USAforEver is a regular word") {
+    expect(
+      List(
+        (FitnesseElementType.WORD, "USAforEver")
+      )) {
+      lex("USAforEver")
     }
   }
 }
