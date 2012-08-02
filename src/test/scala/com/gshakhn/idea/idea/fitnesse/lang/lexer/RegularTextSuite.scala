@@ -65,4 +65,20 @@ class RegularTextSuite extends LexerSuite {
       lex("USAforEver")
     }
   }
+
+  test("A sentence") {
+    expect(
+      List(
+        (FitnesseElementType.WORD, "This"),
+        (FitnesseElementType.WHITE_SPACE, " "),
+        (FitnesseElementType.WORD, "is"),
+        (FitnesseElementType.WHITE_SPACE, " "),
+        (FitnesseElementType.WORD, "a"),
+        (FitnesseElementType.WHITE_SPACE, " "),
+        (FitnesseElementType.WORD, "sentence"),
+        (FitnesseElementType.REGULAR_TEXT, ".")
+      )) {
+      lex("This is a sentence.")
+    }
+  }
 }

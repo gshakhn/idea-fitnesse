@@ -29,6 +29,7 @@ LINE_TERMINATOR = \n|\r\n
 <YYINITIAL> "|"                             {yybegin(TABLE_START); yypushback(1); return FitnesseElementType.TABLE_START();}
 <YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+ {return FitnesseElementType.WIKI_WORD();}
 <YYINITIAL> [:jletterdigit:]+               {return FitnesseElementType.WORD();}
+<YYINITIAL> .                               {return FitnesseElementType.REGULAR_TEXT();}
 
 <TABLE_START> "|"                           {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
 
