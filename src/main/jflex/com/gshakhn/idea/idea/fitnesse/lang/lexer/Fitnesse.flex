@@ -41,5 +41,3 @@ LINE_TERMINATOR = \n|\r\n
 
 <ROW_END> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); return FitnesseTokenType.TABLE_END();}
 <ROW_END> "|"                               {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
-
-
