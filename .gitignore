@@ -1,3 +1,4 @@
 .idea/*
 target/*
+classes/*
 src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java
