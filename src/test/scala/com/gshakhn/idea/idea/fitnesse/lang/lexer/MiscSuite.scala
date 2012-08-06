@@ -4,13 +4,13 @@ class MiscSuite extends LexerSuite {
   test("Regular text followed by Wiki Word") {
     expect(
       List(
-        (FitnesseElementType.WORD, "Some"),
-        (FitnesseElementType.WHITE_SPACE, " "),
-        (FitnesseElementType.WORD, "text"),
-        (FitnesseElementType.WHITE_SPACE, " "),
-        (FitnesseElementType.WORD, "and"),
-        (FitnesseElementType.WHITE_SPACE, " "),
-        (FitnesseElementType.WIKI_WORD, "WikiWord")
+        (FitnesseTokenType.WORD, "Some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "text"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "and"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WIKI_WORD, "WikiWord")
       )) {
       lex("Some text and WikiWord")
     }
@@ -19,8 +19,8 @@ class MiscSuite extends LexerSuite {
   test("Wiki Word followed by a LF") {
     expect(
       List(
-        (FitnesseElementType.WIKI_WORD, "WikWord"),
-        (FitnesseElementType.LINE_TERMINATOR, "\n")
+        (FitnesseTokenType.WIKI_WORD, "WikWord"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n")
       )) {
       lex("WikWord\n")
     }
@@ -29,8 +29,8 @@ class MiscSuite extends LexerSuite {
   test("Wiki Word followed by a CR LF") {
     expect(
       List(
-        (FitnesseElementType.WIKI_WORD, "WikWord"),
-        (FitnesseElementType.LINE_TERMINATOR, "\n")
+        (FitnesseTokenType.WIKI_WORD, "WikWord"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n")
       )) {
       lex("WikWord\n")
     }
@@ -39,8 +39,8 @@ class MiscSuite extends LexerSuite {
   test("Wiki Word that ends in a capital letter followed by a LF") {
     expect(
       List(
-        (FitnesseElementType.WIKI_WORD, "WikiWordThisIsA"),
-        (FitnesseElementType.LINE_TERMINATOR, "\n")
+        (FitnesseTokenType.WIKI_WORD, "WikiWordThisIsA"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n")
       )) {
       lex("WikiWordThisIsA\n")
     }
@@ -49,8 +49,8 @@ class MiscSuite extends LexerSuite {
   test("Wiki Word that ends in a capital letter followed by a CR LF") {
     expect(
       List(
-        (FitnesseElementType.WIKI_WORD, "WikiWordThisIsA"),
-        (FitnesseElementType.LINE_TERMINATOR, "\r\n")
+        (FitnesseTokenType.WIKI_WORD, "WikiWordThisIsA"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\r\n")
       )) {
       lex("WikiWordThisIsA\r\n")
     }

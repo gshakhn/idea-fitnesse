@@ -4,7 +4,7 @@ class RegularTextSuite extends LexerSuite {
   test("Single word") {
     expect(
       List(
-        (FitnesseElementType.WORD, "Hello")
+        (FitnesseTokenType.WORD, "Hello")
       )) {
       lex("Hello")
     }
@@ -13,7 +13,7 @@ class RegularTextSuite extends LexerSuite {
   test("Single word with number") {
     expect(
       List(
-        (FitnesseElementType.WORD, "Hello1")
+        (FitnesseTokenType.WORD, "Hello1")
       )) {
       lex("Hello1")
     }
@@ -22,9 +22,9 @@ class RegularTextSuite extends LexerSuite {
   test("Two words") {
     expect(
       List(
-        (FitnesseElementType.WORD, "Foo"),
-        (FitnesseElementType.WHITE_SPACE, " "),
-        (FitnesseElementType.WORD, "bar")
+        (FitnesseTokenType.WORD, "Foo"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "bar")
       )) {
       lex("Foo bar")
     }
@@ -33,7 +33,7 @@ class RegularTextSuite extends LexerSuite {
   test("Number") {
     expect(
       List(
-        (FitnesseElementType.WORD, "123")
+        (FitnesseTokenType.WORD, "123")
       )) {
       lex("123")
     }
@@ -41,7 +41,7 @@ class RegularTextSuite extends LexerSuite {
 
   test("CamelCase word where first letter is lower case") {
     expect(List(
-      (FitnesseElementType.WORD, "thisIsCamelCase")
+      (FitnesseTokenType.WORD, "thisIsCamelCase")
 
     )) {
       lex("thisIsCamelCase")
@@ -51,7 +51,7 @@ class RegularTextSuite extends LexerSuite {
   test("Word that looks like a WikiWord but has 2 capital letters in a row ") {
     expect(
       List(
-        (FitnesseElementType.WORD, "ThisIsNotAWikiWord")
+        (FitnesseTokenType.WORD, "ThisIsNotAWikiWord")
       )) {
       lex("ThisIsNotAWikiWord")
     }
@@ -60,7 +60,7 @@ class RegularTextSuite extends LexerSuite {
   test("USAforEver is a regular word") {
     expect(
       List(
-        (FitnesseElementType.WORD, "USAforEver")
+        (FitnesseTokenType.WORD, "USAforEver")
       )) {
       lex("USAforEver")
     }
@@ -69,14 +69,14 @@ class RegularTextSuite extends LexerSuite {
   test("A sentence") {
     expect(
       List(
-        (FitnesseElementType.WORD, "This"),
-        (FitnesseElementType.WHITE_SPACE, " "),
-        (FitnesseElementType.WORD, "is"),
-        (FitnesseElementType.WHITE_SPACE, " "),
-        (FitnesseElementType.WORD, "a"),
-        (FitnesseElementType.WHITE_SPACE, " "),
-        (FitnesseElementType.WORD, "sentence"),
-        (FitnesseElementType.REGULAR_TEXT, ".")
+        (FitnesseTokenType.WORD, "This"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "is"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "a"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "sentence"),
+        (FitnesseTokenType.REGULAR_TEXT, ".")
       )) {
       lex("This is a sentence.")
     }

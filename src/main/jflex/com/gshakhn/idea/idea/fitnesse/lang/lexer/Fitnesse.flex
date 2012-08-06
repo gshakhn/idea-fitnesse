@@ -23,23 +23,23 @@ LINE_TERMINATOR = \n|\r\n
 
 %%
 
-<YYINITIAL> {LINE_TERMINATOR}               {return FitnesseElementType.LINE_TERMINATOR();}
-<YYINITIAL> " "                             {return FitnesseElementType.WHITE_SPACE();}
-<YYINITIAL> \t                              {return FitnesseElementType.WHITE_SPACE();}
-<YYINITIAL> "|"                             {yybegin(TABLE_START); yypushback(1); return FitnesseElementType.TABLE_START();}
-<YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+ {return FitnesseElementType.WIKI_WORD();}
-<YYINITIAL> [:jletterdigit:]+               {return FitnesseElementType.WORD();}
-<YYINITIAL> .                               {return FitnesseElementType.REGULAR_TEXT();}
+<YYINITIAL> {LINE_TERMINATOR}               {return FitnesseTokenType.LINE_TERMINATOR();}
+<YYINITIAL> " "                             {return FitnesseTokenType.WHITE_SPACE();}
+<YYINITIAL> \t                              {return FitnesseTokenType.WHITE_SPACE();}
+<YYINITIAL> "|"                             {yybegin(TABLE_START); yypushback(1); return FitnesseTokenType.TABLE_START();}
+<YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+ {return FitnesseTokenType.WIKI_WORD();}
+<YYINITIAL> [:jletterdigit:]+               {return FitnesseTokenType.WORD();}
+<YYINITIAL> .                               {return FitnesseTokenType.REGULAR_TEXT();}
 
-<TABLE_START> "|"                           {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
+<TABLE_START> "|"                           {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
 
-<ROW_START> "|"                             {yybegin(ROW); return FitnesseElementType.CELL_DELIM();}
+<ROW_START> "|"                             {yybegin(ROW); return FitnesseTokenType.CELL_DELIM();}
 
-<ROW> "|"                                   {return FitnesseElementType.CELL_DELIM();}
-<ROW> [^\n\r\|]+                            {return FitnesseElementType.CELL_TEXT();}
-<ROW> {LINE_TERMINATOR}                     {yybegin(ROW_END); return FitnesseElementType.ROW_END();}
+<ROW> "|"                                   {return FitnesseTokenType.CELL_DELIM();}
+<ROW> [^\n\r\|]+                            {return FitnesseTokenType.CELL_TEXT();}
+<ROW> {LINE_TERMINATOR}                     {yybegin(ROW_END); return FitnesseTokenType.ROW_END();}
 
-<ROW_END> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); return FitnesseElementType.TABLE_END();}
-<ROW_END> "|"                               {yybegin(ROW_START); yypushback(1); return FitnesseElementType.ROW_START();}
+<ROW_END> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); return FitnesseTokenType.TABLE_END();}
+<ROW_END> "|"                               {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
 
 
