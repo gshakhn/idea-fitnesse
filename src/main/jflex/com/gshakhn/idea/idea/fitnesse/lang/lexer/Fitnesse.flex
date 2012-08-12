@@ -39,5 +39,6 @@ LINE_TERMINATOR = \n|\r\n
 <ROW> [^\n\r\|]+                            {return FitnesseTokenType.CELL_TEXT();}
 <ROW> {LINE_TERMINATOR}                     {yybegin(ROW_END); return FitnesseTokenType.ROW_END();}
 
-<ROW_END> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); return FitnesseTokenType.TABLE_END();}
 <ROW_END> "|"                               {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
+<ROW_END> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); yypushback(yylength()); return FitnesseTokenType.TABLE_END();}
+<ROW_END> .                                 {yybegin(YYINITIAL); yypushback(1); return FitnesseTokenType.TABLE_END();}

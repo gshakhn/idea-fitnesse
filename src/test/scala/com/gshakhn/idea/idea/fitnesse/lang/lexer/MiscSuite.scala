@@ -55,4 +55,48 @@ class MiscSuite extends LexerSuite {
       lex("WikiWordThisIsA\r\n")
     }
   }
+
+  test("Table that has regular text right after it") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "abc"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, "\n"),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "xyz"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, "\n"),
+        (FitnesseTokenType.TABLE_END, ""),
+        (FitnesseTokenType.WORD, "some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "text")
+      )) {
+      lex("|abc|\n|xyz|\nsome text")
+    }
+  }
+
+  test("Table that has a WikiWord right after it") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "abc"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, "\n"),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "xyz"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, "\n"),
+        (FitnesseTokenType.TABLE_END, ""),
+        (FitnesseTokenType.WIKI_WORD, "WikiWord")
+      )) {
+      lex("|abc|\n|xyz|\nWikiWord")
+    }
+  }
 }
