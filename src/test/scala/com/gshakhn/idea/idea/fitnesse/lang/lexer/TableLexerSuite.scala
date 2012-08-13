@@ -1,6 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
-class TableSuite extends LexerSuite {
+class TableLexerSuite extends LexerSuite {
   test("Simple table") {
     expect(
       List(

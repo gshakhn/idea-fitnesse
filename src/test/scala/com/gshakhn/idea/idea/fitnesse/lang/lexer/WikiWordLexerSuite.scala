@@ -1,6 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
-class WikiWordSuite extends LexerSuite {
+class WikiWordLexerSuite extends LexerSuite {
   test("Regular Wiki Word") {
     expect(List((FitnesseTokenType.WIKI_WORD, "WikiWord"))) {
       lex("WikiWord")

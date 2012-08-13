@@ -1,6 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
-class RegularTextSuite extends LexerSuite {
+class RegularTextLexerSuite extends LexerSuite {
   test("Single word") {
     expect(
       List(

@@ -1,6 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
-class LineTerminatorSuite extends LexerSuite {
+class LineTerminatorLexerSuite extends LexerSuite {
   test("LF") {
     expect(List((FitnesseTokenType.LINE_TERMINATOR, "\n"))) {
       lex("\n")

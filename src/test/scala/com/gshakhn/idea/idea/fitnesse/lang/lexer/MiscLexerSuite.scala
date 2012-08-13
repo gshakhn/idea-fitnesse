@@ -1,6 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
-class MiscSuite extends LexerSuite {
+class MiscLexerSuite extends LexerSuite {
   test("Regular text followed by Wiki Word") {
     expect(
       List(
