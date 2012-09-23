@@ -26,7 +26,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.scala-lang:scala-compiler:2.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.scalatest:scalatest_2.9.1:1.8" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="intellij-community" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="org.picocontainer:picocontainer:1.2" level="project" />
   </component>
 </module>
 

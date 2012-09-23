@@ -7,4 +7,5 @@ class FitnesseElementType {}
 
 object FitnesseElementType {
   final val FILE = new IFileElementType(FitnesseLanguage.INSTANCE)
+  final val TABLE = new IFileElementType(FitnesseLanguage.INSTANCE)
 }

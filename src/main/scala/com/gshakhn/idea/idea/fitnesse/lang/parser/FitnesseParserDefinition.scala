@@ -22,7 +22,9 @@ class FitnesseParserDefinition extends ParserDefinition {
 
   def getStringLiteralElements = TokenSet.EMPTY
 
-  def createElement(astNode: ASTNode) = new ASTWrapperPsiElement(astNode)
+  def createElement(astNode: ASTNode) = {
+    new ASTWrapperPsiElement(astNode)
+  }
 
   def createFile(fileViewProvider: FileViewProvider) = new FitnesseFile(fileViewProvider)
 
