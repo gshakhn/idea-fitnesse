@@ -6,7 +6,7 @@ import com.intellij.mock._
 import com.intellij.openapi.Disposable
 import com.intellij.psi.{SingleRootFileViewProvider, PsiManager, PsiFileFactory}
 import com.intellij.openapi.extensions.Extensions
-import com.intellij.psi.impl.{DebugUtil, PsiFileFactoryImpl}
+import com.intellij.psi.impl.PsiFileFactoryImpl
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileTypes.{FileTypeManager, FileTypeRegistry}
 import com.intellij.openapi.vfs.encoding.{EncodingManager, EncodingRegistry}
@@ -19,6 +19,9 @@ import com.intellij.lang.impl.PsiBuilderFactoryImpl
 import com.intellij.util.Function
 import com.intellij.testFramework.LightVirtualFile
 import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
+import com.intellij.psi.tree.IElementType
+import com.intellij.psi.impl.source.SourceTreeToPsiMap
+import com.intellij.psi.impl.source.tree.CompositeElement
 
 trait ParserSuite extends FunSuite with ShouldMatchers with BeforeAndAfterAll {
   val parserDefinition = new FitnesseParserDefinition
@@ -84,10 +87,25 @@ trait ParserSuite extends FunSuite with ShouldMatchers with BeforeAndAfterAll {
     myProject.getPicoContainer.unregisterComponent(classOf[PsiFileFactory].getName)
   }
 
+  abstract class Tree
+    case class Node(elementType: IElementType, children: List[Tree]) extends Tree
+    case class Leaf(elementType: IElementType, text: String) extends Tree
+
   def parse(text: String) = {
     val virtualFile: LightVirtualFile = new LightVirtualFile("content.txt", FitnesseLanguage.INSTANCE, text)
     val viewProvider = new SingleRootFileViewProvider(myPsiManager, virtualFile, true)
     val file = parserDefinition.createFile(viewProvider)
-    DebugUtil.psiTreeToString(file, false)
+    val rootNode = SourceTreeToPsiMap.psiElementToTree(file)
+    convertToTree(rootNode)
+  }
+
+  private def convertToTree(node: ASTNode): Tree = {
+    if (node.isInstanceOf[CompositeElement]) {
+      val children = node.getChildren(null)
+      val leaves = children.map(child => convertToTree(child)).toList
+      Node(node.getElementType, leaves)
+    } else {
+      Leaf(node.getElementType, node.getText)
+    }
   }
 }

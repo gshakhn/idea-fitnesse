@@ -1,7 +1,7 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseTokenType, FitnesseLexer}
-import com.gshakhn.idea.idea.fitnesse.lang.psi.FitnesseFile
+import com.gshakhn.idea.idea.fitnesse.lang.psi.{Row, Table, FitnesseFile}
 import com.intellij.lang.{ASTNode, ParserDefinition}
 import com.intellij.psi.FileViewProvider
 import com.intellij.openapi.project.Project
@@ -23,7 +23,11 @@ class FitnesseParserDefinition extends ParserDefinition {
   def getStringLiteralElements = TokenSet.EMPTY
 
   def createElement(astNode: ASTNode) = {
-    new ASTWrapperPsiElement(astNode)
+    astNode.getElementType match {
+      case FitnesseElementType.TABLE => new Table(astNode)
+      case FitnesseElementType.ROW =>   new Row(astNode)
+      case _ =>                         new ASTWrapperPsiElement(astNode)
+    }
   }
 
   def createFile(fileViewProvider: FileViewProvider) = new FitnesseFile(fileViewProvider)
