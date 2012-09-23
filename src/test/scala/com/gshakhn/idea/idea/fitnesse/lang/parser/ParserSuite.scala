@@ -22,6 +22,7 @@ import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.impl.source.SourceTreeToPsiMap
 import com.intellij.psi.impl.source.tree.CompositeElement
+import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 
 trait ParserSuite extends FunSuite with ShouldMatchers with BeforeAndAfterAll {
   val parserDefinition = new FitnesseParserDefinition
@@ -102,7 +103,8 @@ trait ParserSuite extends FunSuite with ShouldMatchers with BeforeAndAfterAll {
   private def convertToTree(node: ASTNode): Tree = {
     if (node.isInstanceOf[CompositeElement]) {
       val children = node.getChildren(null)
-      val leaves = children.map(child => convertToTree(child)).toList
+      val leaves = children.filterNot(child => child.getElementType == FitnesseTokenType.LINE_TERMINATOR).
+                            map(child => convertToTree(child)).toList
       Node(node.getElementType, leaves)
     } else {
       Leaf(node.getElementType, node.getText)
