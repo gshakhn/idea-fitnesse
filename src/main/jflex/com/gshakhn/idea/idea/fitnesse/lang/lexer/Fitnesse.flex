@@ -19,7 +19,8 @@ LINE_TERMINATOR = \n|\r\n
 %state TABLE_START
 %state ROW_START
 %state ROW
-%state ROW_END
+%state ROW_END_1
+%state ROW_END_2
 
 %%
 
@@ -37,8 +38,11 @@ LINE_TERMINATOR = \n|\r\n
 
 <ROW> "|"                                   {return FitnesseTokenType.CELL_DELIM();}
 <ROW> [^\n\r\|]+                            {return FitnesseTokenType.CELL_TEXT();}
-<ROW> {LINE_TERMINATOR}                     {yybegin(ROW_END); return FitnesseTokenType.ROW_END();}
+<ROW> {LINE_TERMINATOR}                     {yybegin(ROW_END_1); return FitnesseTokenType.LINE_TERMINATOR();}
 
-<ROW_END> "|"                               {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
-<ROW_END> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); yypushback(yylength()); return FitnesseTokenType.TABLE_END();}
-<ROW_END> .                                 {yybegin(YYINITIAL); yypushback(1); return FitnesseTokenType.TABLE_END();}
+<ROW_END_1> {LINE_TERMINATOR}                 {yybegin(ROW_END_2); yypushback(yylength()); return FitnesseTokenType.ROW_END();}
+<ROW_END_1> .                                 {yybegin(ROW_END_2); yypushback(1); return FitnesseTokenType.ROW_END();}
+
+<ROW_END_2> "|"                               {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
+<ROW_END_2> {LINE_TERMINATOR}                 {yybegin(YYINITIAL); yypushback(yylength()); return FitnesseTokenType.TABLE_END();}
+<ROW_END_2> .                                 {yybegin(YYINITIAL); yypushback(1); return FitnesseTokenType.TABLE_END();}
