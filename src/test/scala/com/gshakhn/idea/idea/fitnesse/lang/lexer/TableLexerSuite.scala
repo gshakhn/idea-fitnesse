@@ -80,6 +80,51 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
+  test("Two simple tables") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "A"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "B"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "C"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "D"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, ""),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "E"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "F"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "G"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "H"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, "")
+      )) {
+      lex("|A|B|\n|C|D|\n\n|E|F|\n|G|H|")
+    }
+  }
+
+
   test("Decision table") {
     expect(
       List(
