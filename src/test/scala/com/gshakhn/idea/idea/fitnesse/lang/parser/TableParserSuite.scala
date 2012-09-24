@@ -23,4 +23,25 @@ class TableParserSuite extends ParserSuite {
       parse("|A|\n|B|\n\n")
     }
   }
+
+  test("Simple table with more cell text") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(FitnesseElementType.TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "Hello World"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "goodbye world"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|Hello World|\n|goodbye world|\n\n")
+    }
+  }
 }
