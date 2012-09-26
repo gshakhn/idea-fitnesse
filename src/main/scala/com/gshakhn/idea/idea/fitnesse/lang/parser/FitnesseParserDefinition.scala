@@ -1,7 +1,7 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseTokenType, FitnesseLexer}
-import com.gshakhn.idea.idea.fitnesse.lang.psi.{Row, Table, FitnesseFile}
+import com.gshakhn.idea.idea.fitnesse.lang.psi.{WikiLink, Row, Table, FitnesseFile}
 import com.intellij.lang.{ASTNode, ParserDefinition}
 import com.intellij.psi.FileViewProvider
 import com.intellij.openapi.project.Project
@@ -25,8 +25,9 @@ class FitnesseParserDefinition extends ParserDefinition {
   def createElement(astNode: ASTNode) = {
     astNode.getElementType match {
       case FitnesseElementType.TABLE => new Table(astNode)
-      case FitnesseElementType.ROW =>   new Row(astNode)
-      case _ =>                         new ASTWrapperPsiElement(astNode)
+      case FitnesseElementType.ROW => new Row(astNode)
+      case FitnesseElementType.WIKI_LINK => new WikiLink(astNode)
+      case _ => new ASTWrapperPsiElement(astNode)
     }
   }
 

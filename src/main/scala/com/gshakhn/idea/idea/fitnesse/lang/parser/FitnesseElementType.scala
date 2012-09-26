@@ -11,4 +11,5 @@ object FitnesseElementType {
   final val FILE = new IFileElementType(FitnesseLanguage.INSTANCE)
   final val TABLE = new FitnesseElementType("TABLE")
   final val ROW = new FitnesseElementType("ROW")
+  final val WIKI_LINK = new FitnesseElementType("WIKI_LINK")
 }

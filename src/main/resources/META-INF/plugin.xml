@@ -25,5 +25,7 @@
     <syntaxHighlighter key="Fitnesse" implementationClass="com.gshakhn.idea.idea.fitnesse.lang.highlighting.FitnesseHighlighter"/>
     <colorSettingsPage implementation="com.gshakhn.idea.idea.fitnesse.lang.highlighting.FitnesseColorSettingsPage"/>
     <lang.parserDefinition language="Fitnesse" implementationClass="com.gshakhn.idea.idea.fitnesse.lang.parser.FitnesseParserDefinition"/>
+    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.WikiLink"
+                             implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.WikiLinkManipulator"/>
   </extensions>
 </idea-plugin>

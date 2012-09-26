@@ -10,6 +10,8 @@ class FitnesseParser extends PsiParser {
     while (!builder.eof()) {
       if (builder.getTokenType == FitnesseTokenType.TABLE_START) {
         parseTable(builder)
+      } else if (builder.getTokenType == FitnesseTokenType.WIKI_WORD) {
+        parseLink(builder)
       } else {
         builder.advanceLexer()
       }
@@ -18,10 +20,19 @@ class FitnesseParser extends PsiParser {
     builder.getTreeBuilt
   }
 
+  private def parseLink(builder: PsiBuilder) {
+    val start = builder.mark()
+    while (!builder.eof() && (builder.getTokenType == FitnesseTokenType.WIKI_WORD || builder.getTokenType == FitnesseTokenType.PERIOD)) {
+      builder.advanceLexer()
+    }
+
+    start.done(FitnesseElementType.WIKI_LINK)
+  }
+
   private def parseTable(builder: PsiBuilder) {
     val start = builder.mark()
 
-    while (builder.getTokenType != FitnesseTokenType.TABLE_END) {
+    while (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) {
       if (builder.getTokenType == FitnesseTokenType.ROW_START) {
         parseRow(builder)
       } else {
@@ -35,7 +46,7 @@ class FitnesseParser extends PsiParser {
 
   private def parseRow(builder: PsiBuilder) {
     val start = builder.mark()
-    while(builder.getTokenType != FitnesseTokenType.ROW_END) {
+    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       builder.advanceLexer()
     }
 
