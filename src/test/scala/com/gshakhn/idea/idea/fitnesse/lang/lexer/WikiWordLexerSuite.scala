@@ -24,4 +24,17 @@ class WikiWordLexerSuite extends LexerSuite {
       lex("WikiWordThisIsA")
     }
   }
+
+  test("Multiple Wiki Words") {
+    expect(
+      List(
+        (FitnesseTokenType.WIKI_WORD, "WikiWord"),
+        (FitnesseTokenType.PERIOD, "."),
+        (FitnesseTokenType.WIKI_WORD, "AnotherWikiWord"),
+        (FitnesseTokenType.PERIOD, "."),
+        (FitnesseTokenType.WIKI_WORD, "YetAnotherWikiWord")
+      )) {
+      lex("WikiWord.AnotherWikiWord.YetAnotherWikiWord")
+    }
+  }
 }
