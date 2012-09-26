@@ -39,14 +39,12 @@ class FitnesseParser extends PsiParser {
     val start = builder.mark()
 
     while (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) {
-      if (builder.getTokenType == FitnesseTokenType.ROW_START) {
-        parseRow(builder)
-      } else {
-        builder.advanceLexer()
+      builder.getTokenType match {
+        case FitnesseTokenType.ROW_START => parseRow(builder)
+        case _ => builder.advanceLexer()
       }
     }
 
-    builder.advanceLexer()
     start.done(FitnesseElementType.TABLE)
   }
 
@@ -56,7 +54,6 @@ class FitnesseParser extends PsiParser {
       builder.advanceLexer()
     }
 
-    builder.advanceLexer()
     start.done(FitnesseElementType.ROW)
   }
 }
