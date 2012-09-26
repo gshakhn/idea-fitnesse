@@ -57,4 +57,60 @@ class WikiLinkParserSuite extends ParserSuite {
     }
   }
 
+  test("Subpage reference") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(WikiLinkElementType.SUBPAGE_WIKI_LINK, List(
+          Leaf(FitnesseTokenType.GT, ">"),
+          Leaf(FitnesseTokenType.WIKI_WORD, "ChildPage")
+        ))
+      ))
+    ) {
+      parse(">ChildPage")
+    }
+  }
+
+  test("Subpage reference with child") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(WikiLinkElementType.SUBPAGE_WIKI_LINK, List(
+          Leaf(FitnesseTokenType.GT, ">"),
+          Leaf(FitnesseTokenType.WIKI_WORD, "ChildPage"),
+          Leaf(FitnesseTokenType.PERIOD, "."),
+          Leaf(FitnesseTokenType.WIKI_WORD, "GrandChildPage")
+        ))
+      ))
+    ) {
+      parse(">ChildPage.GrandChildPage")
+    }
+  }
+
+  test("Ancestor reference") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(WikiLinkElementType.ANCESTOR_WIKI_LINK, List(
+          Leaf(FitnesseTokenType.LT, "<"),
+          Leaf(FitnesseTokenType.WIKI_WORD, "AncestorPage")
+        ))
+      ))
+    ) {
+      parse("<AncestorPage")
+    }
+  }
+
+  test("Ancestor reference with child") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(WikiLinkElementType.ANCESTOR_WIKI_LINK, List(
+          Leaf(FitnesseTokenType.LT, "<"),
+          Leaf(FitnesseTokenType.WIKI_WORD, "AncestorPage"),
+          Leaf(FitnesseTokenType.PERIOD, "."),
+          Leaf(FitnesseTokenType.WIKI_WORD, "AncestorChildPage")
+        ))
+      ))
+    ) {
+      parse("<AncestorPage.AncestorChildPage")
+    }
+  }
+
 }

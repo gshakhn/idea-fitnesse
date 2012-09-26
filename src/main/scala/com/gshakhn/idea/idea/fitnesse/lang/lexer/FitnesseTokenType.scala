@@ -13,6 +13,8 @@ object FitnesseTokenType {
   final val WORD: IElementType = new FitnesseTokenType("WORD")
   final val REGULAR_TEXT: IElementType = new FitnesseTokenType("REGULAR_TEXT")
   final val PERIOD: IElementType = new FitnesseTokenType("PERIOD")
+  final val GT: IElementType = new FitnesseTokenType("GT")
+  final val LT: IElementType = new FitnesseTokenType("LT")
   final val WHITE_SPACE: IElementType = TokenType.WHITE_SPACE
 
   final val CELL_DELIM: IElementType = new FitnesseTokenType("CELL_DELIM")

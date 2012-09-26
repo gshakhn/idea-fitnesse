@@ -37,4 +37,34 @@ class WikiWordLexerSuite extends LexerSuite {
       lex("WikiWord.AnotherWikiWord.YetAnotherWikiWord")
     }
   }
+
+  test("WikiWord prefixed with period") {
+    expect(
+      List(
+        (FitnesseTokenType.PERIOD, "."),
+        (FitnesseTokenType.WIKI_WORD, "WikiWord")
+      )) {
+      lex(".WikiWord")
+    }
+  }
+
+  test("WikiWord prefixed with >") {
+    expect(
+      List(
+        (FitnesseTokenType.LT, "<"),
+        (FitnesseTokenType.WIKI_WORD, "WikiWord")
+      )) {
+      lex("<WikiWord")
+    }
+  }
+
+  test("WikiWord prefixed with <") {
+    expect(
+      List(
+        (FitnesseTokenType.GT, ">"),
+        (FitnesseTokenType.WIKI_WORD, "WikiWord")
+      )) {
+      lex(">WikiWord")
+    }
+  }
 }

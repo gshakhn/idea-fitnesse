@@ -31,6 +31,8 @@ LINE_TERMINATOR = \n|\r\n
 <YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+   {return FitnesseTokenType.WIKI_WORD();}
 <YYINITIAL> [:jletterdigit:]+                 {return FitnesseTokenType.WORD();}
 <YYINITIAL> \.                                {return FitnesseTokenType.PERIOD();}
+<YYINITIAL> \>                                {return FitnesseTokenType.GT();}
+<YYINITIAL> \<                                {return FitnesseTokenType.LT();}
 <YYINITIAL> .                                 {return FitnesseTokenType.REGULAR_TEXT();}
 
 <TABLE_START> "|"                             {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}

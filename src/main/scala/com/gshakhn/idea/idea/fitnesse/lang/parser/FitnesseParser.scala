@@ -11,13 +11,10 @@ class FitnesseParser extends PsiParser {
     while (!builder.eof()) {
       builder.getTokenType match {
         case FitnesseTokenType.TABLE_START => parseTable(builder)
-        case FitnesseTokenType.PERIOD => {
-          builder.lookAhead(1) match {
-            case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.ABSOLUTE_WIKI_LINK)
-            case _ => builder.advanceLexer()
-          }
-        }
-        case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.RELATIVE_WIKI_LINK)
+        case FitnesseTokenType.PERIOD => parsePotentialLink(builder, WikiLinkElementType.ABSOLUTE_WIKI_LINK)
+        case FitnesseTokenType.GT => parsePotentialLink(builder, WikiLinkElementType.SUBPAGE_WIKI_LINK)
+        case FitnesseTokenType.LT => parsePotentialLink(builder, WikiLinkElementType.ANCESTOR_WIKI_LINK)
+        case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.RELATIVE_WIKI_LINK)()
         case _ => builder.advanceLexer()
       }
     }
@@ -26,8 +23,18 @@ class FitnesseParser extends PsiParser {
     builder.getTreeBuilt
   }
 
-  private def parseLink(builder: PsiBuilder, linkType: WikiLinkElementType) {
+  private def parsePotentialLink(builder: PsiBuilder, linkType: WikiLinkElementType) {
     val start = builder.mark()
+    builder.lookAhead(1) match {
+      case FitnesseTokenType.WIKI_WORD => {
+        builder.advanceLexer()
+        parseLink(builder, linkType)(start)
+      }
+      case _ => builder.advanceLexer()
+    }
+  }
+
+  private def parseLink(builder: PsiBuilder, linkType: WikiLinkElementType)(start: Marker = builder.mark()) {
     while (!builder.eof() && (builder.getTokenType == FitnesseTokenType.WIKI_WORD || builder.getTokenType == FitnesseTokenType.PERIOD)) {
       builder.advanceLexer()
     }
