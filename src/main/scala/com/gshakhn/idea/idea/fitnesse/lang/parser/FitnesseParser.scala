@@ -30,7 +30,10 @@ class FitnesseParser extends PsiParser {
         builder.advanceLexer()
         parseLink(builder, linkType)(start)
       }
-      case _ => builder.advanceLexer()
+      case _ => {
+        start.drop()
+        builder.advanceLexer()
+      }
     }
   }
 
