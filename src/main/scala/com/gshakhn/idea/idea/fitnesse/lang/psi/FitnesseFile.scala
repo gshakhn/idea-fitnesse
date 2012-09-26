@@ -7,4 +7,6 @@ import com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileType
 
 class FitnesseFile(fileViewProvider: FileViewProvider) extends PsiFileBase(fileViewProvider, FitnesseLanguage.INSTANCE) {
   def getFileType = FitnesseFileType.INSTANCE
+
+  override def getName = getContainingDirectory.getName
 }
