@@ -9,27 +9,25 @@ class FitnesseParser extends PsiParser {
   def parse(root: IElementType, builder: PsiBuilder) = {
     val rootMarker = builder.mark()
     while (!builder.eof()) {
-      if (builder.getTokenType == FitnesseTokenType.TABLE_START) {
-        parseTable(builder)
-      } else if (builder.getTokenType == FitnesseTokenType.PERIOD) {
-        val linkStart = builder.mark()
-        builder.advanceLexer()
-        if (builder.getTokenType == FitnesseTokenType.WIKI_WORD) {
-          parseLink(builder, linkStart, WikiLinkElementType.ABSOLUTE_WIKI_LINK)
-        } else {
-          linkStart.drop()
+      builder.getTokenType match {
+        case FitnesseTokenType.TABLE_START => parseTable(builder)
+        case FitnesseTokenType.PERIOD => {
+          builder.lookAhead(1) match {
+            case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.ABSOLUTE_WIKI_LINK)
+            case _ => builder.advanceLexer()
+          }
         }
-      } else if (builder.getTokenType == FitnesseTokenType.WIKI_WORD) {
-        parseLink(builder, builder.mark(), WikiLinkElementType.RELATIVE_WIKI_LINK)
-      } else {
-        builder.advanceLexer()
+        case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.RELATIVE_WIKI_LINK)
+        case _ => builder.advanceLexer()
       }
     }
+
     rootMarker.done(root)
     builder.getTreeBuilt
   }
 
-  private def parseLink(builder: PsiBuilder, start: Marker, linkType: WikiLinkElementType) {
+  private def parseLink(builder: PsiBuilder, linkType: WikiLinkElementType) {
+    val start = builder.mark()
     while (!builder.eof() && (builder.getTokenType == FitnesseTokenType.WIKI_WORD || builder.getTokenType == FitnesseTokenType.PERIOD)) {
       builder.advanceLexer()
     }
