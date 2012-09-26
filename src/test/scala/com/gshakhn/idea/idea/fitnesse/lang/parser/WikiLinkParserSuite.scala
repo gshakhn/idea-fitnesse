@@ -6,7 +6,7 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Relative reference") {
     expect(
       Node(FitnesseElementType.FILE, List(
-        Node(FitnesseElementType.WIKI_LINK, List(
+        Node(WikiLinkElementType.RELATIVE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage")
         ))
       ))
@@ -18,7 +18,7 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Relative reference with child") {
     expect(
       Node(FitnesseElementType.FILE, List(
-        Node(FitnesseElementType.WIKI_LINK, List(
+        Node(WikiLinkElementType.RELATIVE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage"),
           Leaf(FitnesseTokenType.PERIOD, "."),
           Leaf(FitnesseTokenType.WIKI_WORD, "SiblingsChild")
@@ -26,6 +26,34 @@ class WikiLinkParserSuite extends ParserSuite {
       ))
     ) {
       parse("SiblingPage.SiblingsChild")
+    }
+  }
+
+  test("Absolute reference") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(WikiLinkElementType.ABSOLUTE_WIKI_LINK, List(
+          Leaf(FitnesseTokenType.PERIOD, "."),
+          Leaf(FitnesseTokenType.WIKI_WORD, "TopPage")
+        ))
+      ))
+    ) {
+      parse(".TopPage")
+    }
+  }
+
+  test("Absolute reference with child") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(WikiLinkElementType.ABSOLUTE_WIKI_LINK, List(
+          Leaf(FitnesseTokenType.PERIOD, "."),
+          Leaf(FitnesseTokenType.WIKI_WORD, "TopPage"),
+          Leaf(FitnesseTokenType.PERIOD, "."),
+          Leaf(FitnesseTokenType.WIKI_WORD, "TopPageChild")
+        ))
+      ))
+    ) {
+      parse(".TopPage.TopPageChild")
     }
   }
 
