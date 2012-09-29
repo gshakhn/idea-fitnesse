@@ -55,7 +55,7 @@ class FitnesseParser extends PsiParser {
       }
     }
 
-    start.done(FitnesseElementType.TABLE)
+    start.done(TableElementType.DECISION_TABLE)
   }
 
   private def parseRow(builder: PsiBuilder) {

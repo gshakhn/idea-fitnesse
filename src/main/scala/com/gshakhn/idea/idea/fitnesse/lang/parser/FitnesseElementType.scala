@@ -9,8 +9,24 @@ class FitnesseElementType(debugName: String) extends IElementType(debugName, Fit
 
 object FitnesseElementType {
   final val FILE = new IFileElementType(FitnesseLanguage.INSTANCE)
-  final val TABLE = new FitnesseElementType("TABLE")
   final val ROW = new FitnesseElementType("ROW")
+}
+
+class TableElementType(debugName: String) extends FitnesseElementType(debugName) {
+
+}
+
+object TableElementType {
+  final val DECISION_TABLE = new TableElementType("DECISION_TABLE")
+  final val QUERY_TABLE = new TableElementType("QUERY_TABLE")
+  final val SUBSET_QUERY_TABLE = new TableElementType("SUBSET_QUERY_TABLE")
+  final val ORDERED_QUERY_TABLE = new TableElementType("ORDERED_QUERY_TABLE")
+  final val SCRIPT_TABLE = new TableElementType("SCRIPT_TABLE")
+  final val TABLE_TABLE = new TableElementType("TABLE_TABLE")
+  final val IMPORT_TABLE = new TableElementType("IMPORT_TABLE")
+  final val COMMENT_TABLE = new TableElementType("COMMENT_TABLE")
+  final val SCENARIO_TABLE = new TableElementType("SCENARIO_TABLE")
+  final val LIBRARY_TABLE = new TableElementType("LIBRARY_TABLE")
 }
 
 class WikiLinkElementType(debugName: String) extends FitnesseElementType(debugName) {
