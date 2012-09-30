@@ -30,7 +30,7 @@ LINE_TERMINATOR = \n|\r\n
 <YYINITIAL> {LINE_TERMINATOR}                 {return FitnesseTokenType.LINE_TERMINATOR();}
 <YYINITIAL> " "                               {return FitnesseTokenType.WHITE_SPACE();}
 <YYINITIAL> \t                                {return FitnesseTokenType.WHITE_SPACE();}
-<YYINITIAL> "|"                               {yybegin(TABLE_START); yypushback(1); return FitnesseTokenType.TABLE_START();}
+<YYINITIAL> \|[^\n\r\|]*\|                    {yybegin(TABLE_START); yypushback(yylength()); return FitnesseTokenType.TABLE_START();}
 <YYINITIAL> [A-Z]([a-z0-9]+[A-Z][a-z0-9]*)+   {return FitnesseTokenType.WIKI_WORD();}
 <YYINITIAL> [:jletterdigit:]+                 {return FitnesseTokenType.WORD();}
 <YYINITIAL> \.                                {return FitnesseTokenType.PERIOD();}
@@ -50,6 +50,7 @@ LINE_TERMINATOR = \n|\r\n
 <FIRST_ROW_CELL> import[ \t]*                 {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
 <FIRST_ROW_CELL> [^\n\r\|\:]+:                {yybegin(FIRST_ROW_CELL_COLON); yypushback(1); return FitnesseTokenType.TABLE_TYPE();}
 <FIRST_ROW_CELL> [^\n\r\|\:]+                 {yybegin(ROW); return FitnesseTokenType.CELL_TEXT();}
+<FIRST_ROW_CELL> "|"                          {yybegin(ROW); return FitnesseTokenType.CELL_DELIM();}
 
 <FIRST_ROW_CELL_COLON> :                      {yybegin(ROW); return FitnesseTokenType.COLON();}
 

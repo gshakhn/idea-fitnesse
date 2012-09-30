@@ -368,4 +368,32 @@ class TableLexerSuite extends LexerSuite {
       lex("|Some table||\n\n")
     }
   }
+
+  test("Table with empty first cell") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "Some table"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, ""),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n")
+      )) {
+      lex("||Some table|\n\n")
+    }
+  }
+
+  test("'Table' with newline in middle of first cell") {
+    expect(
+      List(
+        (FitnesseTokenType.REGULAR_TEXT, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n")
+      )) {
+      lex("|\n")
+    }
+  }
 }
