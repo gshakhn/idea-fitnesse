@@ -11,6 +11,7 @@ class FitnesseHighlighter extends SyntaxHighlighterBase {
     p1 match {
       case FitnesseTokenType.WIKI_WORD => Array(FitnesseHighlighterColors.WIKI_WORD)
       case FitnesseTokenType.CELL_TEXT => Array(FitnesseHighlighterColors.CELL_TEXT)
+      case FitnesseTokenType.TABLE_TYPE => Array(FitnesseHighlighterColors.TABLE_TYPE)
       case _ => Array.empty
     }
   }
