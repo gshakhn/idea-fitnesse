@@ -396,4 +396,45 @@ class TableLexerSuite extends LexerSuite {
       lex("|\n")
     }
   }
+
+  test("Table with row being currently written at EOF") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "Some table"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, "")
+      )) {
+      lex("|Some table|\n|")
+    }
+  }
+
+  test("Table with row being currently written in middle of file") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "Some table"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, ""),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.WORD, "Hello")
+      )) {
+      lex("|Some table|\n|\n\nHello")
+    }
+  }
 }
