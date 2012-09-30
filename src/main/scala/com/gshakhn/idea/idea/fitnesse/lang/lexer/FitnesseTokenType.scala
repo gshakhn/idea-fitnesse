@@ -15,6 +15,7 @@ object FitnesseTokenType {
   final val PERIOD: IElementType = new FitnesseTokenType("PERIOD")
   final val GT: IElementType = new FitnesseTokenType("GT")
   final val LT: IElementType = new FitnesseTokenType("LT")
+  final val COLON: IElementType = new FitnesseTokenType("COLON")
   final val WHITE_SPACE: IElementType = TokenType.WHITE_SPACE
 
   final val CELL_DELIM: IElementType = new FitnesseTokenType("CELL_DELIM")
@@ -22,6 +23,7 @@ object FitnesseTokenType {
 
   final val LINE_TERMINATOR: IElementType = new FitnesseTokenType("LINE_TERMINATOR")
 
+  final val TABLE_TYPE: IElementType = new FitnesseTokenType("TABLE_TYPE")
   final val TABLE_START: IElementType = new FitnesseTokenType("TABLE_START")
   final val TABLE_END: IElementType = new FitnesseTokenType("TABLE_END")
   final val ROW_START: IElementType = new FitnesseTokenType("ROW_START")

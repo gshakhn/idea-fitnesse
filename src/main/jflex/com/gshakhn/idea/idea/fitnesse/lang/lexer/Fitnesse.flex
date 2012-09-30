@@ -17,7 +17,10 @@ import com.intellij.psi.tree.IElementType;
 LINE_TERMINATOR = \n|\r\n
 
 %state TABLE_START
+%state FIRST_ROW_START
 %state ROW_START
+%state FIRST_ROW_CELL
+%state FIRST_ROW_CELL_COLON
 %state ROW
 %state ROW_END_1
 %state ROW_END_2
@@ -35,9 +38,20 @@ LINE_TERMINATOR = \n|\r\n
 <YYINITIAL> \<                                {return FitnesseTokenType.LT();}
 <YYINITIAL> .                                 {return FitnesseTokenType.REGULAR_TEXT();}
 
-<TABLE_START> "|"                             {yybegin(ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
+<TABLE_START> "|"                             {yybegin(FIRST_ROW_START); yypushback(1); return FitnesseTokenType.ROW_START();}
 
+<FIRST_ROW_START> "|"                         {yybegin(FIRST_ROW_CELL); return FitnesseTokenType.CELL_DELIM();}
 <ROW_START> "|"                               {yybegin(ROW); return FitnesseTokenType.CELL_DELIM();}
+
+<FIRST_ROW_CELL> script[ \t]*                 {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> comment[ \t]*                {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> scenario[ \t]*               {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> library[ \t]*                {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> import[ \t]*                 {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> [^\n\r\|\:]+:                {yybegin(FIRST_ROW_CELL_COLON); yypushback(1); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> [^\n\r\|\:]+                 {yybegin(ROW); return FitnesseTokenType.CELL_TEXT();}
+
+<FIRST_ROW_CELL_COLON> :                      {yybegin(ROW); return FitnesseTokenType.COLON();}
 
 <ROW> "|"                                     {return FitnesseTokenType.CELL_DELIM();}
 <ROW> [^\n\r\|]+                              {return FitnesseTokenType.CELL_TEXT();}
