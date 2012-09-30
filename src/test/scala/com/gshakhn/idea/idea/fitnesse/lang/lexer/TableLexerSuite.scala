@@ -387,13 +387,24 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
-  test("'Table' with newline in middle of first cell") {
+  test("'Table' with newline after the first |") {
     expect(
       List(
         (FitnesseTokenType.REGULAR_TEXT, "|"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
       )) {
       lex("|\n")
+    }
+  }
+
+  test("'Table' with newline in middle of first cell") {
+    expect(
+      List(
+        (FitnesseTokenType.REGULAR_TEXT, "|"),
+        (FitnesseTokenType.WORD, "Hello"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n")
+      )) {
+      lex("|Hello\n")
     }
   }
 
