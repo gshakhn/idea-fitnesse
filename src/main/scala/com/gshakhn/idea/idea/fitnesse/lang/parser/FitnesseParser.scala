@@ -48,6 +48,8 @@ class FitnesseParser extends PsiParser {
   private def parseTable(builder: PsiBuilder) {
     val start = builder.mark()
 
+    val tableType = findTableType(builder)
+
     while (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) {
       builder.getTokenType match {
         case FitnesseTokenType.ROW_START => parseRow(builder)
@@ -55,7 +57,36 @@ class FitnesseParser extends PsiParser {
       }
     }
 
-    start.done(TableElementType.DECISION_TABLE)
+    start.done(tableType)
+  }
+
+  private def findTableType(builder: PsiBuilder) : TableElementType = {
+    val start = builder.mark()
+
+    while (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) {
+      if (builder.getTokenType == FitnesseTokenType.TABLE_TYPE) {
+        val tableType =  builder.getTokenText.trim.toLowerCase match {
+          case "dt" => TableElementType.DECISION_TABLE
+          case "decision" => TableElementType.DECISION_TABLE
+          case "query" => TableElementType.QUERY_TABLE
+          case "subset query" => TableElementType.SUBSET_QUERY_TABLE
+          case "ordered query" => TableElementType.ORDERED_QUERY_TABLE
+          case "script" => TableElementType.SCRIPT_TABLE
+          case "table" => TableElementType.TABLE_TABLE
+          case "import" => TableElementType.IMPORT_TABLE
+          case "comment" => TableElementType.COMMENT_TABLE
+          case "scenario" => TableElementType.SCENARIO_TABLE
+          case "library" => TableElementType.LIBRARY_TABLE
+          case _ => TableElementType.UNKNOWN_TABLE
+        }
+        start.rollbackTo()
+        return tableType
+      }
+      builder.advanceLexer()
+    }
+
+    start.rollbackTo()
+    TableElementType.DECISION_TABLE
   }
 
   private def parseRow(builder: PsiBuilder) {

@@ -122,4 +122,38 @@ class TableParserSuite extends ParserSuite {
       parse("|dt:Should I buy it|\n|have money|buy it?|\n|yes|yes|\n\n")
     }
   }
+
+  test("Query table") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.QUERY_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "query"),
+            Leaf(FitnesseTokenType.COLON, ":"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "stuff"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "bar field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "1"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "2"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|query:stuff|param1|\n|foo field|bar field|\n|1|2|")
+    }
+  }
 }
