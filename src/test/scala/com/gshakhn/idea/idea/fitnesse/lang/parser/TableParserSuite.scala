@@ -58,4 +58,68 @@ class TableParserSuite extends ParserSuite {
       parse("|Should I buy it|\n|have money|buy it?|\n|yes|yes|\n\n")
     }
   }
+
+  test("Simple decision table with 'dt' prefix") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.DECISION_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "dt"),
+            Leaf(FitnesseTokenType.COLON, ":"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "have money"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "buy it?"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "yes"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "yes"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|dt:Should I buy it|\n|have money|buy it?|\n|yes|yes|\n\n")
+    }
+  }
+
+  test("Simple decision table with 'decision' prefix") {
+    expect(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.DECISION_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "dt"),
+            Leaf(FitnesseTokenType.COLON, ":"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "have money"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "buy it?"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "yes"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "yes"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|dt:Should I buy it|\n|have money|buy it?|\n|yes|yes|\n\n")
+    }
+  }
 }
