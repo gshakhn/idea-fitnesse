@@ -351,6 +351,102 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
+  test("Comment Table") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.TABLE_TYPE, "comment"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "this doesn't matter"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, "")
+      )) {
+      lex("|comment|\n|this doesn't matter|")
+    }
+  }
+
+  test("Library Table") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.TABLE_TYPE, "library"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "SupportClass"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, "")
+      )) {
+      lex("|library|\n|SupportClass|")
+    }
+  }
+
+  test("Script table") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.TABLE_TYPE, "script"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "SomeClass"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "with param1"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "do this thing"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "with param"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, "")
+      )) {
+      lex("|script|SomeClass|with param1|\n|do this thing|with param|")
+    }
+  }
+
+  test("Scenario table") {
+    expect(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.TABLE_TYPE, "scenario"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "scenario name"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "param1"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "do this thing"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "@param1"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, "")
+      )) {
+      lex("|scenario|scenario name|param1|\n|do this thing|@param1|")
+    }
+  }
+
   test("Table with empty cell") {
     expect(
       List(
