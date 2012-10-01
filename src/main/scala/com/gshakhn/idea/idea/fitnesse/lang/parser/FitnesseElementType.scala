@@ -10,6 +10,7 @@ class FitnesseElementType(debugName: String) extends IElementType(debugName, Fit
 object FitnesseElementType {
   final val FILE = new IFileElementType(FitnesseLanguage.INSTANCE)
   final val ROW = new FitnesseElementType("ROW")
+  final val FIXTURE_CLASS = new FitnesseElementType("FIXTURE_CLASS")
 }
 
 class TableElementType(debugName: String) extends FitnesseElementType(debugName) {

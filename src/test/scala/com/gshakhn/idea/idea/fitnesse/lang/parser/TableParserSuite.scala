@@ -9,7 +9,9 @@ class TableParserSuite extends ParserSuite {
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
-            Leaf(FitnesseTokenType.CELL_TEXT, "A"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "A")
+            )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
           Node(FitnesseElementType.ROW, List(
@@ -35,7 +37,9 @@ class TableParserSuite extends ParserSuite {
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
-            Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it")
+            )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
           Node(FitnesseElementType.ROW, List(
@@ -67,7 +71,9 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.TABLE_TYPE, "dt"),
             Leaf(FitnesseTokenType.COLON, ":"),
-            Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it")
+            )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
           Node(FitnesseElementType.ROW, List(
@@ -99,7 +105,9 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.TABLE_TYPE, "dt"),
             Leaf(FitnesseTokenType.COLON, ":"),
-            Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "Should I buy it")
+            )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
           Node(FitnesseElementType.ROW, List(
@@ -131,7 +139,9 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.TABLE_TYPE, "query"),
             Leaf(FitnesseTokenType.COLON, ":"),
-            Leaf(FitnesseTokenType.CELL_TEXT, "stuff"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "stuff")
+            )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
