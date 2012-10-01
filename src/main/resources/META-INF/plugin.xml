@@ -27,6 +27,8 @@
     <lang.parserDefinition language="Fitnesse" implementationClass="com.gshakhn.idea.idea.fitnesse.lang.parser.FitnesseParserDefinition"/>
     <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.WikiLink"
                              implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.WikiLinkManipulator"/>
+    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.FixtureClass"
+                             implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.FixtureClassManipulator"/>
     <gotoFileContributor implementation="com.gshakhn.idea.idea.fitnesse.navigation.FitnesseFileNameContributor"/>
   </extensions>
 </idea-plugin>
