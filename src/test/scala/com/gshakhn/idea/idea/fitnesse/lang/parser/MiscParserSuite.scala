@@ -5,7 +5,7 @@ import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 class MiscParserSuite extends ParserSuite {
 
   test("Period followed by word") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Leaf(FitnesseTokenType.PERIOD, "."),
         Leaf(FitnesseTokenType.WORD, "Hello")
@@ -16,7 +16,7 @@ class MiscParserSuite extends ParserSuite {
   }
 
   test("> followed by word") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Leaf(FitnesseTokenType.GT, ">"),
         Leaf(FitnesseTokenType.WORD, "Hello")
@@ -27,7 +27,7 @@ class MiscParserSuite extends ParserSuite {
   }
 
   test("< followed by word") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Leaf(FitnesseTokenType.LT, "<"),
         Leaf(FitnesseTokenType.WORD, "Hello")

@@ -2,31 +2,31 @@ package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
 class WikiWordLexerSuite extends LexerSuite {
   test("Regular Wiki Word") {
-    expect(List((FitnesseTokenType.WIKI_WORD, "WikiWord"))) {
+    expectResult(List((FitnesseTokenType.WIKI_WORD, "WikiWord"))) {
       lex("WikiWord")
     }
   }
 
   test("Wiki Word with numbers") {
-    expect(List((FitnesseTokenType.WIKI_WORD, "WikiWord123"))) {
+    expectResult(List((FitnesseTokenType.WIKI_WORD, "WikiWord123"))) {
       lex("WikiWord123")
     }
   }
 
   test("Longer Wiki Word") {
-    expect(List((FitnesseTokenType.WIKI_WORD, "LongerWikiWord"))) {
+    expectResult(List((FitnesseTokenType.WIKI_WORD, "LongerWikiWord"))) {
       lex("LongerWikiWord")
     }
   }
 
   test("Wiki Word that ends in a capital letter") {
-    expect(List((FitnesseTokenType.WIKI_WORD, "WikiWordThisIsA"))) {
+    expectResult(List((FitnesseTokenType.WIKI_WORD, "WikiWordThisIsA"))) {
       lex("WikiWordThisIsA")
     }
   }
 
   test("Multiple Wiki Words") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WIKI_WORD, "WikiWord"),
         (FitnesseTokenType.PERIOD, "."),
@@ -39,7 +39,7 @@ class WikiWordLexerSuite extends LexerSuite {
   }
 
   test("WikiWord prefixed with period") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.PERIOD, "."),
         (FitnesseTokenType.WIKI_WORD, "WikiWord")
@@ -49,7 +49,7 @@ class WikiWordLexerSuite extends LexerSuite {
   }
 
   test("WikiWord prefixed with >") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.LT, "<"),
         (FitnesseTokenType.WIKI_WORD, "WikiWord")
@@ -59,7 +59,7 @@ class WikiWordLexerSuite extends LexerSuite {
   }
 
   test("WikiWord prefixed with <") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.GT, ">"),
         (FitnesseTokenType.WIKI_WORD, "WikiWord")

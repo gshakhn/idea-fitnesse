@@ -4,7 +4,7 @@ import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 
 class TableParserSuite extends ParserSuite {
   test("Simple decision table with no prefix") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -32,7 +32,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Simple decision table with no prefix with more cell text") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -64,7 +64,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Simple decision table with 'dt' prefix") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -98,7 +98,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Simple decision table with 'decision' prefix") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -132,7 +132,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Query table") {
-    expect(
+    expectResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.QUERY_TABLE, List(
           Node(FitnesseElementType.ROW, List(

@@ -2,7 +2,7 @@ package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
 class TableLexerSuite extends LexerSuite {
   test("Simple table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -29,7 +29,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Simple table with CRLF") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -56,7 +56,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Simple table with nothing at end") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -81,7 +81,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Two simple tables") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -126,7 +126,7 @@ class TableLexerSuite extends LexerSuite {
 
 
   test("Decision table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -177,7 +177,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Query table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -214,7 +214,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Ordered Query table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -251,7 +251,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Subset Query table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -288,7 +288,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Table table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -323,7 +323,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Import Table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -352,7 +352,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Comment Table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -373,7 +373,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Library Table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -394,7 +394,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Script table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -421,7 +421,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Scenario table") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -448,7 +448,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Table with empty cell") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -466,7 +466,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Table with empty first cell") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -484,7 +484,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("'Table' with newline after the first |") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.REGULAR_TEXT, "|"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
@@ -494,7 +494,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("'Table' with newline in middle of first cell") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.REGULAR_TEXT, "|"),
         (FitnesseTokenType.WORD, "Hello"),
@@ -505,7 +505,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Table with row being currently written at EOF") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -524,7 +524,7 @@ class TableLexerSuite extends LexerSuite {
   }
 
   test("Table with row being currently written in middle of file") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),

@@ -2,7 +2,7 @@ package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
 class RegularTextLexerSuite extends LexerSuite {
   test("Single word") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WORD, "Hello")
       )) {
@@ -11,7 +11,7 @@ class RegularTextLexerSuite extends LexerSuite {
   }
 
   test("Single word with number") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WORD, "Hello1")
       )) {
@@ -20,7 +20,7 @@ class RegularTextLexerSuite extends LexerSuite {
   }
 
   test("Two words") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WORD, "Foo"),
         (FitnesseTokenType.WHITE_SPACE, " "),
@@ -31,7 +31,7 @@ class RegularTextLexerSuite extends LexerSuite {
   }
 
   test("Number") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WORD, "123")
       )) {
@@ -40,7 +40,7 @@ class RegularTextLexerSuite extends LexerSuite {
   }
 
   test("CamelCase word where first letter is lower case") {
-    expect(List(
+    expectResult(List(
       (FitnesseTokenType.WORD, "thisIsCamelCase")
 
     )) {
@@ -49,7 +49,7 @@ class RegularTextLexerSuite extends LexerSuite {
   }
 
   test("Word that looks like a WikiWord but has 2 capital letters in a row ") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WORD, "ThisIsNotAWikiWord")
       )) {
@@ -58,7 +58,7 @@ class RegularTextLexerSuite extends LexerSuite {
   }
 
   test("USAforEver is a regular word") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WORD, "USAforEver")
       )) {
@@ -67,7 +67,7 @@ class RegularTextLexerSuite extends LexerSuite {
   }
 
   test("A sentence") {
-    expect(
+    expectResult(
       List(
         (FitnesseTokenType.WORD, "This"),
         (FitnesseTokenType.WHITE_SPACE, " "),
