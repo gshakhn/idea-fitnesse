@@ -4,7 +4,7 @@
   <version>${project.version}</version>
   <vendor>George Shakhnazaryan</vendor>
   <!--<idea-version since-build="${idea.build}"/>-->
-  <idea-version since-build="117.798"/>
+  <idea-version since-build="123.123"/>
 
   <application-components>
     <!-- Add your application components here -->

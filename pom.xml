@@ -15,8 +15,8 @@
 
     <jdk.min.version>1.6</jdk.min.version>
 
-    <idea.version>11.1.3</idea.version>
-    <idea.build>117.798</idea.build>
+    <idea.version>12.0.2</idea.version>
+    <idea.build>123.123</idea.build>
   </properties>
 
   <repositories>

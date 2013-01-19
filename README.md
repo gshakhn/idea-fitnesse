@@ -37,9 +37,9 @@ Building the plugin
 
 Prerequisites
 -------------
-I am building the plugin locally using IntelliJ 11.1.3(Build 117.798). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in Maven past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository by running:
+I am building the plugin locally using IntelliJ 12.0.2(Build 123.123). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in Maven past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository by running:
 
-    ./install-intellij-libs.sh <path to IntelliJ 11.1.3>
+    ./install-intellij-libs.sh <path to IntelliJ 12.0.2>
 
 You'll also need the patched [maven-jflex-plugin]. See that readme for installation instructions.
 
