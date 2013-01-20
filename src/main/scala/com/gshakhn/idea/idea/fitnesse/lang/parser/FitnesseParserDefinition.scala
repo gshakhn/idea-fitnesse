@@ -27,6 +27,8 @@ class FitnesseParserDefinition extends ParserDefinition {
       case TableElementType.DECISION_TABLE => new DecisionTable(astNode)
       case FitnesseElementType.ROW => new Row(astNode)
       case FitnesseElementType.FIXTURE_CLASS => new FixtureClass(astNode)
+      case FitnesseElementType.DECISION_INPUT => new DecisionInput(astNode)
+      case FitnesseElementType.DECISION_OUTPUT => new DecisionOutput(astNode)
       case _:WikiLinkElementType => new WikiLink(astNode)
       case _ => new ASTWrapperPsiElement(astNode)
     }

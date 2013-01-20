@@ -11,6 +11,8 @@ object FitnesseElementType {
   final val FILE = new IFileElementType(FitnesseLanguage.INSTANCE)
   final val ROW = new FitnesseElementType("ROW")
   final val FIXTURE_CLASS = new FitnesseElementType("FIXTURE_CLASS")
+  final val DECISION_INPUT = new FitnesseElementType("DECISION_INPUT")
+  final val DECISION_OUTPUT = new FitnesseElementType("DECISION_OUTPUT")
 }
 
 class TableElementType(debugName: String) extends FitnesseElementType(debugName) {
