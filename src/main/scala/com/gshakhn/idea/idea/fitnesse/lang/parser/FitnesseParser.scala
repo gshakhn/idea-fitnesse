@@ -94,8 +94,8 @@ class FitnesseParser extends PsiParser {
   private def parseTopRow(builder: PsiBuilder) {
     val start = builder.mark()
 
+    builder.advanceLexer() // Past ROW_START
     builder.advanceLexer() // Past CELL_DELIM
-    builder.advanceLexer()
     if (builder.getTokenType == FitnesseTokenType.TABLE_TYPE) {
       builder.advanceLexer() // Past TABLE_TYPE
       builder.advanceLexer() // Past COLON
