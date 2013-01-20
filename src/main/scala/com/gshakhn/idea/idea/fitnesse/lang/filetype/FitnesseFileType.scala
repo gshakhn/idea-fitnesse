@@ -17,4 +17,5 @@ class FitnesseFileType extends LanguageFileType(FitnesseLanguage.INSTANCE) {
 object FitnesseFileType {
   final val INSTANCE = new FitnesseFileType
   final val FILE_ICON = IconLoader.getIcon("/com/gshakhn/idea/idea/fitnesse/FitNesseLogo.png")
+  final val FILE_NAME = "content.txt"
 }
