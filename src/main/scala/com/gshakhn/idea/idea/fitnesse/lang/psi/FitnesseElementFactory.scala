@@ -13,4 +13,10 @@ object FitnesseElementFactory {
     val file = createFile(project, text)
     file.getTables(0).getFixtureClass
   }
+
+  def createDecisionInput(project : Project, methodName : String) = {
+    val text = "|SomeClass|\n|" + methodName + "|\n"
+    val file = createFile(project, text)
+    file.getTables(0).getRows(1).getCells(0).asInstanceOf[DecisionInput]
+  }
 }
