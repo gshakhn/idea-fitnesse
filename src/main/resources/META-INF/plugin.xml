@@ -3,8 +3,8 @@
   <description>${project.description}</description>
   <version>${project.version}</version>
   <vendor>George Shakhnazaryan</vendor>
-  <!--<idea-version since-build="${idea.build}"/>-->
-  <idea-version since-build="123.123"/>
+  <idea-version since-build="${idea.build}"/>
+  <!--<idea-version since-build="123.169"/>-->
 
   <application-components>
     <!-- Add your application components here -->
