@@ -27,7 +27,7 @@ class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](el
     if (targetDir == null) {
       return null
     }
-    val targetFiles = FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, GlobalSearchScopes.directoryScope(targetDir, false))
+    val targetFiles = FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, GlobalSearchScopes.openFilesScope(element.getProject))
 
     PsiManager.getInstance(element.getProject).findFile(targetFiles.head)
   }
@@ -40,7 +40,7 @@ class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](el
       case WikiLinkElementType.SUBPAGE_WIKI_LINK => element.getContainingFile.getParent
       case WikiLinkElementType.ABSOLUTE_WIKI_LINK => {
         var currentFolder = element.getContainingFile.getParent
-        while (FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, GlobalSearchScopes.directoryScope(currentFolder.getParent, false)).size() > 0) {
+        while (FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, GlobalSearchScopes.openFilesScope(element.getProject)).size() > 0) {
           currentFolder = currentFolder.getParent
         }
         currentFolder
@@ -48,7 +48,7 @@ class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](el
       case WikiLinkElementType.ANCESTOR_WIKI_LINK => {
         var currentFolder = element.getContainingFile.getParent
         while (!currentFolder.getName.equalsIgnoreCase(dirs(0))
-            && FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, GlobalSearchScopes.directoryScope(currentFolder.getParent, false)).size() > 0) {
+            && FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, GlobalSearchScopes.openFilesScope(element.getProject)).size() > 0) {
           currentFolder = currentFolder.getParent
         }
         dirs = dirs.tail

@@ -4,7 +4,7 @@ import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 
 class WikiLinkParserSuite extends ParserSuite {
   test("Relative reference") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.RELATIVE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage")
@@ -16,7 +16,7 @@ class WikiLinkParserSuite extends ParserSuite {
   }
 
   test("Relative reference with child") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.RELATIVE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage"),
@@ -30,7 +30,7 @@ class WikiLinkParserSuite extends ParserSuite {
   }
 
   test("Absolute reference") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.ABSOLUTE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.PERIOD, "."),
@@ -43,7 +43,7 @@ class WikiLinkParserSuite extends ParserSuite {
   }
 
   test("Absolute reference with child") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.ABSOLUTE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.PERIOD, "."),
@@ -58,7 +58,7 @@ class WikiLinkParserSuite extends ParserSuite {
   }
 
   test("Subpage reference") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.SUBPAGE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.GT, ">"),
@@ -71,7 +71,7 @@ class WikiLinkParserSuite extends ParserSuite {
   }
 
   test("Subpage reference with child") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.SUBPAGE_WIKI_LINK, List(
           Leaf(FitnesseTokenType.GT, ">"),
@@ -86,7 +86,7 @@ class WikiLinkParserSuite extends ParserSuite {
   }
 
   test("Ancestor reference") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.ANCESTOR_WIKI_LINK, List(
           Leaf(FitnesseTokenType.LT, "<"),
@@ -99,7 +99,7 @@ class WikiLinkParserSuite extends ParserSuite {
   }
 
   test("Ancestor reference with child") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(WikiLinkElementType.ANCESTOR_WIKI_LINK, List(
           Leaf(FitnesseTokenType.LT, "<"),

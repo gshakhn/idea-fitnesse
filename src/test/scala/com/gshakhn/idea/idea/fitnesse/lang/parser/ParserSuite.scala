@@ -1,6 +1,8 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
-import org.scalatest.{BeforeAndAfterAll, FunSuite}
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.impl.ProgressManagerImpl
+import org.scalatest.{Matchers, BeforeAndAfterAll, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import com.intellij.mock._
 import com.intellij.openapi.Disposable
@@ -17,14 +19,14 @@ import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl
 import com.intellij.lang._
 import com.intellij.lang.impl.PsiBuilderFactoryImpl
 import com.intellij.util.Function
-import com.intellij.testFramework.LightVirtualFile
+import com.intellij.testFramework.{ParsingTestCase, LightVirtualFile}
 import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.impl.source.SourceTreeToPsiMap
 import com.intellij.psi.impl.source.tree.CompositeElement
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 
-trait ParserSuite extends FunSuite with ShouldMatchers with BeforeAndAfterAll {
+trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   val parserDefinition = new FitnesseParserDefinition
   val myTestRootDisposable = new Disposable {
     def dispose() {}
@@ -42,7 +44,7 @@ trait ParserSuite extends FunSuite with ShouldMatchers with BeforeAndAfterAll {
     def fun(charSequence: CharSequence): Document = {
       editorFactory.createDocument(charSequence)
     }
-  }, FileDocumentManagerImpl.DOCUMENT_KEY)
+  }, FileDocumentManagerImpl.HARD_REF_TO_DOCUMENT_KEY)
 
 
   override protected def beforeAll() {
@@ -73,6 +75,7 @@ trait ParserSuite extends FunSuite with ShouldMatchers with BeforeAndAfterAll {
     app.getPicoContainer.registerComponentInstance(classOf[FileDocumentManager].getName, fileDocumentManager)
     app.getPicoContainer.registerComponentInstance(classOf[DefaultASTFactory].getName, new DefaultASTFactoryImpl)
     app.getPicoContainer.registerComponentInstance(classOf[PsiBuilderFactory].getName, new PsiBuilderFactoryImpl)
+    app.getPicoContainer.registerComponentInstance(classOf[ProgressManager].getName,  new ProgressManagerImpl);
 
     LanguageParserDefinitions.INSTANCE.addExplicitExtension(parserDefinition.getFileNodeType.getLanguage, parserDefinition)
   }

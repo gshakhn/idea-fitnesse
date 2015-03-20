@@ -34,7 +34,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Simple decision table with no prefix with more cell text") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -70,7 +70,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Simple decision table with 'dt' prefix") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -108,7 +108,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Simple decision table with 'decision' prefix") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -146,7 +146,7 @@ class TableParserSuite extends ParserSuite {
   }
 
   test("Simple decision table with no prefix with multiple inputs/outputs") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
@@ -201,7 +201,7 @@ class TableParserSuite extends ParserSuite {
 
 
   test("Query table") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.QUERY_TABLE, List(
           Node(FitnesseElementType.ROW, List(
