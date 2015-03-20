@@ -8,7 +8,7 @@ import scala.collection.JavaConversions._
 import com.gshakhn.idea.idea.fitnesse.lang.parser.WikiLinkElementType
 
 class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](element) {
-  def resolve() : PsiElement = {
+  override def resolve() : PsiElement = {
     val linkText = element.getNode.getElementType match {
       case WikiLinkElementType.RELATIVE_WIKI_LINK => element.getText
       case _:WikiLinkElementType => element.getText.substring(1)
@@ -57,5 +57,5 @@ class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](el
     }
   }
 
-  def getVariants = Array()
+  override def getVariants = Array()
 }

@@ -10,11 +10,11 @@ import com.intellij.openapi.vfs.VirtualFile
 
 
 class FitnesseFileNameContributor extends ChooseByNameContributor {
-  def getNames(project: Project, includeNonProjectItems: Boolean) = {
+  override def getNames(project: Project, includeNonProjectItems: Boolean) = {
     getFitnesseFiles(includeNonProjectItems, project).map(_.getParent.getName).toArray
   }
 
-  def getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean) = {
+  override def getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean) = {
     getFitnesseFiles(includeNonProjectItems, project)
       .filter(_.getParent.getName.equalsIgnoreCase(name))
       .map(PsiManager.getInstance(project).findFile(_)).toArray

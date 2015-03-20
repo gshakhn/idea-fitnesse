@@ -5,5 +5,5 @@ import com.gshakhn.idea.idea.fitnesse.lang.psi.{DecisionInput, FitnesseElementFa
 import com.intellij.openapi.util.TextRange
 
 class DecisionInputManipulator extends AbstractElementManipulator[DecisionInput] {
-  def handleContentChange(element: DecisionInput, range: TextRange, newContent: String) = element
+  override def handleContentChange(element: DecisionInput, range: TextRange, newContent: String) = element
 }

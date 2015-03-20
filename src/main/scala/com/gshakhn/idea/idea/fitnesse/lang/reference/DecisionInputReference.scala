@@ -4,9 +4,9 @@ import com.intellij.psi.{PsiElement, PsiMethod, PsiReferenceBase}
 import com.gshakhn.idea.idea.fitnesse.lang.psi.DecisionInput
 
 class DecisionInputReference(psiMethod: PsiMethod, element: DecisionInput) extends PsiReferenceBase[DecisionInput](element) {
-  def resolve() = psiMethod
+  override def resolve() = psiMethod
 
-  def getVariants = Array()
+  override def getVariants = Array()
 
   override def handleElementRename(newElementName: String): PsiElement = {
     if (newElementName.startsWith("set")) {

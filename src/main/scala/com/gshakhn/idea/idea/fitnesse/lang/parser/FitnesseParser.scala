@@ -6,7 +6,8 @@ import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 import com.intellij.lang.PsiBuilder.Marker
 
 class FitnesseParser extends PsiParser {
-  def parse(root: IElementType, builder: PsiBuilder) = {
+
+  override def parse(root: IElementType, builder: PsiBuilder) = {
     val rootMarker = builder.mark()
     while (!builder.eof()) {
       builder.getTokenType match {
@@ -74,6 +75,7 @@ class FitnesseParser extends PsiParser {
       if (builder.getTokenType == FitnesseTokenType.TABLE_TYPE) {
         val tableType =  builder.getTokenText.trim.toLowerCase match {
           case "dt" => TableElementType.DECISION_TABLE
+          case "ddt" => TableElementType.DECISION_TABLE
           case "decision" => TableElementType.DECISION_TABLE
           case "query" => TableElementType.QUERY_TABLE
           case "subset query" => TableElementType.SUBSET_QUERY_TABLE
@@ -84,7 +86,7 @@ class FitnesseParser extends PsiParser {
           case "comment" => TableElementType.COMMENT_TABLE
           case "scenario" => TableElementType.SCENARIO_TABLE
           case "library" => TableElementType.LIBRARY_TABLE
-          case _ => TableElementType.UNKNOWN_TABLE
+          case _ => TableElementType.DECISION_TABLE
         }
         start.rollbackTo()
         return tableType

@@ -6,7 +6,7 @@ import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
 import com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileType
 
 class FitnesseFile(fileViewProvider: FileViewProvider) extends PsiFileBase(fileViewProvider, FitnesseLanguage.INSTANCE) {
-  def getFileType = FitnesseFileType.INSTANCE
+  override def getFileType = FitnesseFileType.INSTANCE
 
   def getTables = findChildrenByClass(classOf[Table])
 }

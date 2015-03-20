@@ -10,19 +10,19 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ParserDefinition.SpaceRequirements
 
 class FitnesseParserDefinition extends ParserDefinition {
-  def createLexer(project: Project) = new FitnesseLexer
+  override def createLexer(project: Project) = new FitnesseLexer
 
-  def createParser(project: Project) = new FitnesseParser
+  override def createParser(project: Project) = new FitnesseParser
 
-  def getFileNodeType = FitnesseElementType.FILE
+  override def getFileNodeType = FitnesseElementType.FILE
 
-  def getWhitespaceTokens = TokenSet.create(FitnesseTokenType.WHITE_SPACE)
+  override def getWhitespaceTokens = TokenSet.create(FitnesseTokenType.WHITE_SPACE)
 
-  def getCommentTokens = TokenSet.EMPTY
+  override def getCommentTokens = TokenSet.EMPTY
 
-  def getStringLiteralElements = TokenSet.EMPTY
+  override def getStringLiteralElements = TokenSet.EMPTY
 
-  def createElement(astNode: ASTNode) = {
+  override def createElement(astNode: ASTNode) = {
     astNode.getElementType match {
       case TableElementType.DECISION_TABLE => new DecisionTable(astNode)
       case FitnesseElementType.ROW => new Row(astNode)
@@ -34,7 +34,7 @@ class FitnesseParserDefinition extends ParserDefinition {
     }
   }
 
-  def createFile(fileViewProvider: FileViewProvider) = new FitnesseFile(fileViewProvider)
+  override def createFile(fileViewProvider: FileViewProvider) = new FitnesseFile(fileViewProvider)
 
-  def spaceExistanceTypeBetweenTokens(left: ASTNode, right: ASTNode) = SpaceRequirements.MAY
+  override def spaceExistanceTypeBetweenTokens(left: ASTNode, right: ASTNode) = SpaceRequirements.MAY
 }

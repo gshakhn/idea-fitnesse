@@ -5,5 +5,5 @@ import com.gshakhn.idea.idea.fitnesse.lang.psi.WikiLink
 import com.intellij.openapi.util.TextRange
 
 class WikiLinkManipulator extends AbstractElementManipulator[WikiLink] {
-  def handleContentChange(element: WikiLink, range: TextRange, newContent: String) = element
+  override def handleContentChange(element: WikiLink, range: TextRange, newContent: String) = element
 }

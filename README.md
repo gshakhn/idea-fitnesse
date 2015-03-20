@@ -37,18 +37,20 @@ Building the plugin
 
 Prerequisites
 -------------
-To develop on the plugin you'll need IntelliJ (14). Configure it as a "IntelliJ Platform Plugin SDK" in the Project Structure dialog.
+To develop on the plugin you'll need IntelliJ (14). Configure it as a "IntelliJ Platform Plugin SDK" in the Project Structure dialog. Mine is named "IDEA IU-139.1117.1".
 
-Make sure the Scala plugin is enabled.
+Make sure the following plugins are enabled:
+
+ * Scala
+ * Plugin DevKit
+ * Grammar-Kit
+
+Read the [Guidelines for plugin development](https://www.jetbrains.com/idea/help/plugin-development-guidelines.html) for info on writing a plugin.
 
 Building
 --------
 
-After you install all the jars this plugin needs into your local repo, just run
-
-    mvn package
-
-The resulting zip file will be located in the target folder.
+Import the module in IntelliJ. There is no build script currently.
 
 License
 =======
