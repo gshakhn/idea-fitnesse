@@ -1,11 +1,12 @@
 package com.gshakhn.idea.idea.fitnesse.lang.reference
 
-import com.intellij.psi.{PsiElement, PsiDirectory, PsiManager, PsiReferenceBase}
-import com.gshakhn.idea.idea.fitnesse.lang.psi.WikiLink
-import com.intellij.psi.search.{GlobalSearchScopes, FileTypeIndex}
 import com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileType
-import scala.collection.JavaConversions._
 import com.gshakhn.idea.idea.fitnesse.lang.parser.WikiLinkElementType
+import com.gshakhn.idea.idea.fitnesse.lang.psi.WikiLink
+import com.intellij.psi.search.{FileTypeIndex, GlobalSearchScopes}
+import com.intellij.psi.{PsiDirectory, PsiElement, PsiManager, PsiReferenceBase}
+
+import scala.collection.JavaConversions._
 
 class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](element) {
   override def resolve() : PsiElement = {

@@ -1,8 +1,8 @@
 package com.gshakhn.idea.idea.fitnesse.lang.manipulator
 
-import com.intellij.psi.AbstractElementManipulator
 import com.gshakhn.idea.idea.fitnesse.lang.psi.{FitnesseElementFactory, FixtureClass}
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.AbstractElementManipulator
 
 class FixtureClassManipulator extends AbstractElementManipulator[FixtureClass] {
   override def handleContentChange(element: FixtureClass, range: TextRange, newContent: String) = {

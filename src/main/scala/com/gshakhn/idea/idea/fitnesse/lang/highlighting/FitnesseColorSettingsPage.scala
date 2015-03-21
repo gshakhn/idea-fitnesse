@@ -1,7 +1,7 @@
 package com.gshakhn.idea.idea.fitnesse.lang.highlighting
 
-import com.intellij.openapi.options.colors.{AttributesDescriptor, ColorDescriptor, ColorSettingsPage}
 import com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileType
+import com.intellij.openapi.options.colors.{AttributesDescriptor, ColorDescriptor, ColorSettingsPage}
 
 class FitnesseColorSettingsPage extends ColorSettingsPage {
   def getAttributeDescriptors = FitnesseColorSettingsPage.ATTRS

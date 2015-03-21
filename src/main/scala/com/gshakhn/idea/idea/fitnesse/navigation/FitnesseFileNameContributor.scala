@@ -1,12 +1,13 @@
 package com.gshakhn.idea.idea.fitnesse.navigation
 
+import com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileType
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.openapi.project.Project
-import com.intellij.psi.search.{GlobalSearchScope, FileTypeIndex}
-import com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileType
-import scala.collection.JavaConversions._
-import com.intellij.psi.PsiManager
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiManager
+import com.intellij.psi.search.{FileTypeIndex, GlobalSearchScope}
+
+import scala.collection.JavaConversions._
 
 
 class FitnesseFileNameContributor extends ChooseByNameContributor {

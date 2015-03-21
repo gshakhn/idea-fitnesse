@@ -1,13 +1,13 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
-import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseTokenType, FitnesseLexer}
+import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import com.gshakhn.idea.idea.fitnesse.lang.psi._
-import com.intellij.lang.{ASTNode, ParserDefinition}
-import com.intellij.psi.FileViewProvider
-import com.intellij.openapi.project.Project
-import com.intellij.psi.tree.TokenSet
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ParserDefinition.SpaceRequirements
+import com.intellij.lang.{ASTNode, ParserDefinition}
+import com.intellij.openapi.project.Project
+import com.intellij.psi.FileViewProvider
+import com.intellij.psi.tree.TokenSet
 
 class FitnesseParserDefinition extends ParserDefinition {
   override def createLexer(project: Project) = new FitnesseLexer

@@ -1,9 +1,9 @@
 package com.gshakhn.idea.idea.fitnesse.lang.psi
 
+import com.gshakhn.idea.idea.fitnesse.lang.reference.DecisionInputReference
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiReference
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
-import com.gshakhn.idea.idea.fitnesse.lang.reference.DecisionInputReference
 
 class DecisionInput(node: ASTNode) extends Cell(node) {
   override def getReferences: Array[PsiReference] = {

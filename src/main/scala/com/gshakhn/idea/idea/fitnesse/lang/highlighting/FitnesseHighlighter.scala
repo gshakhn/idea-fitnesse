@@ -1,8 +1,8 @@
 package com.gshakhn.idea.idea.fitnesse.lang.highlighting
 
+import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
-import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseTokenType, FitnesseLexer}
 
 class FitnesseHighlighter extends SyntaxHighlighterBase {
   def getHighlightingLexer = new FitnesseLexer

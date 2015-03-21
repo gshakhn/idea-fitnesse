@@ -1,9 +1,9 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
-import com.intellij.lang.{PsiBuilder, PsiParser}
-import com.intellij.psi.tree.IElementType
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 import com.intellij.lang.PsiBuilder.Marker
+import com.intellij.lang.{PsiBuilder, PsiParser}
+import com.intellij.psi.tree.IElementType
 
 class FitnesseParser extends PsiParser {
 

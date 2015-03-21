@@ -1,7 +1,7 @@
 package com.gshakhn.idea.idea.fitnesse.lang.reference
 
-import com.intellij.psi.{PsiElement, PsiMethod, PsiReferenceBase}
 import com.gshakhn.idea.idea.fitnesse.lang.psi.DecisionInput
+import com.intellij.psi.{PsiElement, PsiMethod, PsiReferenceBase}
 
 class DecisionInputReference(psiMethod: PsiMethod, element: DecisionInput) extends PsiReferenceBase[DecisionInput](element) {
   override def resolve() = psiMethod

@@ -1,7 +1,7 @@
 package com.gshakhn.idea.idea.fitnesse.lang.filetype
 
-import com.intellij.openapi.fileTypes.LanguageFileType
 import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
+import com.intellij.openapi.fileTypes.LanguageFileType
 import com.intellij.openapi.util.IconLoader
 
 class FitnesseFileType extends LanguageFileType(FitnesseLanguage.INSTANCE) {

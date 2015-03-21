@@ -1,7 +1,7 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
-import com.intellij.psi.tree.{IElementType, IFileElementType}
 import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
+import com.intellij.psi.tree.{IElementType, IFileElementType}
 
 class FitnesseElementType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
   override def toString = "Fitnesse:" + this.debugName

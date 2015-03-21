@@ -3,7 +3,6 @@ package com.gshakhn.idea.idea.fitnesse.lang.parser
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.impl.ProgressManagerImpl
 import org.scalatest.{Matchers, BeforeAndAfterAll, FunSuite}
-import org.scalatest.matchers.ShouldMatchers
 import com.intellij.mock._
 import com.intellij.openapi.Disposable
 import com.intellij.psi.{SingleRootFileViewProvider, PsiManager, PsiFileFactory}
@@ -19,7 +18,7 @@ import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl
 import com.intellij.lang._
 import com.intellij.lang.impl.PsiBuilderFactoryImpl
 import com.intellij.util.Function
-import com.intellij.testFramework.{ParsingTestCase, LightVirtualFile}
+import com.intellij.testFramework.LightVirtualFile
 import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.impl.source.SourceTreeToPsiMap
