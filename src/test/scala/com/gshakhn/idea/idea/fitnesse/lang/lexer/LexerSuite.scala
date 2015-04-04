@@ -4,9 +4,9 @@ import org.scalatest.FunSuite
 import com.intellij.lexer.Lexer
 import collection.mutable
 import com.intellij.psi.tree.IElementType
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 
-trait LexerSuite extends FunSuite with ShouldMatchers {
+trait LexerSuite extends FunSuite with Matchers {
   def lex(text: String, lexer: Lexer = new FitnesseLexer) = {
     val lexedTokens = new mutable.ListBuffer[Tuple2[IElementType, String]]()
     lexer.start(text)

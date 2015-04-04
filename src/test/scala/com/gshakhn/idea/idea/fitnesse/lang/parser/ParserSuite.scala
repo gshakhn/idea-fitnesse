@@ -59,15 +59,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
 
     myProject.getPicoContainer.registerComponentInstance(classOf[PsiFileFactory].getName, myPsiFileFactory)
 
-    ApplicationManager.setApplication(app, new Getter[FileTypeRegistry] {
-      def get: FileTypeRegistry = {
-        FileTypeManager.getInstance
-      }
-    }, new Getter[EncodingRegistry] {
-      def get: EncodingRegistry = {
-        EncodingManager.getInstance
-      }
-    }, myTestRootDisposable)
+    ApplicationManager.setApplication(app, myTestRootDisposable)
 
     app.getPicoContainer.registerComponentInstance(classOf[FileTypeManager].getName, new MockFileTypeManager(new MockLanguageFileType(parserDefinition.getFileNodeType.getLanguage, "txt")))
     app.getPicoContainer.registerComponentInstance(classOf[EditorFactory].getName, editorFactory)

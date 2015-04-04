@@ -2,7 +2,7 @@ package com.gshakhn.idea.idea.fitnesse.lang.lexer
 
 class MiscLexerSuite extends LexerSuite {
   test("Regular text followed by Wiki Word") {
-    expectResult(
+    assertResult(
       List(
         (FitnesseTokenType.WORD, "Some"),
         (FitnesseTokenType.WHITE_SPACE, " "),
@@ -17,7 +17,7 @@ class MiscLexerSuite extends LexerSuite {
   }
 
   test("Wiki Word followed by a LF") {
-    expectResult(
+    assertResult(
       List(
         (FitnesseTokenType.WIKI_WORD, "WikWord"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
@@ -27,7 +27,7 @@ class MiscLexerSuite extends LexerSuite {
   }
 
   test("Wiki Word followed by a CR LF") {
-    expectResult(
+    assertResult(
       List(
         (FitnesseTokenType.WIKI_WORD, "WikWord"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
@@ -37,7 +37,7 @@ class MiscLexerSuite extends LexerSuite {
   }
 
   test("Wiki Word that ends in a capital letter followed by a LF") {
-    expectResult(
+    assertResult(
       List(
         (FitnesseTokenType.WIKI_WORD, "WikiWordThisIsA"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
@@ -47,7 +47,7 @@ class MiscLexerSuite extends LexerSuite {
   }
 
   test("Wiki Word that ends in a capital letter followed by a CR LF") {
-    expectResult(
+    assertResult(
       List(
         (FitnesseTokenType.WIKI_WORD, "WikiWordThisIsA"),
         (FitnesseTokenType.LINE_TERMINATOR, "\r\n")
@@ -57,7 +57,7 @@ class MiscLexerSuite extends LexerSuite {
   }
 
   test("Table that has regular text right after it") {
-    expectResult(
+    assertResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),
@@ -82,7 +82,7 @@ class MiscLexerSuite extends LexerSuite {
   }
 
   test("Table that has a WikiWord right after it") {
-    expectResult(
+    assertResult(
       List(
         (FitnesseTokenType.TABLE_START, ""),
         (FitnesseTokenType.ROW_START, ""),

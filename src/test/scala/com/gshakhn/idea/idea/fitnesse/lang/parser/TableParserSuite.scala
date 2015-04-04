@@ -4,7 +4,7 @@ import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 
 class TableParserSuite extends ParserSuite {
   test("Simple decision table with no prefix") {
-    expectResult(
+    assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.DECISION_TABLE, List(
           Node(FitnesseElementType.ROW, List(
