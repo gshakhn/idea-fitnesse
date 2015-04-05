@@ -235,4 +235,121 @@ class TableParserSuite extends ParserSuite {
       parse("|query:stuff|param1|\n|foo field|bar field|\n|1|2|")
     }
   }
+
+  test("Script tablewith color separator") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCRIPT_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "script"),
+            Leaf(FitnesseTokenType.COLON, ":"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "stuff")
+            )),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "bar field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|script:stuff|param1|\n|foo field|bar field|")
+    }
+  }
+
+  test("Script table with cell separator") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCRIPT_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "script"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "stuff")
+            )),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "bar field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|script|stuff|param1|\n|foo field|bar field|")
+    }
+  }
+
+  test("Scenario tablewith color separator") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCENARIO_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "scenario"),
+            Leaf(FitnesseTokenType.COLON, ":"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "stuff")
+            )),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "bar field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|scenario:stuff|param1|\n|foo field|bar field|")
+    }
+  }
+
+  test("Scenario table with cell separator") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCENARIO_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "scenario"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "stuff")
+            )),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "bar field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|scenario|stuff|param1|\n|foo field|bar field|")
+    }
+  }
+
 }
