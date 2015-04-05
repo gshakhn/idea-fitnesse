@@ -6,11 +6,15 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 
 class DecisionInput(node: ASTNode) extends Cell(node) {
+
+  def className = Disgracer.disgraceClassName(getRow.getTable.getFixtureClass.getText)
+
+  def methodName = "set" + Disgracer.disgraceClassName(node.getText)
+
   override def getReferences: Array[PsiReference] = {
-    val className = getRow.getTable.getFixtureClass.getText
     PsiShortNamesCache.getInstance(getProject)
-      .getClassesByName(NameUtils.toJavaClassName(className), GlobalSearchScope.projectScope(getProject))
-      .flatMap(_.findMethodsByName("set" + NameUtils.toJavaClassName(node.getText), true))
+      .getClassesByName(className, GlobalSearchScope.projectScope(getProject))
+      .flatMap(_.findMethodsByName(methodName, true))
       .map(new DecisionInputReference(_, this))
   }
 }

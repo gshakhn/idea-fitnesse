@@ -1,29 +1,27 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
-import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.progress.impl.ProgressManagerImpl
-import org.scalatest.{Matchers, BeforeAndAfterAll, FunSuite}
-import com.intellij.mock._
-import com.intellij.openapi.Disposable
-import com.intellij.psi.{SingleRootFileViewProvider, PsiManager, PsiFileFactory}
-import com.intellij.openapi.extensions.Extensions
-import com.intellij.psi.impl.PsiFileFactoryImpl
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.fileTypes.{FileTypeManager, FileTypeRegistry}
-import com.intellij.openapi.vfs.encoding.{EncodingManager, EncodingRegistry}
-import com.intellij.openapi.util.Getter
-import com.intellij.openapi.editor.{Document, EditorFactory}
-import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl
+import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
+import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
 import com.intellij.lang._
 import com.intellij.lang.impl.PsiBuilderFactoryImpl
-import com.intellij.util.Function
-import com.intellij.testFramework.LightVirtualFile
-import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
-import com.intellij.psi.tree.IElementType
+import com.intellij.mock._
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.{Document, EditorFactory}
+import com.intellij.openapi.extensions.Extensions
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl
+import com.intellij.openapi.fileTypes.FileTypeManager
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.impl.ProgressManagerImpl
+import com.intellij.psi.impl.PsiFileFactoryImpl
 import com.intellij.psi.impl.source.SourceTreeToPsiMap
 import com.intellij.psi.impl.source.tree.CompositeElement
-import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
+import com.intellij.psi.tree.IElementType
+import com.intellij.psi.{PsiFileFactory, PsiManager, SingleRootFileViewProvider}
+import com.intellij.testFramework.LightVirtualFile
+import com.intellij.util.Function
+import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
 
 trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   val parserDefinition = new FitnesseParserDefinition
