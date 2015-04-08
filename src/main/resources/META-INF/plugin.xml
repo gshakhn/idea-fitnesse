@@ -1,5 +1,5 @@
 <idea-plugin version="2">
-  <name>Fitnesse IDEA</name>
+  <name>FitNesse IDEA</name>
   <description>${project.description}</description>
   <version>${project.version}</version>
   <vendor>George Shakhnazaryan</vendor>
@@ -32,5 +32,17 @@
     <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.DecisionInput"
                              implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.DecisionInputManipulator"/>
     <gotoFileContributor implementation="com.gshakhn.idea.idea.fitnesse.navigation.FitnesseFileNameContributor"/>
+
+    <!-- TODO: Need something like code inspections-->
+    <!--
+    <localInspection id="unusedStepDeclaration" language="JAVA" displayName="Unused step declaration"
+                     groupName="JBehave" enabledByDefault="false" level="WARNING"
+                     implementationClass="com.github.kumaraman21.intellijbehave.codeInspector.UnusedStepDeclarationInspection"/>
+    <localInspection id="undefinedStep" language="Story" displayName="Undefined step"
+                     groupName="JBehave" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.kumaraman21.intellijbehave.codeInspector.UndefinedStepInspection"/>
+    <psi.referenceContributor
+            implementation="com.github.kumaraman21.intellijbehave.resolver.StepPsiReferenceContributor"/>
+    -->
   </extensions>
 </idea-plugin>
