@@ -5,9 +5,12 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 
 class FixtureClass(node: ASTNode) extends Cell(node) {
+
+  def fixtureClassName = Disgracer.disgraceClassName(node.getText)
+
   override def getReferences = {
     PsiShortNamesCache.getInstance(getProject)
-        .getClassesByName(Disgracer.disgraceClassName(node.getText), GlobalSearchScope.projectScope(getProject))
+        .getClassesByName(fixtureClassName, GlobalSearchScope.projectScope(getProject))
         .map(new FixtureClassReference(_, this))
   }
 }

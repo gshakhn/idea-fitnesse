@@ -14,7 +14,7 @@ import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.impl.ProgressManagerImpl
-import com.intellij.psi.impl.PsiFileFactoryImpl
+import com.intellij.psi.impl.{PsiManagerEx, PsiFileFactoryImpl}
 import com.intellij.psi.impl.source.SourceTreeToPsiMap
 import com.intellij.psi.impl.source.tree.CompositeElement
 import com.intellij.psi.tree.IElementType
@@ -32,7 +32,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   var app: MockApplicationEx = null
   var myProject: MockProjectEx = null
 
-  var myPsiManager: PsiManager = null
+  var myPsiManager: PsiManagerEx = null
   var myPsiFileFactory: PsiFileFactory = null
 
   val editorFactory: MockEditorFactory = new MockEditorFactory
