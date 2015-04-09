@@ -1,0 +1,85 @@
+
+apply plugin: 'scala'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+// Pick the mac version, as it is a zip
+def IDEA_SDK_URL = 'https://teamcity.jetbrains.com/guestAuth/app/rest/builds/id:125785/artifacts/content/ideaIC-135.SNAPSHOT.mac.zip'
+
+configurations {
+    ideaSdk
+    jflex
+}
+
+dependencies {
+    compile fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
+    compile 'org.scala-lang:scala-library:2.10.0'
+    testCompile 'org.scalatest:scalatest_2.10:2.2.4'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+}
+
+sourceSets.main.scala.srcDir "src/main/java"
+sourceSets.main.scala.srcDir "src/main/jflex"
+
+task downloadIdeaSdk(type: Download) {
+    sourceUrl = IDEA_SDK_URL
+    target = file('idea-sdk.zip')
+}
+
+task downloadIdeaJFlex(type: Download) {
+    sourceUrl = 'https://github.com/JetBrains/intellij-community/raw/master/tools/lexer/jflex-1.4/lib/JFlex.jar'
+    target = file('JFlex.jar')
+}
+
+
+task downloadIdeaJFlexSkeleton(type: Download) {
+    sourceUrl = 'https://raw.github.com/JetBrains/intellij-community/master/tools/lexer/idea-flex.skeleton'
+    target = file('idea-flex.skeleton')
+}
+
+task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
+    def zipFile = file('idea-sdk.zip')
+    def outputDir = file("lib/sdk")
+
+    from zipTree(zipFile).matching { include '*/lib/*.jar' }
+    into outputDir
+}
+
+task lexer(type: JavaExec, dependsOn: [downloadIdeaJFlex, downloadIdeaJFlexSkeleton]) {
+    classpath(files('JFlex.jar'))
+    inputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
+    outputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_Fitnesse.java'
+
+    main 'JFlex.Main'
+    args "-sliceandcharat", "-skel", 'idea-flex.skeleton',
+                "-d", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer',
+                "-q", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
+    jvmArgs '-Dfile.encoding=UTF-8'
+}
+
+compileScala {
+    dependsOn lexer, extractIdeaSdk
+}
+
+// create Gradle wrapper 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+// ========= Custom tasks ========= //
+
+class Download extends DefaultTask {
+    @Input
+    String sourceUrl
+
+    @OutputFile
+    File target
+
+    @TaskAction
+    void download() {
+       ant.get(src: sourceUrl, dest: target, skipexisting: 'true')
+    }
+}
