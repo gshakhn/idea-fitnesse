@@ -4,3 +4,9 @@ classes/*
 JFlex.jar
 projectFilesBackup/
 src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java
+idea-flex.skeleton
+idea-sdk.zip
+.gradle/
+build/
+lib/
+*.java~
