@@ -8,7 +8,7 @@ class FitnesseColorSettingsPage extends ColorSettingsPage {
 
   def getColorDescriptors = ColorDescriptor.EMPTY_ARRAY
 
-  def getDisplayName = "Fitnesse"
+  def getDisplayName = "FitNesse"
 
   def getIcon = FitnesseFileType.FILE_ICON
 

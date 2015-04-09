@@ -12,10 +12,10 @@ class FitnesseHighlighter extends SyntaxHighlighterBase {
 
   override def getTokenHighlights(p1: IElementType) = {
     p1 match {
-      case FitnesseTokenType.WIKI_WORD => Array(WIKI_WORD)
-      case FitnesseTokenType.CELL_DELIM => Array(CELL_DELIM)
-      case FitnesseTokenType.CELL_TEXT => Array(CELL_TEXT)
-      case FitnesseTokenType.TABLE_TYPE => Array(TABLE_TYPE)
+      case FitnesseTokenType.WIKI_WORD => Array(FitnesseHighlighter.WIKI_WORD)
+      case FitnesseTokenType.CELL_DELIM => Array(FitnesseHighlighter.CELL_DELIM)
+      case FitnesseTokenType.CELL_TEXT => Array(FitnesseHighlighter.CELL_TEXT)
+      case FitnesseTokenType.TABLE_TYPE => Array(FitnesseHighlighter.TABLE_TYPE)
       case _ => Array.empty
     }
   }
