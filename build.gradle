@@ -1,4 +1,8 @@
 
+plugins {
+    id "com.github.maiflai.scalatest" version "0.6-5-g9065d91"
+}
+
 apply plugin: 'scala'
 apply plugin: 'idea'
 
@@ -6,19 +10,18 @@ repositories {
     mavenCentral()
 }
 
-// Pick the mac version, as it is a zip
-def IDEA_SDK_URL = 'https://teamcity.jetbrains.com/guestAuth/app/rest/builds/id:125785/artifacts/content/ideaIC-135.SNAPSHOT.mac.zip'
+// Pick the Linux version, as it is a tar.gz, since we can simply extract that
+def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
 
-configurations {
-    ideaSdk
-    jflex
-}
 
 dependencies {
     compile fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
     compile 'org.scala-lang:scala-library:2.10.0'
     testCompile 'org.scalatest:scalatest_2.10:2.2.4'
     testCompile 'org.mockito:mockito-core:1.10.19'
+
+    // Scalatest requires:
+    testRuntime 'org.pegdown:pegdown:1.1.0'
 }
 
 sourceSets.main.scala.srcDir "src/main/java"
@@ -26,7 +29,7 @@ sourceSets.main.scala.srcDir "src/main/jflex"
 
 task downloadIdeaSdk(type: Download) {
     sourceUrl = IDEA_SDK_URL
-    target = file('idea-sdk.zip')
+    target = file('idea-sdk.tar.gz')
 }
 
 task downloadIdeaJFlex(type: Download) {
@@ -34,17 +37,16 @@ task downloadIdeaJFlex(type: Download) {
     target = file('JFlex.jar')
 }
 
-
 task downloadIdeaJFlexSkeleton(type: Download) {
     sourceUrl = 'https://raw.github.com/JetBrains/intellij-community/master/tools/lexer/idea-flex.skeleton'
     target = file('idea-flex.skeleton')
 }
 
 task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
-    def zipFile = file('idea-sdk.zip')
+    def zipFile = file('idea-sdk.tar.gz')
     def outputDir = file("lib/sdk")
 
-    from zipTree(zipFile).matching { include '*/lib/*.jar' }
+    from tarTree(resources.gzip(zipFile)).matching { include '*/lib/*.jar' }
     into outputDir
 }
 
@@ -62,6 +64,20 @@ task lexer(type: JavaExec, dependsOn: [downloadIdeaJFlex, downloadIdeaJFlexSkele
 
 compileScala {
     dependsOn lexer, extractIdeaSdk
+}
+
+test {
+    // Avoid parallel execution, since the IntelliJ boilerplate is not up to that
+    maxParallelForks = 1
+}
+
+idea.module.iml {
+    beforeMerged { project ->
+        project.dependencies.clear()
+    }
+    withXml {
+        it.node.@type = "PLUGIN_MODULE"
+    }
 }
 
 // create Gradle wrapper 
