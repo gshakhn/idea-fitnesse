@@ -47,6 +47,8 @@ Make sure the following plugins are enabled:
 
 Read the [Guidelines for plugin development](https://www.jetbrains.com/idea/help/plugin-development-guidelines.html) for info on writing a plugin.
 
+Try their [Custom language support tutorial](https://confluence.jetbrains.com/display/IntelliJIDEA/Custom+Language+Support)
+
 Building
 --------
 

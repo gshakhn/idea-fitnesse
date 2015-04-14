@@ -46,7 +46,7 @@ task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
     def zipFile = file('idea-sdk.tar.gz')
     def outputDir = file("lib/sdk")
 
-    from tarTree(resources.gzip(zipFile)).matching { include '*/lib/*.jar' }
+    from tarTree(resources.gzip(zipFile)) //.matching { include '*/lib/*.jar' }
     into outputDir
 }
 
@@ -71,12 +71,26 @@ test {
     maxParallelForks = 1
 }
 
+idea.project.ipr {
+    // <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-type="JavaSDK" assert-jdk-15="true" project-jdk-name="1.7">
+    //   <output url="file://$PROJECT_DIR$/out"/>
+    // </component>
+    // Should become:
+    // <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="IntelliJ IDEA Community Edition IC-139.1603.1" project-jdk-type="IDEA JDK">
+}
+
 idea.module.iml {
-    beforeMerged { project ->
-        project.dependencies.clear()
+    beforeMerged { module ->
+        module.dependencies.clear()
     }
     withXml {
-        it.node.@type = "PLUGIN_MODULE"
+        it.node.@type = 'PLUGIN_MODULE'
+        //  <component name="DevKit.ModuleBuildProperties" url="file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml" />
+        def cmp = it.node.appendNode('component')
+        cmp.@name = 'DevKit.ModuleBuildProperties'
+        cmp.@url = 'file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml'
+
+        // TODO: add scala facet
     }
 }
 
