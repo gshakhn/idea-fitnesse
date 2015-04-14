@@ -12,12 +12,17 @@ repositories {
 
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that
 def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
+def IDEA_SDK_NAME = 'IntelliJ IDEA Community Edition IC-139.1603.1'
 
+configurations {
+    ideaSdk
+}
 
 dependencies {
-    compile fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
-    compile 'org.scala-lang:scala-library:2.10.0'
-    testCompile 'org.scalatest:scalatest_2.10:2.2.4'
+    ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
+    compile configurations.ideaSdk
+    compile 'org.scala-lang:scala-library:2.11.2'
+    testCompile 'org.scalatest:scalatest_2.11:2.2.4'
     testCompile 'org.mockito:mockito-core:1.10.19'
 
     // Scalatest requires:
@@ -71,28 +76,43 @@ test {
     maxParallelForks = 1
 }
 
-idea.project.ipr {
-    // <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-type="JavaSDK" assert-jdk-15="true" project-jdk-name="1.7">
-    //   <output url="file://$PROJECT_DIR$/out"/>
-    // </component>
-    // Should become:
-    // <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="IntelliJ IDEA Community Edition IC-139.1603.1" project-jdk-type="IDEA JDK">
+idea {
+    project {
+        languageLevel = '1.6'
+        jdkName = IDEA_SDK_NAME
+
+        ipr {
+            withXml {
+                it.node.find { node ->
+                    node.@name == 'ProjectRootManager'
+                }.'@project-jdk-type' = 'IDEA JDK'
+
+                logger.warn "=" * 71
+                logger.warn " Configured IDEA JDK '${jdkName}'."
+                logger.warn " Make sure you have it configured IntelliJ before opening the project!"
+                logger.warn "=" * 71
+            }
+        }
+    }
+
+    module {
+        scopes.COMPILE.minus = [ configurations.ideaSdk ]
+
+        iml {
+            beforeMerged { module ->
+                module.dependencies.clear()
+            }
+            withXml {
+                it.node.@type = 'PLUGIN_MODULE'
+                //  <component name="DevKit.ModuleBuildProperties" url="file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml" />
+                def cmp = it.node.appendNode('component')
+                cmp.@name = 'DevKit.ModuleBuildProperties'
+                cmp.@url = 'file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml'
+            }
+        }
+    }
 }
 
-idea.module.iml {
-    beforeMerged { module ->
-        module.dependencies.clear()
-    }
-    withXml {
-        it.node.@type = 'PLUGIN_MODULE'
-        //  <component name="DevKit.ModuleBuildProperties" url="file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml" />
-        def cmp = it.node.appendNode('component')
-        cmp.@name = 'DevKit.ModuleBuildProperties'
-        cmp.@url = 'file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml'
-
-        // TODO: add scala facet
-    }
-}
 
 // create Gradle wrapper 
 task wrapper(type: Wrapper) {

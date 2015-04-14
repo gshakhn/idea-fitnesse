@@ -37,7 +37,7 @@ Building the plugin
 
 Prerequisites
 -------------
-To develop on the plugin you'll need IntelliJ (14). Configure it as a "IntelliJ Platform Plugin SDK" in the Project Structure dialog. Mine is named "IDEA IU-139.1117.1".
+To develop on the plugin you'll need IntelliJ (14).
 
 Make sure the following plugins are enabled:
 
@@ -52,7 +52,17 @@ Try their [Custom language support tutorial](https://confluence.jetbrains.com/di
 Building
 --------
 
-Import the module in IntelliJ. There is no build script currently.
+Run `gradle idea` to generate the module and project files.
+
+Before opening the project in IntelliJ, make sure you've created a IDEA SDK configuration:
+
+   File -> Project Structure...
+
+Goto `JDKs` and add (`+`) a IntelliJ Platform Plugin SDK. Point it to `lib/sdk/idea-IC-139.1603.1`.
+
+Now you can savely open the project, build it and run it as a Plugin.
+
+Of course you can also build the plugin with Gradle.
 
 License
 =======

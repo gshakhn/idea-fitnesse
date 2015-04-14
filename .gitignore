@@ -11,5 +11,6 @@ idea-flex.skeleton
 JFlex.jar
 _*.java
 *~
+*.iml
 *.ipr
 *.iws
