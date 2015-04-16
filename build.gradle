@@ -34,21 +34,21 @@ sourceSets.main.scala.srcDir "src/main/jflex"
 
 task downloadIdeaSdk(type: Download) {
     sourceUrl = IDEA_SDK_URL
-    target = file('idea-sdk.tar.gz')
+    target = file('lib/idea-sdk.tar.gz')
 }
 
 task downloadIdeaJFlex(type: Download) {
     sourceUrl = 'https://github.com/JetBrains/intellij-community/raw/master/tools/lexer/jflex-1.4/lib/JFlex.jar'
-    target = file('JFlex.jar')
+    target = file('lib/flex/JFlex.jar')
 }
 
 task downloadIdeaJFlexSkeleton(type: Download) {
     sourceUrl = 'https://raw.github.com/JetBrains/intellij-community/master/tools/lexer/idea-flex.skeleton'
-    target = file('idea-flex.skeleton')
+    target = file('lib/flex/idea-flex.skeleton')
 }
 
 task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
-    def zipFile = file('idea-sdk.tar.gz')
+    def zipFile = file('lib/idea-sdk.tar.gz')
     def outputDir = file("lib/sdk")
 
     from tarTree(resources.gzip(zipFile)) //.matching { include '*/lib/*.jar' }
@@ -56,20 +56,31 @@ task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
 }
 
 task lexer(type: JavaExec, dependsOn: [downloadIdeaJFlex, downloadIdeaJFlexSkeleton]) {
-    classpath(files('JFlex.jar'))
+    classpath(files('lib/flex/JFlex.jar'))
     inputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
-    outputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_Fitnesse.java'
+    outputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
 
     main 'JFlex.Main'
-    args "-sliceandcharat", "-skel", 'idea-flex.skeleton',
+    args "-sliceandcharat", "-skel", 'lib/flex/idea-flex.skeleton',
                 "-d", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer',
                 "-q", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
     jvmArgs '-Dfile.encoding=UTF-8'
 }
 
+task cleanLexer(type: Delete) {
+  delete 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
+}
+clean.dependsOn cleanLexer
+
 compileScala {
     dependsOn lexer, extractIdeaSdk
+    classpath += configurations.compile + configurations.ideaSdk
 }
+
+compileTestScala {
+    classpath += configurations.ideaSdk
+}
+
 
 test {
     // Avoid parallel execution, since the IntelliJ boilerplate is not up to that
@@ -130,6 +141,9 @@ class Download extends DefaultTask {
 
     @TaskAction
     void download() {
+       if (!target.parentFile.exists()) {
+           target.parentFile.mkdirs()
+       }
        ant.get(src: sourceUrl, dest: target, skipexisting: 'true')
     }
 }
