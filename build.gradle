@@ -16,12 +16,15 @@ def IDEA_SDK_NAME = 'IntelliJ IDEA Community Edition IC-139.1603.1'
 
 configurations {
     ideaSdk
+    bundle // dependencies bundled with the plugin
 }
 
 dependencies {
     ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
+    bundle 'org.scala-lang:scala-library:2.11.2'
+
     compile configurations.ideaSdk
-    compile 'org.scala-lang:scala-library:2.11.2'
+    compile configurations.bundle
     testCompile 'org.scalatest:scalatest_2.11:2.2.4'
     testCompile 'org.mockito:mockito-core:1.10.19'
 
@@ -51,7 +54,7 @@ task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
     def zipFile = file('lib/idea-sdk.tar.gz')
     def outputDir = file("lib/sdk")
 
-    from tarTree(resources.gzip(zipFile)) //.matching { include '*/lib/*.jar' }
+    from tarTree(resources.gzip(zipFile))
     into outputDir
 }
 
@@ -70,22 +73,24 @@ task lexer(type: JavaExec, dependsOn: [downloadIdeaJFlex, downloadIdeaJFlexSkele
 task cleanLexer(type: Delete) {
   delete 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
 }
-clean.dependsOn cleanLexer
-
-compileScala {
-    dependsOn lexer, extractIdeaSdk
-    classpath += configurations.compile + configurations.ideaSdk
-}
-
-compileTestScala {
-    classpath += configurations.ideaSdk
-}
-
 
 test {
     // Avoid parallel execution, since the IntelliJ boilerplate is not up to that
     maxParallelForks = 1
 }
+
+task dist(type: Zip, dependsOn: [jar, test]) {
+    from configurations.bundle
+    from jar.archivePath
+    rename { f -> "lib/${f}" }
+    into 'idea-fitnesse'
+    baseName 'idea-fitnesse'
+}
+
+clean.dependsOn cleanLexer
+compileScala.dependsOn lexer, extractIdeaSdk
+
+// ========= Workspace setup tasks ========= //
 
 idea {
     project {
@@ -124,8 +129,6 @@ idea {
     }
 }
 
-
-// create Gradle wrapper 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
