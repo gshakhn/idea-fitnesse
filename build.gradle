@@ -32,6 +32,9 @@ dependencies {
     testRuntime 'org.pegdown:pegdown:1.1.0'
 }
 
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
 task downloadIdeaSdk(type: Download) {
     sourceUrl = IDEA_SDK_URL
     target = file('lib/idea-sdk.tar.gz')
