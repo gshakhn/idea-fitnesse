@@ -39,7 +39,7 @@ class DecisionInputSuite extends PsiSuite {
     }
   }
 
-  test("rename") {
+  ignore("rename") {
     var psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c |\n| 1 | 2 | 3 |");
     val table: Table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
     val cell = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
@@ -49,6 +49,5 @@ class DecisionInputSuite extends PsiSuite {
     assertResult("setNewName") {
       cell.fixtureMethodName
     }
-
   }
 }
