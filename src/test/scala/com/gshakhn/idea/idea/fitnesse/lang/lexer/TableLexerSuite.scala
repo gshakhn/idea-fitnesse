@@ -420,6 +420,33 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
+  test("Script table with spaces") {
+    assertResult(
+      List(
+        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.TABLE_TYPE, " script "),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "SomeClass"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "with param1"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "do this thing"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.CELL_TEXT, "with param"),
+        (FitnesseTokenType.CELL_DELIM, "|"),
+        (FitnesseTokenType.ROW_END, ""),
+        (FitnesseTokenType.TABLE_END, "")
+      )) {
+      lex("| script |SomeClass|with param1|\n|do this thing|with param|")
+    }
+  }
+
   test("Scenario table") {
     assertResult(
       List(

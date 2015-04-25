@@ -43,11 +43,11 @@ LINE_TERMINATOR = \n|\r\n
 <FIRST_ROW_START> "|"                         {yybegin(FIRST_ROW_CELL); return FitnesseTokenType.CELL_DELIM();}
 <ROW_START> "|"                               {yybegin(ROW); return FitnesseTokenType.CELL_DELIM();}
 
-<FIRST_ROW_CELL> script[ \t]*                 {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
-<FIRST_ROW_CELL> comment[ \t]*                {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
-<FIRST_ROW_CELL> scenario[ \t]*               {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
-<FIRST_ROW_CELL> library[ \t]*                {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
-<FIRST_ROW_CELL> import[ \t]*                 {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> [ \t]*script[ \t]*           {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> [ \t]*comment[ \t]*          {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> [ \t]*scenario[ \t]*         {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> [ \t]*library[ \t]*          {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
+<FIRST_ROW_CELL> [ \t]*import[ \t]*           {yybegin(ROW); return FitnesseTokenType.TABLE_TYPE();}
 <FIRST_ROW_CELL> [^\n\r\|\:]+:                {yybegin(FIRST_ROW_CELL_COLON); yypushback(1); return FitnesseTokenType.TABLE_TYPE();}
 <FIRST_ROW_CELL> [^\n\r\|\:]+                 {yybegin(ROW); return FitnesseTokenType.CELL_TEXT();}
 <FIRST_ROW_CELL> "|"                          {yybegin(ROW); return FitnesseTokenType.CELL_DELIM();}
