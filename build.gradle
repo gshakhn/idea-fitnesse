@@ -35,6 +35,8 @@ dependencies {
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
+sourceSets.main.scala.srcDir "src/main/jflex"
+
 task downloadIdeaSdk(type: Download) {
     sourceUrl = IDEA_SDK_URL
     target = file('lib/idea-sdk.tar.gz')
@@ -60,14 +62,18 @@ task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
 
 task lexer(type: JavaExec, dependsOn: [downloadIdeaJFlex, downloadIdeaJFlexSkeleton]) {
     classpath(files('lib/flex/JFlex.jar'))
-    inputs.file 'src/main/scala/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
-    outputs.file 'src/main/scala/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
+    inputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
+    outputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
 
     main 'JFlex.Main'
     args "-sliceandcharat", "-skel", 'lib/flex/idea-flex.skeleton',
-                "-d", 'src/main/scala/com/gshakhn/idea/idea/fitnesse/lang/lexer',
-                "-q", 'src/main/scala/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
+                "-d", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer',
+                "-q", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
     jvmArgs '-Dfile.encoding=UTF-8'
+}
+
+task cleanLexer(type: Delete) {
+  delete 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
 }
 
 test {
@@ -85,7 +91,6 @@ task dist(type: Zip, dependsOn: [jar, test]) {
 
 clean.dependsOn cleanLexer
 compileScala.dependsOn lexer, extractIdeaSdk
-build.dependsOn dist
 
 // ========= Workspace setup tasks ========= //
 
