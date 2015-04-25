@@ -24,7 +24,7 @@ class DecisionInputSuite extends PsiSuite {
   }
 
   test("find references based on cell value") {
-    var psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c |\n| 1 | 2 | 3 |");
+    val psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c |\n| 1 | 2 | 3 |");
     val table: Table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
     assertResult("DecisionTable") {
       table.getFixtureClass.fixtureClassName
@@ -40,7 +40,7 @@ class DecisionInputSuite extends PsiSuite {
   }
 
   ignore("rename") {
-    var psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c |\n| 1 | 2 | 3 |");
+    val psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c |\n| 1 | 2 | 3 |");
     val table: Table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
     val cell = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
     val reference = cell.getReferences()(0)
