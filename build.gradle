@@ -22,6 +22,7 @@ configurations {
 dependencies {
     ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
     bundle 'org.scala-lang:scala-library:2.11.2'
+    bundle 'org.fitnesse:fitnesse:20150424'
 
     compile configurations.ideaSdk
     compile configurations.bundle
