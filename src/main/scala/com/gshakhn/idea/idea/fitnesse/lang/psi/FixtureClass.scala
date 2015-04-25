@@ -2,12 +2,13 @@ package com.gshakhn.idea.idea.fitnesse.lang.psi
 
 import com.gshakhn.idea.idea.fitnesse.lang.reference.FixtureClassReference
 import com.intellij.lang.ASTNode
+import com.intellij.psi.{PsiReference, PsiMethod}
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 class FixtureClass(node: ASTNode) extends Cell(node) {
 
-  def fixtureClassName = disgraceClassName(node.getText)
+  def fixtureClassName = disgraceClassName(node.getText.trim)
 
   override def getReferences = {
     PsiShortNamesCache.getInstance(getProject)
