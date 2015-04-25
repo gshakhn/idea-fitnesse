@@ -30,8 +30,8 @@
                              implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.WikiLinkManipulator"/>
     <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.FixtureClass"
                              implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.FixtureClassManipulator"/>
-    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.DecisionInput"
-                             implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.DecisionInputManipulator"/>
+    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.decisiontable.DecisionInput"
+                             implementationClass="com.gshakhn.idea.idea.fitnesse.decisiontable.DecisionInputManipulator"/>
     <gotoFileContributor implementation="com.gshakhn.idea.idea.fitnesse.navigation.FitnesseFileNameContributor"/>
 
     <!-- TODO: Need something like code inspections-->

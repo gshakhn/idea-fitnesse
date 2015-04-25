@@ -1,5 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.lang.psi
 
+import com.gshakhn.idea.idea.fitnesse.decisiontable.DecisionInput
 import com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileType
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory

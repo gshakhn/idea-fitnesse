@@ -1,6 +1,5 @@
-package com.gshakhn.idea.idea.fitnesse.lang.reference
+package com.gshakhn.idea.idea.fitnesse.decisiontable
 
-import com.gshakhn.idea.idea.fitnesse.lang.psi.DecisionInput
 import com.intellij.psi.{PsiElement, PsiMethod, PsiReferenceBase}
 
 class DecisionInputReference(psiMethod: PsiMethod, element: DecisionInput) extends PsiReferenceBase[DecisionInput](element) {

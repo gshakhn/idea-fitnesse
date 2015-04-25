@@ -1,5 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
+import com.gshakhn.idea.idea.fitnesse.decisiontable.{DecisionTable, DecisionOutput, DecisionInput}
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import com.gshakhn.idea.idea.fitnesse.lang.psi._
 import com.intellij.extapi.psi.ASTWrapperPsiElement

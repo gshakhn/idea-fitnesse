@@ -1,11 +1,10 @@
-package com.gshakhn.idea.idea.fitnesse.lang.psi
+package com.gshakhn.idea.idea.fitnesse.decisiontable
 
 import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
-import com.gshakhn.idea.idea.fitnesse.lang.manipulator.DecisionInputManipulator
-import com.gshakhn.idea.idea.fitnesse.lang.parser.TableElementType
+import com.gshakhn.idea.idea.fitnesse.lang.psi.{Table, FitnesseFile, PsiSuite}
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.{ElementManipulators, PsiMethod, PsiClass}
-import org.mockito.Matchers.{anyBoolean, any, eq => m_eq}
+import com.intellij.psi.{ElementManipulators, PsiClass, PsiMethod}
+import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 
 class DecisionInputSuite extends PsiSuite {

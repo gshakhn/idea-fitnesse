@@ -1,6 +1,5 @@
-package com.gshakhn.idea.idea.fitnesse.lang.manipulator
+package com.gshakhn.idea.idea.fitnesse.decisiontable
 
-import com.gshakhn.idea.idea.fitnesse.lang.psi.DecisionInput
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.AbstractElementManipulator
 

@@ -1,10 +1,10 @@
-package com.gshakhn.idea.idea.fitnesse.lang.psi
+package com.gshakhn.idea.idea.fitnesse.decisiontable
 
-import com.gshakhn.idea.idea.fitnesse.lang.psi.Disgracer.disgraceClassName
-import com.gshakhn.idea.idea.fitnesse.lang.reference.DecisionInputReference
+import com.gshakhn.idea.idea.fitnesse.lang.psi.Cell
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiReference
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
+import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 class DecisionInput(node: ASTNode) extends Cell(node) {
 
