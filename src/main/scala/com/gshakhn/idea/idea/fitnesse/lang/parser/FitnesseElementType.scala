@@ -13,6 +13,7 @@ object FitnesseElementType {
   final val FIXTURE_CLASS = new FitnesseElementType("FIXTURE_CLASS")
   final val DECISION_INPUT = new FitnesseElementType("DECISION_INPUT")
   final val DECISION_OUTPUT = new FitnesseElementType("DECISION_OUTPUT")
+  final val QUERY_OUTPUT = new FitnesseElementType("QUERY_OUTPUT")
 }
 
 class TableElementType(debugName: String) extends FitnesseElementType(debugName) {
@@ -22,8 +23,6 @@ class TableElementType(debugName: String) extends FitnesseElementType(debugName)
 object TableElementType {
   final val DECISION_TABLE = new TableElementType("DECISION_TABLE")
   final val QUERY_TABLE = new TableElementType("QUERY_TABLE")
-  final val SUBSET_QUERY_TABLE = new TableElementType("SUBSET_QUERY_TABLE")
-  final val ORDERED_QUERY_TABLE = new TableElementType("ORDERED_QUERY_TABLE")
   final val SCRIPT_TABLE = new TableElementType("SCRIPT_TABLE")
   final val TABLE_TABLE = new TableElementType("TABLE_TABLE")
   final val IMPORT_TABLE = new TableElementType("IMPORT_TABLE")

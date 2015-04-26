@@ -36,18 +36,24 @@
     <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.decisiontable.DecisionOutput"
                                implementationClass="com.gshakhn.idea.idea.fitnesse.decisiontable.DecisionOutputManipulator"/>
 
+    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.querytable.QueryOutput"
+                             implementationClass="com.gshakhn.idea.idea.fitnesse.querytable.QueryOutputManipulator"/>
+
     <gotoFileContributor implementation="com.gshakhn.idea.idea.fitnesse.navigation.FitnesseFileNameContributor"/>
 
     <!-- TODO: Need something like code inspections-->
     <!--
-    <localInspection id="unusedStepDeclaration" language="JAVA" displayName="Unused step declaration"
-                     groupName="JBehave" enabledByDefault="false" level="WARNING"
-                     implementationClass="com.github.kumaraman21.intellijbehave.codeInspector.UnusedStepDeclarationInspection"/>
-    <localInspection id="undefinedStep" language="Story" displayName="Undefined step"
-                     groupName="JBehave" enabledByDefault="true" level="WARNING"
-                     implementationClass="com.github.kumaraman21.intellijbehave.codeInspector.UndefinedStepInspection"/>
-    <psi.referenceContributor
-            implementation="com.github.kumaraman21.intellijbehave.resolver.StepPsiReferenceContributor"/>
+    <referencesSearch implementation="org.jetbrains.plugins.cucumber.java.steps.search.CucumberJavaStepDefinitionSearch"/>
+    <methodReferencesSearch implementation="org.jetbrains.plugins.cucumber.java.steps.search.CucumberJavaMethodUsageSearcher"/>
+
+     * Allows to disable highlighting of certain elements as unused when such elements are not referenced
+     * from the code but are referenced in some other way (for example, from generated code).
+
+    <implicitUsageProvider implementation="org.jetbrains.plugins.cucumber.java.steps.reference.CucumberJavaImplicitUsageProvider"/>
+
+    <localInspection language="JAVA" shortName="CucumberJavaStepDefClassIsPublic" displayName="Step definition class is not public"
+                     groupBundle="org.jetbrains.plugins.cucumber.java.CucumberJavaBundle" groupKey="cucumber.java.inspection.group.name" enabledByDefault="true"
+                     level="WARNING" implementationClass="org.jetbrains.plugins.cucumber.java.inspections.CucumberJavaStepDefClassIsPublicInspections"/>
     -->
   </extensions>
 </idea-plugin>

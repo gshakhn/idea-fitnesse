@@ -37,7 +37,7 @@ class DecisionTableSuite extends PsiSuite {
   }
 
   test("find decision table setter") {
-    val input: DecisionInput = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
+    val input = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
     assertResult("setA") {
       input.fixtureMethodName
     }
@@ -49,7 +49,7 @@ class DecisionTableSuite extends PsiSuite {
   }
 
   test("find decision table query") {
-    val output: DecisionOutput = table.getRows(1).getCells(2).asInstanceOf[DecisionOutput]
+    val output = table.getRows(1).getCells(2).asInstanceOf[DecisionOutput]
     assertResult("c") {
       output.fixtureMethodName
     }

@@ -3,6 +3,7 @@ package com.gshakhn.idea.idea.fitnesse.lang.parser
 import com.gshakhn.idea.idea.fitnesse.decisiontable.{DecisionTable, DecisionOutput, DecisionInput}
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import com.gshakhn.idea.idea.fitnesse.lang.psi._
+import com.gshakhn.idea.idea.fitnesse.querytable.{QueryOutput, QueryTable}
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ParserDefinition.SpaceRequirements
 import com.intellij.lang.{ASTNode, ParserDefinition}
@@ -26,10 +27,12 @@ class FitnesseParserDefinition extends ParserDefinition {
   override def createElement(astNode: ASTNode) = {
     astNode.getElementType match {
       case TableElementType.DECISION_TABLE => new DecisionTable(astNode)
+      case TableElementType.QUERY_TABLE => new QueryTable(astNode)
       case FitnesseElementType.ROW => new Row(astNode)
       case FitnesseElementType.FIXTURE_CLASS => new FixtureClass(astNode)
       case FitnesseElementType.DECISION_INPUT => new DecisionInput(astNode)
       case FitnesseElementType.DECISION_OUTPUT => new DecisionOutput(astNode)
+      case FitnesseElementType.QUERY_OUTPUT => new QueryOutput(astNode)
       case _:WikiLinkElementType => new WikiLink(astNode)
       case _ => new ASTWrapperPsiElement(astNode)
     }
