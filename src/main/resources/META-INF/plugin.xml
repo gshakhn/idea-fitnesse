@@ -71,5 +71,8 @@
                      groupBundle="org.jetbrains.plugins.cucumber.java.CucumberJavaBundle" groupKey="cucumber.java.inspection.group.name" enabledByDefault="true"
                      level="WARNING" implementationClass="org.jetbrains.plugins.cucumber.java.inspections.CucumberJavaStepDefClassIsPublicInspections"/>
     -->
+
+    <referencesSearch implementation="fitnesse.idea.lang.reference.FixtureClassReferencesSearch"/>
+    <!--<methodReferencesSearch implementation="fitnesse.idea.lang.reference.FixtureMethodReferencesSearch"/>-->
   </extensions>
 </idea-plugin>
