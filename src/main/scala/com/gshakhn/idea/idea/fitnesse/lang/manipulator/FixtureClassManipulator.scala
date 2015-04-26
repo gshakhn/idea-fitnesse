@@ -17,6 +17,7 @@ class FixtureClassManipulator extends AbstractElementManipulator[FixtureClass] {
 object FixtureClassManipulator {
   def createFixtureClass(project : Project, className : String) = {
     val text = "|" + className + "|"
+    // Why parse text as a file and retrieve the fixtureClass from there?
     val file = createFile(project, text)
     file.getTables(0).getFixtureClass
   }
