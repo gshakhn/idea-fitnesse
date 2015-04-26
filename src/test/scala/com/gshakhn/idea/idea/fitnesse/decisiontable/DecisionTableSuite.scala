@@ -7,7 +7,7 @@ import com.intellij.psi.{PsiFile, ElementManipulators, PsiClass, PsiMethod}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 
-class DecisionInputSuite extends PsiSuite {
+class DecisionTableSuite extends PsiSuite {
 
 
   val myPsiClass = mock[PsiClass]
