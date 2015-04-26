@@ -4,6 +4,7 @@ import com.gshakhn.idea.idea.fitnesse.decisiontable.{DecisionTable, DecisionOutp
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import com.gshakhn.idea.idea.fitnesse.lang.psi._
 import com.gshakhn.idea.idea.fitnesse.querytable.{QueryOutput, QueryTable}
+import com.gshakhn.idea.idea.fitnesse.scripttable.{ScriptRow, ScriptTable}
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ParserDefinition.SpaceRequirements
 import com.intellij.lang.{ASTNode, ParserDefinition}
@@ -28,7 +29,8 @@ class FitnesseParserDefinition extends ParserDefinition {
     astNode.getElementType match {
       case TableElementType.DECISION_TABLE => new DecisionTable(astNode)
       case TableElementType.QUERY_TABLE => new QueryTable(astNode)
-      case FitnesseElementType.ROW => new Row(astNode)
+      case TableElementType.SCRIPT_TABLE => new ScriptTable(astNode)
+      case FitnesseElementType.ROW => if (astNode.getTreeParent.getElementType == TableElementType.SCRIPT_TABLE) new ScriptRow(astNode) else new Row(astNode)
       case FitnesseElementType.FIXTURE_CLASS => new FixtureClass(astNode)
       case FitnesseElementType.DECISION_INPUT => new DecisionInput(astNode)
       case FitnesseElementType.DECISION_OUTPUT => new DecisionOutput(astNode)

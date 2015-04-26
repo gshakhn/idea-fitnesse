@@ -39,6 +39,9 @@
     <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.querytable.QueryOutput"
                              implementationClass="com.gshakhn.idea.idea.fitnesse.querytable.QueryOutputManipulator"/>
 
+    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.scripttable.ScriptRow"
+                             implementationClass="com.gshakhn.idea.idea.fitnesse.scripttable.ScriptRowManipulator"/>
+
     <gotoFileContributor implementation="com.gshakhn.idea.idea.fitnesse.navigation.FitnesseFileNameContributor"/>
 
     <!-- TODO: Need something like code inspections-->

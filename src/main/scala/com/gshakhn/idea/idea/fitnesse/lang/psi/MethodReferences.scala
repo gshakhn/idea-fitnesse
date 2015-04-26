@@ -1,11 +1,12 @@
 package com.gshakhn.idea.idea.fitnesse.lang.psi
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.{PsiReference, PsiMethod}
 
-trait MethodReferences { self: Cell =>
+trait MethodReferences { self: ASTWrapperPsiElement =>
 
-  def fixtureClassName = getRow.getTable.getFixtureClass.fixtureClassName
+  def fixtureClassName: String
 
   def fixtureMethodName: String
 

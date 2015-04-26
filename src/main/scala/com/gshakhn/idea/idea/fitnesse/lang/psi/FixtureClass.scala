@@ -9,7 +9,7 @@ import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 class FixtureClass(node: ASTNode) extends Cell(node) with PsiNamedElement {
 
-  def fixtureClassName = disgraceClassName(node.getText.trim)
+  override def fixtureClassName: String = disgraceClassName(node.getText.trim)
 
   override def getReferences = {
     PsiShortNamesCache.getInstance(getProject)
