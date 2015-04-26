@@ -217,9 +217,13 @@ class TableParserSuite extends ParserSuite {
           )),
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
-            Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "foo field")
+            )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
-            Leaf(FitnesseTokenType.CELL_TEXT, "bar field"),
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
+              Leaf(FitnesseTokenType.CELL_TEXT, "bar field")
+            )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
           Node(FitnesseElementType.ROW, List(
