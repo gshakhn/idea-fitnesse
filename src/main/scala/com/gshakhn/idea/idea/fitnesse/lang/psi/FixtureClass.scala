@@ -14,17 +14,42 @@ class FixtureClass(node: ASTNode) extends Cell(node) with PsiNamedElement {
     case className => Some(className)
   }
 
-  override def getReferences = {
+  def isQualifiedName: Boolean = {
+    fixtureClassName match {
+      case Some(name) =>
+        val dotIndex: Int = name.indexOf(".")
+        dotIndex != -1 && dotIndex != name.length - 1
+      case None => false
+    }
+  }
+
+  def shortName: Option[String] = {
+    fixtureClassName match {
+      case Some(name) => name.split('.').toList.reverse match {
+        case "" :: n :: _ => Some(n)
+        case n :: _ => Some(n)
+        case _ => Some(name)
+      }
+      case None => None
+    }
+  }
+
+  def getReferencedClasses = {
     fixtureClassName match {
       case Some(className) =>
+        val fullyQualified = isQualifiedName
         PsiShortNamesCache.getInstance(getProject)
-          .getClassesByName(className, GlobalSearchScope.projectScope(getProject))
-          .map(new FixtureClassReference(_, this))
+          .getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject))
+          .filter(a => !fullyQualified || a.getQualifiedName == className)
       case None => Array()
     }
   }
 
-  //  override def getName = fixtureClassName.get
+  override def getReferences = {
+    getReferencedClasses.map(new FixtureClassReference(_, this))
+  }
+
+//  override def getName = fixtureClassName.get
 
   override def setName(s: String): PsiElement = FixtureClassManipulator.createFixtureClass(getProject, s)
 }

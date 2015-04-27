@@ -4,6 +4,8 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 
 class Row(node: ASTNode) extends ASTWrapperPsiElement(node) {
+
+  // Todo: should be part of a TopRow class.
   def getFixtureClass = findChildByClass(classOf[FixtureClass]) match {
     case null => None
     case c => Some(c)

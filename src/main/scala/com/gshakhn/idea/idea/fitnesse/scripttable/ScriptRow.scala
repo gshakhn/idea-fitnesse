@@ -1,7 +1,7 @@
 package com.gshakhn.idea.idea.fitnesse.scripttable
 
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.FitnesseTokenType
-import com.gshakhn.idea.idea.fitnesse.lang.psi.{MethodReferences, Row}
+import com.gshakhn.idea.idea.fitnesse.lang.psi.{FixtureClass, MethodReferences, Row}
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import fitnesse.testsystems.slim.tables.Disgracer._
@@ -10,10 +10,7 @@ import scala.collection.JavaConversions._
 
 class ScriptRow(node: ASTNode) extends Row(node) with MethodReferences {
 
-  override def fixtureClassName: Option[String] = getTable.getFixtureClass match {
-    case Some(c) => c.fixtureClassName
-    case None => None
-  }
+  override def getFixtureClass: Option[FixtureClass] = getTable.getFixtureClass
 
   override def fixtureMethodName: String = {
     val snippets: java.util.List[PsiElement] = findChildrenByType(FitnesseTokenType.CELL_TEXT)
