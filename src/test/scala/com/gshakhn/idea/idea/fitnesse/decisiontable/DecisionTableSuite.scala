@@ -32,7 +32,7 @@ class DecisionTableSuite extends PsiSuite {
 
   test("find table name") {
     assertResult("DecisionTable") {
-      table.getFixtureClass.fixtureClassName
+      table.getFixtureClass.get.fixtureClassName.get
     }
   }
 

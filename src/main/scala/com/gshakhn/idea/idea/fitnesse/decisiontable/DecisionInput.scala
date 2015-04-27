@@ -1,6 +1,6 @@
 package com.gshakhn.idea.idea.fitnesse.decisiontable
 
-import com.gshakhn.idea.idea.fitnesse.lang.psi.{MethodReferences, Cell}
+import com.gshakhn.idea.idea.fitnesse.lang.psi.{Cell, MethodReferences}
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiMethod
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName

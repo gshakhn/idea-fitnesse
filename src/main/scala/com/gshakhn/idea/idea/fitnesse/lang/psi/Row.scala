@@ -4,7 +4,10 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 
 class Row(node: ASTNode) extends ASTWrapperPsiElement(node) {
-  def getFixtureClass = findChildByClass(classOf[FixtureClass])
+  def getFixtureClass = findChildByClass(classOf[FixtureClass]) match {
+    case null => None
+    case c => Some(c)
+  }
 
   def getTable = getParent.asInstanceOf[Table]
 

@@ -255,7 +255,7 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
-          Node(FitnesseElementType.ROW, List(
+          Node(FitnesseElementType.SCRIPT_ROW, List(
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
@@ -284,7 +284,7 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
-          Node(FitnesseElementType.ROW, List(
+          Node(FitnesseElementType.SCRIPT_ROW, List(
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
@@ -298,6 +298,29 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+  test("Script table without fixture class") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCRIPT_TABLE, List(
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.TABLE_TYPE, "script"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          )),
+          Node(FitnesseElementType.SCRIPT_ROW, List(
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|"),
+            Leaf(FitnesseTokenType.CELL_TEXT, "bar field"),
+            Leaf(FitnesseTokenType.CELL_DELIM, "|")
+          ))
+        ))
+      ))
+    ) {
+      parse("|script|\n|foo field|bar field|")
+    }
+  }
+
   test("Scenario tablewith color separator") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
@@ -306,14 +329,14 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.TABLE_TYPE, "scenario"),
             Leaf(FitnesseTokenType.COLON, ":"),
-            Node(FitnesseElementType.FIXTURE_CLASS, List(
+            Node(FitnesseElementType.SCENARIO_NAME, List(
               Leaf(FitnesseTokenType.CELL_TEXT, "stuff")
             )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
-          Node(FitnesseElementType.ROW, List(
+          Node(FitnesseElementType.SCRIPT_ROW, List(
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
@@ -335,14 +358,14 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.TABLE_TYPE, "scenario"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
-            Node(FitnesseElementType.FIXTURE_CLASS, List(
+            Node(FitnesseElementType.SCENARIO_NAME, List(
               Leaf(FitnesseTokenType.CELL_TEXT, "stuff")
             )),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.CELL_TEXT, "param1"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|")
           )),
-          Node(FitnesseElementType.ROW, List(
+          Node(FitnesseElementType.SCRIPT_ROW, List(
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),
             Leaf(FitnesseTokenType.CELL_TEXT, "foo field"),
             Leaf(FitnesseTokenType.CELL_DELIM, "|"),

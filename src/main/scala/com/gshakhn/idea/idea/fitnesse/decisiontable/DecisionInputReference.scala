@@ -1,11 +1,9 @@
 package com.gshakhn.idea.idea.fitnesse.decisiontable
 
-import com.intellij.psi.{PsiElement, PsiMethod, PsiReferenceBase}
+import com.gshakhn.idea.idea.fitnesse.lang.psi.MethodReference
+import com.intellij.psi.{PsiElement, PsiMethod}
 
-class DecisionInputReference(psiMethod: PsiMethod, element: DecisionInput) extends PsiReferenceBase[DecisionInput](element) {
-  override def resolve() = psiMethod
-
-  override def getVariants = Array()
+class DecisionInputReference(psiMethod: PsiMethod, element: DecisionInput) extends MethodReference(psiMethod, element) {
 
   override def handleElementRename(newElementName: String): PsiElement = {
     if (newElementName.startsWith("set")) {

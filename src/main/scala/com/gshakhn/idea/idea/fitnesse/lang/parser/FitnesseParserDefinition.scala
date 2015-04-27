@@ -1,10 +1,10 @@
 package com.gshakhn.idea.idea.fitnesse.lang.parser
 
-import com.gshakhn.idea.idea.fitnesse.decisiontable.{DecisionTable, DecisionOutput, DecisionInput}
+import com.gshakhn.idea.idea.fitnesse.decisiontable.{DecisionInput, DecisionOutput, DecisionTable}
 import com.gshakhn.idea.idea.fitnesse.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import com.gshakhn.idea.idea.fitnesse.lang.psi._
 import com.gshakhn.idea.idea.fitnesse.querytable.{QueryOutput, QueryTable}
-import com.gshakhn.idea.idea.fitnesse.scripttable.{ScriptRow, ScriptTable}
+import com.gshakhn.idea.idea.fitnesse.scripttable.{ScenarioName, ScenarioTable, ScriptRow, ScriptTable}
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ParserDefinition.SpaceRequirements
 import com.intellij.lang.{ASTNode, ParserDefinition}
@@ -30,8 +30,11 @@ class FitnesseParserDefinition extends ParserDefinition {
       case TableElementType.DECISION_TABLE => new DecisionTable(astNode)
       case TableElementType.QUERY_TABLE => new QueryTable(astNode)
       case TableElementType.SCRIPT_TABLE => new ScriptTable(astNode)
-      case FitnesseElementType.ROW => if (astNode.getTreeParent.getElementType == TableElementType.SCRIPT_TABLE) new ScriptRow(astNode) else new Row(astNode)
+      case TableElementType.SCENARIO_TABLE => new ScenarioTable(astNode)
+      case FitnesseElementType.ROW => new Row(astNode)
+      case FitnesseElementType.SCRIPT_ROW => new ScriptRow(astNode)
       case FitnesseElementType.FIXTURE_CLASS => new FixtureClass(astNode)
+      case FitnesseElementType.SCENARIO_NAME => new ScenarioName(astNode)
       case FitnesseElementType.DECISION_INPUT => new DecisionInput(astNode)
       case FitnesseElementType.DECISION_OUTPUT => new DecisionOutput(astNode)
       case FitnesseElementType.QUERY_OUTPUT => new QueryOutput(astNode)

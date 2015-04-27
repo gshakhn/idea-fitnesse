@@ -1,10 +1,9 @@
 package com.gshakhn.idea.idea.fitnesse.scripttable
 
-import com.gshakhn.idea.idea.fitnesse.decisiontable.{DecisionInput, DecisionInputManipulator}
 import com.gshakhn.idea.idea.fitnesse.lang.FitnesseLanguage
-import com.gshakhn.idea.idea.fitnesse.lang.psi.{FitnesseFile, PsiSuite, Table}
+import com.gshakhn.idea.idea.fitnesse.lang.psi.{FitnesseFile, PsiSuite}
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.{ElementManipulators, PsiClass, PsiFile, PsiMethod}
+import com.intellij.psi.{PsiClass, PsiMethod}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 
@@ -17,8 +16,6 @@ class ScriptTableSuite extends PsiSuite {
     super.beforeAll()
 
     when(myPsiShortNamesCache.getClassesByName(m_eq("MyScriptTable"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
-
-    ElementManipulators.INSTANCE.addExplicitExtension(classOf[DecisionInput], new DecisionInputManipulator)
 
   }
 
@@ -34,7 +31,7 @@ class ScriptTableSuite extends PsiSuite {
     val table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
 
     assertResult("MyScriptTable") {
-      table.getFixtureClass.fixtureClassName
+      table.getFixtureClass.get.fixtureClassName.get
     }
   }
   

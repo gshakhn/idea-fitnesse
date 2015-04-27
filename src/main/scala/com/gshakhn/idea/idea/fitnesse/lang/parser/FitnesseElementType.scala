@@ -10,10 +10,13 @@ class FitnesseElementType(debugName: String) extends IElementType(debugName, Fit
 object FitnesseElementType {
   final val FILE = new IFileElementType(FitnesseLanguage.INSTANCE)
   final val ROW = new FitnesseElementType("ROW")
+  final val SCRIPT_ROW = new FitnesseElementType("SCRIPT_ROW")
   final val FIXTURE_CLASS = new FitnesseElementType("FIXTURE_CLASS")
+  final val SCENARIO_NAME = new FitnesseElementType("SCENARIO_NAME")
   final val DECISION_INPUT = new FitnesseElementType("DECISION_INPUT")
   final val DECISION_OUTPUT = new FitnesseElementType("DECISION_OUTPUT")
   final val QUERY_OUTPUT = new FitnesseElementType("QUERY_OUTPUT")
+  final val COMMENT = new FitnesseElementType("COMMENT")
 }
 
 class TableElementType(debugName: String) extends FitnesseElementType(debugName) {

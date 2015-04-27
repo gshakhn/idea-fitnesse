@@ -51,7 +51,7 @@ class FitnesseParser extends PsiParser {
 
     val tableType = findTableType(builder)
     builder.advanceLexer() // Past TABLE_START
-    parseTopRow(builder)
+    parseTopRow(builder, tableType)
 
     if (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) tableType match {
       case TableElementType.DECISION_TABLE => {
@@ -67,7 +67,7 @@ class FitnesseParser extends PsiParser {
 
     while (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) {
       builder.getTokenType match {
-        case FitnesseTokenType.ROW_START => parseRow(builder)
+        case FitnesseTokenType.ROW_START => parseRow(builder, tableType)
         case _ => builder.advanceLexer()
       }
     }
@@ -111,7 +111,11 @@ class FitnesseParser extends PsiParser {
     while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       if (builder.getTokenType == FitnesseTokenType.CELL_TEXT) {
         val method = builder.mark()
-        val methodType = if (builder.getTokenText.trim.endsWith("?")) FitnesseElementType.DECISION_OUTPUT else FitnesseElementType.DECISION_INPUT
+        val methodType = builder.getTokenText.trim match {
+          case output if output.endsWith("?") => FitnesseElementType.DECISION_OUTPUT
+          case comment if comment.startsWith("#") => FitnesseElementType.COMMENT
+          case _ => FitnesseElementType.DECISION_INPUT
+        }
         builder.advanceLexer()
         method.done(methodType)
       } else {
@@ -138,7 +142,7 @@ class FitnesseParser extends PsiParser {
     start.done(FitnesseElementType.ROW)
   }
 
-  private def parseTopRow(builder: PsiBuilder) {
+  private def parseTopRow(builder: PsiBuilder, tableType: TableElementType) {
     val start = builder.mark()
 
     builder.advanceLexer() // Past ROW_START
@@ -148,24 +152,32 @@ class FitnesseParser extends PsiParser {
       builder.advanceLexer() // Past COLON
     }
 
-    val fixtureClass = builder.mark()
-    builder.advanceLexer() // Past FIXTURE_CLASS
-    fixtureClass.done(FitnesseElementType.FIXTURE_CLASS)
+    if (builder.getTokenType != FitnesseTokenType.LINE_TERMINATOR) {
+      val fixtureClassOrScenarioName = builder.mark()
+      builder.advanceLexer() // Past FIXTURE_CLASS
+      fixtureClassOrScenarioName.done(tableType match {
+        case TableElementType.SCENARIO_TABLE => FitnesseElementType.SCENARIO_NAME
+        case _ => FitnesseElementType.FIXTURE_CLASS
+      })
 
-    parseRestOfRow(builder, start)
+      advanceTillEndOfRow(builder)
+    }
+    start.done(FitnesseElementType.ROW)
   }
 
-  private def parseRow(builder: PsiBuilder) {
+  private def parseRow(builder: PsiBuilder, tableType: TableElementType) {
     val start = builder.mark()
 
-    parseRestOfRow(builder, start)
+    advanceTillEndOfRow(builder)
+    start.done(tableType match {
+      case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE => FitnesseElementType.SCRIPT_ROW
+      case _ => FitnesseElementType.ROW
+    })
   }
 
-  private def parseRestOfRow(builder: PsiBuilder, start: Marker) {
+  private def advanceTillEndOfRow(builder: PsiBuilder) {
     while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       builder.advanceLexer()
     }
-
-    start.done(FitnesseElementType.ROW)
   }
 }
