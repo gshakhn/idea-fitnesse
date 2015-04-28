@@ -4,7 +4,8 @@ import com.gshakhn.idea.idea.fitnesse.lang.manipulator.FixtureClassManipulator
 import com.gshakhn.idea.idea.fitnesse.lang.reference.FixtureClassReference
 import com.intellij.lang.ASTNode
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
-import com.intellij.psi.{PsiElement, PsiNamedElement}
+import com.intellij.psi.util.ClassUtil.getJVMClassName
+import com.intellij.psi.{PsiClass, JavaPsiFacade, PsiElement, PsiNamedElement}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 class FixtureClass(node: ASTNode) extends Cell(node) with PsiNamedElement {
@@ -34,13 +35,20 @@ class FixtureClass(node: ASTNode) extends Cell(node) with PsiNamedElement {
     }
   }
 
-  def getReferencedClasses = {
+  def getReferencedClasses: Array[PsiClass] = {
     fixtureClassName match {
       case Some(className) =>
-        val fullyQualified = isQualifiedName
-        PsiShortNamesCache.getInstance(getProject)
+        if (isQualifiedName) {
+          val classFound = JavaPsiFacade.getInstance(getProject).findClass(className, GlobalSearchScope.projectScope(getProject));
+          if (classFound != null) {
+            Array(classFound)
+          } else {
+            Array()
+          }
+        } else {
+          PsiShortNamesCache.getInstance(getProject)
           .getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject))
-          .filter(a => !fullyQualified || a.getQualifiedName == className)
+        }
       case None => Array()
     }
   }
