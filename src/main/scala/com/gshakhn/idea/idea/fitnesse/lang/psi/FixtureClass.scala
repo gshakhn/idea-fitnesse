@@ -35,29 +35,23 @@ class FixtureClass(node: ASTNode) extends Cell(node) with PsiNamedElement {
     }
   }
 
-  def getReferencedClasses: Array[PsiClass] = {
+  def getReferencedClasses: Seq[PsiClass] = {
     fixtureClassName match {
+      case Some(className) if isQualifiedName =>
+          Option(JavaPsiFacade.getInstance(getProject).findClass(className, GlobalSearchScope.projectScope(getProject))).toList
       case Some(className) =>
-        if (isQualifiedName) {
-          val classFound = JavaPsiFacade.getInstance(getProject).findClass(className, GlobalSearchScope.projectScope(getProject));
-          if (classFound != null) {
-            Array(classFound)
-          } else {
-            Array()
-          }
-        } else {
-          PsiShortNamesCache.getInstance(getProject)
-          .getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject))
-        }
-      case None => Array()
+          PsiShortNamesCache.getInstance(getProject).getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject))
+      case None => Seq()
     }
   }
 
   override def getReferences = {
-    getReferencedClasses.map(new FixtureClassReference(_, this))
+    getReferencedClasses.map(new FixtureClassReference(_, this)).toArray
   }
 
 //  override def getName = fixtureClassName.get
 
   override def setName(s: String): PsiElement = FixtureClassManipulator.createFixtureClass(getProject, s)
+
+
 }

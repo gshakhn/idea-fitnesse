@@ -17,7 +17,7 @@ trait MethodReferences { self: ASTWrapperPsiElement =>
       case Some(fixtureClass) =>
         fixtureClass.getReferencedClasses
           .flatMap(_.findMethodsByName(fixtureMethodName, true /* checkBases */))
-          .map(createReference)
+          .map(createReference).toArray
       case None =>
         val cache = PsiShortNamesCache.getInstance(getProject)
         val methods = cache.getMethodsByName(fixtureMethodName, GlobalSearchScope.projectScope(getProject))
