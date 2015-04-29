@@ -46,6 +46,8 @@
 
     <annotator language="Fitnesse" implementationClass="com.gshakhn.idea.idea.fitnesse.lang.psi.MissingReferencesAnnotator"/>
 
+    <usageTypeProvider implementation="com.gshakhn.idea.idea.fitnesse.lang.psi.FitNesseUsageTypeProvider" />
+    
     <!-- TODO: Need something like code inspections-->
     <!--
     <referencesSearch implementation="org.jetbrains.plugins.cucumber.java.steps.search.CucumberJavaStepDefinitionSearch"/>
