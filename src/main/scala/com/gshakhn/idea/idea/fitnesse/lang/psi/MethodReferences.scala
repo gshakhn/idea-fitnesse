@@ -12,17 +12,18 @@ trait MethodReferences { self: ASTWrapperPsiElement =>
 
   def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
 
-  override def getReferences: Array[PsiReference] = {
+  def getReferencedMethods: Seq[PsiMethod] = {
     getFixtureClass match {
       case Some(fixtureClass) =>
         fixtureClass.getReferencedClasses
-          .flatMap(_.findMethodsByName(fixtureMethodName, true /* checkBases */))
-          .map(createReference).toArray
+          .flatMap(_.findMethodsByName(fixtureMethodName, true /* checkBases */)).toSeq
       case None =>
         val cache = PsiShortNamesCache.getInstance(getProject)
-        val methods = cache.getMethodsByName(fixtureMethodName, GlobalSearchScope.projectScope(getProject))
-
-        methods.map(createReference)
+        cache.getMethodsByName(fixtureMethodName, GlobalSearchScope.projectScope(getProject))
     }
+  }
+
+  override def getReferences: Array[PsiReference] = {
+    getReferencedMethods.map(createReference).toArray
   }
 }

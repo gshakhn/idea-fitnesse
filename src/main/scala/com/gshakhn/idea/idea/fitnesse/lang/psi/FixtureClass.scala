@@ -4,8 +4,7 @@ import com.gshakhn.idea.idea.fitnesse.lang.manipulator.FixtureClassManipulator
 import com.gshakhn.idea.idea.fitnesse.lang.reference.FixtureClassReference
 import com.intellij.lang.ASTNode
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
-import com.intellij.psi.util.ClassUtil.getJVMClassName
-import com.intellij.psi.{PsiClass, JavaPsiFacade, PsiElement, PsiNamedElement}
+import com.intellij.psi.{JavaPsiFacade, PsiClass, PsiElement, PsiNamedElement}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 class FixtureClass(node: ASTNode) extends Cell(node) with PsiNamedElement {
@@ -38,7 +37,7 @@ class FixtureClass(node: ASTNode) extends Cell(node) with PsiNamedElement {
   def getReferencedClasses: Seq[PsiClass] = {
     fixtureClassName match {
       case Some(className) if isQualifiedName =>
-          Option(JavaPsiFacade.getInstance(getProject).findClass(className, GlobalSearchScope.projectScope(getProject))).toList
+          JavaPsiFacade.getInstance(getProject).findClasses(className, GlobalSearchScope.projectScope(getProject))
       case Some(className) =>
           PsiShortNamesCache.getInstance(getProject).getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject))
       case None => Seq()
