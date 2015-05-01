@@ -66,18 +66,18 @@ task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
 
 task lexer(type: JavaExec, dependsOn: [downloadIdeaJFlex, downloadIdeaJFlexSkeleton]) {
     classpath(files('lib/flex/JFlex.jar'))
-    inputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
-    outputs.file 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
+    inputs.file 'src/main/jflex/fitnesse/idea/lang/lexer/Fitnesse.flex'
+    outputs.file 'src/main/jflex/fitnesse/idea/lang/lexer/_FitnesseLexer.java'
 
     main 'JFlex.Main'
     args "-sliceandcharat", "-skel", 'lib/flex/idea-flex.skeleton',
-                "-d", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer',
-                "-q", 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/Fitnesse.flex'
+                "-d", 'src/main/jflex/fitnesse/idea/lang/lexer',
+                "-q", 'src/main/jflex/fitnesse/idea/lang/lexer/Fitnesse.flex'
     jvmArgs '-Dfile.encoding=UTF-8'
 }
 
 task cleanLexer(type: Delete) {
-  delete 'src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java'
+  delete 'src/main/jflex/fitnesse/idea/lang/lexer/_FitnesseLexer.java'
 }
 
 test {
