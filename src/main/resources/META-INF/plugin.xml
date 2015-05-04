@@ -18,10 +18,16 @@
   </module-components>
 
   <actions>
-    <!-- Add your actions here -->
+    <group>
+      <action id="MarkFitNesseRoot" class="fitnesse.idea.run.MarkFitNesseRootAction"/>
+      <add-to-group group-id="MarkRootGroup"/>
+    </group>
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
+
+    <projectStructure.sourceRootEditHandler implementation="fitnesse.idea.run.FitNesseRootEditHandler"/>
+
     <fileTypeFactory implementation="fitnesse.idea.lang.filetype.FitnesseFileTypeFactory"/>
     <syntaxHighlighter key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseHighlighter"/>
     <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
