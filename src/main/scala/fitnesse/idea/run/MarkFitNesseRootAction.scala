@@ -11,7 +11,6 @@ class MarkFitNesseRootAction extends MarkSourceRootAction(FitNesseRootType.INSTA
 
 class FitNesseRootType extends JpsElementTypeWithDummyProperties with JpsModuleSourceRootType[JpsDummyElement] {
 
-  override def createDefaultProperties(): JpsDummyElement = JpsElementFactory.getInstance.createDummyElement()
 }
 
 object FitNesseRootType {
