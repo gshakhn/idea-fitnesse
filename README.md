@@ -9,6 +9,8 @@ This is an [IntelliJ] plugin for [Fitnesse].
 Current Status
 ===========
 
+[![Build Status](https://travis-ci.org/gshakhn/idea-fitnesse.svg)](https://travis-ci.org/gshakhn/idea-fitnesse)
+
 The plugin has very minimal features and is a work in progress.
 
 Working Features
