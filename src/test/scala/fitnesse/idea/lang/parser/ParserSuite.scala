@@ -26,7 +26,7 @@ import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
 trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   val parserDefinition = new FitnesseParserDefinition
   val myTestRootDisposable = new Disposable {
-    def dispose() {}
+    def dispose(): Unit = {}
   }
 
   var app: MockApplicationEx = null
@@ -44,7 +44,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   }, FileDocumentManagerImpl.HARD_REF_TO_DOCUMENT_KEY)
 
 
-  override protected def beforeAll() {
+  override protected def beforeAll(): Unit = {
     super.beforeAll()
 
     Extensions.registerAreaClass("IDEA_PROJECT", null)
@@ -69,7 +69,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
     LanguageParserDefinitions.INSTANCE.addExplicitExtension(parserDefinition.getFileNodeType.getLanguage, parserDefinition)
   }
 
-  override protected def afterAll() {
+  override protected def afterAll(): Unit = {
     super.afterAll()
     app.getPicoContainer.unregisterComponent(classOf[FileTypeManager].getName)
     app.getPicoContainer.unregisterComponent(classOf[EditorFactory].getName)
