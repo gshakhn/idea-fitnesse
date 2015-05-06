@@ -79,7 +79,7 @@ class FitnesseParser extends PsiParser {
     val start = builder.mark()
 
     while (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) {
-      val tableType = if (builder.getTokenType == FitnesseTokenType.TABLE_TYPE) {
+      if (builder.getTokenType == FitnesseTokenType.TABLE_TYPE) {
         val tableType =  builder.getTokenText.trim.toLowerCase match {
           case "dt" => TableElementType.DECISION_TABLE
           case "ddt" => TableElementType.DECISION_TABLE
