@@ -21,7 +21,7 @@ class QueryTableSuite extends PsiSuite {
     when(myPsiShortNamesCache.getClassesByName(m_eq("QueryTable"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
     when(myPsiClass.findMethodsByName(m_eq("query"), anyBoolean)).thenReturn(Array(myPsiMethodQuery))
 
-    psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| query: query table |\n| a | b | two words |\n| 1 | 2 | 3 |");
+    psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| query: query table |\n| a | b | two words |\n| 1 | 2 | 3 |")
     table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
   }
 

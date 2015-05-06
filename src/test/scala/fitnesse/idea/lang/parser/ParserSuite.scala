@@ -64,7 +64,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
     app.getPicoContainer.registerComponentInstance(classOf[FileDocumentManager].getName, fileDocumentManager)
     app.getPicoContainer.registerComponentInstance(classOf[DefaultASTFactory].getName, new DefaultASTFactoryImpl)
     app.getPicoContainer.registerComponentInstance(classOf[PsiBuilderFactory].getName, new PsiBuilderFactoryImpl)
-    app.getPicoContainer.registerComponentInstance(classOf[ProgressManager].getName,  new ProgressManagerImpl);
+    app.getPicoContainer.registerComponentInstance(classOf[ProgressManager].getName,  new ProgressManagerImpl)
 
     LanguageParserDefinitions.INSTANCE.addExplicitExtension(parserDefinition.getFileNodeType.getLanguage, parserDefinition)
   }
