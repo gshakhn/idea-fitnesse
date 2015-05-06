@@ -1,4 +1,15 @@
 .idea/*
 target/*
+build/*
 classes/*
-src/main/jflex/com/gshakhn/idea/idea/fitnesse/lang/lexer/_FitnesseLexer.java
+projectFilesBackup*/
+.gradle/*
+out/*
+lib/*
+idea-sdk.tar.gz
+_*.java
+*~
+*.iml
+*.ipr
+*.iws
+idea-fitnesse.zip

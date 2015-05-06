@@ -37,22 +37,32 @@ Building the plugin
 
 Prerequisites
 -------------
-I am building the plugin locally using IntelliJ 12.0.4 (Build 123.169). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in official Maven repos past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository by running:
+To develop on the plugin you'll need IntelliJ (14).
 
-    ./install-intellij-libs.sh <path to IntelliJ 12.0.4>
+Make sure the following plugins are enabled:
 
-You'll also need the patched [maven-jflex-plugin]. See that readme for installation instructions.
+ * Scala
+ * Plugin DevKit
+ * Grammar-Kit
 
-[maven-jflex-plugin]: https://github.com/gshakhn/maven-jflex-plugin
+Read the [Guidelines for plugin development](https://www.jetbrains.com/idea/help/plugin-development-guidelines.html) for info on writing a plugin.
+
+Try their [Custom language support tutorial](https://confluence.jetbrains.com/display/IntelliJIDEA/Custom+Language+Support)
 
 Building
 --------
 
-After you install all the jars this plugin needs into your local repo, just run
+Run `gradle idea` to generate the module and project files.
 
-    mvn package
+Before opening the project in IntelliJ, make sure you've created a IDEA SDK configuration:
 
-The resulting zip file will be located in the target folder.
+   File -> Project Structure...
+
+Goto `JDKs` and add (`+`) a IntelliJ Platform Plugin SDK. Point it to `lib/sdk/idea-IC-139.1603.1`.
+
+Now you can savely open the project, build it and run it as a Plugin.
+
+Of course you can also build the plugin with Gradle.
 
 License
 =======

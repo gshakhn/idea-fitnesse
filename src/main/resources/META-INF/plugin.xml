@@ -1,10 +1,11 @@
 <idea-plugin version="2">
-  <name>Fitnesse IDEA</name>
+  <name>FitNesse IDEA</name>
   <description>${project.description}</description>
   <version>${project.version}</version>
-  <vendor>George Shakhnazaryan</vendor>
-  <idea-version since-build="${idea.build}"/>
-  <!--<idea-version since-build="123.169"/>-->
+  <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="131"/>
 
   <application-components>
     <!-- Add your application components here -->
@@ -17,20 +18,56 @@
   </module-components>
 
   <actions>
-    <!-- Add your actions here -->
+    <group>
+      <action id="MarkFitNesseRoot" class="fitnesse.idea.run.MarkFitNesseRootAction"/>
+      <add-to-group group-id="MarkRootGroup"/>
+    </group>
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileTypeFactory implementation="com.gshakhn.idea.idea.fitnesse.lang.filetype.FitnesseFileTypeFactory"/>
-    <syntaxHighlighter key="Fitnesse" implementationClass="com.gshakhn.idea.idea.fitnesse.lang.highlighting.FitnesseHighlighter"/>
-    <colorSettingsPage implementation="com.gshakhn.idea.idea.fitnesse.lang.highlighting.FitnesseColorSettingsPage"/>
-    <lang.parserDefinition language="Fitnesse" implementationClass="com.gshakhn.idea.idea.fitnesse.lang.parser.FitnesseParserDefinition"/>
-    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.WikiLink"
-                             implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.WikiLinkManipulator"/>
-    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.FixtureClass"
-                             implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.FixtureClassManipulator"/>
-    <lang.elementManipulator forClass="com.gshakhn.idea.idea.fitnesse.lang.psi.DecisionInput"
-                             implementationClass="com.gshakhn.idea.idea.fitnesse.lang.manipulator.DecisionInputManipulator"/>
-    <gotoFileContributor implementation="com.gshakhn.idea.idea.fitnesse.navigation.FitnesseFileNameContributor"/>
+
+    <projectStructure.sourceRootEditHandler implementation="fitnesse.idea.run.FitNesseRootEditHandler"/>
+
+    <fileTypeFactory implementation="fitnesse.idea.lang.filetype.FitnesseFileTypeFactory"/>
+    <syntaxHighlighter key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseHighlighter"/>
+    <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
+    <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.lang.parser.FitnesseParserDefinition"/>
+    <lang.elementManipulator forClass="fitnesse.idea.lang.psi.WikiLink"
+                             implementationClass="fitnesse.idea.lang.manipulator.WikiLinkManipulator"/>
+    <lang.elementManipulator forClass="fitnesse.idea.lang.psi.FixtureClass"
+                             implementationClass="fitnesse.idea.lang.manipulator.FixtureClassManipulator"/>
+
+    <lang.elementManipulator forClass="fitnesse.idea.decisiontable.DecisionInput"
+                             implementationClass="fitnesse.idea.decisiontable.DecisionInputManipulator"/>
+    <lang.elementManipulator forClass="fitnesse.idea.decisiontable.DecisionOutput"
+                               implementationClass="fitnesse.idea.decisiontable.DecisionOutputManipulator"/>
+
+    <lang.elementManipulator forClass="fitnesse.idea.querytable.QueryOutput"
+                             implementationClass="fitnesse.idea.querytable.QueryOutputManipulator"/>
+
+    <lang.elementManipulator forClass="fitnesse.idea.scripttable.ScriptRow"
+                             implementationClass="fitnesse.idea.scripttable.ScriptRowManipulator"/>
+
+    <gotoFileContributor implementation="fitnesse.idea.navigation.FitnesseFileNameContributor"/>
+
+    <annotator language="Fitnesse" implementationClass="fitnesse.idea.lang.psi.MissingReferencesAnnotator"/>
+
+    <usageTypeProvider implementation="fitnesse.idea.lang.psi.FitNesseUsageTypeProvider" />
+
+
+    <!-- TODO: Need something like code inspections-->
+    <!--
+    <referencesSearch implementation="org.jetbrains.plugins.cucumber.java.steps.search.CucumberJavaStepDefinitionSearch"/>
+    <methodReferencesSearch implementation="org.jetbrains.plugins.cucumber.java.steps.search.CucumberJavaMethodUsageSearcher"/>
+
+     * Allows to disable highlighting of certain elements as unused when such elements are not referenced
+     * from the code but are referenced in some other way (for example, from generated code).
+
+    <implicitUsageProvider implementation="org.jetbrains.plugins.cucumber.java.steps.reference.CucumberJavaImplicitUsageProvider"/>
+
+    <localInspection language="JAVA" shortName="CucumberJavaStepDefClassIsPublic" displayName="Step definition class is not public"
+                     groupBundle="org.jetbrains.plugins.cucumber.java.CucumberJavaBundle" groupKey="cucumber.java.inspection.group.name" enabledByDefault="true"
+                     level="WARNING" implementationClass="org.jetbrains.plugins.cucumber.java.inspections.CucumberJavaStepDefClassIsPublicInspections"/>
+    -->
   </extensions>
 </idea-plugin>
