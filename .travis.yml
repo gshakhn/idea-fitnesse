@@ -5,3 +5,7 @@ jdk:
 install: ./gradlew extractIdeaSdk
 
 script: ./gradlew dist
+sudo: false
+cache:
+  directories:
+  - $HOME/.gradle
