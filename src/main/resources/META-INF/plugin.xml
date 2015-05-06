@@ -18,10 +18,12 @@
   </module-components>
 
   <actions>
+    <!-- TODO: We need to make sure we can store the FitNesse root in the module file, before this action adds any value.
     <group>
       <action id="MarkFitNesseRoot" class="fitnesse.idea.run.MarkFitNesseRootAction"/>
       <add-to-group group-id="MarkRootGroup"/>
     </group>
+    -->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
