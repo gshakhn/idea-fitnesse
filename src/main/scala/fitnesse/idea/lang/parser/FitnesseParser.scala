@@ -24,7 +24,7 @@ class FitnesseParser extends PsiParser {
     builder.getTreeBuilt
   }
 
-  private def parsePotentialLink(builder: PsiBuilder, linkType: WikiLinkElementType) {
+  private def parsePotentialLink(builder: PsiBuilder, linkType: WikiLinkElementType): Unit = {
     val start = builder.mark()
     builder.lookAhead(1) match {
       case FitnesseTokenType.WIKI_WORD => {
@@ -38,7 +38,7 @@ class FitnesseParser extends PsiParser {
     }
   }
 
-  private def parseLink(builder: PsiBuilder, linkType: WikiLinkElementType)(start: Marker = builder.mark()) {
+  private def parseLink(builder: PsiBuilder, linkType: WikiLinkElementType)(start: Marker = builder.mark()): Unit = {
     while (!builder.eof() && (builder.getTokenType == FitnesseTokenType.WIKI_WORD || builder.getTokenType == FitnesseTokenType.PERIOD)) {
       builder.advanceLexer()
     }
@@ -46,7 +46,7 @@ class FitnesseParser extends PsiParser {
     start.done(linkType)
   }
 
-  private def parseTable(builder: PsiBuilder) {
+  private def parseTable(builder: PsiBuilder): Unit = {
     val start = builder.mark()
 
     val tableType = findTableType(builder)
@@ -105,7 +105,7 @@ class FitnesseParser extends PsiParser {
     TableElementType.DECISION_TABLE
   }
 
-  private def parseDecisionMethodRow(builder: PsiBuilder) {
+  private def parseDecisionMethodRow(builder: PsiBuilder): Unit = {
     val start = builder.mark()
 
     while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
@@ -126,7 +126,7 @@ class FitnesseParser extends PsiParser {
     start.done(FitnesseElementType.ROW)
   }
 
-  private def parseQueryMethodRow(builder: PsiBuilder) {
+  private def parseQueryMethodRow(builder: PsiBuilder): Unit = {
     val start = builder.mark()
 
     while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
@@ -142,7 +142,7 @@ class FitnesseParser extends PsiParser {
     start.done(FitnesseElementType.ROW)
   }
 
-  private def parseTopRow(builder: PsiBuilder, tableType: TableElementType) {
+  private def parseTopRow(builder: PsiBuilder, tableType: TableElementType): Unit = {
     val start = builder.mark()
 
     builder.advanceLexer() // Past ROW_START
@@ -165,7 +165,7 @@ class FitnesseParser extends PsiParser {
     start.done(FitnesseElementType.ROW)
   }
 
-  private def parseRow(builder: PsiBuilder, tableType: TableElementType) {
+  private def parseRow(builder: PsiBuilder, tableType: TableElementType): Unit = {
     val start = builder.mark()
 
     advanceTillEndOfRow(builder)
@@ -175,7 +175,7 @@ class FitnesseParser extends PsiParser {
     })
   }
 
-  private def advanceTillEndOfRow(builder: PsiBuilder) {
+  private def advanceTillEndOfRow(builder: PsiBuilder): Unit = {
     while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       builder.advanceLexer()
     }
