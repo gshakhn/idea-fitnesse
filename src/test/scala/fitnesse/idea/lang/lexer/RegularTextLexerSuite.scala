@@ -75,8 +75,7 @@ class RegularTextLexerSuite extends LexerSuite {
         (FitnesseTokenType.WHITE_SPACE, " "),
         (FitnesseTokenType.WORD, "a"),
         (FitnesseTokenType.WHITE_SPACE, " "),
-        (FitnesseTokenType.WORD, "sentence"),
-        (FitnesseTokenType.PERIOD, ".")
+        (FitnesseTokenType.WORD, "sentence.")
       )) {
       lex("This is a sentence.")
     }

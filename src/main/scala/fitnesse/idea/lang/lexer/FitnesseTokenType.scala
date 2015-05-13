@@ -12,9 +12,9 @@ object FitnesseTokenType {
   final val WIKI_WORD: IElementType = new FitnesseTokenType("WIKI_WORD")
   final val WORD: IElementType = new FitnesseTokenType("WORD")
   final val REGULAR_TEXT: IElementType = new FitnesseTokenType("REGULAR_TEXT")
-  final val PERIOD: IElementType = new FitnesseTokenType("PERIOD")
-  final val GT: IElementType = new FitnesseTokenType("GT")
-  final val LT: IElementType = new FitnesseTokenType("LT")
+//  final val PERIOD: IElementType = new FitnesseTokenType("PERIOD")
+//  final val GT: IElementType = new FitnesseTokenType("GT")
+//  final val LT: IElementType = new FitnesseTokenType("LT")
   final val COLON: IElementType = new FitnesseTokenType("COLON")
   final val WHITE_SPACE: IElementType = TokenType.WHITE_SPACE
 

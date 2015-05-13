@@ -12,10 +12,10 @@ class FitnesseParser extends PsiParser {
     while (!builder.eof()) {
       builder.getTokenType match {
         case FitnesseTokenType.TABLE_START => parseTable(builder)
-        case FitnesseTokenType.PERIOD => parsePotentialLink(builder, WikiLinkElementType.ABSOLUTE_WIKI_LINK)
-        case FitnesseTokenType.GT => parsePotentialLink(builder, WikiLinkElementType.SUBPAGE_WIKI_LINK)
-        case FitnesseTokenType.LT => parsePotentialLink(builder, WikiLinkElementType.ANCESTOR_WIKI_LINK)
-        case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.RELATIVE_WIKI_LINK)()
+//        case FitnesseTokenType.PERIOD => parsePotentialLink(builder, WikiLinkElementType.ABSOLUTE_WIKI_LINK)
+//        case FitnesseTokenType.GT => parsePotentialLink(builder, WikiLinkElementType.SUBPAGE_WIKI_LINK)
+//        case FitnesseTokenType.LT => parsePotentialLink(builder, WikiLinkElementType.ANCESTOR_WIKI_LINK)
+//        case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.RELATIVE_WIKI_LINK)()
         case _ => builder.advanceLexer()
       }
     }
@@ -39,7 +39,7 @@ class FitnesseParser extends PsiParser {
   }
 
   private def parseLink(builder: PsiBuilder, linkType: WikiLinkElementType)(start: Marker = builder.mark()) {
-    while (!builder.eof() && (builder.getTokenType == FitnesseTokenType.WIKI_WORD || builder.getTokenType == FitnesseTokenType.PERIOD)) {
+    while (!builder.eof() && builder.getTokenType == FitnesseTokenType.WIKI_WORD) {
       builder.advanceLexer()
     }
 

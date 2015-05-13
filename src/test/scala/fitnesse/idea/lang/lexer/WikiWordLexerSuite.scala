@@ -28,11 +28,7 @@ class WikiWordLexerSuite extends LexerSuite {
   test("Multiple Wiki Words") {
     assertResult(
       List(
-        (FitnesseTokenType.WIKI_WORD, "WikiWord"),
-        (FitnesseTokenType.PERIOD, "."),
-        (FitnesseTokenType.WIKI_WORD, "AnotherWikiWord"),
-        (FitnesseTokenType.PERIOD, "."),
-        (FitnesseTokenType.WIKI_WORD, "YetAnotherWikiWord")
+        (FitnesseTokenType.WIKI_WORD, "WikiWord.AnotherWikiWord.YetAnotherWikiWord")
       )) {
       lex("WikiWord.AnotherWikiWord.YetAnotherWikiWord")
     }
@@ -41,8 +37,7 @@ class WikiWordLexerSuite extends LexerSuite {
   test("WikiWord prefixed with period") {
     assertResult(
       List(
-        (FitnesseTokenType.PERIOD, "."),
-        (FitnesseTokenType.WIKI_WORD, "WikiWord")
+        (FitnesseTokenType.WIKI_WORD, ".WikiWord")
       )) {
       lex(".WikiWord")
     }
@@ -51,8 +46,7 @@ class WikiWordLexerSuite extends LexerSuite {
   test("WikiWord prefixed with >") {
     assertResult(
       List(
-        (FitnesseTokenType.LT, "<"),
-        (FitnesseTokenType.WIKI_WORD, "WikiWord")
+        (FitnesseTokenType.WIKI_WORD, "<WikiWord")
       )) {
       lex("<WikiWord")
     }
@@ -61,8 +55,7 @@ class WikiWordLexerSuite extends LexerSuite {
   test("WikiWord prefixed with <") {
     assertResult(
       List(
-        (FitnesseTokenType.GT, ">"),
-        (FitnesseTokenType.WIKI_WORD, "WikiWord")
+        (FitnesseTokenType.WIKI_WORD, ">WikiWord")
       )) {
       lex(">WikiWord")
     }
