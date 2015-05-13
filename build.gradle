@@ -8,6 +8,9 @@ apply plugin: 'idea'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that
@@ -22,7 +25,7 @@ configurations {
 dependencies {
     ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
     bundle 'org.scala-lang:scala-library:2.11.2'
-    bundle('org.fitnesse:fitnesse:20150424') {
+    bundle('org.fitnesse:fitnesse:20150513-SNAPSHOT') {
         exclude module: 'org.eclipse.jgit'
         exclude module: 'diffutils'
     }
@@ -46,38 +49,12 @@ task downloadIdeaSdk(type: Download) {
     target = file('lib/idea-sdk.tar.gz')
 }
 
-task downloadIdeaJFlex(type: Download) {
-    sourceUrl = 'https://github.com/JetBrains/intellij-community/raw/master/tools/lexer/jflex-1.4/lib/JFlex.jar'
-    target = file('lib/flex/JFlex.jar')
-}
-
-task downloadIdeaJFlexSkeleton(type: Download) {
-    sourceUrl = 'https://raw.github.com/JetBrains/intellij-community/master/tools/lexer/idea-flex.skeleton'
-    target = file('lib/flex/idea-flex.skeleton')
-}
-
 task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
     def zipFile = file('lib/idea-sdk.tar.gz')
     def outputDir = file("lib/sdk")
 
     from tarTree(resources.gzip(zipFile))
     into outputDir
-}
-
-task lexer(type: JavaExec, dependsOn: [downloadIdeaJFlex, downloadIdeaJFlexSkeleton]) {
-    classpath(files('lib/flex/JFlex.jar'))
-    inputs.file 'src/main/jflex/fitnesse/idea/lang/lexer/Fitnesse.flex'
-    outputs.file 'src/main/jflex/fitnesse/idea/lang/lexer/_FitnesseLexer.java'
-
-    main 'JFlex.Main'
-    args "-sliceandcharat", "-skel", 'lib/flex/idea-flex.skeleton',
-                "-d", 'src/main/jflex/fitnesse/idea/lang/lexer',
-                "-q", 'src/main/jflex/fitnesse/idea/lang/lexer/Fitnesse.flex'
-    jvmArgs '-Dfile.encoding=UTF-8'
-}
-
-task cleanLexer(type: Delete) {
-  delete 'src/main/jflex/fitnesse/idea/lang/lexer/_FitnesseLexer.java'
 }
 
 test {
@@ -93,8 +70,7 @@ task dist(type: Zip, dependsOn: [jar, test]) {
     baseName 'idea-fitnesse'
 }
 
-clean.dependsOn cleanLexer
-compileScala.dependsOn lexer, extractIdeaSdk
+compileScala.dependsOn extractIdeaSdk
 
 // ========= Workspace setup tasks ========= //
 
