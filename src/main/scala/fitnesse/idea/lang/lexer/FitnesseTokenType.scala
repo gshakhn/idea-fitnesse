@@ -28,4 +28,6 @@ object FitnesseTokenType {
   final val TABLE_END: IElementType = new FitnesseTokenType("TABLE_END")
   final val ROW_START: IElementType = new FitnesseTokenType("ROW_START")
   final val ROW_END: IElementType = new FitnesseTokenType("ROW_END")
+  final val CELL_START: IElementType = new FitnesseTokenType("CELL_START")
+  final val CELL_END: IElementType = new FitnesseTokenType("CELL_END")
 }
