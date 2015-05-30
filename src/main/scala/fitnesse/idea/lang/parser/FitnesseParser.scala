@@ -12,10 +12,6 @@ class FitnesseParser extends PsiParser {
     while (!builder.eof()) {
       builder.getTokenType match {
         case FitnesseTokenType.TABLE_START => parseTable(builder)
-//        case FitnesseTokenType.PERIOD => parsePotentialLink(builder, WikiLinkElementType.ABSOLUTE_WIKI_LINK)
-//        case FitnesseTokenType.GT => parsePotentialLink(builder, WikiLinkElementType.SUBPAGE_WIKI_LINK)
-//        case FitnesseTokenType.LT => parsePotentialLink(builder, WikiLinkElementType.ANCESTOR_WIKI_LINK)
-//        case FitnesseTokenType.WIKI_WORD => parseLink(builder, WikiLinkElementType.RELATIVE_WIKI_LINK)()
         case _ => builder.advanceLexer()
       }
     }
@@ -24,44 +20,17 @@ class FitnesseParser extends PsiParser {
     builder.getTreeBuilt
   }
 
-  private def parsePotentialLink(builder: PsiBuilder, linkType: WikiLinkElementType) {
-    val start = builder.mark()
-    builder.lookAhead(1) match {
-      case FitnesseTokenType.WIKI_WORD => {
-        builder.advanceLexer()
-        parseLink(builder, linkType)(start)
-      }
-      case _ => {
-        start.drop()
-        builder.advanceLexer()
-      }
-    }
-  }
-
-  private def parseLink(builder: PsiBuilder, linkType: WikiLinkElementType)(start: Marker = builder.mark()) {
-    while (!builder.eof() && builder.getTokenType == FitnesseTokenType.WIKI_WORD) {
-      builder.advanceLexer()
-    }
-
-    start.done(linkType)
-  }
-
   private def parseTable(builder: PsiBuilder) {
     val start = builder.mark()
 
-    val tableType = findTableType(builder)
+    assert(builder.getTokenType == FitnesseTokenType.TABLE_START)
     builder.advanceLexer() // Past TABLE_START
-    parseTopRow(builder, tableType)
 
-    if (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) tableType match {
-      case TableElementType.DECISION_TABLE => {
-        builder.advanceLexer() // Past ROW_END
+    val tableType = parseTopRow(builder)
+
+    tableType match {
+      case TableElementType.DECISION_TABLE =>
         parseDecisionMethodRow(builder)
-      }
-      case TableElementType.QUERY_TABLE => {
-        builder.advanceLexer() // Past ROW_END
-        parseQueryMethodRow(builder)
-      }
       case _ =>
     }
 
@@ -75,15 +44,80 @@ class FitnesseParser extends PsiParser {
     start.done(tableType)
   }
 
-  private def findTableType(builder: PsiBuilder) : TableElementType = {
+  private def parseDecisionMethodRow(builder: PsiBuilder) {
+    if  (builder.getTokenType == FitnesseTokenType.TABLE_END) return
+
     val start = builder.mark()
 
-    while (!builder.eof() && builder.getTokenType != FitnesseTokenType.TABLE_END) {
-      if (builder.getTokenType == FitnesseTokenType.TABLE_TYPE) {
-        val tableType =  builder.getTokenText.trim.toLowerCase match {
+    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
+      if (builder.getTokenType == FitnesseTokenType.WORD) {
+        val method = builder.mark()
+        val methodType = readCellText(builder) match {
+          case output if output.endsWith("?") => FitnesseElementType.DECISION_OUTPUT
+          case comment if comment.startsWith("#") => FitnesseElementType.COMMENT
+          case _ => FitnesseElementType.DECISION_INPUT
+        }
+        method.done(methodType)
+        builder.advanceLexer()
+      } else {
+        builder.advanceLexer()
+      }
+    }
+
+    start.done(FitnesseElementType.ROW)
+  }
+
+  private def readCellText(builder: PsiBuilder): String = {
+    var s = ""
+    while (builder.getTokenType == FitnesseTokenType.WORD || builder.getTokenType == FitnesseTokenType.WHITE_SPACE) {
+      s = s + builder.getTokenText
+      builder.advanceLexer()
+    }
+    s
+  }
+
+  private def parseTopRow(builder: PsiBuilder) : TableElementType = {
+    val start = builder.mark()
+
+    assert(builder.getTokenType == FitnesseTokenType.ROW_START)
+    builder.advanceLexer() // Past ROW_START
+
+    assert(builder.getTokenType == FitnesseTokenType.CELL_START)
+    builder.advanceLexer() // Past CELL_START
+
+    val tableType = findTableType(builder)
+
+    if (!isCellEnd(builder)) {
+      val fixtureClassOrScenarioName = builder.mark()
+      while (!isCellEnd(builder)) builder.advanceLexer() // Past FIXTURE_CLASS
+      fixtureClassOrScenarioName.done(tableType match {
+        case TableElementType.SCENARIO_TABLE => FitnesseElementType.SCENARIO_NAME
+        case _ => FitnesseElementType.FIXTURE_CLASS
+      })
+    }
+
+    advanceTillEndOfRow(builder)
+
+    start.done(FitnesseElementType.ROW)
+
+    assert(builder.getTokenType == FitnesseTokenType.ROW_END)
+    builder.advanceLexer() // Past ROW_END
+
+    tableType
+  }
+
+  private def findTableType(builder: PsiBuilder) : TableElementType = {
+    val tableType = builder.mark()
+    var tableName = ""
+    while (!isCellEnd(builder)) {
+      if (builder.getTokenType == FitnesseTokenType.COLON) {
+        tableType.done(FitnesseElementType.TABLE_TYPE)
+        builder.advanceLexer() // Past COLON
+        return tableName.toLowerCase.trim match {
           case "dt" => TableElementType.DECISION_TABLE
           case "ddt" => TableElementType.DECISION_TABLE
           case "decision" => TableElementType.DECISION_TABLE
+          case "dynamic decision" => TableElementType.DECISION_TABLE
           case "query" => TableElementType.QUERY_TABLE
           case "subset query" => TableElementType.QUERY_TABLE
           case "ordered query" => TableElementType.QUERY_TABLE
@@ -93,76 +127,34 @@ class FitnesseParser extends PsiParser {
           case "comment" => TableElementType.COMMENT_TABLE
           case "scenario" => TableElementType.SCENARIO_TABLE
           case "library" => TableElementType.LIBRARY_TABLE
-          case _ => TableElementType.DECISION_TABLE
+          case "define table type" => TableElementType.DEFINE_TABLE_TYPE_TABLE
+          case "define alias" => TableElementType.DEFINE_ALIAS_TABLE
+          case _ => TableElementType.UNKNOWN_TABLE
         }
-        start.rollbackTo()
-        return tableType
-      }
-      builder.advanceLexer()
-    }
-
-    start.rollbackTo()
-    TableElementType.DECISION_TABLE
-  }
-
-  private def parseDecisionMethodRow(builder: PsiBuilder) {
-    val start = builder.mark()
-
-    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
-      if (builder.getTokenType == FitnesseTokenType.CELL_TEXT) {
-        val method = builder.mark()
-        val methodType = builder.getTokenText.trim match {
-          case output if output.endsWith("?") => FitnesseElementType.DECISION_OUTPUT
-          case comment if comment.startsWith("#") => FitnesseElementType.COMMENT
-          case _ => FitnesseElementType.DECISION_INPUT
-        }
-        builder.advanceLexer()
-        method.done(methodType)
       } else {
+        tableName = tableName + " " + builder.getTokenText
         builder.advanceLexer()
       }
     }
 
-    start.done(FitnesseElementType.ROW)
+    tableName.toLowerCase.trim match {
+      case "script" =>
+        tableType.done(FitnesseElementType.TABLE_TYPE)
+        builder.advanceLexer() // Pass cell end
+        TableElementType.SCRIPT_TABLE
+      case "scenario" =>
+        tableType.done(FitnesseElementType.TABLE_TYPE)
+        builder.advanceLexer() // Pass cell end
+        TableElementType.SCENARIO_TABLE
+      case _ =>
+        tableType.rollbackTo()
+        TableElementType.DECISION_TABLE
+    }
   }
 
-  private def parseQueryMethodRow(builder: PsiBuilder) {
-    val start = builder.mark()
-
-    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
-      if (builder.getTokenType == FitnesseTokenType.CELL_TEXT) {
-        val method = builder.mark()
-        builder.advanceLexer()
-        method.done(FitnesseElementType.QUERY_OUTPUT)
-      } else {
-        builder.advanceLexer()
-      }
-    }
-
-    start.done(FitnesseElementType.ROW)
-  }
-
-  private def parseTopRow(builder: PsiBuilder, tableType: TableElementType) {
-    val start = builder.mark()
-
-    builder.advanceLexer() // Past ROW_START
-    builder.advanceLexer() // Past CELL_DELIM
-    if (builder.getTokenType == FitnesseTokenType.TABLE_TYPE) {
-      builder.advanceLexer() // Past TABLE_TYPE
-      builder.advanceLexer() // Past COLON
-    }
-
-    if (builder.getTokenType != FitnesseTokenType.LINE_TERMINATOR) {
-      val fixtureClassOrScenarioName = builder.mark()
-      builder.advanceLexer() // Past FIXTURE_CLASS
-      fixtureClassOrScenarioName.done(tableType match {
-        case TableElementType.SCENARIO_TABLE => FitnesseElementType.SCENARIO_NAME
-        case _ => FitnesseElementType.FIXTURE_CLASS
-      })
-
-      advanceTillEndOfRow(builder)
-    }
-    start.done(FitnesseElementType.ROW)
+  private def isCellEnd(builder: PsiBuilder): Boolean = {
+    val tokenType = builder.getTokenType
+    return tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
   }
 
   private def parseRow(builder: PsiBuilder, tableType: TableElementType) {

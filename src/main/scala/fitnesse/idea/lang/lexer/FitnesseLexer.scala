@@ -21,7 +21,7 @@ class FitnesseLexer extends LexerBase {
     this.startOffset = startOffset
     this.endOffset = endOffset
 
-    (Parser.make(new LexerParsingPage, buffer.subSequence(startOffset, endOffset))).parse
+    Parser.make(new LexerParsingPage, buffer.subSequence(startOffset, endOffset)).parse
 
     val currentPage: ParsingPage = new LexerParsingPage
     val input: CharSequence = buffer.subSequence(startOffset, endOffset)
@@ -31,7 +31,7 @@ class FitnesseLexer extends LexerBase {
     parser = new Parser(null, currentPage, scanner, specification)
     symbolList = Nil
 
-    advance
+    advance()
   }
 
   override def advance(): Unit = {
@@ -51,10 +51,6 @@ class FitnesseLexer extends LexerBase {
             symbolList = Nil
           case parsedSymbol =>
             symbolList = parsedSymbol.getValue :: Nil
-//            (FitnesseLexer.terminatorFor(parsedSymbol.getValue) match {
-//              case Some(s) => s :: Nil
-//              case None => Nil
-//            })
         }
       case _ :: tail =>
         symbolList = tail
@@ -78,6 +74,7 @@ class FitnesseLexer extends LexerBase {
         case FitnesseLexer.TABLE_ROW_END => FitnesseTokenType.ROW_END
         case Table.tableCell => FitnesseTokenType.CELL_START
         case FitnesseLexer.TABLE_CELL_END => FitnesseTokenType.CELL_END
+        case SymbolType.Colon => FitnesseTokenType.COLON
         case _ => FitnesseTokenType.WORD
       }
     }
@@ -106,12 +103,19 @@ object FitnesseLexer {
   final val END = _symbolType("end")
 
   def terminatorFor(symbol: Symbol): Option[Symbol] = symbol.getType match {
-    case _ : ColoredSlimTable => Some(new Symbol(TABLE_END, "", symbol.getEndOffset))
-    case s if s eq Table.tableRow => Some(new Symbol(TABLE_ROW_END, "", symbol.getEndOffset))
-    case s if s eq Table.tableCell => Some(new Symbol(TABLE_CELL_END, "", symbol.getEndOffset))
+    case _ : ColoredSlimTable => Some(new Symbol(TABLE_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
+    case s if s eq Table.tableRow => Some(new Symbol(TABLE_ROW_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
+    case s if s eq Table.tableCell => Some(new Symbol(TABLE_CELL_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
     case _ => None
   }
 
+  private def lastChild(symbol: Symbol): Symbol = {
+    if (symbol.getChildren.isEmpty) {
+      symbol
+    } else {
+      lastChild(symbol.getChildren.last)
+    }
+  }
   private def _symbolType(s: String) = {
     new SymbolType(s)
   }

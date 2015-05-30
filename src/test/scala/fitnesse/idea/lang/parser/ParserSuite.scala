@@ -81,8 +81,8 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   }
 
   abstract class Tree
-    case class Node(elementType: IElementType, children: List[Tree]) extends Tree
-    case class Leaf(elementType: IElementType, text: String) extends Tree
+  case class Node(elementType: IElementType, children: List[Tree]) extends Tree
+  case class Leaf(elementType: IElementType, text: String) extends Tree
 
   def parse(text: String) = {
     val virtualFile: LightVirtualFile = new LightVirtualFile("content.txt", FitnesseLanguage.INSTANCE, text)
@@ -95,7 +95,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   private def convertToTree(node: ASTNode): Tree = {
     if (node.isInstanceOf[CompositeElement]) {
       val children = node.getChildren(null)
-      val leaves = children.filterNot(child => child.getElementType == FitnesseTokenType.LINE_TERMINATOR).
+      val leaves = children. //filterNot(child => child.getElementType == FitnesseTokenType.LINE_TERMINATOR).
                             map(child => convertToTree(child)).toList
       Node(node.getElementType, leaves)
     } else {

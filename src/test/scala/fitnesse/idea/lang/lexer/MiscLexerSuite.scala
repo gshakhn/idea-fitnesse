@@ -71,7 +71,6 @@ class MiscLexerSuite extends LexerSuite {
         (FitnesseTokenType.CELL_END, ""),
         (FitnesseTokenType.ROW_END, ""),
         (FitnesseTokenType.TABLE_END, ""),
-        (FitnesseTokenType.TABLE_END, ""), // Wrong!
         (FitnesseTokenType.WORD, "some"),
         (FitnesseTokenType.WHITE_SPACE, " "),
         (FitnesseTokenType.WORD, "text")
@@ -97,7 +96,6 @@ class MiscLexerSuite extends LexerSuite {
         (FitnesseTokenType.CELL_END, ""),
         (FitnesseTokenType.ROW_END, ""),
         (FitnesseTokenType.TABLE_END, ""),
-        (FitnesseTokenType.TABLE_END, ""), // Wrong!
         (FitnesseTokenType.WORD, "some"),
         (FitnesseTokenType.WHITE_SPACE, " "),
         (FitnesseTokenType.WORD, "text")
@@ -120,7 +118,6 @@ class MiscLexerSuite extends LexerSuite {
         (FitnesseTokenType.WORD, "xyz"),
         (FitnesseTokenType.CELL_END, ""),
         (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
         (FitnesseTokenType.TABLE_END, ""),
         (FitnesseTokenType.WIKI_WORD, "WikiWord")
       )) {
