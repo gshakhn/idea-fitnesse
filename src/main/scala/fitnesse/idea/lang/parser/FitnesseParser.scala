@@ -58,22 +58,11 @@ class FitnesseParser extends PsiParser {
           case _ => FitnesseElementType.DECISION_INPUT
         }
         method.done(methodType)
-        builder.advanceLexer()
-      } else {
-        builder.advanceLexer()
       }
+      builder.advanceLexer()
     }
 
     start.done(FitnesseElementType.ROW)
-  }
-
-  private def readCellText(builder: PsiBuilder): String = {
-    var s = ""
-    while (builder.getTokenType == FitnesseTokenType.WORD || builder.getTokenType == FitnesseTokenType.WHITE_SPACE) {
-      s = s + builder.getTokenText
-      builder.advanceLexer()
-    }
-    s
   }
 
   private def parseTopRow(builder: PsiBuilder) : TableElementType = {
@@ -152,19 +141,38 @@ class FitnesseParser extends PsiParser {
     }
   }
 
-  private def isCellEnd(builder: PsiBuilder): Boolean = {
-    val tokenType = builder.getTokenType
-    return tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
-  }
-
   private def parseRow(builder: PsiBuilder, tableType: TableElementType) {
+    if  (builder.getTokenType == FitnesseTokenType.TABLE_END) return
+
     val start = builder.mark()
 
-    advanceTillEndOfRow(builder)
+    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
+      if (builder.getTokenType == FitnesseTokenType.WORD) {
+        val cell = builder.mark()
+        readCellText(builder)
+        cell.done(FitnesseElementType.CELL)
+      }
+      builder.advanceLexer()
+    }
+
     start.done(tableType match {
       case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE => FitnesseElementType.SCRIPT_ROW
       case _ => FitnesseElementType.ROW
     })
+  }
+
+  private def readCellText(builder: PsiBuilder): String = {
+    var s = ""
+    while (!isCellEnd(builder)) {
+      s = s + builder.getTokenText
+      builder.advanceLexer()
+    }
+    s
+  }
+
+  private def isCellEnd(builder: PsiBuilder): Boolean = {
+    val tokenType = builder.getTokenType
+    return tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
   }
 
   private def advanceTillEndOfRow(builder: PsiBuilder) {

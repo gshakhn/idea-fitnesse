@@ -17,6 +17,7 @@ object FitnesseElementType {
   final val DECISION_INPUT = new FitnesseElementType("DECISION_INPUT")
   final val DECISION_OUTPUT = new FitnesseElementType("DECISION_OUTPUT")
   final val QUERY_OUTPUT = new FitnesseElementType("QUERY_OUTPUT")
+  final val CELL= new FitnesseElementType("CELL")
   final val COMMENT = new FitnesseElementType("COMMENT")
 }
 
