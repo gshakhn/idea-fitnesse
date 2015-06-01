@@ -1,6 +1,5 @@
 package fitnesse.idea.lang.parser
 
-import com.intellij.lang.PsiBuilder.Marker
 import com.intellij.lang.{PsiBuilder, PsiParser}
 import com.intellij.psi.tree.IElementType
 import fitnesse.idea.lang.lexer.FitnesseTokenType
