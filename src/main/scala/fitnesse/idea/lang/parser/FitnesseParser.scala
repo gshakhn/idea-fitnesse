@@ -150,7 +150,10 @@ class FitnesseParser extends PsiParser {
       if (builder.getTokenType == FitnesseTokenType.WORD) {
         val cell = builder.mark()
         readCellText(builder)
-        cell.done(FitnesseElementType.CELL)
+        cell.done(tableType match {
+          case TableElementType.QUERY_TABLE => FitnesseElementType.QUERY_OUTPUT
+          case _ => FitnesseElementType.CELL
+        })
       }
       builder.advanceLexer()
     }
