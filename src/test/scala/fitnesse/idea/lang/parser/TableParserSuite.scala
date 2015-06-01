@@ -224,13 +224,13 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "foo"),
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "bar"),
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
@@ -238,11 +238,11 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "1")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "2")
             ))
           ))
@@ -274,13 +274,13 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "foo"),
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "bar"),
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
@@ -288,11 +288,11 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "1")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "2")
             ))
           ))
