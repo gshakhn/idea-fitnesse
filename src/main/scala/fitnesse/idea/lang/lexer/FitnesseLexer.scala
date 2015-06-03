@@ -35,25 +35,30 @@ class FitnesseLexer extends LexerBase {
   }
 
   override def advance(): Unit = {
+    symbolList = fetchNextSymbol()
+
+    symbolList.headOption match {
+      case Some(symbol) if !symbol.hasOffset => advance()
+      case _ =>
+    }
+  }
+  
+  private def fetchNextSymbol(): List[Symbol] = {
     symbolList match {
       case symbol :: tail if shouldTraverse(symbol) =>
-        symbolList = symbol.getChildren.toList ::: (FitnesseLexer.terminatorFor(symbol) match {
+        symbol.getChildren.toList ::: (FitnesseLexer.terminatorFor(symbol) match {
           case Some(s) => s :: tail
           case None => tail
         })
-
-      case _ :: symbol :: tail if !symbol.hasOffset =>
-        symbolList = tail
-        advance
       case Nil | _ :: Nil =>
         specification.parseSymbol(parser, scanner) match {
           case parsedSymbol if parsedSymbol.isNothing =>
-            symbolList = Nil
+            Nil
           case parsedSymbol =>
-            symbolList = parsedSymbol.getValue :: Nil
+            parsedSymbol.getValue :: Nil
         }
       case _ :: tail =>
-        symbolList = tail
+        tail
     }
   }
 
@@ -110,7 +115,10 @@ object FitnesseLexer {
   }
 
   private def lastChild(symbol: Symbol): Symbol = {
-    if (symbol.getChildren.isEmpty) {
+    if (symbol.getType == Variable.symbolType) {
+      // Shortcut variables, since it wants to replace the content completely
+      symbol
+    } else if (symbol.getChildren.isEmpty) {
       symbol
     } else {
       lastChild(symbol.getChildren.last)
