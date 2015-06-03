@@ -15,17 +15,17 @@ import com.intellij.util.Processor;
 import com.intellij.util.indexing.FileBasedIndex;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FixtureClassReferencesSearch extends QueryExecutorBase<PsiReference, ReferencesSearch.SearchParameters> {
+
+    public FixtureClassReferencesSearch() {
+        super(true);
+    }
 
     @Override
     public void processQuery(@NotNull final ReferencesSearch.SearchParameters p, @NotNull final Processor<PsiReference> consumer) {
         final PsiElement myElement = p.getElementToSearch();
-        System.out.println("Perform search for element " + myElement);
         if (!(myElement instanceof PsiClass)) {
             return;
         }
@@ -52,6 +52,7 @@ public class FixtureClassReferencesSearch extends QueryExecutorBase<PsiReference
             FitnesseFile fitnesseFile = (FitnesseFile) psiManager.findFile(virtualFile);
             if (fitnesseFile != null) {
                 FixtureClass[] fixtureClasses = PsiTreeUtil.getChildrenOfType(fitnesseFile, FixtureClass.class);
+                System.out.println("Found fixture classes for " + fitnesseFile + ": " + fixtureClasses);
                 if (fixtureClasses != null) {
                     for (FixtureClass fixtureClass : fixtureClasses) {
                         if (key.equals(fixtureClass.fixtureClassName())) {
