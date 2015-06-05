@@ -110,7 +110,9 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
   override def createPsi(stub: FixtureClassStub): FixtureClass = new FixtureClassImpl(stub)
 
   override def indexStub(stub: FixtureClassStub, sink: IndexSink): Unit = {
-    sink.occurrence(FixtureClassIndex.KEY, disgraceClassName(stub.fixtureClassName));
+    val className: String = disgraceClassName(stub.fixtureClassName)
+    println("FixtureClassIndex: " + className + " => " + stub)
+    sink.occurrence(FixtureClassIndex.KEY, className);
   }
 
   override def serialize(t: FixtureClassStub, stubOutputStream: StubOutputStream): Unit = {
