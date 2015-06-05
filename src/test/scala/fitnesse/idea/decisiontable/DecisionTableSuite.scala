@@ -31,7 +31,7 @@ class DecisionTableSuite extends PsiSuite {
 
     ElementManipulators.INSTANCE.addExplicitExtension(classOf[DecisionInput], new DecisionInputManipulator)
 
-    psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c? | fancy long name | fancy query name? |\n| 1 | 2 | 3 |");
+    psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c? | fancy long name | fancy query name? |\n| 1 | 2 | 3 |")
     table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
   }
 

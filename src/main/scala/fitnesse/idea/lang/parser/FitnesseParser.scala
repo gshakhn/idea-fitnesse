@@ -19,7 +19,7 @@ class FitnesseParser extends PsiParser {
     builder.getTreeBuilt
   }
 
-  private def parseTable(builder: PsiBuilder) {
+  private def parseTable(builder: PsiBuilder): Unit = {
     val start = builder.mark()
 
     assert(builder.getTokenType == FitnesseTokenType.TABLE_START)
@@ -43,7 +43,7 @@ class FitnesseParser extends PsiParser {
     start.done(tableType)
   }
 
-  private def parseDecisionMethodRow(builder: PsiBuilder) {
+  private def parseDecisionMethodRow(builder: PsiBuilder): Unit = {
     if  (builder.getTokenType == FitnesseTokenType.TABLE_END) return
 
     val start = builder.mark()
@@ -140,7 +140,7 @@ class FitnesseParser extends PsiParser {
     }
   }
 
-  private def parseRow(builder: PsiBuilder, tableType: TableElementType) {
+  private def parseRow(builder: PsiBuilder, tableType: TableElementType): Unit = {
     if  (builder.getTokenType == FitnesseTokenType.TABLE_END) return
 
     val start = builder.mark()
@@ -177,7 +177,7 @@ class FitnesseParser extends PsiParser {
     return tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
   }
 
-  private def advanceTillEndOfRow(builder: PsiBuilder) {
+  private def advanceTillEndOfRow(builder: PsiBuilder): Unit = {
     while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       builder.advanceLexer()
     }

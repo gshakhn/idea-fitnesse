@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElement
 
 class MissingReferencesAnnotator extends Annotator {
 
-  def annotate(element: PsiElement, holder: AnnotationHolder) {
+  def annotate(element: PsiElement, holder: AnnotationHolder): Unit = {
     element match {
       case fixtureClass: FixtureClass =>
         if (fixtureClass.getReferencedClasses.isEmpty) {

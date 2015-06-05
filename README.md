@@ -9,6 +9,12 @@ This is an [IntelliJ] plugin for [Fitnesse].
 Current Status
 ===========
 
+[![Build Status](https://travis-ci.org/gshakhn/idea-fitnesse.svg)](https://travis-ci.org/gshakhn/idea-fitnesse)
+
+[![Codacy Badge](https://www.codacy.com/project/badge/655882f037764ee195733a479e0eaaa6)](https://www.codacy.com/app/gshakhn/idea-fitnesse)
+
+[![Dependency Status](https://www.versioneye.com/user/projects/554989f65d4f9a0b990012e5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/554989f65d4f9a0b990012e5)
+
 The plugin has very minimal features and is a work in progress.
 
 Working Features
