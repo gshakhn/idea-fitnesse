@@ -1,18 +1,19 @@
 package fitnesse.idea.lang.parser
 
-import com.intellij.psi.tree.{IElementType, IFileElementType}
+import com.intellij.psi.tree.{IStubFileElementType, IElementType, IFileElementType}
 import fitnesse.idea.lang.FitnesseLanguage
+import fitnesse.idea.lang.psi.FixtureClassElementTypeHolder
 
 class FitnesseElementType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
   override def toString = "Fitnesse:" + this.debugName
 }
 
 object FitnesseElementType {
-  final val FILE = new IFileElementType(FitnesseLanguage.INSTANCE) // IStubFileElementType ??
+  final val FILE = new IStubFileElementType(FitnesseLanguage.INSTANCE)
   final val ROW = new FitnesseElementType("ROW")
   final val SCRIPT_ROW = new FitnesseElementType("SCRIPT_ROW")
   final val TABLE_TYPE = new FitnesseElementType("TABLE_TYPE")
-  final val FIXTURE_CLASS = new FitnesseElementType("FIXTURE_CLASS")
+  final val FIXTURE_CLASS = FixtureClassElementTypeHolder.INSTANCE
   final val SCENARIO_NAME = new FitnesseElementType("SCENARIO_NAME")
   final val DECISION_INPUT = new FitnesseElementType("DECISION_INPUT")
   final val DECISION_OUTPUT = new FitnesseElementType("DECISION_OUTPUT")

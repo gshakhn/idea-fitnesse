@@ -56,6 +56,8 @@
 
     <usageTypeProvider implementation="fitnesse.idea.lang.psi.FitNesseUsageTypeProvider" />
 
+    <stubElementTypeHolder class="fitnesse.idea.lang.psi.FixtureClassElementTypeHolder"/>
+    <stubIndex implementation="fitnesse.idea.lang.psi.FixtureClassIndex"/>
 
     <!-- TODO: Need something like code inspections-->
     <!--
