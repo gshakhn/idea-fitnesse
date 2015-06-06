@@ -1,19 +1,39 @@
 package fitnesse.idea.lang.psi
 
+import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
-import com.intellij.psi.impl.source.tree.{TreeElement, TreeElementVisitor}
-import com.intellij.psi.tree.{IElementType, TokenSet}
+import com.intellij.psi.impl.source.tree.{TreeElementVisitor, TreeElement}
+import com.intellij.psi.stubs.{IStubElementType, StubElement}
+import com.intellij.psi.tree.{TokenSet, IElementType}
 import fitnesse.idea.lang.FitnesseLanguage
+
+/**
+ * Work around the constructors of StubBasedPsiElementBase. Scala is a little more restricted in that in can not call
+ * different parent constructors.
+ *
+ * Usage example:
+ *
+ *   def this(node: ASTNode) = { this(); init(node) }
+ *   def this(stub: T) = { this(); init(stub) }
+ *
+ * @tparam T
+ */
+abstract class ScalaFriendlyStubBasedPsiElementBase[T <: StubElement[_ <: PsiElement]] extends StubBasedPsiElementBase[T](DummyASTNode.getInstanceForJava) {
+
+  protected def init(node: ASTNode) = setNode(node)
+  protected def init(stub: T) = { setStub(stub); setNode(null) }
+
+  override def getElementType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement] = {
+    if (getStub != null) getStub.getStubType
+    else getNode.getElementType.asInstanceOf[IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement]]
+  }
+}
 
 /*
  * Taken from: intellij-scala/src/org/jetbrains/plugins/scala/lang/psi/stubs/elements/wrappers/DummyASTNode.scala
  */
-class DummyASTNodeType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
-  override def toString = "Fitnesse:" + this.debugName
-}
-
-object DummyASTNode extends TreeElement(new DummyASTNodeType("DummyASTNodeType")) {
+private object DummyASTNode extends TreeElement(new IElementType("DummyASTNode", FitnesseLanguage.INSTANCE)) {
   def getText: String = null
   def removeRange(firstNodeToRemove: ASTNode, firstNodeToKeep: ASTNode) {}
   def replaceChild(oldChild: ASTNode, newChild: ASTNode) {}

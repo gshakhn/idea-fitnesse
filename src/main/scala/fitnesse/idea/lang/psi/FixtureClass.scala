@@ -27,17 +27,10 @@ class FixtureClassStubImpl(parent: StubElement[_ <: PsiElement], className: Stri
 }
 
 
-class FixtureClassImpl extends StubBasedPsiElementBase[FixtureClassStub](DummyASTNode.getInstanceForJava) with FixtureClass with PsiNamedElement {
+class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClassStub] with FixtureClass with PsiNamedElement {
 
-  /// === Really, this is Scala glue code ===
-  def this(node: ASTNode) = { this(); setNode(node) }
-  def this(stub: FixtureClassStub) = { this(); setStub(stub); setNode(null) }
-
-  override def getElementType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement] = {
-    if (getStub != null) getStub.getStubType
-    else getNode.getElementType.asInstanceOf[IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement]]
-  }
-  /// -----8<---------
+  def this(node: ASTNode) = { this(); init(node) }
+  def this(stub: FixtureClassStub) = { this(); init(stub) }
 
   def getRow = getParent.asInstanceOf[Row]
 
@@ -111,7 +104,6 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
 
   override def indexStub(stub: FixtureClassStub, sink: IndexSink): Unit = {
     val className: String = disgraceClassName(stub.fixtureClassName)
-    println("FixtureClassIndex: " + className + " => " + stub)
     sink.occurrence(FixtureClassIndex.KEY, className);
   }
 
