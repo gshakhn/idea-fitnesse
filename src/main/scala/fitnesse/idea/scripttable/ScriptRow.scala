@@ -2,9 +2,10 @@ package fitnesse.idea.scripttable
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
+import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.lang.lexer.FitnesseTokenType
 import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{FixtureClass, MethodReferences, Row}
+import fitnesse.idea.lang.psi.{MethodReferences, Row}
 import fitnesse.testsystems.slim.tables.Disgracer._
 
 import scala.collection.JavaConversions._

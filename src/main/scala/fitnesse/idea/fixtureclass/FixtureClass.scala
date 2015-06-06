@@ -1,13 +1,12 @@
-package fitnesse.idea.lang.psi
+package fitnesse.idea.fixtureclass
 
-import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
+import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
-import com.intellij.psi._
+import fitnesse.idea.fixtureclass.{FixtureClassReference, FixtureClassManipulator}
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.manipulator.FixtureClassManipulator
-import fitnesse.idea.lang.reference.FixtureClassReference
+import fitnesse.idea.lang.psi.{Row, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 

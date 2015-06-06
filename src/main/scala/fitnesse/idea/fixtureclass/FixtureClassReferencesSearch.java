@@ -1,4 +1,4 @@
-package fitnesse.idea.lang.reference;
+package fitnesse.idea.fixtureclass;
 
 import com.intellij.openapi.application.QueryExecutorBase;
 import com.intellij.openapi.project.Project;
@@ -9,9 +9,10 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Processor;
+import fitnesse.idea.fixtureclass.FixtureClassReference;
 import fitnesse.idea.lang.filetype.FitnesseFileType;
-import fitnesse.idea.lang.psi.FixtureClass;
-import fitnesse.idea.lang.psi.FixtureClassIndex;
+import fitnesse.idea.fixtureclass.FixtureClass;
+import fitnesse.idea.fixtureclass.FixtureClassIndex;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

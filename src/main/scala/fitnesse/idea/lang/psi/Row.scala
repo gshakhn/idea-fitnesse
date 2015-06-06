@@ -2,6 +2,7 @@ package fitnesse.idea.lang.psi
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import fitnesse.idea.fixtureclass.FixtureClass
 
 class Row(node: ASTNode) extends ASTWrapperPsiElement(node) {
 

@@ -1,8 +1,8 @@
 package fitnesse.idea.lang.parser
 
 import com.intellij.psi.tree.{IStubFileElementType, IElementType, IFileElementType}
+import fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.FixtureClassElementTypeHolder
 
 class FitnesseElementType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
   override def toString = "Fitnesse:" + this.debugName

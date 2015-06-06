@@ -34,10 +34,10 @@
     <syntaxHighlighter key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseHighlighter"/>
     <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
     <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.lang.parser.FitnesseParserDefinition"/>
-    <lang.elementManipulator forClass="fitnesse.idea.lang.psi.WikiLink"
-                             implementationClass="fitnesse.idea.lang.manipulator.WikiLinkManipulator"/>
-    <lang.elementManipulator forClass="fitnesse.idea.lang.psi.FixtureClass"
-                             implementationClass="fitnesse.idea.lang.manipulator.FixtureClassManipulator"/>
+    <lang.elementManipulator forClass="fitnesse.idea.wikilink.WikiLink"
+                             implementationClass="fitnesse.idea.wikilink.WikiLinkManipulator"/>
+    <lang.elementManipulator forClass="fitnesse.idea.fixtureclass.FixtureClass"
+                             implementationClass="fitnesse.idea.fixtureclass.FixtureClassManipulator"/>
 
     <lang.elementManipulator forClass="fitnesse.idea.decisiontable.DecisionInput"
                              implementationClass="fitnesse.idea.decisiontable.DecisionInputManipulator"/>
@@ -56,8 +56,8 @@
 
     <usageTypeProvider implementation="fitnesse.idea.lang.psi.FitNesseUsageTypeProvider" />
 
-    <stubElementTypeHolder class="fitnesse.idea.lang.psi.FixtureClassElementTypeHolder"/>
-    <stubIndex implementation="fitnesse.idea.lang.psi.FixtureClassIndex"/>
+    <stubElementTypeHolder class="fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder"/>
+    <stubIndex implementation="fitnesse.idea.fixtureclass.FixtureClassIndex"/>
 
     <!-- TODO: Need something like code inspections-->
     <!--
@@ -74,7 +74,7 @@
                      level="WARNING" implementationClass="org.jetbrains.plugins.cucumber.java.inspections.CucumberJavaStepDefClassIsPublicInspections"/>
     -->
 
-    <referencesSearch implementation="fitnesse.idea.lang.reference.FixtureClassReferencesSearch"/>
+    <referencesSearch implementation="fitnesse.idea.fixtureclass.FixtureClassReferencesSearch"/>
     <!--<methodReferencesSearch implementation="fitnesse.idea.lang.reference.FixtureMethodReferencesSearch"/>-->
   </extensions>
 </idea-plugin>

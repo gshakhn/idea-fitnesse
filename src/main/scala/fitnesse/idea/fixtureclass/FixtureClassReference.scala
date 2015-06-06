@@ -1,7 +1,6 @@
-package fitnesse.idea.lang.reference
+package fitnesse.idea.fixtureclass
 
 import com.intellij.psi.{PsiClass, PsiReferenceBase}
-import fitnesse.idea.lang.psi.FixtureClass
 
 class FixtureClassReference(psiClass: PsiClass, element: FixtureClass) extends PsiReferenceBase[FixtureClass](element) {
   override def resolve() = psiClass

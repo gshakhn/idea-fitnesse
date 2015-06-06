@@ -7,10 +7,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.tree.TokenSet
 import fitnesse.idea.decisiontable.{DecisionInput, DecisionOutput, DecisionTable}
+import fitnesse.idea.fixtureclass.FixtureClassImpl
 import fitnesse.idea.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import fitnesse.idea.lang.psi._
 import fitnesse.idea.querytable.{QueryOutput, QueryTable}
 import fitnesse.idea.scripttable.{ScenarioName, ScenarioTable, ScriptRow, ScriptTable}
+import fitnesse.idea.wikilink.WikiLink
 
 class FitnesseParserDefinition extends ParserDefinition {
   override def createLexer(project: Project) = new FitnesseLexer
