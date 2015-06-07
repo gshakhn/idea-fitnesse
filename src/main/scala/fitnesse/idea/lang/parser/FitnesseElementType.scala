@@ -1,7 +1,7 @@
 package fitnesse.idea.lang.parser
 
 import com.intellij.psi.tree.{IStubFileElementType, IElementType, IFileElementType}
-import fitnesse.idea.decisiontable.DecisionInputElementTypeHolder
+import fitnesse.idea.decisiontable.{DecisionOutputElementTypeHolder, DecisionInputElementTypeHolder}
 import fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder
 import fitnesse.idea.lang.FitnesseLanguage
 
@@ -17,7 +17,7 @@ object FitnesseElementType {
   final val FIXTURE_CLASS = FixtureClassElementTypeHolder.INSTANCE
   final val SCENARIO_NAME = new FitnesseElementType("SCENARIO_NAME")
   final val DECISION_INPUT = DecisionInputElementTypeHolder.INSTANCE
-  final val DECISION_OUTPUT = new FitnesseElementType("DECISION_OUTPUT")
+  final val DECISION_OUTPUT = DecisionOutputElementTypeHolder.INSTANCE
   final val QUERY_OUTPUT = new FitnesseElementType("QUERY_OUTPUT")
   final val CELL= new FitnesseElementType("CELL")
   final val COMMENT = new FitnesseElementType("COMMENT")

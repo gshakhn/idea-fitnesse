@@ -57,8 +57,7 @@
 
     <usageTypeProvider implementation="fitnesse.idea.lang.psi.FitNesseUsageTypeProvider" />
 
-    <stubElementTypeHolder class="fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder"/>
-    <stubElementTypeHolder class="fitnesse.idea.decisiontable.DecisionInputElementTypeHolder"/>
+    <stubElementTypeHolder class="fitnesse.idea.lang.parser.FitnesseElementType"/>
 
     <stubIndex implementation="fitnesse.idea.fixtureclass.FixtureClassIndex"/>
     <stubIndex implementation="fitnesse.idea.fixturemethod.FixtureMethodIndex"/>
