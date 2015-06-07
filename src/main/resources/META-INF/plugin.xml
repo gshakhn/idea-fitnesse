@@ -34,6 +34,7 @@
     <syntaxHighlighter key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseHighlighter"/>
     <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
     <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.lang.parser.FitnesseParserDefinition"/>
+
     <lang.elementManipulator forClass="fitnesse.idea.wikilink.WikiLink"
                              implementationClass="fitnesse.idea.wikilink.WikiLinkManipulator"/>
     <lang.elementManipulator forClass="fitnesse.idea.fixtureclass.FixtureClass"
@@ -57,7 +58,10 @@
     <usageTypeProvider implementation="fitnesse.idea.lang.psi.FitNesseUsageTypeProvider" />
 
     <stubElementTypeHolder class="fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder"/>
+    <stubElementTypeHolder class="fitnesse.idea.decisiontable.DecisionInputElementTypeHolder"/>
+
     <stubIndex implementation="fitnesse.idea.fixtureclass.FixtureClassIndex"/>
+    <stubIndex implementation="fitnesse.idea.fixturemethod.FixtureMethodIndex"/>
 
     <!-- TODO: Need something like code inspections-->
     <!--
@@ -75,6 +79,6 @@
     -->
 
     <referencesSearch implementation="fitnesse.idea.fixtureclass.FixtureClassReferencesSearch"/>
-    <!--<methodReferencesSearch implementation="fitnesse.idea.lang.reference.FixtureMethodReferencesSearch"/>-->
+    <methodReferencesSearch implementation="fitnesse.idea.fixturemethod.FixtureMethodReferencesSearch"/>
   </extensions>
 </idea-plugin>

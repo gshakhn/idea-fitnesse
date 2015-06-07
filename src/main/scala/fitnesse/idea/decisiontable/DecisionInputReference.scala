@@ -1,7 +1,7 @@
 package fitnesse.idea.decisiontable
 
 import com.intellij.psi.{PsiElement, PsiMethod}
-import fitnesse.idea.lang.psi.MethodReference
+import fitnesse.idea.fixturemethod.MethodReference
 
 class DecisionInputReference(psiMethod: PsiMethod, element: DecisionInput) extends MethodReference(psiMethod, element) {
 

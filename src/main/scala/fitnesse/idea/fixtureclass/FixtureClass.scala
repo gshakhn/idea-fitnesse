@@ -83,6 +83,8 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
 
 class FixtureClassIndex extends StringStubIndexExtension[FixtureClass] {
   override def getKey: StubIndexKey[String, FixtureClass] = FixtureClassIndex.KEY
+
+  override def getVersion: Int = 3
 }
 
 
@@ -101,7 +103,7 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
   override def createPsi(stub: FixtureClassStub): FixtureClass = new FixtureClassImpl(stub)
 
   override def indexStub(stub: FixtureClassStub, sink: IndexSink): Unit = {
-    val className: String = disgraceClassName(stub.fixtureClassName)
+    val className = disgraceClassName(stub.fixtureClassName)
     sink.occurrence(FixtureClassIndex.KEY, className);
   }
 
@@ -111,7 +113,7 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = {
     val ref = stubInputStream.readName
-    return new FixtureClassStubImpl(parentStub, ref.getString)
+    new FixtureClassStubImpl(parentStub, ref.getString)
   }
 }
 

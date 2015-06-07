@@ -1,11 +1,10 @@
-package fitnesse.idea.lang.psi
+package fitnesse.idea.fixturemethod
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
-import com.intellij.psi.{PsiMethod, PsiReference}
+import com.intellij.psi.{PsiElement, PsiMethod, PsiReference}
 import fitnesse.idea.fixtureclass.FixtureClass
 
-trait MethodReferences { self: ASTWrapperPsiElement =>
+trait MethodReferences extends PsiElement { self: PsiElement =>
 
   def getFixtureClass: Option[FixtureClass]
 
