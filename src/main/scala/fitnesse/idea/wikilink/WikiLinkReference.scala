@@ -4,7 +4,6 @@ import com.intellij.psi.search.{FileTypeIndex, GlobalSearchScopes}
 import com.intellij.psi.{PsiDirectory, PsiElement, PsiManager, PsiReferenceBase}
 import fitnesse.idea.lang.filetype.FitnesseFileType
 import fitnesse.idea.lang.parser.WikiLinkElementType
-import fitnesse.idea.wikilink.WikiLink
 
 import scala.collection.JavaConversions._
 

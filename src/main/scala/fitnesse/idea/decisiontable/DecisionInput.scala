@@ -5,7 +5,7 @@ import com.intellij.psi._
 import com.intellij.psi.stubs._
 import fitnesse.idea.fixturemethod.{FixtureMethodIndex, MethodReferences}
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.{Row, ScalaFriendlyStubBasedPsiElementBase}
+import fitnesse.idea.lang.psi.{Cell, Row, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._
 
 
@@ -14,7 +14,7 @@ trait DecisionInputStub extends StubElement[DecisionInput] {
 }
 
 
-trait DecisionInput extends StubBasedPsiElement[DecisionInputStub] with MethodReferences {
+trait DecisionInput extends StubBasedPsiElement[DecisionInputStub] with Cell with MethodReferences {
   def fixtureMethodName: String
   def getName: String
 }
@@ -29,15 +29,6 @@ class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
 
   def this(node: ASTNode) = { this(); init(node) }
   def this(stub: DecisionInputStub) = { this(); init(stub) }
-
-  def getRow = getParent.asInstanceOf[Row]
-
-  def getFixtureClass = getRow.getTable.getFixtureClass
-
-  def fixtureClassName: Option[String] = getRow.getTable.getFixtureClass match {
-    case Some(cls) => cls.fixtureClassName
-    case None => None
-  }
 
   override def fixtureMethodName =
     disgraceMethodName("set " + getName)

@@ -1,9 +1,8 @@
 package fitnesse.idea.lang.psi
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement
-import com.intellij.lang.ASTNode
+import com.intellij.psi.PsiElement
 
-abstract class Cell(node: ASTNode) extends ASTWrapperPsiElement(node) {
+trait Cell { self: PsiElement =>
   def getRow = getParent.asInstanceOf[Row]
 
   def getFixtureClass = getRow.getTable.getFixtureClass
