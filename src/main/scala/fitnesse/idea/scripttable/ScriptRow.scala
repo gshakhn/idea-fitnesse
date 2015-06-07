@@ -1,23 +1,21 @@
 package fitnesse.idea.scripttable
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.fixturemethod.MethodReferences
-import fitnesse.idea.lang.lexer.FitnesseTokenType
 import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.Row
+import fitnesse.idea.lang.psi.{Cell, Table, Row}
 import fitnesse.testsystems.slim.tables.Disgracer._
 
 import scala.collection.JavaConversions._
 
-class ScriptRow(node: ASTNode) extends Row(node) with MethodReferences {
-
-  override def getFixtureClass: Option[FixtureClass] = getTable.getFixtureClass
+class ScriptRow(node: ASTNode) extends ASTWrapperPsiElement(node) with Row with MethodReferences {
 
   override def fixtureMethodName: String = {
-    val snippets: java.util.List[PsiElement] = findChildrenByType(FitnesseElementType.CELL)
-    val texts = snippets.map(_.getText.trim).toList
+    val snippets = getCells
+    val texts = getCells.map(_.getText.trim)
 
     def constructFixtureName(parts: List[String]) = {
       if (parts.isEmpty)
@@ -37,4 +35,6 @@ class ScriptRow(node: ASTNode) extends Row(node) with MethodReferences {
       case method => constructFixtureName(method)
     }
   }
+
+  override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 }

@@ -5,7 +5,7 @@ import com.intellij.psi._
 import com.intellij.psi.stubs._
 import fitnesse.idea.fixturemethod.{FixtureMethodIndex, MethodReferences}
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.{Cell, Row, ScalaFriendlyStubBasedPsiElementBase}
+import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._
 
 

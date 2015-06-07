@@ -1,7 +1,7 @@
 package fitnesse.idea.lang.parser
 
-import com.intellij.psi.tree.{IStubFileElementType, IElementType, IFileElementType}
-import fitnesse.idea.decisiontable.{DecisionOutputElementTypeHolder, DecisionInputElementTypeHolder}
+import com.intellij.psi.tree.{IElementType, IStubFileElementType}
+import fitnesse.idea.decisiontable.{DecisionInputElementTypeHolder, DecisionOutputElementTypeHolder}
 import fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder
 import fitnesse.idea.lang.FitnesseLanguage
 

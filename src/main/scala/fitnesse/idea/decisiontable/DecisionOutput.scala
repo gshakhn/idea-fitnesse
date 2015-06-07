@@ -1,6 +1,5 @@
 package fitnesse.idea.decisiontable
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
 import com.intellij.psi.{PsiElement, StubBasedPsiElement}

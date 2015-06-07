@@ -2,17 +2,26 @@ package fitnesse.idea.lang.psi
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import com.intellij.psi.PsiElement
 import fitnesse.idea.fixtureclass.FixtureClass
 
-class Row(node: ASTNode) extends ASTWrapperPsiElement(node) {
+trait Row extends PsiElement {
+
+  def getTable = getParent.asInstanceOf[Table]
+
+  def getFixtureClass: Option[FixtureClass] = getTable.getFixtureClass
+
+  def getCells: List[Cell]
+}
+
+
+class SimpleRow(node: ASTNode) extends ASTWrapperPsiElement(node) with Row {
 
   // Todo: should be part of a TopRow class.
-  def getFixtureClass = findChildByClass(classOf[FixtureClass]) match {
+  override def getFixtureClass = findChildByClass(classOf[FixtureClass]) match {
     case null => None
     case c => Some(c)
   }
 
-  def getTable = getParent.asInstanceOf[Table]
-
-  def getCells = findChildrenByClass(classOf[Cell])
+  def getCells = findChildrenByClass(classOf[Cell]).toList
 }
