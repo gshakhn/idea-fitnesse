@@ -1,8 +1,7 @@
-package fitnesse.idea.lang.psi
+package fitnesse.idea.fixturemethod
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import fitnesse.idea.fixtureclass.FixtureClass
-import fitnesse.idea.fixturemethod.MethodReferences
 
 class MethodReferencesTest {
 
