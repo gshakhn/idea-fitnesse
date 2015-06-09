@@ -14,7 +14,7 @@ class FitnesseColorSettingsPage extends ColorSettingsPage {
 
   def getHighlighter = new FitnesseHighlighter
 
-  def getDemoText = "WikiWord\n\n|script | example script\n|ensure | do action |\n|check | outcome | foo |\n\n"
+  def getDemoText = "WikiWord\n\n|script | example script |\n|ensure | do action |\n|check | outcome | foo |\n\n"
 
   def getAdditionalHighlightingTagToDescriptorMap = null
 }
@@ -22,8 +22,6 @@ class FitnesseColorSettingsPage extends ColorSettingsPage {
 object FitnesseColorSettingsPage {
   final val DESCRIPTORS = Array(
     new AttributesDescriptor("WikiWord", FitnesseHighlighter.WIKI_WORD),
-    new AttributesDescriptor("Table type", FitnesseHighlighter.TABLE_TYPE),
-    new AttributesDescriptor("Cell Text", FitnesseHighlighter.CELL_TEXT),
-    new AttributesDescriptor("Cell Delimiter", FitnesseHighlighter.CELL_TEXT)
+    new AttributesDescriptor("Table", FitnesseHighlighter.TABLE_START)
   )
 }

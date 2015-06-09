@@ -13,9 +13,9 @@ class FitnesseHighlighter extends SyntaxHighlighterBase {
   override def getTokenHighlights(p1: IElementType) = {
     p1 match {
       case FitnesseTokenType.WIKI_WORD => Array(FitnesseHighlighter.WIKI_WORD)
-      case FitnesseTokenType.CELL_DELIM => Array(FitnesseHighlighter.CELL_DELIM)
-      case FitnesseTokenType.CELL_TEXT => Array(FitnesseHighlighter.CELL_TEXT)
-      case FitnesseTokenType.TABLE_TYPE => Array(FitnesseHighlighter.TABLE_TYPE)
+//      case FitnesseTokenType.CELL_DELIM => Array(FitnesseHighlighter.CELL_DELIM)
+      case FitnesseTokenType.TABLE_START => Array(FitnesseHighlighter.TABLE_START)
+//      case FitnesseTokenType.TABLE_TYPE => Array(FitnesseHighlighter.TABLE_TYPE)
       case _ => Array.empty
     }
   }
@@ -23,7 +23,7 @@ class FitnesseHighlighter extends SyntaxHighlighterBase {
 
 object FitnesseHighlighter {
   final val WIKI_WORD = TextAttributesKey.createTextAttributesKey("FITNESSE.WIKI_WORD", DefaultLanguageHighlighterColors.KEYWORD)
-  final val CELL_DELIM = TextAttributesKey.createTextAttributesKey("FITNESSE.CELL_DELIM", DefaultLanguageHighlighterColors.DOT)
-  final val CELL_TEXT = TextAttributesKey.createTextAttributesKey("FITNESSE.CELL_TEXT", DefaultLanguageHighlighterColors.STRING)
-  final val TABLE_TYPE = TextAttributesKey.createTextAttributesKey("FITNESSE.TABLE_TYPE", DefaultLanguageHighlighterColors.METADATA)
+//  final val CELL_DELIM = TextAttributesKey.createTextAttributesKey("FITNESSE.CELL", DefaultLanguageHighlighterColors.DOT)
+  final val TABLE_START = TextAttributesKey.createTextAttributesKey("FITNESSE.TABLE_START", DefaultLanguageHighlighterColors.STRING)
+//  final val TABLE_TYPE = TextAttributesKey.createTextAttributesKey("FITNESSE.TABLE_TYPE", DefaultLanguageHighlighterColors.METADATA)
 }

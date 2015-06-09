@@ -11,12 +11,8 @@ class FitnesseTokenType(debugName: String) extends IElementType(debugName, Fitne
 object FitnesseTokenType {
   final val WIKI_WORD: IElementType = new FitnesseTokenType("WIKI_WORD")
   final val WORD: IElementType = new FitnesseTokenType("WORD")
-  final val REGULAR_TEXT: IElementType = new FitnesseTokenType("REGULAR_TEXT")
   final val COLON: IElementType = new FitnesseTokenType("COLON")
   final val WHITE_SPACE: IElementType = TokenType.WHITE_SPACE
-
-  final val CELL_DELIM: IElementType = new FitnesseTokenType("CELL_DELIM")
-  final val CELL_TEXT: IElementType = new FitnesseTokenType("CELL_TEXT")
 
   final val LINE_TERMINATOR: IElementType = new FitnesseTokenType("LINE_TERMINATOR")
 
