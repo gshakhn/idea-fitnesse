@@ -11,7 +11,7 @@ import fitnesse.idea.fixtureclass.FixtureClassImpl
 import fitnesse.idea.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import fitnesse.idea.lang.psi._
 import fitnesse.idea.querytable.{QueryOutput, QueryTable}
-import fitnesse.idea.scripttable.{ScenarioName, ScenarioTable, ScriptRow, ScriptTable}
+import fitnesse.idea.scripttable._
 import fitnesse.idea.wikilink.WikiLink
 
 class FitnesseParserDefinition extends ParserDefinition {
@@ -35,7 +35,7 @@ class FitnesseParserDefinition extends ParserDefinition {
       case TableElementType.SCENARIO_TABLE => new ScenarioTable(astNode)
       case FitnesseElementType.ROW => new SimpleRow(astNode)
       case FitnesseElementType.CELL => new SimpleCell(astNode)
-      case FitnesseElementType.SCRIPT_ROW => new ScriptRow(astNode)
+      case FitnesseElementType.SCRIPT_ROW => new ScriptRowImpl(astNode)
       case FitnesseElementType.FIXTURE_CLASS => new FixtureClassImpl(astNode)
       case FitnesseElementType.SCENARIO_NAME => new ScenarioName(astNode)
       case FitnesseElementType.DECISION_INPUT => new DecisionInputImpl(astNode)

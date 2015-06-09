@@ -4,6 +4,7 @@ import com.intellij.psi.tree.{IElementType, IStubFileElementType}
 import fitnesse.idea.decisiontable.{DecisionInputElementTypeHolder, DecisionOutputElementTypeHolder}
 import fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder
 import fitnesse.idea.lang.FitnesseLanguage
+import fitnesse.idea.scripttable.ScriptRowElementTypeHolder
 
 class FitnesseElementType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
   override def toString = "Fitnesse:" + this.debugName
@@ -11,9 +12,9 @@ class FitnesseElementType(debugName: String) extends IElementType(debugName, Fit
 
 object FitnesseElementType {
   final val FILE = new IStubFileElementType(FitnesseLanguage.INSTANCE)
-  final val ROW = new FitnesseElementType("ROW")
-  final val SCRIPT_ROW = new FitnesseElementType("SCRIPT_ROW")
   final val TABLE_TYPE = new FitnesseElementType("TABLE_TYPE")
+  final val ROW = new FitnesseElementType("ROW")
+  final val SCRIPT_ROW = ScriptRowElementTypeHolder.INSTANCE
   final val FIXTURE_CLASS = FixtureClassElementTypeHolder.INSTANCE
   final val SCENARIO_NAME = new FitnesseElementType("SCENARIO_NAME")
   final val DECISION_INPUT = DecisionInputElementTypeHolder.INSTANCE
