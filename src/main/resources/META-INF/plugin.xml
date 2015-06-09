@@ -31,7 +31,8 @@
     <projectStructure.sourceRootEditHandler implementation="fitnesse.idea.run.FitNesseRootEditHandler"/>
 
     <fileTypeFactory implementation="fitnesse.idea.lang.filetype.FitnesseFileTypeFactory"/>
-    <syntaxHighlighter key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseHighlighter"/>
+    <lang.syntaxHighlighterFactory key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseSyntaxHighlighterFactory"/>
+
     <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
     <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.lang.parser.FitnesseParserDefinition"/>
 

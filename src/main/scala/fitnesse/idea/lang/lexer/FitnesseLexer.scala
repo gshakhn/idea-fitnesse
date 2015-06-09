@@ -6,9 +6,11 @@ import fitnesse.wikitext.parser._
 import scala.collection.JavaConversions._
 
 class FitnesseLexer extends LexerBase {
+
   var buffer: CharSequence = null
   var startOffset: Int = 0
   var endOffset: Int = 0
+  var state = 0
 
   var specification: ParseSpecification = null
   var scanner: Scanner = null
@@ -20,11 +22,10 @@ class FitnesseLexer extends LexerBase {
     this.buffer = buffer
     this.startOffset = startOffset
     this.endOffset = endOffset
-
-    Parser.make(new LexerParsingPage, buffer.subSequence(startOffset, endOffset)).parse
-
-    val currentPage: ParsingPage = new LexerParsingPage
+    this.state = initialState
+    
     val input: CharSequence = buffer.subSequence(startOffset, endOffset)
+    val currentPage: ParsingPage = new LexerParsingPage
 
     specification = new ParseSpecification().provider(SymbolProvider.wikiParsingProvider)
     scanner = new Scanner(new TextMaker(currentPage, currentPage.getNamedPage), input)
@@ -44,6 +45,7 @@ class FitnesseLexer extends LexerBase {
   }
   
   private def fetchNextSymbol(): List[Symbol] = {
+    state += 1
     symbolList match {
       case symbol :: tail if shouldTraverse(symbol) =>
         symbol.getChildren.toList ::: (FitnesseLexer.terminatorFor(symbol) match {
@@ -86,7 +88,7 @@ class FitnesseLexer extends LexerBase {
   }
 
   override def getState: Int = {
-    throw new IllegalStateException("FitnesseLexer does not have state that can be represented in an integer")
+    state //throw new IllegalStateException("FitnesseLexer does not have state that can be represented in an integer")
   }
 
   override def getBufferEnd: Int = buffer.length
