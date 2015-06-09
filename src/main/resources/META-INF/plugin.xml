@@ -18,10 +18,12 @@
   </module-components>
 
   <actions>
+    <!-- TODO: We need to make sure we can store the FitNesse root in the module file, before this action adds any value.
     <group>
       <action id="MarkFitNesseRoot" class="fitnesse.idea.run.MarkFitNesseRootAction"/>
       <add-to-group group-id="MarkRootGroup"/>
     </group>
+    -->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -32,10 +34,11 @@
     <syntaxHighlighter key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseHighlighter"/>
     <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
     <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.lang.parser.FitnesseParserDefinition"/>
-    <lang.elementManipulator forClass="fitnesse.idea.lang.psi.WikiLink"
-                             implementationClass="fitnesse.idea.lang.manipulator.WikiLinkManipulator"/>
-    <lang.elementManipulator forClass="fitnesse.idea.lang.psi.FixtureClass"
-                             implementationClass="fitnesse.idea.lang.manipulator.FixtureClassManipulator"/>
+
+    <lang.elementManipulator forClass="fitnesse.idea.wikilink.WikiLink"
+                             implementationClass="fitnesse.idea.wikilink.WikiLinkManipulator"/>
+    <lang.elementManipulator forClass="fitnesse.idea.fixtureclass.FixtureClass"
+                             implementationClass="fitnesse.idea.fixtureclass.FixtureClassManipulator"/>
 
     <lang.elementManipulator forClass="fitnesse.idea.decisiontable.DecisionInput"
                              implementationClass="fitnesse.idea.decisiontable.DecisionInputManipulator"/>
@@ -54,6 +57,11 @@
 
     <usageTypeProvider implementation="fitnesse.idea.lang.psi.FitNesseUsageTypeProvider" />
 
+    <stubElementTypeHolder class="fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder"/>
+    <stubElementTypeHolder class="fitnesse.idea.decisiontable.DecisionInputElementTypeHolder"/>
+
+    <stubIndex implementation="fitnesse.idea.fixtureclass.FixtureClassIndex"/>
+    <stubIndex implementation="fitnesse.idea.fixturemethod.FixtureMethodIndex"/>
 
     <!-- TODO: Need something like code inspections-->
     <!--
@@ -69,5 +77,8 @@
                      groupBundle="org.jetbrains.plugins.cucumber.java.CucumberJavaBundle" groupKey="cucumber.java.inspection.group.name" enabledByDefault="true"
                      level="WARNING" implementationClass="org.jetbrains.plugins.cucumber.java.inspections.CucumberJavaStepDefClassIsPublicInspections"/>
     -->
+
+    <referencesSearch implementation="fitnesse.idea.fixtureclass.FixtureClassReferencesSearch"/>
+    <methodReferencesSearch implementation="fitnesse.idea.fixturemethod.FixtureMethodReferencesSearch"/>
   </extensions>
 </idea-plugin>

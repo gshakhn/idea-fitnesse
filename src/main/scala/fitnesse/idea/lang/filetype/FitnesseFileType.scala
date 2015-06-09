@@ -5,9 +5,9 @@ import com.intellij.openapi.util.IconLoader
 import fitnesse.idea.lang.FitnesseLanguage
 
 class FitnesseFileType extends LanguageFileType(FitnesseLanguage.INSTANCE) {
-  def getName = "Fitnesse"
+  def getName = "FitNesse"
 
-  def getDescription = "Fitnesse file"
+  def getDescription = "FitNesse file"
 
   def getDefaultExtension = "txt"
 
@@ -17,5 +17,6 @@ class FitnesseFileType extends LanguageFileType(FitnesseLanguage.INSTANCE) {
 object FitnesseFileType {
   final val INSTANCE = new FitnesseFileType
   final val FILE_ICON = IconLoader.getIcon("/fitnesse/idea/FitNesseLogo.png")
+  final val FOLDER_ICON = IconLoader.getIcon("/fitnesse/idea/FitNesseRoot.png")
   final val FILE_NAME = "content.txt"
 }

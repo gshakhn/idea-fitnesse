@@ -6,11 +6,13 @@ import com.intellij.lang.{ASTNode, ParserDefinition}
 import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.tree.TokenSet
-import fitnesse.idea.decisiontable.{DecisionInput, DecisionOutput, DecisionTable}
+import fitnesse.idea.decisiontable.{DecisionInputImpl, DecisionInput, DecisionOutput, DecisionTable}
+import fitnesse.idea.fixtureclass.FixtureClassImpl
 import fitnesse.idea.lang.lexer.{FitnesseLexer, FitnesseTokenType}
-import fitnesse.idea.lang.psi.{FitnesseFile, FixtureClass, Row, WikiLink}
+import fitnesse.idea.lang.psi._
 import fitnesse.idea.querytable.{QueryOutput, QueryTable}
 import fitnesse.idea.scripttable.{ScenarioName, ScenarioTable, ScriptRow, ScriptTable}
+import fitnesse.idea.wikilink.WikiLink
 
 class FitnesseParserDefinition extends ParserDefinition {
   override def createLexer(project: Project) = new FitnesseLexer
@@ -33,9 +35,9 @@ class FitnesseParserDefinition extends ParserDefinition {
       case TableElementType.SCENARIO_TABLE => new ScenarioTable(astNode)
       case FitnesseElementType.ROW => new Row(astNode)
       case FitnesseElementType.SCRIPT_ROW => new ScriptRow(astNode)
-      case FitnesseElementType.FIXTURE_CLASS => new FixtureClass(astNode)
+      case FitnesseElementType.FIXTURE_CLASS => new FixtureClassImpl(astNode)
       case FitnesseElementType.SCENARIO_NAME => new ScenarioName(astNode)
-      case FitnesseElementType.DECISION_INPUT => new DecisionInput(astNode)
+      case FitnesseElementType.DECISION_INPUT => new DecisionInputImpl(astNode)
       case FitnesseElementType.DECISION_OUTPUT => new DecisionOutput(astNode)
       case FitnesseElementType.QUERY_OUTPUT => new QueryOutput(astNode)
       case _:WikiLinkElementType => new WikiLink(astNode)

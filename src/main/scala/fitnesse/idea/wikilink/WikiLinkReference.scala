@@ -1,10 +1,9 @@
-package fitnesse.idea.lang.reference
+package fitnesse.idea.wikilink
 
 import com.intellij.psi.search.{FileTypeIndex, GlobalSearchScopes}
 import com.intellij.psi.{PsiDirectory, PsiElement, PsiManager, PsiReferenceBase}
 import fitnesse.idea.lang.filetype.FitnesseFileType
 import fitnesse.idea.lang.parser.WikiLinkElementType
-import fitnesse.idea.lang.psi.WikiLink
 
 import scala.collection.JavaConversions._
 
