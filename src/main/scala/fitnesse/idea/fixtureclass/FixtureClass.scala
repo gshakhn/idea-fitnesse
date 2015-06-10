@@ -10,18 +10,19 @@ import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 
 trait FixtureClassStub extends StubElement[FixtureClass] {
-  def fixtureClassName: String
+  def getName: String
 }
 
 
 trait FixtureClass extends StubBasedPsiElement[FixtureClassStub] {
   def fixtureClassName: Option[String]
   def getReferencedClasses: Seq[PsiClass]
+  def getName: String
 }
 
 
-class FixtureClassStubImpl(parent: StubElement[_ <: PsiElement], className: String) extends StubBase[FixtureClass](parent, FixtureClassElementTypeHolder.INSTANCE) with FixtureClassStub {
-  override def fixtureClassName: String = className
+class FixtureClassStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[FixtureClass](parent, FixtureClassElementTypeHolder.INSTANCE) with FixtureClassStub {
+  override def getName: String = name
 }
 
 
@@ -74,7 +75,7 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
 
   override def getName =
     if (getStub != null)
-      getStub.fixtureClassName
+      getStub.getName
     else
       getNode.getText
 
@@ -100,17 +101,17 @@ object FixtureClassIndex {
 class FixtureClassElementType(debugName: String) extends IStubElementType[FixtureClassStub, FixtureClass](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.fixtureClass"
 
-  override def createStub(psi: FixtureClass, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = new FixtureClassStubImpl(parentStub, psi.fixtureClassName.getOrElse(""))
+  override def createStub(psi: FixtureClass, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = new FixtureClassStubImpl(parentStub, psi.getName)
 
   override def createPsi(stub: FixtureClassStub): FixtureClass = new FixtureClassImpl(stub)
 
   override def indexStub(stub: FixtureClassStub, sink: IndexSink): Unit = {
-    val className = disgraceClassName(stub.fixtureClassName)
+    val className = disgraceClassName(stub.getName)
     sink.occurrence(FixtureClassIndex.KEY, className);
   }
 
   override def serialize(t: FixtureClassStub, stubOutputStream: StubOutputStream): Unit = {
-    stubOutputStream.writeName(t.fixtureClassName)
+    stubOutputStream.writeName(t.getName)
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = {

@@ -13,7 +13,7 @@ import scala.collection.JavaConversions._
 
 
 trait ScriptRowStub extends StubElement[ScriptRow] {
-  def fixtureMethodName: String
+  def getName: String
 }
 
 
@@ -24,7 +24,7 @@ trait ScriptRow extends StubBasedPsiElement[ScriptRowStub] with Row with MethodR
 
 
 class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String) extends StubBase[ScriptRow](parent, ScriptRowElementTypeHolder.INSTANCE) with ScriptRowStub {
-  override def fixtureMethodName: String = methodName
+  override def getName: String = methodName
 }
 
 
@@ -38,7 +38,7 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
 
   override def getName =
     if (getStub != null)
-      getStub.fixtureMethodName
+      getStub.getName
     else {
       val snippets = getCells
       val texts = getCells.map(_.getText.trim)
@@ -72,13 +72,13 @@ class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRow
   override def createPsi(stub: ScriptRowStub): ScriptRow = new ScriptRowImpl(stub)
 
   override def indexStub(stub: ScriptRowStub, sink: IndexSink): Unit = {
-    val methodName = disgraceMethodName(stub.fixtureMethodName)
+    val methodName = disgraceMethodName(stub.getName)
     println("Add to index: " + methodName)
     sink.occurrence(FixtureMethodIndex.KEY, methodName)
   }
 
   override def serialize(t: ScriptRowStub, stubOutputStream: StubOutputStream): Unit = {
-    stubOutputStream.writeName(t.fixtureMethodName)
+    stubOutputStream.writeName(t.getName)
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = {

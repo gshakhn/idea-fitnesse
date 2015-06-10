@@ -10,7 +10,7 @@ import fitnesse.testsystems.slim.tables.Disgracer._
 
 
 trait DecisionOutputStub extends StubElement[DecisionOutput] {
-  def fixtureMethodName: String
+  def getName: String
 }
 
 
@@ -20,8 +20,8 @@ trait DecisionOutput extends StubBasedPsiElement[DecisionOutputStub] with Cell w
 }
 
 
-class DecisionOutputStubImpl(parent: StubElement[_ <: PsiElement], methodName: String) extends StubBase[DecisionOutput](parent, DecisionOutputElementTypeHolder.INSTANCE) with DecisionOutputStub {
-  override def fixtureMethodName: String = methodName
+class DecisionOutputStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[DecisionOutput](parent, DecisionOutputElementTypeHolder.INSTANCE) with DecisionOutputStub {
+  override def getName: String = name
 }
 
 
@@ -35,7 +35,7 @@ class DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
 
   override def getName =
     if (getStub != null)
-      getStub.fixtureMethodName
+      getStub.getName
     else
       getNode.getText
 
@@ -52,13 +52,13 @@ class DecisionOutputElementType(debugName: String) extends IStubElementType[Deci
   override def createPsi(stub: DecisionOutputStub): DecisionOutput = new DecisionOutputImpl(stub)
 
   override def indexStub(stub: DecisionOutputStub, sink: IndexSink): Unit = {
-    val methodName = disgraceMethodName(stub.fixtureMethodName)
+    val methodName = disgraceMethodName(stub.getName)
     println("Add to index: " + methodName)
     sink.occurrence(FixtureMethodIndex.KEY, methodName)
   }
 
   override def serialize(t: DecisionOutputStub, stubOutputStream: StubOutputStream): Unit = {
-    stubOutputStream.writeName(t.fixtureMethodName)
+    stubOutputStream.writeName(t.getName)
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): DecisionOutputStub = {
