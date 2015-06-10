@@ -1,6 +1,7 @@
 package fitnesse.idea.lang.lexer
 
 class TableLexerSuite extends LexerSuite {
+
   test("iterators") {
     val iter = Iterator("A", "B")
 
@@ -242,287 +243,18 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
-  ignore("Ordered Query table") {
+  test("Table with empty cell") {
     assertResult(
       List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, "Ordered query"),
-        (FitnesseTokenType.COLON, ":"),
-        (FitnesseTokenType.WORD, "some stuff"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "with param1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Col1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Col2"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Result 1 Col1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Result 1 Col2"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n")
-      )) {
-      lex("|Ordered query:some stuff|with param1|\n|Col1|Col2|\n|Result 1 Col1|Result 1 Col2|\n\n")
-    }
-  }
-
-  ignore("Subset Query table") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, "Subset query"),
-        (FitnesseTokenType.COLON, ":"),
-        (FitnesseTokenType.WORD, "some stuff"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "with param1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Col1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Col2"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Result 1 Col1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Result 1 Col2"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n")
-      )) {
-      lex("|Subset query:some stuff|with param1|\n|Col1|Col2|\n|Result 1 Col1|Result 1 Col2|\n\n")
-    }
-  }
-
-  ignore("Table table") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, "Table"),
-        (FitnesseTokenType.COLON, ":"),
-        (FitnesseTokenType.WORD, "Some Table"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "row1 col1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "row1 col2"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "row2 col1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "row2 col2"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n")
-      )) {
-      lex("|Table:Some Table|\n|row1 col1|row1 col2|\n|row2 col1|row2 col2|\n\n")
-    }
-  }
-
-  ignore("Import Table") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, "Import"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "import1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "import2"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n")
-      )) {
-      lex("|Import|\n|import1|\n|import2|\n\n")
-    }
-  }
-
-  ignore("Comment Table") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, "comment"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "this doesn't matter"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, "")
-      )) {
-      lex("|comment|\n|this doesn't matter|")
-    }
-  }
-
-  ignore("Library Table") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, "library"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "SupportClass"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, "")
-      )) {
-      lex("|library|\n|SupportClass|")
-    }
-  }
-
-  test("Script table") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, "|script|SomeClass|with param1|\n|do this thing|with param|"),
-        (FitnesseTokenType.ROW_START, "script|SomeClass|with param1|\n|"),
-        (FitnesseTokenType.CELL_START, "script|"),
-        (FitnesseTokenType.WORD, "script"),
-        (FitnesseTokenType.CELL_END, "|"),
-        (FitnesseTokenType.CELL_START, "SomeClass|"),
-        (FitnesseTokenType.WIKI_WORD, "SomeClass"),
-        (FitnesseTokenType.CELL_END, "|"),
-        (FitnesseTokenType.CELL_START, "with param1|\n|"),
-        (FitnesseTokenType.WORD, "with"),
+        (FitnesseTokenType.TABLE_START, "|Some table||\n"),
+        (FitnesseTokenType.ROW_START, "Some table||\n"),
+        (FitnesseTokenType.CELL_START, "Some table|"),
+        (FitnesseTokenType.WORD, "Some"),
         (FitnesseTokenType.WHITE_SPACE, " "),
-        (FitnesseTokenType.WORD, "param1"),
-        (FitnesseTokenType.CELL_END, "|\n|"),
-        (FitnesseTokenType.ROW_END, "|\n|"),
-        (FitnesseTokenType.ROW_START, "do this thing|with param|"),
-        (FitnesseTokenType.CELL_START, "do this thing|"),
-        (FitnesseTokenType.WORD, "do"),
-        (FitnesseTokenType.WHITE_SPACE, " "),
-        (FitnesseTokenType.WORD, "this"),
-        (FitnesseTokenType.WHITE_SPACE, " "),
-        (FitnesseTokenType.WORD, "thing"),
+        (FitnesseTokenType.WORD, "table"),
         (FitnesseTokenType.CELL_END, "|"),
-        (FitnesseTokenType.CELL_START, "with param|"),
-        (FitnesseTokenType.WORD, "with"),
-        (FitnesseTokenType.WHITE_SPACE, " "),
-        (FitnesseTokenType.WORD, "param"),
-        (FitnesseTokenType.CELL_END, "|"),
-        (FitnesseTokenType.ROW_END, "|"),
-        (FitnesseTokenType.TABLE_END, "|")
-      )) {
-      lex("|script|SomeClass|with param1|\n|do this thing|with param|")
-    }
-  }
-
-  ignore("Script table with spaces") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, " script "),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "SomeClass"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "with param1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "do this thing"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "with param"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, "")
-      )) {
-      lex("| script |SomeClass|with param1|\n|do this thing|with param|")
-    }
-  }
-
-  ignore("Scenario table") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.TABLE_TYPE, "scenario"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "scenario name"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "param1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "do this thing"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "@param1"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, "")
-      )) {
-      lex("|scenario|scenario name|param1|\n|do this thing|@param1|")
-    }
-  }
-
-  ignore("Table with empty cell") {
-    assertResult(
-      List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Some table"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
+        (FitnesseTokenType.CELL_START, "|\n"),
+        (FitnesseTokenType.CELL_END, ""),
         (FitnesseTokenType.ROW_END, ""),
         (FitnesseTokenType.TABLE_END, ""),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
@@ -531,25 +263,27 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
-  ignore("Table with empty first cell") {
+  test("Table with empty first cell") {
     assertResult(
       List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
+        (FitnesseTokenType.TABLE_START, "||Some table|\n"),
+        (FitnesseTokenType.ROW_START, "|Some table|\n"),
         (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Some table"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
+        (FitnesseTokenType.CELL_END, ""),
+        (FitnesseTokenType.CELL_START, "Some table|\n"),
+        (FitnesseTokenType.WORD, "Some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "table"),
+        (FitnesseTokenType.CELL_END, "|\n"),
+        (FitnesseTokenType.ROW_END,"|\n"),
+        (FitnesseTokenType.TABLE_END,"|\n"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
       )) {
       lex("||Some table|\n\n")
     }
   }
 
-  ignore("'Table' with newline after the first |") {
+  test("'Table' with newline after the first |") {
     assertResult(
       List(
         (FitnesseTokenType.WORD, "|"),
@@ -559,29 +293,28 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
-  ignore("'Table' with newline in middle of first cell") {
+  test("'Table' with newline in middle of first cell") {
     assertResult(
       List(
-        (FitnesseTokenType.WORD, "|"),
-        (FitnesseTokenType.WORD, "Hello"),
+        (FitnesseTokenType.WORD, "|Hello"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
       )) {
       lex("|Hello\n")
     }
   }
 
-  ignore("Table with row being currently written at EOF") {
+  test("Table with row being currently written at EOF") {
     assertResult(
       List(
-        (FitnesseTokenType.TABLE_START, ""),
+        (FitnesseTokenType.TABLE_START, "|Some table|\n|"),
+        (FitnesseTokenType.ROW_START, "Some table|\n|"),
+        (FitnesseTokenType.CELL_START, "Some table|\n|"),
+        (FitnesseTokenType.WORD, "Some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "table"),
+        (FitnesseTokenType.CELL_END, "|\n|"),
+        (FitnesseTokenType.ROW_END, "|\n|"),
         (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Some table"),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
         (FitnesseTokenType.ROW_END, ""),
         (FitnesseTokenType.TABLE_END, "")
       )) {
@@ -589,21 +322,15 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
-  ignore("Table with row being currently written in middle of file") {
+  test("Table with row being currently written in middle of file") {
     assertResult(
       List(
-        (FitnesseTokenType.TABLE_START, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.WORD, "Some table"),
-        (FitnesseTokenType.CELL_START, "|"),
+        (FitnesseTokenType.WORD, "|Some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "table|"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.ROW_START, ""),
-        (FitnesseTokenType.CELL_START, "|"),
+        (FitnesseTokenType.WORD, "|"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n"),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
         (FitnesseTokenType.LINE_TERMINATOR, "\n"),
         (FitnesseTokenType.WORD, "Hello")
       )) {
