@@ -33,10 +33,7 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
   def getRow = getParent.asInstanceOf[Row]
 
   def fixtureClassName: Option[String] =
-    (if (getStub != null)
-      disgraceClassName(getStub.fixtureClassName)
-    else
-      disgraceClassName(getNode.getText)) match {
+    disgraceClassName(getName) match {
       case "" => None
       case className => Some(className)
     }
@@ -75,7 +72,12 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
     getReferencedClasses.map(new FixtureClassReference(_, this)).toArray
   }
 
-//  override def getName = fixtureClassName.get
+  override def getName =
+    if (getStub != null)
+      getStub.fixtureClassName
+    else
+      getNode.getText
+
 
   override def setName(s: String): PsiElement = FixtureClassManipulator.createFixtureClass(getProject, s)
 }
