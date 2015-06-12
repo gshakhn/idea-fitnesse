@@ -6,7 +6,7 @@ import com.intellij.psi.stubs.{StubIndexKey, StringStubIndexExtension}
 class FixtureMethodIndex extends StringStubIndexExtension[MethodReferences] {
   override def getKey: StubIndexKey[String, MethodReferences] = FixtureMethodIndex.KEY
 
-  override def getVersion: Int = 7
+  override def getVersion: Int = 2
 }
 
 

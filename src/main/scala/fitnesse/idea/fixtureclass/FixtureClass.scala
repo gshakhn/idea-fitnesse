@@ -73,12 +73,10 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
     getReferencedClasses.map(new FixtureClassReference(_, this)).toArray
   }
 
-  override def getName =
-    if (getStub != null)
-      getStub.getName
-    else
-      getNode.getText
-
+  override def getName = dispatch match {
+    case STUB => getStub.getName
+    case NODE => getNode.getText
+  }
 
   override def setName(s: String): PsiElement = FixtureClassManipulator.createFixtureClass(getProject, s)
 }

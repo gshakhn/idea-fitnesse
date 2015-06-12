@@ -21,12 +21,22 @@ import fitnesse.idea.lang.FitnesseLanguage
  */
 abstract class ScalaFriendlyStubBasedPsiElementBase[T <: StubElement[_ <: PsiElement]] extends StubBasedPsiElementBase[T](DummyASTNode.getInstanceForJava) {
 
+  protected object DispatchType extends Enumeration {
+    val STUB = Value("STUB")
+    val NODE = Value("NODE")
+  }
+
+  protected val STUB = DispatchType.STUB
+  protected val NODE = DispatchType.NODE
+
   protected def init(node: ASTNode) = setNode(node)
   protected def init(stub: T) = { setStub(stub); setNode(null) }
 
-  override def getElementType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement] = {
-    if (getStub != null) getStub.getStubType
-    else getNode.getElementType.asInstanceOf[IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement]]
+  def dispatch = if (getStub != null) DispatchType.STUB else DispatchType.NODE
+
+  override def getElementType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement] = dispatch match {
+    case STUB => getStub.getStubType
+    case NODE => getNode.getElementType.asInstanceOf[IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement]]
   }
 }
 
