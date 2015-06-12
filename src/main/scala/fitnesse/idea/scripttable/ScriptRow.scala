@@ -58,11 +58,11 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
       }
   }
 
+  override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
+
   override def getFixtureClass: Option[FixtureClass] = getTable.getFixtureClass
 
-  override def getScenarioName: Option[ScenarioName] = getTable.getScenarioName
-
-  override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
+  override def findChildByClass[T](clazz: Class[T]): T = super.findChildByClass(clazz)
 }
 
 

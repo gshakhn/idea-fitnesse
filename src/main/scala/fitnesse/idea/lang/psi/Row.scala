@@ -10,20 +10,19 @@ trait Row extends PsiElement {
 
   def getTable = getParent.asInstanceOf[Table]
 
-  def getFixtureClass: Option[FixtureClass]
-
-  def getScenarioName: Option[ScenarioName]
-
   def getCells: List[Cell]
+
+  // Make this method public (it's protected in PsiElement,
+  // hence Scala visibility rules prevent us from accessing it
+  def findChildByClass[T](clazz: Class[T]): T
 }
 
 
 class SimpleRow(node: ASTNode) extends ASTWrapperPsiElement(node) with Row {
 
   // Todo: should be part of a TopRow class??
-  override def getFixtureClass = Option(findChildByClass(classOf[FixtureClass]))
-
-  override def getScenarioName: Option[ScenarioName] = Option(findChildByClass(classOf[ScenarioName]))
-
   def getCells = findChildrenByClass(classOf[Cell]).toList
+
+  override def findChildByClass[T](clazz: Class[T]): T = super.findChildByClass(clazz)
+
 }

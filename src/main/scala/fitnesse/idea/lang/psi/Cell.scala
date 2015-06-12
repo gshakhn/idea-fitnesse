@@ -7,12 +7,9 @@ import com.intellij.psi.PsiElement
 trait Cell extends PsiElement {
   def getRow = getParent.asInstanceOf[Row]
 
-  def getFixtureClass = getRow.getTable.getFixtureClass
+  def getTable = getRow.getTable
 
-  def fixtureClassName: Option[String] = getRow.getTable.getFixtureClass match {
-    case Some(cls) => cls.fixtureClassName
-    case None => None
-  }
+  def getFixtureClass = getTable.getFixtureClass
 
 }
 

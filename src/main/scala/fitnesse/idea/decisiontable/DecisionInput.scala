@@ -38,7 +38,7 @@ class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
     case NODE => getNode.getText
   }
 
-  override def createReference(psiMethod: PsiMethod) = new DecisionInputReference(psiMethod, this)
+//  override def createReference(psiMethod: PsiMethod) = new DecisionInputReference(psiMethod, this)
 }
 
 
