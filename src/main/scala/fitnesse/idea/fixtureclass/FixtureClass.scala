@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
+import fitnesse.idea.fixturemethod.MethodReference
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Row, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
@@ -16,7 +17,6 @@ trait FixtureClassStub extends StubElement[FixtureClass] {
 
 trait FixtureClass extends StubBasedPsiElement[FixtureClassStub] {
   def fixtureClassName: Option[String]
-  def getReferencedClasses: Seq[PsiClass]
   def getName: String
 }
 
@@ -59,18 +59,20 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
     }
   }
 
-  def getReferencedClasses: Seq[PsiClass] = {
+  protected def getReferencedClasses: Seq[PsiReference] = {
+    def createReference(psiClass: PsiClass): FixtureClassReference = new FixtureClassReference(psiClass, this)
+
     fixtureClassName match {
       case Some(className) if isQualifiedName =>
-          JavaPsiFacade.getInstance(getProject).findClasses(className, GlobalSearchScope.projectScope(getProject))
+          JavaPsiFacade.getInstance(getProject).findClasses(className, GlobalSearchScope.projectScope(getProject)).map(createReference)
       case Some(className) =>
-          PsiShortNamesCache.getInstance(getProject).getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject))
+          PsiShortNamesCache.getInstance(getProject).getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject)).map(createReference)
       case None => Seq()
     }
   }
 
   override def getReferences = {
-    getReferencedClasses.map(new FixtureClassReference(_, this)).toArray
+    getReferencedClasses.toArray
   }
 
   override def getName = source match {
