@@ -33,7 +33,7 @@ class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
   override def fixtureMethodName =
     disgraceMethodName("set " + getName)
 
-  override def getName = dispatch match {
+  override def getName = source match {
     case STUB => getStub.getName
     case NODE => getNode.getText
   }

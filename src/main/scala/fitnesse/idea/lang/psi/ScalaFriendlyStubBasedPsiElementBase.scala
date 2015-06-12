@@ -32,9 +32,9 @@ abstract class ScalaFriendlyStubBasedPsiElementBase[T <: StubElement[_ <: PsiEle
   protected def init(node: ASTNode) = setNode(node)
   protected def init(stub: T) = { setStub(stub); setNode(null) }
 
-  def dispatch = if (getStub != null) DispatchType.STUB else DispatchType.NODE
+  def source = if (getStub != null) DispatchType.STUB else DispatchType.NODE
 
-  override def getElementType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement] = dispatch match {
+  override def getElementType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement] = source match {
     case STUB => getStub.getStubType
     case NODE => getNode.getElementType.asInstanceOf[IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement]]
   }

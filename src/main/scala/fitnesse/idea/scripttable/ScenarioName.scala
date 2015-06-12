@@ -40,7 +40,7 @@ class ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
   override def scenarioName =
     disgraceClassName(getName)
 
-  override def getName = dispatch match {
+  override def getName = source match {
     case STUB => getStub.getName
     case NODE =>
       val snippets = getCells.zipWithIndex.filter(_._2 % 2 == 0).map(_._1)

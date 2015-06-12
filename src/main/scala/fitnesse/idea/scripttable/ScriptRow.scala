@@ -37,7 +37,7 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
   override def fixtureMethodName =
     disgraceMethodName(getName)
 
-  override def getName = dispatch match {
+  override def getName = source match {
     case STUB => getStub.getName
     case NODE =>
       val texts = getCells.map(_.getText.trim)

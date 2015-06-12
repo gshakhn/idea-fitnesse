@@ -33,7 +33,7 @@ class DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
   override def fixtureMethodName =
     disgraceMethodName(getName)
 
-  override def getName = dispatch match {
+  override def getName = source match {
     case STUB => getStub.getName
     case NODE => getNode.getText
   }
