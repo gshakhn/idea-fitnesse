@@ -10,21 +10,18 @@ trait MethodReferences extends PsiElement {
 
   def fixtureMethodName: String
 
-  def getReferencedMethods: Seq[PsiMethod] = {
+  protected def getReferencedMethods: Seq[PsiReference] = {
+    def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
+
     getFixtureClass match {
       case Some(fixtureClass) =>
         fixtureClass.getReferencedClasses
-          .flatMap(_.findMethodsByName(fixtureMethodName, true /* checkBases */)).toSeq
+          .flatMap(_.findMethodsByName(fixtureMethodName, true /* checkBases */)).map(createReference)
       case None =>
         val cache = PsiShortNamesCache.getInstance(getProject)
-        cache.getMethodsByName(fixtureMethodName, GlobalSearchScope.projectScope(getProject))
+        cache.getMethodsByName(fixtureMethodName, GlobalSearchScope.projectScope(getProject)).map(createReference)
     }
   }
 
-
-  override def getReferences: Array[PsiReference] = {
-    getReferencedMethods.map(createReference).toArray
-  }
-
-  private def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
+  override def getReferences: Array[PsiReference] = getReferencedMethods.toArray
 }

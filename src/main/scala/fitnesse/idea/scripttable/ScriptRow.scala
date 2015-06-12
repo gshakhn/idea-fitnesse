@@ -2,9 +2,9 @@ package fitnesse.idea.scripttable
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
-import com.intellij.psi.{PsiElement, StubBasedPsiElement}
+import com.intellij.psi.{PsiMethod, PsiReference, PsiElement, StubBasedPsiElement}
 import fitnesse.idea.fixtureclass.FixtureClass
-import fitnesse.idea.fixturemethod.{FixtureMethodIndex, MethodReferences}
+import fitnesse.idea.fixturemethod.{MethodReference, ScenarioReferences, FixtureMethodIndex, MethodReferences}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.parser.FitnesseElementType
 import fitnesse.idea.lang.psi.{Cell, Row, ScalaFriendlyStubBasedPsiElementBase}
@@ -18,7 +18,7 @@ trait ScriptRowStub extends StubElement[ScriptRow] {
 }
 
 
-trait ScriptRow extends StubBasedPsiElement[ScriptRowStub] with Row with MethodReferences {
+trait ScriptRow extends StubBasedPsiElement[ScriptRowStub] with Row {
   def fixtureMethodName: String
   def getName: String
 }
@@ -29,7 +29,7 @@ class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String
 }
 
 
-class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] with ScriptRow {
+class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] with ScriptRow with MethodReferences with ScenarioReferences {
 
   def this(node: ASTNode) = { this(); init(node) }
   def this(stub: ScriptRowStub) = { this(); init(stub) }
@@ -57,6 +57,11 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
         case method => constructFixtureName(method)
       }
   }
+
+  // TODO: prefer scenarios over fixture methods, once we know the parent page path.
+  override def getReferences: Array[PsiReference] = (getReferencedScenarios ++ getReferencedMethods).toArray
+
+  private def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
 
   override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 

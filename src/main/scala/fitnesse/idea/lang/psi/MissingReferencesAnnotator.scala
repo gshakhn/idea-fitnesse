@@ -14,7 +14,7 @@ class MissingReferencesAnnotator extends Annotator {
           holder.createErrorAnnotation(element.getTextRange, "No fixture class found")
         }
       case methodReferences: MethodReferences =>
-        if (methodReferences.getReferencedMethods.isEmpty) {
+        if (methodReferences.getReferences.isEmpty) {
           holder.createErrorAnnotation(element.getTextRange, "No fixture method found")
         }
       case _ =>

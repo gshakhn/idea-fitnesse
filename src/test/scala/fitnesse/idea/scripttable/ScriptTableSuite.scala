@@ -1,11 +1,16 @@
 package fitnesse.idea.scripttable
 
+import java.util.Collections
+
+import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.{PsiClass, PsiMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
+
+import scala.collection.JavaConverters._
 
 class ScriptTableSuite extends PsiSuite {
 
@@ -16,7 +21,6 @@ class ScriptTableSuite extends PsiSuite {
     super.beforeAll()
 
     when(myPsiShortNamesCache.getClassesByName(m_eq("MyScriptTable"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
-
   }
 
   def scriptRow(s: String): ScriptRow = {
@@ -98,4 +102,15 @@ class ScriptTableSuite extends PsiSuite {
     }
   }
 
+  test("scenario method") {
+    val myScenarioCallMe = mock[ScenarioName]
+    val output = scriptRow("| call me |")
+    when(myPsiClass.findMethodsByName(m_eq("callMe"), anyBoolean)).thenReturn(Array[PsiMethod]())
+    when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("callMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
+    assertResult(myScenarioCallMe) {
+      val refs = output.getReferences
+      refs(0).resolve
+    }
+
+  }
 }
