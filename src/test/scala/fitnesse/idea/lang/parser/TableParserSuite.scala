@@ -456,7 +456,7 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
-  test("Scenario tablewith colon separator") {
+  test("Scenario table with colon separator") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.SCENARIO_TABLE, List(
@@ -467,10 +467,14 @@ class TableParserSuite extends ParserSuite {
             )),
             Leaf(FitnesseTokenType.COLON, ":"),
             Node(FitnesseElementType.SCENARIO_NAME, List(
-              Leaf(FitnesseTokenType.WORD, "stuff")
-            )),
-            Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.WORD, "param1")
+              Node(FitnesseElementType.CELL, List(
+                Leaf(FitnesseTokenType.WORD, "stuff")
+              )),
+              Leaf(FitnesseTokenType.CELL_END, "|"),
+              Node(FitnesseElementType.CELL, List(
+                Leaf(FitnesseTokenType.WORD, "param1")
+              ))
+            ))
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.SCRIPT_ROW, List(
@@ -505,10 +509,14 @@ class TableParserSuite extends ParserSuite {
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
             Node(FitnesseElementType.SCENARIO_NAME, List(
-              Leaf(FitnesseTokenType.WORD, "stuff")
-            )),
-            Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.WORD, "param1")
+              Node(FitnesseElementType.CELL, List(
+                Leaf(FitnesseTokenType.WORD, "stuff")
+              )),
+              Leaf(FitnesseTokenType.CELL_END, "|"),
+              Node(FitnesseElementType.CELL, List(
+                Leaf(FitnesseTokenType.WORD, "param1")
+              ))
+            ))
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.SCRIPT_ROW, List(

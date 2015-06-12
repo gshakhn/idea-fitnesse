@@ -62,6 +62,7 @@
 
     <stubIndex implementation="fitnesse.idea.fixtureclass.FixtureClassIndex"/>
     <stubIndex implementation="fitnesse.idea.fixturemethod.FixtureMethodIndex"/>
+    <stubIndex implementation="fitnesse.idea.scripttable.ScenarioNameIndex"/>
 
     <!-- TODO: Need something like code inspections-->
     <!--

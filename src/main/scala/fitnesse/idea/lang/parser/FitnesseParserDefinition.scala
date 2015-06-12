@@ -37,7 +37,7 @@ class FitnesseParserDefinition extends ParserDefinition {
       case FitnesseElementType.CELL => new SimpleCell(astNode)
       case FitnesseElementType.SCRIPT_ROW => new ScriptRowImpl(astNode)
       case FitnesseElementType.FIXTURE_CLASS => new FixtureClassImpl(astNode)
-      case FitnesseElementType.SCENARIO_NAME => new ScenarioName(astNode)
+      case FitnesseElementType.SCENARIO_NAME => new ScenarioNameImpl(astNode)
       case FitnesseElementType.DECISION_INPUT => new DecisionInputImpl(astNode)
       case FitnesseElementType.DECISION_OUTPUT => new DecisionOutputImpl(astNode)
       case FitnesseElementType.QUERY_OUTPUT => new QueryOutput(astNode)

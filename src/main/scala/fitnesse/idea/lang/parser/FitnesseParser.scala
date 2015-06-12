@@ -75,17 +75,20 @@ class FitnesseParser extends PsiParser {
 
     val tableType = findTableType(builder)
 
-    if (!isCellEnd(builder)) {
-      val fixtureClassOrScenarioName = builder.mark()
-      while (!isCellEnd(builder)) builder.advanceLexer() // Past FIXTURE_CLASS
-      fixtureClassOrScenarioName.done(tableType match {
-        case TableElementType.SCENARIO_TABLE => FitnesseElementType.SCENARIO_NAME
-        case _ => FitnesseElementType.FIXTURE_CLASS
-      })
+    tableType match {
+      case TableElementType.SCENARIO_TABLE =>
+        val scenarioName = builder.mark()
+        parseCells(builder, TableElementType.SCENARIO_TABLE)
+        scenarioName.done(FitnesseElementType.SCENARIO_NAME)
+      case _ =>
+        if (!isCellEnd(builder)) {
+          val fixtureClassOrScenarioName = builder.mark()
+          while (!isCellEnd(builder)) builder.advanceLexer() // Past FIXTURE_CLASS
+          fixtureClassOrScenarioName.done(FitnesseElementType.FIXTURE_CLASS)
+        }
+
+        advanceTillEndOfRow(builder)
     }
-
-    advanceTillEndOfRow(builder)
-
     start.done(FitnesseElementType.ROW)
 
     assert(builder.getTokenType == FitnesseTokenType.ROW_END)
@@ -145,7 +148,16 @@ class FitnesseParser extends PsiParser {
 
     val start = builder.mark()
 
-    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
+    parseCells(builder, tableType)
+
+    start.done(tableType match {
+      case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE => FitnesseElementType.SCRIPT_ROW
+      case _ => FitnesseElementType.ROW
+    })
+  }
+
+  def parseCells(builder: PsiBuilder, tableType: TableElementType): Unit = {
+    while (!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       if (builder.getTokenType == FitnesseTokenType.WORD) {
         val cell = builder.mark()
         readCellText(builder)
@@ -156,11 +168,6 @@ class FitnesseParser extends PsiParser {
       }
       builder.advanceLexer()
     }
-
-    start.done(tableType match {
-      case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE => FitnesseElementType.SCRIPT_ROW
-      case _ => FitnesseElementType.ROW
-    })
   }
 
   private def readCellText(builder: PsiBuilder): String = {

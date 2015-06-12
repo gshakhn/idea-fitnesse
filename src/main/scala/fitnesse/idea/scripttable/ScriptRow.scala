@@ -3,6 +3,7 @@ package fitnesse.idea.scripttable
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
 import com.intellij.psi.{PsiElement, StubBasedPsiElement}
+import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.fixturemethod.{FixtureMethodIndex, MethodReferences}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.parser.FitnesseElementType
@@ -36,11 +37,9 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
   override def fixtureMethodName =
     disgraceMethodName(getName)
 
-  override def getName =
-    if (getStub != null)
-      getStub.getName
-    else {
-      val snippets = getCells
+  override def getName = dispatch match {
+    case STUB => getStub.getName
+    case NODE =>
       val texts = getCells.map(_.getText.trim)
 
       def constructFixtureName(parts: List[String]) = {
@@ -57,7 +56,11 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
         case ("script" | "start" | "reject" | "ensure" | "show" | "note") :: method => constructFixtureName(method)
         case method => constructFixtureName(method)
       }
-    }
+  }
+
+  override def getFixtureClass: Option[FixtureClass] = getTable.getFixtureClass
+
+  override def getScenarioName: Option[ScenarioName] = getTable.getScenarioName
 
   override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 }
