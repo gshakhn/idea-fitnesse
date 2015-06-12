@@ -13,7 +13,6 @@ class FitnesseHighlighter extends SyntaxHighlighterBase {
   def getHighlightingLexer = new FitnesseLexer
 
   override def getTokenHighlights(elementType: IElementType) = {
-    println("highlight " + elementType)
     elementType match {
       case FitnesseTokenType.WIKI_WORD => Array(FitnesseHighlighter.WIKI_WORD)
 //      case FitnesseTokenType.CELL_DELIM => Array(FitnesseHighlighter.CELL_DELIM)
