@@ -14,8 +14,9 @@ repositories {
 }
 
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that
+def IDEA_ID = 'IC-139.1603.1'
 def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
-def IDEA_SDK_NAME = 'IntelliJ IDEA Community Edition IC-139.1603.1'
+def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA_ID}"
 
 configurations {
     ideaSdk
@@ -45,11 +46,13 @@ targetCompatibility = 1.6
 sourceSets.main.scala.srcDir "src/main/jflex"
 
 task downloadIdeaSdk(type: Download) {
+    description 'Download IDEA SDK from the interwebz'
     sourceUrl = IDEA_SDK_URL
     target = file('lib/idea-sdk.tar.gz')
 }
 
 task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
+    description 'Extract IDEA SDK'
     def zipFile = file('lib/idea-sdk.tar.gz')
     def outputDir = file("lib/sdk")
 
