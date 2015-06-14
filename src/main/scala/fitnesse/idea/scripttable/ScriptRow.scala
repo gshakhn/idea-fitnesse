@@ -71,7 +71,6 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
 }
 
 
-
 class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRowStub, ScriptRow](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.scriptRow"
 

@@ -4,11 +4,9 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
-import fitnesse.idea.fixturemethod.MethodReference
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Row, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
-
 
 trait FixtureClassStub extends StubElement[FixtureClass] {
   def getName: String
@@ -107,7 +105,7 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
 
   override def indexStub(stub: FixtureClassStub, sink: IndexSink): Unit = {
     val className = disgraceClassName(stub.getName)
-    sink.occurrence(FixtureClassIndex.KEY, className);
+    sink.occurrence(FixtureClassIndex.KEY, className)
   }
 
   override def serialize(t: FixtureClassStub, stubOutputStream: StubOutputStream): Unit = {

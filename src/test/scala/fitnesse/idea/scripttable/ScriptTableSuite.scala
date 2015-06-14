@@ -1,7 +1,5 @@
 package fitnesse.idea.scripttable
 
-import java.util.Collections
-
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.{PsiClass, PsiMethod}
@@ -111,6 +109,5 @@ class ScriptTableSuite extends PsiSuite {
       val refs = output.getReferences
       refs(0).resolve
     }
-
   }
 }
