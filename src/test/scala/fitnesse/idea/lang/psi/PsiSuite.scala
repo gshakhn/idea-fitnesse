@@ -9,12 +9,15 @@ import org.scalatest.mock.MockitoSugar
 trait PsiSuite extends ParserSuite with MockitoSugar {
 
   var myPsiShortNamesCache: PsiShortNamesCache = mock[PsiShortNamesCache]
-  var myStubIndex: StubIndex = mock[StubIndex]
+  var myStubIndex: StubIndex = PsiSuite.myStaticStubIndex
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
 
     app.getPicoContainer.registerComponentInstance(classOf[StubIndex].getName, myStubIndex)
+    println("registered stub index: " + app.getPicoContainer.getComponentInstanceOfType(classOf[StubIndex]))
+    println("my stub index: " + myStubIndex)
+    
     myProject.getPicoContainer.registerComponentInstance(classOf[PsiShortNamesCache].getName, myPsiShortNamesCache)
     myProject.getPicoContainer.registerComponentInstance(classOf[ProjectScopeBuilder].getName, new ProjectScopeBuilderImpl(myProject))
   }
@@ -26,4 +29,8 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
 
     super.afterAll()
   }
+}
+
+object PsiSuite extends MockitoSugar {
+  val myStaticStubIndex: StubIndex = mock[StubIndex]
 }

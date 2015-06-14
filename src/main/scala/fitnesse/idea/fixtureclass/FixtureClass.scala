@@ -4,9 +4,15 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
+import fitnesse.idea.decisiontable.DecisionTable
+import fitnesse.idea.fixturemethod.{ScenarioReferences, ScenarioReference}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Row, ScalaFriendlyStubBasedPsiElementBase}
+import fitnesse.idea.scripttable.{ScenarioNameIndex, ScenarioName}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
+
+import scala.collection.JavaConversions._
+
 
 trait FixtureClassStub extends StubElement[FixtureClass] {
   def getName: String
@@ -31,13 +37,15 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
 
   def getRow = getParent.asInstanceOf[Row]
 
+  def getTable = getRow.getTable
+
   def fixtureClassName: Option[String] =
     disgraceClassName(getName) match {
       case "" => None
       case className => Some(className)
     }
 
-  private def isQualifiedName: Boolean = {
+  protected def isQualifiedName: Boolean = {
     fixtureClassName match {
       case Some(name) =>
         val dotIndex: Int = name.indexOf(".")
@@ -46,7 +54,7 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
     }
   }
 
-  private def shortName: Option[String] = {
+  protected def shortName: Option[String] = {
     fixtureClassName match {
       case Some(name) => name.split('.').toList.reverse match {
         case "" :: n :: _ => Some(n)
@@ -69,8 +77,22 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
     }
   }
 
-  override def getReferences = {
-    getReferencedClasses.toArray
+  protected def getReferencedScenarios: Seq[PsiReference] = {
+    def createReference(scenarioName: ScenarioName): ScenarioReference = new ScenarioReference(scenarioName, this)
+
+    fixtureClassName match {
+      case Some(className) if isQualifiedName => Seq()
+      case Some(className) =>
+        ScenarioNameIndex.INSTANCE.get(className, getProject, GlobalSearchScope.projectScope(getProject)).map(createReference).toSeq
+      case None => Seq()
+    }
+  }
+
+  override def getReferences = getTable match {
+    case _: DecisionTable =>
+      (getReferencedScenarios ++ getReferencedClasses).toArray
+    case _ =>
+      getReferencedClasses.toArray
   }
 
   override def getName = source match {

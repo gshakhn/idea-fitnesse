@@ -2,7 +2,7 @@ package fitnesse.idea.scripttable
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.{PsiClass, PsiMethod}
+import com.intellij.psi.{PsiReference, PsiClass, PsiMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
@@ -106,8 +106,8 @@ class ScriptTableSuite extends PsiSuite {
     when(myPsiClass.findMethodsByName(m_eq("callMe"), anyBoolean)).thenReturn(Array[PsiMethod]())
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("callMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
     assertResult(myScenarioCallMe) {
-      val refs = output.getReferences
-      refs(0).resolve
+      val refs: Array[PsiReference] = output.getReferences
+      refs.head.resolve
     }
   }
 }

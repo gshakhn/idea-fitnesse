@@ -1,12 +1,15 @@
 package fitnesse.idea.decisiontable
 
+import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.{ElementManipulators, PsiClass, PsiFile, PsiMethod}
+import com.intellij.psi.{ElementManipulators, PsiClass, PsiMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite, Table}
-import fitnesse.testsystems.slim.tables.Disgracer._
+import fitnesse.idea.scripttable.{ScenarioName, ScenarioNameIndex}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
+
+import scala.collection.JavaConverters._
 
 class DecisionTableSuite extends PsiSuite {
 
@@ -17,7 +20,6 @@ class DecisionTableSuite extends PsiSuite {
   val myPsiMethodFancyLongName = mock[PsiMethod]
   val myPsiMethodFancyQueryName = mock[PsiMethod]
 
-  var psiFile: PsiFile = null
   var table: Table = null
   
   override protected def beforeAll(): Unit = {
@@ -31,8 +33,12 @@ class DecisionTableSuite extends PsiSuite {
 
     ElementManipulators.INSTANCE.addExplicitExtension(classOf[DecisionInput], new DecisionInputManipulator)
 
-    psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| decision table |\n| a | b | c? | fancy long name | fancy query name? |\n| 1 | 2 | 3 |")
-    table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
+    table = decisionTable("| decision table |\n| a | b | c? | fancy long name | fancy query name? |\n| 1 | 2 | 3 |")
+  }
+
+  def decisionTable(s: String): Table = {
+    val psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, s)
+    psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
   }
 
   test("find table name") {
@@ -77,4 +83,14 @@ class DecisionTableSuite extends PsiSuite {
     }
   }
 
+  test("scenario reference") {
+    val myScenarioCallMe = mock[ScenarioName]
+    val output = decisionTable("| call me |").getFixtureClass.get
+    when(myPsiShortNamesCache.getClassesByName(m_eq("CallMe"), any[GlobalSearchScope])).thenReturn(Array[PsiClass]())
+    when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("CallMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
+    assertResult(myScenarioCallMe) {
+      val refs = output.getReferences
+      refs(0).resolve
+    }
+  }
 }
