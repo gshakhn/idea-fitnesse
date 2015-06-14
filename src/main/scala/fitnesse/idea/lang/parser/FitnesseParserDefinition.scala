@@ -33,6 +33,7 @@ class FitnesseParserDefinition extends ParserDefinition {
       case TableElementType.QUERY_TABLE => new QueryTable(astNode)
       case TableElementType.SCRIPT_TABLE => new ScriptTable(astNode)
       case TableElementType.SCENARIO_TABLE => new ScenarioTable(astNode)
+      case _: TableElementType => new Table(astNode)
       case FitnesseElementType.ROW => new SimpleRow(astNode)
       case FitnesseElementType.CELL => new SimpleCell(astNode)
       case FitnesseElementType.SCRIPT_ROW => new ScriptRowImpl(astNode)

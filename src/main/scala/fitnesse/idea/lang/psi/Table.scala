@@ -6,7 +6,7 @@ import com.intellij.psi.impl.PsiElementBase
 import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.scripttable.ScenarioName
 
-abstract class Table(node: ASTNode) extends ASTWrapperPsiElement(node) {
+class Table(node: ASTNode) extends ASTWrapperPsiElement(node) {
 
   def getRows = findChildrenByClass(classOf[Row])
 
