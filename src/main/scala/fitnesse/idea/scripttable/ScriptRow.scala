@@ -80,7 +80,6 @@ class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRow
 
   override def indexStub(stub: ScriptRowStub, sink: IndexSink): Unit = {
     val methodName = disgraceMethodName(stub.getName)
-    println("Add to index: " + methodName)
     sink.occurrence(FixtureMethodIndex.KEY, methodName)
   }
 

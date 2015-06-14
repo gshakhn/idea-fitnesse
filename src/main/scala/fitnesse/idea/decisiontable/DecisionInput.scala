@@ -52,7 +52,6 @@ class DecisionInputElementType(debugName: String) extends IStubElementType[Decis
 
   override def indexStub(stub: DecisionInputStub, sink: IndexSink): Unit = {
     val methodName = disgraceMethodName("set " + stub.getName)
-    println("Add to index: " + methodName)
     sink.occurrence(FixtureMethodIndex.KEY, methodName)
   }
 

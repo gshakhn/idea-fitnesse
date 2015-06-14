@@ -46,7 +46,6 @@ class ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
       val snippets = getCells.zipWithIndex.filter(_._2 % 2 == 0).map(_._1)
       val texts = snippets.map(_.getText.trim)
 
-      println("getName: " + texts)
       texts match {
         case Nil => ""
         case h :: _ if h.contains("_") => h.replaceAll("\\s*_\\s*", " ")

@@ -20,7 +20,6 @@ class FitNesseLineMarkerProvider extends RelatedItemLineMarkerProvider {
   override def collectNavigationMarkers(element: PsiElement, result: util.Collection[_ >: RelatedItemLineMarkerInfo[_ <: PsiElement]]): Unit = {
     element match {
       case clazz: PsiIdentifier if clazz.getParent.isInstanceOf[PsiClass] =>
-        println("Trying to look up line markers for " + clazz)
         val project = element.getProject
         val fixtureClasses = findFixtureClasses(element.getProject, clazz);
         if (fixtureClasses.size > 0) {
