@@ -83,5 +83,10 @@
     <methodReferencesSearch implementation="fitnesse.idea.fixturemethod.FixtureMethodReferencesSearch"/>
 
     <codeInsight.lineMarkerProvider language="JAVA" implementationClass="fitnesse.idea.fixtureclass.FitNesseLineMarkerProvider"/>
+
+    <!-- Execution -->
+    <runConfigurationProducer implementation="fitnesse.idea.run.FitNesseTestRunConfigurationProducer"/>
+    <configurationType implementation="fitnesse.idea.run.FitnesseRunConfigurationType"/>
+
   </extensions>
 </idea-plugin>
