@@ -10,9 +10,9 @@ trait MethodReferences extends PsiElement {
 
   def fixtureMethodName: String
 
-  protected def getReferencedMethods: Seq[PsiReference] = {
-    def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
+  protected def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
 
+  protected def getReferencedMethods: Seq[PsiReference] = {
     getFixtureClass match {
       case Some(fixtureClass) =>
         fixtureClass.getReferences

@@ -2,6 +2,7 @@ package fitnesse.idea.decisiontable
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi._
+import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
 import fitnesse.idea.fixturemethod.{FixtureMethodIndex, MethodReferences}
 import fitnesse.idea.lang.FitnesseLanguage
@@ -38,7 +39,25 @@ class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
     case NODE => getNode.getText
   }
 
-//  override def createReference(psiMethod: PsiMethod) = new DecisionInputReference(psiMethod, this)
+  // Check for method if fixture class references Java classes. Else reference ScenarioName
+
+  override def createReference(psiMethod: PsiMethod) = new DecisionInputReference(psiMethod, this)
+////def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
+//
+//  def getReferencedMethods: Seq[PsiMethod] = {
+//    getFixtureClass match {
+//      case Some(fixtureClass) =>
+//        fixtureClass.getReferencedClasses
+//          .flatMap(_.findMethodsByName(fixtureMethodName, true /* checkBases */)).toSeq
+//      case None =>
+//        val cache = PsiShortNamesCache.getInstance(getProject)
+//        cache.getMethodsByName(fixtureMethodName, GlobalSearchScope.projectScope(getProject))
+//    }
+//  }
+//
+//  override def getReferences: Array[PsiReference] = {
+//    getReferencedMethods.map(createReference).toArray
+//  }
 }
 
 
