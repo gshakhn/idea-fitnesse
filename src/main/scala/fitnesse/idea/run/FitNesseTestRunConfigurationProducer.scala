@@ -137,13 +137,6 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
   */
 }
 
-object FitNesseTestRunConfigurationProducer {
-  // Create a runner, based on the jUnit runner
-  val FITNESSE_MAIN_CLASS = "fitnesse.idea.run.FitNesseRunner"
-  val FITNESSE_OPTS = "-c"
-  // TODO: something that calls back to IntelliJ
-}
-
 class FitnesseRunConfigurationType extends ApplicationConfigurationType {
   val fitnesseRunConfigurationFactory: ConfigurationFactory = new ConfigurationFactoryEx(this) {
 
