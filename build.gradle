@@ -26,7 +26,7 @@ configurations {
 dependencies {
     ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
     bundle 'org.scala-lang:scala-library:2.11.2'
-    bundle('org.fitnesse:fitnesse:20150605-SNAPSHOT') {
+    bundle('org.fitnesse:fitnesse:20150605-SNAPSHOT:standalone') {
         exclude module: 'org.eclipse.jgit'
         exclude module: 'diffutils'
     }
