@@ -35,7 +35,10 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
 
     configuration.fitnesseRoot = fitnesseRoot.getName
     configuration.setWorkingDirectory(fitnesseRoot.getParent.getCanonicalPath)
+    println(s"wiki page name is: ${wikiPageName}" )
     configuration.wikiPageName = wikiPageName
+
+    configuration.setName(wikiPageName)
 
     setupConfigurationModule(context, configuration)
     JavaRunConfigurationExtensionManager.getInstance().extendCreatedConfiguration(configuration, context.getLocation)
@@ -57,7 +60,7 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
   def findFitnesseRoot(module: Module) = module.getProject.getBaseDir.findChild("FitNesseRoot")
 
   def makeWikiPageName(fitnesseRoot: VirtualFile, wikiPageFile: VirtualFile) = {
-    FileUtil.getRelativePath(fitnesseRoot.getCanonicalPath, wikiPageFile.getCanonicalPath, File.pathSeparatorChar).replace(File.pathSeparatorChar, '.')
+    FileUtil.getRelativePath(fitnesseRoot.getCanonicalPath, wikiPageFile.getCanonicalPath, File.separatorChar).replace(File.separatorChar, '.')
   }
 }
 
@@ -85,5 +88,9 @@ class FitnesseRunConfigurationType extends ApplicationConfigurationType {
 object FitnesseRunConfigurationType {
   val ID = "FitnesseRunConfigurationType"
   
-  def INSTANCE = ConfigurationTypeUtil.findConfigurationType(classOf[FitnesseRunConfigurationType])
+  def INSTANCE = try {
+    ConfigurationTypeUtil.findConfigurationType(classOf[FitnesseRunConfigurationType])
+  } catch {
+    case _: java.lang.IllegalArgumentException => new FitnesseRunConfigurationType()
+  }
 }

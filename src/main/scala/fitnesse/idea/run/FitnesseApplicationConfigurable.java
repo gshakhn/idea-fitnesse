@@ -20,6 +20,7 @@ public class FitnesseApplicationConfigurable extends SettingsEditor<FitnesseRunC
   private JComponent myAnchor;
   private final ConfigurationModuleSelector myModuleSelector;
 
+  // These fields are injected from the form:
   private JPanel myWholePanel;
   private LabeledComponent<JComboBox> myModule;
   private LabeledComponent<RawCommandLineEditor> myFitnesseRoot;
