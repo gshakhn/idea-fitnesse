@@ -52,6 +52,9 @@
     <lang.elementManipulator forClass="fitnesse.idea.scripttable.ScriptRow"
                              implementationClass="fitnesse.idea.scripttable.ScriptRowManipulator"/>
 
+    <lang.foldingBuilder language="Fitnesse"
+                         implementationClass="fitnesse.idea.lang.highlighting.FitnesseFoldingBuilder"/>
+
     <gotoFileContributor implementation="fitnesse.idea.navigation.FitnesseFileNameContributor"/>
 
     <annotator language="Fitnesse" implementationClass="fitnesse.idea.lang.psi.MissingReferencesAnnotator"/>
