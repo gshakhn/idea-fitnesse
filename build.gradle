@@ -113,6 +113,7 @@ idea {
         }
     }
 }
+ideaProject.dependsOn extractIdeaSdk
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.4'

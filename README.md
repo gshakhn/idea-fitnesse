@@ -49,7 +49,6 @@ Make sure the following plugins are enabled:
 
  * Scala
  * Plugin DevKit
- * Grammar-Kit
 
 Read the [Guidelines for plugin development](https://www.jetbrains.com/idea/help/plugin-development-guidelines.html) for info on writing a plugin.
 
@@ -58,17 +57,24 @@ Try their [Custom language support tutorial](https://confluence.jetbrains.com/di
 Building
 --------
 
-Run `gradle idea` to generate the module and project files.
+Run `./gradlew idea` to generate the module and project files.
 
 Before opening the project in IntelliJ, make sure you've created a IDEA SDK configuration:
 
    File -> Project Structure...
 
-Goto `JDKs` and add (`+`) a IntelliJ Platform Plugin SDK. Point it to `lib/sdk/idea-IC-139.1603.1`.
+Goto `Platform Settings / SDKs` and add (`+`) a IntelliJ Platform Plugin SDK. Point it to `{project-root}/lib/sdk/idea-IC-139.1603.1`.
 
-Now you can savely open the project, build it and run it as a Plugin.
+Now you can open the project, build it and run it as a Plugin.
 
-Of course you can also build the plugin with Gradle.
+Of course you can also build the plugin with Gradle: `./gradlew build`.
+
+I use the following VM options for the plugin: `-Xms128m -Xmx750m -XX:MaxPermSize=350m -XX:ReservedCodeCacheSize=225m -XX:+UseCompressedOops`, for what it's worth.
+
+Participating
+=============
+
+If you want to help out with the plugin, please check the [wiki](https://github.com/amolenaar/idea-fitnesse/wiki) for tasks that are still to be done.
 
 License
 =======
