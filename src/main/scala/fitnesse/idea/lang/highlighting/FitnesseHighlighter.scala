@@ -18,12 +18,18 @@ class FitnesseHighlighter extends SyntaxHighlighterBase {
 //      case FitnesseTokenType.CELL_DELIM => Array(FitnesseHighlighter.CELL_DELIM)
       case FitnesseTokenType.TABLE_START | FitnesseTokenType.ROW_START | FitnesseTokenType.CELL_START => Array(FitnesseHighlighter.TABLE_START)
 //      case FitnesseTokenType.TABLE_TYPE => Array(FitnesseHighlighter.TABLE_TYPE)
+      case FitnesseTokenType.BOLD => Array(FitnesseHighlighter.BOLD)
+      case FitnesseTokenType.ITALIC => Array(FitnesseHighlighter.ITALIC)
       case _ => Array.empty
+
     }
   }
 }
 
 object FitnesseHighlighter {
+  final val BOLD = TextAttributesKey.createTextAttributesKey("FITNESSE.BOLD", DefaultLanguageHighlighterColors.MARKUP_ENTITY)
+  final val ITALIC = TextAttributesKey.createTextAttributesKey("FITNESSE.ITALIC", DefaultLanguageHighlighterColors.MARKUP_TAG)
+
   final val WIKI_WORD = TextAttributesKey.createTextAttributesKey("FITNESSE.WIKI_WORD", DefaultLanguageHighlighterColors.KEYWORD)
   final val TABLE_START = TextAttributesKey.createTextAttributesKey("FITNESSE.TABLE_START", DefaultLanguageHighlighterColors.STRING)
 }

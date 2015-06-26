@@ -74,6 +74,8 @@ class FitnesseLexer extends LexerBase {
       case symbol :: _ => symbol.getType match {
         case _: WikiWord => FitnesseTokenType.WIKI_WORD
         case _: Collapsible => FitnesseTokenType.COLLAPSABLE_BLOCK
+        case SymbolType.Bold => FitnesseTokenType.BOLD
+        case SymbolType.Italic => FitnesseTokenType.ITALIC
         case SymbolType.Whitespace => FitnesseTokenType.WHITE_SPACE
         case SymbolType.Newline => FitnesseTokenType.LINE_TERMINATOR
         case _: ColoredSlimTable => FitnesseTokenType.TABLE_START
