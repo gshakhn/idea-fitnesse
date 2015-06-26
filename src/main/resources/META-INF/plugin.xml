@@ -55,6 +55,8 @@
     <lang.foldingBuilder language="Fitnesse"
                          implementationClass="fitnesse.idea.lang.highlighting.FitnesseFoldingBuilder"/>
 
+    <lang.commenter language="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseCommenter"/>
+
     <gotoFileContributor implementation="fitnesse.idea.navigation.FitnesseFileNameContributor"/>
 
     <annotator language="Fitnesse" implementationClass="fitnesse.idea.lang.psi.MissingReferencesAnnotator"/>
