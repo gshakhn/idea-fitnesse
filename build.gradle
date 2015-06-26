@@ -88,10 +88,10 @@ idea {
                     node.@name == 'ProjectRootManager'
                 }.'@project-jdk-type' = 'IDEA JDK'
 
-                logger.warn "=" * 74
+                logger.warn "=" * 71
                 logger.warn " Configured IDEA JDK '${jdkName}'."
-                logger.warn " Make sure you have it configured in IntelliJ before opening the project!"
-                logger.warn "=" * 74
+                logger.warn " Make sure you have it configured IntelliJ before opening the project!"
+                logger.warn "=" * 71
             }
         }
     }
@@ -116,7 +116,7 @@ idea {
 ideaProject.dependsOn extractIdeaSdk
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = '2.3'
 }
 
 // ========= Custom tasks ========= //
