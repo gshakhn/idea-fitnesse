@@ -71,8 +71,9 @@ class FitnesseLexer extends LexerBase {
   override def getTokenType: IElementType = {
     symbolList match {
       case Nil => null
-      case symbol :: _ =>  symbol.getType match {
+      case symbol :: _ => symbol.getType match {
         case _: WikiWord => FitnesseTokenType.WIKI_WORD
+        case _: Collapsible => FitnesseTokenType.COLLAPSABLE_BLOCK
         case SymbolType.Whitespace => FitnesseTokenType.WHITE_SPACE
         case SymbolType.Newline => FitnesseTokenType.LINE_TERMINATOR
         case _: ColoredSlimTable => FitnesseTokenType.TABLE_START
