@@ -49,6 +49,7 @@ Make sure the following plugins are enabled:
 
  * Scala
  * Plugin DevKit
+ * UI Designer
 
 Read the [Guidelines for plugin development](https://www.jetbrains.com/idea/help/plugin-development-guidelines.html) for info on writing a plugin.
 
@@ -57,7 +58,8 @@ Try their [Custom language support tutorial](https://confluence.jetbrains.com/di
 Building
 --------
 
-Run `./gradlew idea` to generate the module and project files.
+Run `./gradlew idea` to generate the module and project files. Because this is a IntelliJ plugin project, you should
+not try to import the gradle file directly in IntelliJ.
 
 Before opening the project in IntelliJ, make sure you've created a IDEA SDK configuration:
 
