@@ -1,27 +1,27 @@
 package fitnesse.idea.run
 
-import java.io.File
-
-import com.intellij.execution.configurations._
-import com.intellij.execution.process.ProcessHandler
-import com.intellij.execution.runners.{ProgramRunner, ExecutionEnvironment}
-import com.intellij.execution.testframework.sm.SMTestRunnerConnectionUtil
-import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
-import com.intellij.execution.ui.ConsoleView
-import com.intellij.execution.util.{ProgramParametersUtil, JavaParametersUtil}
 import com.intellij.execution._
 import com.intellij.execution.application.ApplicationConfiguration
 import com.intellij.execution.configuration.ConfigurationFactoryEx
+import com.intellij.execution.configurations._
+import com.intellij.execution.process.ProcessHandler
+import com.intellij.execution.runners.{ExecutionEnvironment, ProgramRunner}
+import com.intellij.execution.testframework.sm.SMTestRunnerConnectionUtil
+import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
+import com.intellij.execution.ui.ConsoleView
+import com.intellij.execution.util.{JavaParametersUtil, ProgramParametersUtil}
 import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.options.{SettingsEditorGroup, SettingsEditor}
+import com.intellij.openapi.options.{SettingsEditor, SettingsEditorGroup}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.PathUtil
+import fitnesse.idea.rt.IntelliJFormatter
 import fitnesseMain.FitNesseMain
 
 import scala.beans.BeanProperty
 
+// How to persist this run configuration???
 class FitnesseRunConfiguration(name: String, project: Project, factory: ConfigurationFactoryEx) extends ApplicationConfiguration(name, project, factory) {
 
   val testFrameworkName: String = "FitNesse"
@@ -57,8 +57,8 @@ class FitnesseRunConfiguration(name: String, project: Project, factory: Configur
         JavaParametersUtil.configureConfiguration(params, FitnesseRunConfiguration.this)
 //        params.configureByModule(module, classPathType, JavaParameters.getModuleJdk(module))
 
-        val path: String = getSMRunnerPath
-        params.getClassPath.add(getSMRunnerPath)
+        params.getClassPath.add(getFitNesseMainPath)
+        params.getClassPath.add(getFormatterPath)
 
         params.setMainClass("fitnesseMain.FitNesseMain")
 
@@ -66,7 +66,7 @@ class FitnesseRunConfiguration(name: String, project: Project, factory: Configur
 //        if (!f.isDirectory) {
 //          f = f.getParentFile
 //        }
-//        params.getVMParametersList.addParametersString("-Dorg.jetbrains.run.directory=\"" + f.getAbsolutePath + "\"")
+        params.getVMParametersList.addParametersString("-DFormatters=\"" + classOf[IntelliJFormatter].getName + "\"")
 
         params.getProgramParametersList.addParametersString("-o")
         params.getProgramParametersList.addParametersString("-d")
@@ -110,7 +110,11 @@ class FitnesseRunConfiguration(name: String, project: Project, factory: Configur
     JavaRunConfigurationExtensionManager.checkConfigurationIsValid(this)
   }
 
-  private def getSMRunnerPath: String = {
+  private def getFitNesseMainPath: String = {
     PathUtil.getJarPathForClass(classOf[FitNesseMain])
+  }
+
+  private def getFormatterPath: String = {
+    PathUtil.getJarPathForClass(classOf[IntelliJFormatter])
   }
 }

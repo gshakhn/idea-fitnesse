@@ -13,6 +13,10 @@ repositories {
     }
 }
 
+ext {
+    FITNESSE_VERSION = '20150629-SNAPSHOT'
+}
+
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that
 def IDEA_ID = 'IC-139.1603.1'
 def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
@@ -20,16 +24,17 @@ def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA_ID}"
 
 configurations {
     ideaSdk
-    bundle // dependencies bundled with the plugin
+    bundle {
+        // dependencies bundled with the plugin
+        transitive = false
+    }
 }
 
 dependencies {
     ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
     bundle 'org.scala-lang:scala-library:2.11.2'
-    bundle('org.fitnesse:fitnesse:20150605-SNAPSHOT:standalone') {
-        exclude module: 'org.eclipse.jgit'
-        exclude module: 'diffutils'
-    }
+    bundle "org.fitnesse:fitnesse:${FITNESSE_VERSION}:standalone"
+    bundle project('idea-fitnesse_rt')
 
     compile configurations.ideaSdk
     compile configurations.bundle
@@ -42,8 +47,6 @@ dependencies {
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
-
-sourceSets.main.scala.srcDir "src/main/jflex"
 
 task downloadIdeaSdk(type: Download) {
     description 'Download IDEA SDK from the interwebz'

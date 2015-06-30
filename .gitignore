@@ -1,6 +1,7 @@
 .idea/*
 target/*
 build/*
+idea-fitnesse_rt/build/*
 classes/*
 projectFilesBackup*/
 .gradle/*
