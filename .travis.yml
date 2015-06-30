@@ -7,7 +7,7 @@ jdk:
 
 install: ./gradlew extractIdeaSdk
 
-script: ./gradlew dist
+script: ./gradlew test dist
 sudo: false
 cache:
   directories:
