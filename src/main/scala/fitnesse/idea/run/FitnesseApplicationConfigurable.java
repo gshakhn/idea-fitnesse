@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+// This is written in Java because...? Field magic happening under the hood?
 public class FitnesseApplicationConfigurable extends SettingsEditor<FitnesseRunConfiguration> implements PanelWithAnchor {
   private JComponent myAnchor;
   private final ConfigurationModuleSelector myModuleSelector;

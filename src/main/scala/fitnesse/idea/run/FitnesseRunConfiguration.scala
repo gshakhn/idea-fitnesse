@@ -2,7 +2,6 @@ package fitnesse.idea.run
 
 import com.intellij.execution._
 import com.intellij.execution.application.ApplicationConfiguration
-import com.intellij.execution.configuration.ConfigurationFactoryEx
 import com.intellij.execution.configurations._
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.{ExecutionEnvironment, ProgramRunner}
@@ -14,17 +13,17 @@ import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.options.{SettingsEditor, SettingsEditorGroup}
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.{JDOMExternalizer, WriteExternalException, InvalidDataException, DefaultJDOMExternalizer}
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.PathUtil
 import fitnesse.idea.rt.IntelliJFormatter
 import fitnesseMain.FitNesseMain
+import org.jdom.Element
 
 import scala.beans.BeanProperty
 
 // How to persist this run configuration???
-class FitnesseRunConfiguration(name: String, project: Project, factory: ConfigurationFactoryEx) extends ApplicationConfiguration(name, project, factory) {
-
-  val testFrameworkName: String = "FitNesse"
+class FitnesseRunConfiguration(testFrameworkName: String, project: Project, factory: ConfigurationFactory) extends ApplicationConfiguration(testFrameworkName, project, factory) {
 
   @BeanProperty
   var wikiPageName: String = null
@@ -117,4 +116,19 @@ class FitnesseRunConfiguration(name: String, project: Project, factory: Configur
   private def getFormatterPath: String = {
     PathUtil.getJarPathForClass(classOf[IntelliJFormatter])
   }
+
+  @throws[InvalidDataException]
+  override def readExternal(element: Element) = {
+    super.readExternal(element)
+    wikiPageName = JDOMExternalizer.readString(element, "wikiPageName")
+    fitnesseRoot = JDOMExternalizer.readString(element, "fitnesseRoot")
+  }
+
+  @throws[WriteExternalException]
+  override def writeExternal(element: Element) {
+    super.writeExternal(element)
+    JDOMExternalizer.write(element, "wikiPageName", wikiPageName)
+    JDOMExternalizer.write(element, "fitnesseRoot", fitnesseRoot)
+  }
+
 }

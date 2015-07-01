@@ -15,6 +15,7 @@ import com.intellij.openapi.util.Ref
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.{VfsUtil, VirtualFile}
 import com.intellij.psi.{PsiDirectory, PsiElement}
+import fitnesse.idea.FitnesseBundle
 import fitnesse.idea.lang.filetype.FitnesseFileType
 
 class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerBase[FitnesseRunConfiguration](FitnesseRunConfigurationType.INSTANCE) {
@@ -64,19 +65,17 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
   }
 }
 
-class FitnesseRunConfigurationType extends ApplicationConfigurationType {
-  val fitnesseRunConfigurationFactory: ConfigurationFactory = new ConfigurationFactoryEx(this) {
+class FitnesseRunConfigurationType extends ConfigurationType {
+  val fitnesseRunConfigurationFactory: ConfigurationFactory = new ConfigurationFactory(this) {
 
     override def getIcon: Icon = FitnesseFileType.FILE_ICON
 
     override def createTemplateConfiguration(project: Project) = new FitnesseRunConfiguration(getDisplayName(), project, this)
-
-    override def onNewConfigurationCreated(configuration: RunConfiguration) = configuration.asInstanceOf[ModuleBasedConfiguration[RunConfigurationModule]].onNewConfigurationCreated()
   }
 
-  override def getDisplayName = "FitNesse"
+  override def getDisplayName = FitnesseBundle.message("configurationtype.displayname")
 
-  override def getConfigurationTypeDescription = "FitNesse"
+  override def getConfigurationTypeDescription = FitnesseBundle.message("configurationtype.description")
 
   override def getIcon = FitnesseFileType.FILE_ICON
 
