@@ -119,7 +119,7 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
     ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject, configurationModule.getModule)
 
     // Check if fitnesseRoot can be found in working dir
-    val workingDir = new ProgramParametersConfigurator().getWorkingDir(this, getProject, configurationModule.getModule)
+    val workingDir: String = new ProgramParametersConfigurator().getWorkingDir(this, getProject, configurationModule.getModule)
     if (!new File(workingDir, fitnesseRoot).exists()) {
       throw new RuntimeConfigurationWarning(FitnesseBundle.message("run.configuration.fitnesseRoot.notfound", workingDir, fitnesseRoot))
     }
@@ -127,10 +127,9 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
     // TODO: Check if plugin config file exists
 
     // Check if test suite exists under FitnesseRoot
-    val configFile = new File(workingDir, Option(configFile).getOrElse(ContextConfigurator.DEFAULT_CONFIG_FILE))
     val properties = new Properties
     properties.putAll(System.getProperties)
-    properties.putAll(ConfigurationParameter.loadProperties(configFile))
+    properties.putAll(ConfigurationParameter.loadProperties(new File(workingDir, Option(configFile).getOrElse(ContextConfigurator.DEFAULT_CONFIG_FILE))))
     val componentFactory = new ComponentFactory(properties)
 
     val wikiPageFactory = componentFactory.createComponent(WIKI_PAGE_FACTORY_CLASS, classOf[FileSystemPageFactory])
