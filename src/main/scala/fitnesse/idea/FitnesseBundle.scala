@@ -15,7 +15,7 @@ object FitnesseBundle {
   }
 
   def message(@PropertyKey(resourceBundle = "fitnesse.idea.FitnesseBundle") key: String, params: AnyRef*): String = {
-    CommonBundle.message(getBundle, key, params)
+    CommonBundle.message(getBundle, key, params:_*)
   }
 
   private def getBundle: ResourceBundle = {

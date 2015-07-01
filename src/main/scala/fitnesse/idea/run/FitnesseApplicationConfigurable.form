@@ -25,7 +25,7 @@
         <properties>
           <componentClass value="com.intellij.ui.RawCommandLineEditor"/>
           <labelLocation value="West"/>
-          <text resource-bundle="fitnesse/idea/FitnesseBundle" key="run.configuration.form.wikiPageName"/>
+          <text resource-bundle="fitnesse/idea/FitnesseBundle" key="run.configuration.wikiPageName"/>
         </properties>
       </component>
       <vspacer id="84c61">

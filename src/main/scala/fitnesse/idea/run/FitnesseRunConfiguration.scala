@@ -1,5 +1,8 @@
 package fitnesse.idea.run
 
+import java.io.File
+import java.util.Properties
+
 import com.intellij.execution._
 import com.intellij.execution.application.ApplicationConfiguration
 import com.intellij.execution.configurations._
@@ -8,15 +11,21 @@ import com.intellij.execution.runners.{ExecutionEnvironment, ProgramRunner}
 import com.intellij.execution.testframework.sm.SMTestRunnerConnectionUtil
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
 import com.intellij.execution.ui.ConsoleView
-import com.intellij.execution.util.{JavaParametersUtil, ProgramParametersUtil}
+import com.intellij.execution.util.{JavaParametersUtil, ProgramParametersConfigurator, ProgramParametersUtil}
 import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.options.{SettingsEditor, SettingsEditorGroup}
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.{JDOMExternalizer, WriteExternalException, InvalidDataException, DefaultJDOMExternalizer}
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.util.{InvalidDataException, JDOMExternalizer, WriteExternalException}
 import com.intellij.util.PathUtil
+import fitnesse.ConfigurationParameter._
+import fitnesse.components.ComponentFactory
+import fitnesse.idea.FitnesseBundle
 import fitnesse.idea.rt.IntelliJFormatter
+import fitnesse.wiki.fs.FileSystemPageFactory
+import fitnesse.wiki.{PathParser, SystemVariableSource}
+import fitnesse.{ConfigurationParameter, ContextConfigurator}
 import fitnesseMain.FitNesseMain
 import org.jdom.Element
 
@@ -31,6 +40,8 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
   @BeanProperty
   var fitnesseRoot: String = "FitNesseRoot"
 
+  @BeanProperty
+  var configFile: String = null
 
   override def getConfigurationEditor(): SettingsEditor[_ <: RunConfiguration] = {
     val group: SettingsEditorGroup[FitnesseRunConfiguration] = new SettingsEditorGroup[FitnesseRunConfiguration]
@@ -105,7 +116,30 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
   override def checkConfiguration() = {
     JavaParametersUtil.checkAlternativeJRE(this)
     val configurationModule = this.getConfigurationModule
-    ProgramParametersUtil.checkWorkingDirectoryExist(this, this.getProject, configurationModule.getModule)
+    ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject, configurationModule.getModule)
+
+    // Check if fitnesseRoot can be found in working dir
+    val workingDir = new ProgramParametersConfigurator().getWorkingDir(this, getProject, configurationModule.getModule)
+    if (!new File(workingDir, fitnesseRoot).exists()) {
+      throw new RuntimeConfigurationWarning(FitnesseBundle.message("run.configuration.fitnesseRoot.notfound", workingDir, fitnesseRoot))
+    }
+
+    // TODO: Check if plugin config file exists
+
+    // Check if test suite exists under FitnesseRoot
+    val configFile = new File(workingDir, Option(configFile).getOrElse(ContextConfigurator.DEFAULT_CONFIG_FILE))
+    val properties = new Properties
+    properties.putAll(System.getProperties)
+    properties.putAll(ConfigurationParameter.loadProperties(configFile))
+    val componentFactory = new ComponentFactory(properties)
+
+    val wikiPageFactory = componentFactory.createComponent(WIKI_PAGE_FACTORY_CLASS, classOf[FileSystemPageFactory])
+    val rootPage = wikiPageFactory.makePage(new File(workingDir, fitnesseRoot), fitnesseRoot, null, new SystemVariableSource());
+
+    if (!rootPage.getPageCrawler.pageExists(PathParser.parse(wikiPageName))) {
+      throw new RuntimeConfigurationWarning(FitnesseBundle.message("run.configuration.wikiPageName.notfound", wikiPageName))
+    }
+
     JavaRunConfigurationExtensionManager.checkConfigurationIsValid(this)
   }
 
