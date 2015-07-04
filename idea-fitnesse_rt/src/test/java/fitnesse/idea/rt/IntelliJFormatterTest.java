@@ -11,13 +11,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class IntelliJFormatterTest {
 
-    private OutputStream out;
+    private ByteArrayOutputStream out;
     private IntelliJFormatter formatter;
 
     @Before
@@ -119,4 +120,54 @@ public class IntelliJFormatterTest {
         assertThat(out.toString(), is("##teamcity[testFailed name='FullPath' message='*message*' error='true']\n"));
     }
 
+    @Test
+    public void testOutputChunkWithNewline() throws IOException {
+        formatter.testOutputChunk("<br/><br/>Simple example (no namespacing)<br/><br/>");
+
+        assertThat(out.toString(), is("\n\nSimple example (no namespacing)\n\n"));
+    }
+
+    @Test
+    public void testOutputChunkWithTable() throws IOException {
+        formatter.testOutputChunk("<table>\n" +
+                "\t<tr class=\"slimRowTitle\">\n" +
+                "\t\t<td>import</td>\n" +
+                "\t</tr>\n" +
+                "\t<tr class=\"slimRowColor0\">\n" +
+                "\t\t<td><span class=\"pass\">fixtures</span></td>\n" +
+                "\t</tr>\n" +
+                "</table>");
+
+        assertThat(out.toString(), is(" | import |\n | [PASS: fixtures] |\n"));
+    }
+
+    @Test
+    public void testOutputChunkWithList() throws IOException {
+        formatter.testOutputChunk("<br/><ul>\n"+
+                        "\t<li>list item 1</li>\n"+
+                        "\t<li>list item 2</li>\n"+
+                        "</ul>\n");
+
+        assertThat(out.toString(), is("\n<ul>\n"+
+                "\t<li>list item 1</li>\n"+
+                "\t<li>list item 2</li>\n"+
+                "</ul>\n"));
+    }
+
+    @Test
+    public void resultStates() throws IOException {
+        formatter.testOutputChunk("<table>\n" +
+                "\t<tr>\n" +
+                "\t\t<td><span class=\"pass\">pass me</span></td>\n" +
+                "\t\t<td><span class=\"fail\">fail me</span></td>\n" +
+                "\t\t<td><span class=\"error\">error me</span></td>\n" +
+                "\t\t<td><span class=\"ignore\">ignore me</span></td>\n" +
+                "\t</tr>\n" +
+                "</table>");
+
+        String s = out.toString().replaceAll("\u001B", "<ESC>");
+        System.out.println(s);
+        System.out.println(out.toString());
+        assertThat(s, is(" | [PASS: pass me] | [FAIL: fail me] | [ERROR: error me] | [IGNORE: ignore me] |\n"));
+    }
 }

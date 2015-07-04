@@ -43,6 +43,10 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
   @BeanProperty
   var configFile: String = null
 
+  override def suggestedName = wikiPageName
+
+  override def getActionName = wikiPageName
+
   override def getConfigurationEditor(): SettingsEditor[_ <: RunConfiguration] = {
     val group: SettingsEditorGroup[FitnesseRunConfiguration] = new SettingsEditorGroup[FitnesseRunConfiguration]
     group.addEditor(ExecutionBundle.message("run.configuration.configuration.tab.title"), new FitnesseApplicationConfigurable(getProject))
@@ -65,17 +69,12 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
         val jreHome: String = if (FitnesseRunConfiguration.this.ALTERNATIVE_JRE_PATH_ENABLED) ALTERNATIVE_JRE_PATH else null
         JavaParametersUtil.configureModule(module, params, classPathType, jreHome)
         JavaParametersUtil.configureConfiguration(params, FitnesseRunConfiguration.this)
-//        params.configureByModule(module, classPathType, JavaParameters.getModuleJdk(module))
 
-        params.getClassPath.add(getFitNesseMainPath)
         params.getClassPath.add(getFormatterPath)
+        params.getClassPath.add(getFitNesseMainPath)
 
         params.setMainClass("fitnesseMain.FitNesseMain")
 
-//        var f: File = new File(myFilePath)
-//        if (!f.isDirectory) {
-//          f = f.getParentFile
-//        }
         params.getVMParametersList.addParametersString("-DFormatters=\"" + classOf[IntelliJFormatter].getName + "\"")
 
         params.getProgramParametersList.addParametersString("-o")

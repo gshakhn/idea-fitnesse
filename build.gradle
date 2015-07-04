@@ -14,7 +14,7 @@ repositories {
 }
 
 ext {
-    FITNESSE_VERSION = '20150629-SNAPSHOT'
+    FITNESSE_VERSION = '20150702-SNAPSHOT'
 }
 
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that

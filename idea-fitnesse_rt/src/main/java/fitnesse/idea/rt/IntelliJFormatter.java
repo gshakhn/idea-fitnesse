@@ -4,9 +4,22 @@ import fitnesse.reporting.Formatter;
 import fitnesse.testrunner.TestsRunnerListener;
 import fitnesse.testrunner.WikiTestPage;
 import fitnesse.testsystems.*;
+import org.htmlparser.Node;
+import org.htmlparser.Parser;
+import org.htmlparser.Tag;
+import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.lexer.Lexer;
+import org.htmlparser.tags.Span;
+import org.htmlparser.tags.TableColumn;
+import org.htmlparser.tags.TableRow;
+import org.htmlparser.tags.TableTag;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
+import org.htmlparser.util.SimpleNodeIterator;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Iterator;
 
 import static java.lang.String.format;
 
@@ -35,11 +48,11 @@ import static java.lang.String.format;
  */
 public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
-    private final StringBuilder outputChunks = new StringBuilder();
+//    private final StringBuilder outputChunks = new StringBuilder();
 
     private final PrintStream out;
 
-    private ExecutionResult executionResult;
+//    private ExecutionResult executionResult;
     private ExceptionResult exceptionOccurred;
 
     public IntelliJFormatter() {
@@ -62,13 +75,78 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     @Override
     public void testOutputChunk(String output) throws IOException {
-        outputChunks.append(output);
+//        outputChunks.append(output);
+//        out.write("\033[32;41mERR\033[0m More text".getBytes());
+        try {
+            NodeList nodes = new Parser(new Lexer(output)).parse(null);
+            translate(nodes);
+        } catch (ParserException e) {
+            log("Unparsable wiki output: %s", output);
+        }
+    }
+
+    private void translate(NodeList nodes) throws IOException {
+        if (nodes == null) return;
+        for (Node node : nodeListIterator(nodes)) {
+            if (node instanceof TableTag) {
+                translateTable(node.getChildren());
+            } else if (node instanceof Span) {
+                Span span = (Span) node;
+                String result = span.getAttribute("class");
+                if ("pass".equals(result)) {
+                    print("[PASS: " /* ANSI: "\u001B[42m" */);
+                } else if ("fail".equals(result)) {
+                    print("[FAIL: " /* ANSI: "\u001B[41m" */);
+                } else if ("error".equals(result)) {
+                    print("[ERROR: " /* ANSI: "\u001B[43m" */);
+                } else if ("ignore".equals(result)) {
+                    print("[IGNORE: " /* ANSI: "\u001B[46m" */);
+                }
+                print(span.getChildrenHTML());
+                print("]" /* ANSI: "\u001B[0m " */);
+            } else if (node instanceof Tag) {
+                Tag tag = (Tag) node;
+                if ("BR".equals(tag.getTagName())) {
+                    print("\n");
+                } else {
+                    print(node.toHtml());
+                }
+            } else if (node.getChildren() != null) {
+                translate(node.getChildren());
+            } else {
+                print(node.toHtml());
+            }
+        }
+    }
+
+    private void translateTable(NodeList nodes) throws IOException {
+        for (Node row : nodeListIterator(nodes.extractAllNodesThatMatch(new NodeClassFilter(TableRow.class)))) {
+            for (Node cell : nodeListIterator(row.getChildren().extractAllNodesThatMatch(new NodeClassFilter(TableColumn.class)))) {
+                print(" | ");
+                translate(cell.getChildren());
+            }
+            print(" |\n");
+        }
+    }
+
+    private Iterable<Node> nodeListIterator(NodeList nodes) {
+        final SimpleNodeIterator iter = nodes.elements();
+        return new Iterable<Node>() {
+            @Override
+            public Iterator<Node> iterator() {
+                return new Iterator<Node>() {
+                    @Override public boolean hasNext() { return iter.hasMoreNodes(); }
+                    @Override public Node next() { return iter.nextNode(); }
+                    @Override public void remove() { }
+                };
+            }
+        };
     }
 
     @Override
     public void testComplete(WikiTestPage testPage, TestSummary summary) throws IOException {
         if (exceptionOccurred != null) {
-            log("##teamcity[testFailed name='%s' message='%s' error='true']", testPage.getFullPath(), exceptionOccurred.getMessage());
+            log("##teamcity[testFailed name='%s' message='%s' error='true']", testPage.getFullPath(), exceptionOccurred.getMessage().replace("'", "|'"));
             exceptionOccurred = null;
         } else if (summary.getWrong() > 0 || summary.getExceptions() > 0) {
             log("##teamcity[testFailed name='%s' message='message' error='true']", testPage.getFullPath());
@@ -79,11 +157,11 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     @Override
     public void testAssertionVerified(Assertion assertion, TestResult testResult) {
-        log("%s %s", assertion.getInstruction(), assertion.getExpectation());
-        if (testResult.getExecutionResult() == ExecutionResult.FAIL ||
-                testResult.getExecutionResult() == ExecutionResult.ERROR) {
-            executionResult = testResult.getExecutionResult();
-        }
+//        log("%s %s", assertion.getInstruction(), assertion.getExpectation());
+//        if (testResult.getExecutionResult() == ExecutionResult.FAIL ||
+//                testResult.getExecutionResult() == ExecutionResult.ERROR) {
+//            executionResult = testResult.getExecutionResult();
+//        }
     }
 
     @Override
@@ -113,4 +191,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
         out.println(format(s, args));
     }
 
+    private void print(String s) throws IOException {
+        out.print(s);
+    }
 }
