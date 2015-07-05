@@ -57,6 +57,8 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
   override def getState(executor: Executor, env: ExecutionEnvironment): RunProfileState = {
     new JavaCommandLineState(env) {
 
+      override def ansiColoringEnabled(): Boolean = true
+
       @throws(classOf[ExecutionException])
       protected override def createJavaParameters: JavaParameters = {
         val params: JavaParameters = new JavaParameters
@@ -66,7 +68,7 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
 
         val classPathType: Int = JavaParameters.JDK_AND_CLASSES_AND_TESTS
 
-        val jreHome: String = if (FitnesseRunConfiguration.this.ALTERNATIVE_JRE_PATH_ENABLED) ALTERNATIVE_JRE_PATH else null
+        val jreHome = if (FitnesseRunConfiguration.this.ALTERNATIVE_JRE_PATH_ENABLED) ALTERNATIVE_JRE_PATH else null
         JavaParametersUtil.configureModule(module, params, classPathType, jreHome)
         JavaParametersUtil.configureConfiguration(params, FitnesseRunConfiguration.this)
 
@@ -75,19 +77,12 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
 
         params.setMainClass("fitnesseMain.FitNesseMain")
 
-        params.getVMParametersList.addParametersString("-DFormatters=\"" + classOf[IntelliJFormatter].getName + "\"")
+        params.getVMParametersList.add("-DFormatters=" + classOf[IntelliJFormatter].getName)
 
-        params.getProgramParametersList.addParametersString("-o")
-        params.getProgramParametersList.addParametersString("-d")
-        if (StringUtil.isEmptyOrSpaces(getWorkingDirectory)) {
-          params.getProgramParametersList.addParametersString(getProject.getBasePath)
-        } else {
-          params.getProgramParametersList.addParametersString(getWorkingDirectory)
-        }
-        params.getProgramParametersList.addParametersString("-r")
-        params.getProgramParametersList.addParametersString(fitnesseRoot)
-        params.getProgramParametersList.addParametersString("-c")
-        params.getProgramParametersList.addParametersString(wikiPageName + "?suite&nohistory&debug&format=text")
+        params.getProgramParametersList.addAll("-o",
+          "-d", if (StringUtil.isEmptyOrSpaces(getWorkingDirectory)) getProject.getBasePath else getWorkingDirectory,
+          "-r", fitnesseRoot,
+          "-c", wikiPageName + "?suite&nohistory&debug&format=text")
 
         for (ext <- Extensions.getExtensions(RunConfigurationExtension.EP_NAME)) {
           ext.updateJavaParameters(FitnesseRunConfiguration.this, params, getRunnerSettings)

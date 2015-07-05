@@ -94,16 +94,16 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
                 Span span = (Span) node;
                 String result = span.getAttribute("class");
                 if ("pass".equals(result)) {
-                    print("[PASS: " /* ANSI: "\u001B[42m" */);
+                    print("\u001B[42m");
                 } else if ("fail".equals(result)) {
-                    print("[FAIL: " /* ANSI: "\u001B[41m" */);
+                    print("\u001B[41m");
                 } else if ("error".equals(result)) {
-                    print("[ERROR: " /* ANSI: "\u001B[43m" */);
+                    print("\u001B[43m");
                 } else if ("ignore".equals(result)) {
-                    print("[IGNORE: " /* ANSI: "\u001B[46m" */);
+                    print("\u001B[46m");
                 }
                 print(span.getChildrenHTML());
-                print("]" /* ANSI: "\u001B[0m " */);
+                print("\u001B[0m ");
             } else if (node instanceof Tag) {
                 Tag tag = (Tag) node;
                 if ("BR".equals(tag.getTagName())) {

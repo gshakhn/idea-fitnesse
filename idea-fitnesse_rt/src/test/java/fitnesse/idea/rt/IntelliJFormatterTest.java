@@ -138,7 +138,7 @@ public class IntelliJFormatterTest {
                 "\t</tr>\n" +
                 "</table>");
 
-        assertThat(out.toString(), is(" | import |\n | [PASS: fixtures] |\n"));
+        assertThat(out.toString().replace('\u001B', '^'), is(" | import |\n | ^[42mfixtures^[0m  |\n"));
     }
 
     @Test
@@ -165,9 +165,7 @@ public class IntelliJFormatterTest {
                 "\t</tr>\n" +
                 "</table>");
 
-        String s = out.toString().replaceAll("\u001B", "<ESC>");
-        System.out.println(s);
         System.out.println(out.toString());
-        assertThat(s, is(" | [PASS: pass me] | [FAIL: fail me] | [ERROR: error me] | [IGNORE: ignore me] |\n"));
+        assertThat(out.toString().replace('\u001B', '^'), is(" | ^[42mpass me^[0m  | ^[41mfail me^[0m  | ^[43merror me^[0m  | ^[46mignore me^[0m  |\n"));
     }
 }
