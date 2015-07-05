@@ -114,10 +114,8 @@ class FitnesseParser extends PsiParser {
           case "ordered query" => TableElementType.QUERY_TABLE
           case "script" => TableElementType.SCRIPT_TABLE
           case "table" => TableElementType.TABLE_TABLE
-          case "import" => TableElementType.IMPORT_TABLE
           case "comment" => TableElementType.COMMENT_TABLE
           case "scenario" => TableElementType.SCENARIO_TABLE
-          case "library" => TableElementType.LIBRARY_TABLE
           case "define table type" => TableElementType.DEFINE_TABLE_TYPE_TABLE
           case "define alias" => TableElementType.DEFINE_ALIAS_TABLE
           case _ => TableElementType.UNKNOWN_TABLE
@@ -129,6 +127,14 @@ class FitnesseParser extends PsiParser {
     }
 
     tableName.toLowerCase.trim match {
+      case "import" =>
+        tableType.done(FitnesseElementType.TABLE_TYPE)
+        builder.advanceLexer() // Pass cell end
+        TableElementType.IMPORT_TABLE
+      case "library" =>
+        tableType.done(FitnesseElementType.TABLE_TYPE)
+        builder.advanceLexer() // Pass cell end
+        TableElementType.LIBRARY_TABLE
       case "script" =>
         tableType.done(FitnesseElementType.TABLE_TYPE)
         builder.advanceLexer() // Pass cell end

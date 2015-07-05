@@ -540,4 +540,60 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+  test("import table") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.IMPORT_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "import")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL,List(
+              Leaf(FitnesseTokenType.WORD, "fixtures")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          ))
+        )),
+        Leaf(FitnesseTokenType.TABLE_END, "|")
+      ))
+    ) {
+      parse("| import |\n| fixtures |")
+    }
+  }
+
+  test("library table") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.LIBRARY_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "library")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "fixtures")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          ))
+        )),
+        Leaf(FitnesseTokenType.TABLE_END, "|")
+      ))
+    ) {
+      parse("| library |\n| fixtures |")
+    }
+  }
+
 }
