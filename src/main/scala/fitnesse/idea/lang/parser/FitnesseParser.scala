@@ -99,54 +99,48 @@ class FitnesseParser extends PsiParser {
 
   private def findTableType(builder: PsiBuilder) : TableElementType = {
     val tableType = builder.mark()
-    var tableName = ""
-    while (!isCellEnd(builder)) {
-      if (builder.getTokenType == FitnesseTokenType.COLON) {
+
+    def innerFindTableType(tableName: String): TableElementType = builder.getTokenType match {
+      case FitnesseTokenType.COLON =>
         tableType.done(FitnesseElementType.TABLE_TYPE)
         builder.advanceLexer() // Past COLON
-        return tableName.toLowerCase.trim match {
-          case "dt" => TableElementType.DECISION_TABLE
-          case "ddt" => TableElementType.DECISION_TABLE
-          case "decision" => TableElementType.DECISION_TABLE
-          case "dynamic decision" => TableElementType.DECISION_TABLE
-          case "query" => TableElementType.QUERY_TABLE
-          case "subset query" => TableElementType.QUERY_TABLE
-          case "ordered query" => TableElementType.QUERY_TABLE
-          case "script" => TableElementType.SCRIPT_TABLE
-          case "table" => TableElementType.TABLE_TABLE
-          case "comment" => TableElementType.COMMENT_TABLE
-          case "scenario" => TableElementType.SCENARIO_TABLE
-          case "define table type" => TableElementType.DEFINE_TABLE_TYPE_TABLE
-          case "define alias" => TableElementType.DEFINE_ALIAS_TABLE
-          case _ => TableElementType.UNKNOWN_TABLE
+        toTableType(tableName)
+      case FitnesseTokenType.CELL_END | FitnesseTokenType.ROW_END | FitnesseTokenType.TABLE_END =>
+        toTableType(tableName) match {
+          case TableElementType.UNKNOWN_TABLE =>
+            tableType.rollbackTo()
+            TableElementType.DECISION_TABLE
+          case tableElementType =>
+            tableType.done(FitnesseElementType.TABLE_TYPE)
+            builder.advanceLexer() // Pass cell end
+            tableElementType
         }
-      } else {
-        tableName = tableName + " " + builder.getTokenText
+      case _ =>
+        val tokenText = builder.getTokenText
         builder.advanceLexer()
-      }
+        innerFindTableType(tableName + " " + tokenText) // start next iteration
     }
 
-    tableName.toLowerCase.trim match {
-      case "import" =>
-        tableType.done(FitnesseElementType.TABLE_TYPE)
-        builder.advanceLexer() // Pass cell end
-        TableElementType.IMPORT_TABLE
-      case "library" =>
-        tableType.done(FitnesseElementType.TABLE_TYPE)
-        builder.advanceLexer() // Pass cell end
-        TableElementType.LIBRARY_TABLE
-      case "script" =>
-        tableType.done(FitnesseElementType.TABLE_TYPE)
-        builder.advanceLexer() // Pass cell end
-        TableElementType.SCRIPT_TABLE
-      case "scenario" =>
-        tableType.done(FitnesseElementType.TABLE_TYPE)
-        builder.advanceLexer() // Pass cell end
-        TableElementType.SCENARIO_TABLE
-      case _ =>
-        tableType.rollbackTo()
-        TableElementType.DECISION_TABLE
-    }
+    innerFindTableType("")
+  }
+
+  private def toTableType(tableName: String): TableElementType = tableName.toLowerCase.trim match {
+    case "dt" => TableElementType.DECISION_TABLE
+    case "ddt" => TableElementType.DECISION_TABLE
+    case "decision" => TableElementType.DECISION_TABLE
+    case "dynamic decision" => TableElementType.DECISION_TABLE
+    case "query" => TableElementType.QUERY_TABLE
+    case "subset query" => TableElementType.QUERY_TABLE
+    case "ordered query" => TableElementType.QUERY_TABLE
+    case "script" => TableElementType.SCRIPT_TABLE
+    case "import" => TableElementType.IMPORT_TABLE
+    case "library" => TableElementType.LIBRARY_TABLE
+    case "table" => TableElementType.TABLE_TABLE
+    case "comment" => TableElementType.COMMENT_TABLE
+    case "scenario" => TableElementType.SCENARIO_TABLE
+    case "define table type" => TableElementType.DEFINE_TABLE_TYPE_TABLE
+    case "define alias" => TableElementType.DEFINE_ALIAS_TABLE
+    case _ => TableElementType.UNKNOWN_TABLE
   }
 
   private def parseRow(builder: PsiBuilder, tableType: TableElementType): Unit = {
@@ -187,7 +181,7 @@ class FitnesseParser extends PsiParser {
 
   private def isCellEnd(builder: PsiBuilder): Boolean = {
     val tokenType = builder.getTokenType
-    return tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
+    tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
   }
 
   private def advanceTillEndOfRow(builder: PsiBuilder): Unit = {
