@@ -47,7 +47,10 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
     true
   }
 
-  override def isConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext): Boolean = true
+  override def isConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext): Boolean = {
+    // TODO: implement me!
+    false
+  }
 
   def findWikiPageFile(context: ConfigurationContext): VirtualFile = {
     val pageFile = context.getPsiLocation.getContainingFile.getVirtualFile
