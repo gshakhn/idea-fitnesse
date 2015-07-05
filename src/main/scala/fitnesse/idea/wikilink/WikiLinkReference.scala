@@ -13,7 +13,7 @@ class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](el
       case WikiLinkElementType.RELATIVE_WIKI_LINK => element.getText
       case _:WikiLinkElementType => element.getText.substring(1)
     }
-    var dirs = linkText.split('.')
+    val dirs = linkText.split('.')
     val parentDir: PsiDirectory = getParentDir(dirs)
     val targetDir = dirs.foldLeft(parentDir) {
         (currentDir: PsiDirectory, childName: String) => {
