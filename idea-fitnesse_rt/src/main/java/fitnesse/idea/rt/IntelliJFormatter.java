@@ -19,7 +19,10 @@ import org.htmlparser.util.SimpleNodeIterator;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import static java.lang.String.format;
 
@@ -75,58 +78,94 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     @Override
     public void testOutputChunk(String output) throws IOException {
-//        outputChunks.append(output);
-//        out.write("\033[32;41mERR\033[0m More text".getBytes());
         try {
             NodeList nodes = new Parser(new Lexer(output)).parse(null);
-            translate(nodes);
+            print(translate(nodes));
         } catch (ParserException e) {
             log("Unparsable wiki output: %s", output);
         }
     }
 
-    private void translate(NodeList nodes) throws IOException {
-        if (nodes == null) return;
+    private String translate(NodeList nodes) throws IOException {
+        if (nodes == null) return "";
+
+        StringBuilder sb = new StringBuilder();
+
         for (Node node : nodeListIterator(nodes)) {
             if (node instanceof TableTag) {
-                translateTable(node.getChildren());
+                sb.append(translateTable(node.getChildren()));
             } else if (node instanceof Span) {
                 Span span = (Span) node;
                 String result = span.getAttribute("class");
                 if ("pass".equals(result)) {
-                    print("\u001B[42m");
+                    sb.append("\u001B[42m");
                 } else if ("fail".equals(result)) {
-                    print("\u001B[41m");
+                    sb.append("\u001B[41m");
                 } else if ("error".equals(result)) {
-                    print("\u001B[43m");
+                    sb.append("\u001B[43m");
                 } else if ("ignore".equals(result)) {
-                    print("\u001B[46m");
+                    sb.append("\u001B[46m");
                 }
-                print(span.getChildrenHTML());
-                print("\u001B[0m ");
+                sb.append(span.getChildrenHTML());
+                sb.append("\u001B[0m ");
             } else if (node instanceof Tag) {
                 Tag tag = (Tag) node;
                 if ("BR".equals(tag.getTagName())) {
-                    print("\n");
+                    sb.append("\n");
                 } else {
-                    print(node.toHtml());
+                    sb.append(node.toHtml());
                 }
             } else if (node.getChildren() != null) {
-                translate(node.getChildren());
+                sb.append(translate(node.getChildren()));
             } else {
-                print(node.toHtml());
+                sb.append(node.toHtml());
             }
         }
+        return sb.toString();
     }
 
-    private void translateTable(NodeList nodes) throws IOException {
+    private String translateTable(NodeList nodes) throws IOException {
+        List<List<Cell>> table = new ArrayList<List<Cell>>();
+        List<Integer> rowWidths = new ArrayList<Integer>();
         for (Node row : nodeListIterator(nodes.extractAllNodesThatMatch(new NodeClassFilter(TableRow.class)))) {
+            List<Cell> tableRow = new ArrayList<Cell>();
+            int rowNr = 0;
             for (Node cell : nodeListIterator(row.getChildren().extractAllNodesThatMatch(new NodeClassFilter(TableColumn.class)))) {
-                print(" | ");
-                translate(cell.getChildren());
+                Cell tableCell = new Cell(translate(cell.getChildren()), ((TableColumn) cell).getAttribute("colspan"));
+                tableRow.add(tableCell);
+                if (rowNr < rowWidths.size()) {
+                    rowWidths.set(rowNr, Math.max(rowWidths.get(rowNr), tableCell.length));
+                } else {
+                    rowWidths.add(tableCell.length);
+                }
+                rowNr++;
             }
-            print(" |\n");
+            table.add(tableRow);
         }
+
+        StringBuilder sb = new StringBuilder();
+        for (List<Cell> row : table) {
+            int rowNr = 0;
+            for (Cell cell : row) {
+                sb.append(" | ").append(cell).append(padding(cell, rowWidths, rowNr));
+                rowNr += cell.colspan;
+            }
+            sb.append(" |\n");
+        }
+        return sb.toString();
+    }
+
+    private char[] padding(Cell cell, List<Integer> rowWidths, int rowNr) {
+        int w = 0;
+        for (int i = 0; i < cell.colspan; i++) w += rowWidths.get(rowNr + i);
+        w += (cell.colspan - 1) * 3; // bars
+        return padding(w - cell.length);
+    }
+
+    private char[] padding(int i) {
+        char[] chars = new char[i > 0 ? i : 0];
+        Arrays.fill(chars, ' ');
+        return chars;
     }
 
     private Iterable<Node> nodeListIterator(NodeList nodes) {
@@ -193,5 +232,34 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     private void print(String s) throws IOException {
         out.print(s);
+    }
+
+    private static class Cell {
+        private final String cellContent;
+        private final int length;
+        private final int colspan;
+
+        private Cell(String cellContent, String colspan) {
+            this.cellContent = cellContent;
+            this.length = cellLength(cellContent);
+            this.colspan = parseInt(colspan);
+        }
+
+        @Override
+        public String toString() {
+            return cellContent;
+        }
+
+        private static int cellLength(String tableCell) {
+            return tableCell.replaceAll("\u001B.*?m", "").split("\n")[0].length();
+        }
+
+        private static int parseInt(String colspan) {
+            try {
+                return Integer.parseInt(colspan);
+            } catch (NumberFormatException e) {
+                return 1;
+            }
+        }
     }
 }
