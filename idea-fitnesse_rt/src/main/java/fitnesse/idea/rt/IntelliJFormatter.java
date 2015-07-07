@@ -108,17 +108,12 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
                 }
                 sb.append(span.getChildrenHTML());
                 sb.append("\u001B[0m ");
-            } else if (node instanceof Tag) {
-                Tag tag = (Tag) node;
-                if ("BR".equals(tag.getTagName())) {
-                    sb.append("\n");
-                } else {
-                    sb.append(node.toHtml());
-                }
+            } else if (node instanceof Tag && "BR".equals(((Tag) node).getTagName())) {
+                sb.append("\n");
             } else if (node.getChildren() != null) {
                 sb.append(translate(node.getChildren()));
             } else {
-                sb.append(node.toHtml());
+                sb.append(node.getText());
             }
         }
         return sb.toString();

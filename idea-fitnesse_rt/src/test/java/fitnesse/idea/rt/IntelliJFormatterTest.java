@@ -150,10 +150,7 @@ public class IntelliJFormatterTest {
                         "\t<li>list item 2</li>\n"+
                         "</ul>\n");
 
-        assertThat(out.toString(), is("\n<ul>\n"+
-                "\t<li>list item 1</li>\n"+
-                "\t<li>list item 2</li>\n"+
-                "</ul>\n"));
+        assertThat(out.toString(), is("\n\n\tlist item 1\n\tlist item 2\n\n"));
     }
 
     @Test
