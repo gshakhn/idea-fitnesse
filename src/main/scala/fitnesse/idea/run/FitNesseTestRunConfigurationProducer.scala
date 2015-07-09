@@ -20,36 +20,44 @@ import fitnesse.idea.lang.filetype.FitnesseFileType
 
 class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerBase[FitnesseRunConfiguration](FitnesseRunConfigurationType.INSTANCE) {
 
-  override def setupConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext, sourceElement: Ref[PsiElement]): Boolean = {
-    val project = configuration.getProject
+  override def setupConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext, sourceElement: Ref[PsiElement]): Boolean =
+    wikiPageInfo(configuration.getProject, context) match {
+      case None => false
+      case Some((wikiPageFile: VirtualFile, fitnesseRoot: VirtualFile)) =>
+        val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
 
+        configuration.fitnesseRoot = fitnesseRoot.getName
+        configuration.setWorkingDirectory(fitnesseRoot.getParent.getCanonicalPath)
+        configuration.wikiPageName = wikiPageName
+
+        configuration.setName(wikiPageName)
+
+        setupConfigurationModule(context, configuration)
+        JavaRunConfigurationExtensionManager.getInstance().extendCreatedConfiguration(configuration, context.getLocation)
+        true
+    }
+
+  override def isConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext): Boolean =
+    wikiPageInfo(configuration.getProject, context) match {
+      case None => false
+      case Some((wikiPageFile: VirtualFile, fitnesseRoot: VirtualFile)) =>
+        val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
+
+        configuration.fitnesseRoot == fitnesseRoot.getName &&
+          configuration.getWorkingDirectory == fitnesseRoot.getParent.getCanonicalPath &&
+          configuration.wikiPageName == wikiPageName
+    }
+
+  def wikiPageInfo(project: Project, context: ConfigurationContext): Option[(VirtualFile, VirtualFile)] = {
     val wikiPageFile: VirtualFile = findWikiPageFile(context)
-    if (wikiPageFile == null) return false
+    if (wikiPageFile == null) return None
 
     val module: Module = ModuleUtilCore.findModuleForFile(wikiPageFile, project)
-    if (module == null) return false
+    if (module == null) return None
 
-    val fitnesseRoot = findFitnesseRoot (module)
-    if (fitnesseRoot == null) return false
-
-    val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
-
-    configuration.fitnesseRoot = fitnesseRoot.getName
-    configuration.setWorkingDirectory(fitnesseRoot.getParent.getCanonicalPath)
-    println(s"wiki page name is: ${wikiPageName}" )
-    configuration.wikiPageName = wikiPageName
-
-    configuration.setName(wikiPageName)
-
-    setupConfigurationModule(context, configuration)
-    JavaRunConfigurationExtensionManager.getInstance().extendCreatedConfiguration(configuration, context.getLocation)
-
-    true
-  }
-
-  override def isConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext): Boolean = {
-    // TODO: implement me!
-    false
+    val fitnesseRoot = findFitnesseRoot(module)
+    if (fitnesseRoot == null) return None
+    Some((wikiPageFile, fitnesseRoot))
   }
 
   def findWikiPageFile(context: ConfigurationContext): VirtualFile = {
