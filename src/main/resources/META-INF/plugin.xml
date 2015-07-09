@@ -92,6 +92,7 @@
     <!-- Execution -->
     <runConfigurationProducer implementation="fitnesse.idea.run.FitNesseTestRunConfigurationProducer"/>
     <configurationType implementation="fitnesse.idea.run.FitnesseRunConfigurationType"/>
+    <testSrcLocator implementation="fitnesse.idea.run.FitnesseTestLocationProvider"/>
 
   </extensions>
 </idea-plugin>

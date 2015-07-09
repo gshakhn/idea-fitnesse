@@ -4,6 +4,8 @@ import fitnesse.reporting.Formatter;
 import fitnesse.testrunner.TestsRunnerListener;
 import fitnesse.testrunner.WikiTestPage;
 import fitnesse.testsystems.*;
+import fitnesse.wiki.WikiPage;
+import fitnesse.wiki.fs.FileSystemPage;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.Tag;
@@ -17,6 +19,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.htmlparser.util.SimpleNodeIterator;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -73,7 +76,15 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     @Override
     public void testStarted(WikiTestPage testPage) throws IOException {
-        log("##teamcity[testStarted name='%s' locationHint='' captureStandardOutput='true']", testPage.getFullPath());
+        log("##teamcity[testStarted name='%s' locationHint='%s' captureStandardOutput='true']", testPage.getFullPath(), locationHint(testPage));
+    }
+
+    private String locationHint(WikiTestPage testPage) throws IOException {
+        WikiPage wikiPage = testPage.getSourcePage();
+        if (wikiPage instanceof FileSystemPage) {
+            return "fitnesse://" + new File(((FileSystemPage) wikiPage).getFileSystemPath(), "content.txt").getCanonicalPath();
+        }
+        return "";
     }
 
     @Override
