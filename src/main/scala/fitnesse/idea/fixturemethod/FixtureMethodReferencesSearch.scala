@@ -30,7 +30,7 @@ class FixtureMethodReferencesSearch extends QueryExecutorBase[PsiReference, Meth
     val references: List[MethodReferences] = FixtureMethodIndex.INSTANCE.get(key, project, scope).toList
 
     // TODO: Take into account the class name (via Stub structure?)
-    return references
+    references
   }
 
 }

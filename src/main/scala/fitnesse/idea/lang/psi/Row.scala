@@ -20,7 +20,6 @@ trait Row extends PsiElement {
 
 class SimpleRow(node: ASTNode) extends ASTWrapperPsiElement(node) with Row {
 
-  // Todo: should be part of a TopRow class??
   def getCells = findChildrenByClass(classOf[Cell]).toList
 
   override def findChildByClass[T](clazz: Class[T]): T = super.findChildByClass(clazz)

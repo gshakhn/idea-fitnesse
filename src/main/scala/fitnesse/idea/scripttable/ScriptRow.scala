@@ -58,7 +58,6 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
       }
   }
 
-  // TODO: prefer scenarios over fixture methods, once we know the parent page path.
   override def getReferences: Array[PsiReference] = (getReferencedScenarios ++ getReferencedMethods).toArray
 
   override protected def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
