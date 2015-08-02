@@ -45,22 +45,31 @@ class FitnesseLexer extends LexerBase {
   }
   
   private def fetchNextSymbol(): List[Symbol] = {
+    def parseSymbol: List[Symbol] = {
+      specification.parseSymbol(parser, scanner) match {
+        case parsedSymbol if parsedSymbol.isNothing =>
+          Nil
+        case parsedSymbol =>
+          parsedSymbol.getValue :: Nil
+      }
+    }
+
     state += 1
+
     symbolList match {
-      case symbol :: tail if shouldTraverse(symbol) =>
-        symbol.getChildren.toList ::: (FitnesseLexer.terminatorFor(symbol) match {
-          case Some(s) => s :: tail
-          case None => tail
-        })
-      case Nil | _ :: Nil =>
-        specification.parseSymbol(parser, scanner) match {
-          case parsedSymbol if parsedSymbol.isNothing =>
-            Nil
-          case parsedSymbol =>
-            parsedSymbol.getValue :: Nil
+      case symbol :: tail =>
+        FitnesseLexer.terminatorFor(symbol) match {
+          case Some(endSymbol) => symbol.getChildren.toList ::: endSymbol :: tail
+          case None =>
+            tail match {
+              case Nil =>
+                parseSymbol
+              case _ =>
+                tail
+            }
         }
-      case _ :: tail =>
-        tail
+      case Nil =>
+        parseSymbol
     }
   }
 
@@ -97,13 +106,6 @@ class FitnesseLexer extends LexerBase {
   override def getBufferEnd: Int = buffer.length
 
   override def getBufferSequence: CharSequence = buffer
-
-  private def shouldTraverse(symbol: Symbol): Boolean = {
-    return symbol != null && ((symbol.getType.isInstanceOf[ColoredSlimTable]) ||
-              (Table.tableRow eq symbol.getType) ||
-              (Table.tableCell eq symbol.getType))
-  }
-
 }
 
 object FitnesseLexer {
