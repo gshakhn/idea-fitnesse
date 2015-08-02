@@ -28,7 +28,7 @@ class FitnesseFoldingBuilder extends FoldingBuilderEx {
 
   override def getPlaceholderText(astNode: ASTNode): String =
     astNode.getElementType match {
-      case FitnesseTokenType.COLLAPSABLE_BLOCK => {
+      case FitnesseTokenType.COLLAPSIBLE_START => {
         val toList: List[String] = astNode.getText.split("\n").toList
         toList.head + " ... " + toList.last
       }
@@ -37,7 +37,7 @@ class FitnesseFoldingBuilder extends FoldingBuilderEx {
 
   private class FitnesseFileElementprocessor extends PsiElementProcessor[PsiElement] {
     override def execute(t: PsiElement): Boolean = {
-      if (t.getNode.getElementType == FitnesseTokenType.COLLAPSABLE_BLOCK) {
+      if (t.getNode.getElementType == FitnesseTokenType.COLLAPSIBLE_START) {
         descriptors = new FoldingDescriptor(t, t.getTextRange) :: descriptors
       }
       true
