@@ -24,8 +24,8 @@ object FitnesseTokenType {
   final val CELL_START: IElementType = new FitnesseTokenType("CELL_START")
   final val CELL_END: IElementType = new FitnesseTokenType("CELL_END")
 
-  final val COLLAPSIBLE_START: IElementType = new FitnesseTokenType("COLLAPSABLE_START")
-  final val COLLAPSIBLE_END: IElementType = new FitnesseTokenType("COLLAPSABLE_END")
+  final val COLLAPSIBLE_START: IElementType = new FitnesseTokenType("COLLAPSIBLE_START")
+  final val COLLAPSIBLE_END: IElementType = new FitnesseTokenType("COLLAPSIBLE_END")
 
   final val BOLD: IElementType = new FitnesseTokenType("BOLD")
   final val ITALIC: IElementType = new FitnesseTokenType("ITALIC")

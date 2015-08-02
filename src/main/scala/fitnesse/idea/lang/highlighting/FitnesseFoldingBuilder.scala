@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.search.PsiElementProcessor
 import com.intellij.psi.util.PsiTreeUtil
 import fitnesse.idea.lang.lexer.FitnesseTokenType
+import fitnesse.idea.lang.parser.FitnesseElementType
 import fitnesse.idea.lang.psi.FitnesseFile
 
 class FitnesseFoldingBuilder extends FoldingBuilderEx {
@@ -28,7 +29,7 @@ class FitnesseFoldingBuilder extends FoldingBuilderEx {
 
   override def getPlaceholderText(astNode: ASTNode): String =
     astNode.getElementType match {
-      case FitnesseTokenType.COLLAPSIBLE_START => {
+      case FitnesseElementType.COLLAPSIBLE => {
         val toList: List[String] = astNode.getText.split("\n").toList
         toList.head + " ... " + toList.last
       }
@@ -37,7 +38,7 @@ class FitnesseFoldingBuilder extends FoldingBuilderEx {
 
   private class FitnesseFileElementprocessor extends PsiElementProcessor[PsiElement] {
     override def execute(t: PsiElement): Boolean = {
-      if (t.getNode.getElementType == FitnesseTokenType.COLLAPSIBLE_START) {
+      if (t.getNode.getElementType == FitnesseElementType.COLLAPSIBLE) {
         descriptors = new FoldingDescriptor(t, t.getTextRange) :: descriptors
       }
       true

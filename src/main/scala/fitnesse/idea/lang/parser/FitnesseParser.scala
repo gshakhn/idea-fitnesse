@@ -6,17 +6,23 @@ import fitnesse.idea.lang.lexer.FitnesseTokenType
 
 class FitnesseParser extends PsiParser {
 
+
   override def parse(root: IElementType, builder: PsiBuilder) = {
     val rootMarker = builder.mark()
     while (!builder.eof()) {
-      builder.getTokenType match {
-        case FitnesseTokenType.TABLE_START => parseTable(builder)
-        case _ => builder.advanceLexer()
-      }
+      processToken(builder)
     }
 
     rootMarker.done(root)
     builder.getTreeBuilt
+  }
+
+  def processToken(builder: PsiBuilder): Unit = {
+    builder.getTokenType match {
+      case FitnesseTokenType.TABLE_START => parseTable(builder)
+      case FitnesseTokenType.COLLAPSIBLE_START => parseCollapsible(builder)
+      case _ => builder.advanceLexer()
+    }
   }
 
   private def parseTable(builder: PsiBuilder): Unit = {
@@ -189,4 +195,18 @@ class FitnesseParser extends PsiParser {
       builder.advanceLexer()
     }
   }
+
+  private def parseCollapsible(builder: PsiBuilder): Unit = {
+    val start = builder.mark()
+
+    builder.advanceLexer()
+    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.COLLAPSIBLE_END) {
+      processToken(builder)
+    }
+
+    builder.advanceLexer() // Past COLLAPSIBLE_END
+
+    start.done(FitnesseElementType.COLLAPSIBLE)
+  }
+
 }

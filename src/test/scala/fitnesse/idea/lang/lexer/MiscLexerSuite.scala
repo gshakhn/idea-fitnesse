@@ -124,4 +124,42 @@ class MiscLexerSuite extends LexerSuite {
       lex("|abc|\n|xyz|\nWikiWord")
     }
   }
+
+  test("Collapsible section") {
+    assertResult(
+      List(
+        (FitnesseTokenType.COLLAPSIBLE_START, "!* abc\ndef\n*!"),
+        (FitnesseTokenType.WORD, "abc\n"),
+        (FitnesseTokenType.WORD, "def\n*!"),
+        (FitnesseTokenType.COLLAPSIBLE_END, "*!"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "word")
+      )) {
+      lex("!* abc\ndef\n*! word")
+    }
+  }
+
+  test("Collapsible section containing a table") {
+    assertResult(
+      List(
+        (FitnesseTokenType.COLLAPSIBLE_START, "!* title\n|abc|\n|xyz|\n*!"),
+        (FitnesseTokenType.WORD, "title"),
+        (FitnesseTokenType.TABLE_START, "|abc|\n|xyz|\n"),
+        (FitnesseTokenType.ROW_START, "abc|\n|"),
+        (FitnesseTokenType.CELL_START, "abc|\n|"),
+        (FitnesseTokenType.WORD, "abc"),
+        (FitnesseTokenType.CELL_END, "|\n|"),
+        (FitnesseTokenType.ROW_END, "|\n|"),
+        (FitnesseTokenType.ROW_START, "xyz|\n"),
+        (FitnesseTokenType.CELL_START, "xyz|\n"),
+        (FitnesseTokenType.WORD, "xyz"),
+        (FitnesseTokenType.CELL_END, "|\n"),
+        (FitnesseTokenType.ROW_END, "|\n"),
+        (FitnesseTokenType.TABLE_END, "|\n"),
+        (FitnesseTokenType.COLLAPSIBLE_END, "|\n*!")
+      )) {
+      lex("!* title\n|abc|\n|xyz|\n*!")
+    }
+  }
+
 }

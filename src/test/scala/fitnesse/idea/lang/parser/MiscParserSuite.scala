@@ -41,4 +41,27 @@ class MiscParserSuite extends ParserSuite {
   test("Another page from the FitNesse user guide") {
     parse("!define TEST_SYSTEM {slim}\n\n!path lib/*.jar\n!define PACKET {|Bob|\n||Angela|\n|||Lexy|6|\n|||Sami|4|\n|||Mandy|2|\n||Micah|\n|||Luka|5|\n||Gina|\n||Justin|\n}\n\n!define JSON ({\"tables\": [{\"Bob\": {\n \"Angela\": {\n  \"Lexy\": \"6\",\n  \"Mandy\": \"2\",\n  \"Sami\": \"4\"\n },\n \"Gina\": {},\n \"Justin\": {},\n \"Micah\": {\"Luka\": \"5\"}\n}}]})\n\n!|script|page driver|\n|given page|PacketPage|with content|${PACKET}|\n|request page|$IT?packet|\n|contains json packet|${JSON}|\n|show|content|\n")
   }
+
+  test("Collapsible containing a table") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(FitnesseElementType.COLLAPSIBLE, List(
+          Leaf(FitnesseTokenType.COLLAPSIBLE_START, "!* "),
+          Leaf(FitnesseTokenType.WORD, "title\n"),
+          Node(TableElementType.DECISION_TABLE, List(
+            Leaf(FitnesseTokenType.TABLE_START,"|"),
+            Node(FitnesseElementType.ROW, List(
+              Node(FitnesseElementType.FIXTURE_CLASS, List(
+                Leaf(FitnesseTokenType.WORD, "abc")
+              ))
+            ))
+          )),
+          Leaf(FitnesseTokenType.COLLAPSIBLE_END, "|\n*!\n")
+        ))
+      ))
+    ) {
+      parse("!* title\n|abc|\n*!\n")
+    }
+  }
+
 }

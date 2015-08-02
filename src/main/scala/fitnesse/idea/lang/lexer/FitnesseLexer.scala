@@ -41,6 +41,7 @@ class FitnesseLexer extends LexerBase {
 
     symbolList.headOption match {
       case Some(symbol) if !symbol.hasOffset => advance()
+      case Some(symbol) if symbol.getType eq SymbolType.SymbolList => advance()
       case _ =>
     }
   }
@@ -56,6 +57,8 @@ class FitnesseLexer extends LexerBase {
     }
 
     symbolList match {
+      case symbol :: tail if symbol.getType eq SymbolType.SymbolList =>
+        symbol.getChildren.toList ::: tail
       case symbol :: tail =>
         FitnesseLexer.terminatorFor(symbol) match {
           case Some(endSymbol) => symbol.getChildren.toList ::: endSymbol :: tail
@@ -117,6 +120,7 @@ object FitnesseLexer {
 
   def terminatorFor(symbol: Symbol): Option[Symbol] = symbol.getType match {
     case _ : ColoredSlimTable => Some(new Symbol(TABLE_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
+    case _ : Collapsible => Some(new Symbol(COLLAPSIBLE_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
     case s if s eq Table.tableRow => Some(new Symbol(TABLE_ROW_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
     case s if s eq Table.tableCell => Some(new Symbol(TABLE_CELL_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
     case _ => None
