@@ -129,8 +129,9 @@ class MiscLexerSuite extends LexerSuite {
     assertResult(
       List(
         (FitnesseTokenType.COLLAPSIBLE_START, "!* abc\ndef\n*!"),
-        (FitnesseTokenType.WORD, "abc\n"),
-        (FitnesseTokenType.WORD, "def\n*!"),
+        (FitnesseTokenType.WORD, "abc"),
+        (FitnesseTokenType.WORD, "def"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n"),
         (FitnesseTokenType.COLLAPSIBLE_END, "*!"),
         (FitnesseTokenType.WHITE_SPACE, " "),
         (FitnesseTokenType.WORD, "word")
