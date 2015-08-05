@@ -125,6 +125,7 @@ object FitnesseLexer {
     case s if s eq Table.tableCell => Some(new Symbol(TABLE_CELL_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
     case _ => None
   }
+
   private def lastChild(symbol: Symbol): Symbol = {
     if (symbol.getType == Variable.symbolType) {
       // Shortcut variables, since it wants to replace the content completely
@@ -140,7 +141,7 @@ object FitnesseLexer {
 class LexerParsingPage extends ParsingPage(new LexerSourcePage) {
 
   override def copyForNamedPage(namedPage: SourcePage): ParsingPage = {
-    throw new IllegalStateException("Should not have been called in this context")
+    throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.copyForNamedPage() has not been implemented")
   }
 
   override def putVariable(name: String, value: String) {
@@ -155,23 +156,27 @@ class LexerParsingPage extends ParsingPage(new LexerSourcePage) {
 
 class LexerSourcePage extends SourcePage {
   override def getName: String = {
-    null
+    "NAME"
   }
 
   override def getFullName: String = {
-    null
+    "FULL_NAME"
   }
 
   override def getPath: String = {
-    throw new IllegalStateException("Should not have been called in this context")
+    // TODO: We need to know where the FitNesseRoot is, so we can determine a page path (wiki page name)
+    "PATH_PLACEHOLDER"
+     //page.getPageCrawler.getFullPath.parentPath.toString
   }
 
   override def getFullPath: String = {
-    throw new IllegalStateException("Should not have been called in this context")
+    // page.getPageCrawler.getFullPath.toString
+    "FULL_PATH_PLACEHOLDER"
+    throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.getFullPath() has not been implemented")
   }
 
   override def getContent: String = {
-    throw new IllegalStateException("Should not have been called in this context")
+    throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.getContent() has not been implemented")
   }
 
   override def targetExists(wikiWordPath: String): Boolean = {
@@ -199,14 +204,14 @@ class LexerSourcePage extends SourcePage {
   }
 
   override def getProperty(propertyKey: String): String = {
-    throw new IllegalStateException("Should not have been called in this context")
+    throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.getProperty() has not been implemented")
   }
 
   override def makeUrl(wikiWordPath: String): String = {
-    throw new IllegalStateException("Should not have been called in this context")
+    throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.makeUrl() has not been implemented")
   }
 
   override def compareTo(o: SourcePage): Int = {
-    throw new IllegalStateException("Should not have been called in this context")
+    throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.compareTo() has not been implemented")
   }
 }
