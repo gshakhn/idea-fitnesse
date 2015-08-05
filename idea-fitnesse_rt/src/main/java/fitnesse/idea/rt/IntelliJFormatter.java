@@ -163,7 +163,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     private char[] padding(Cell cell, List<Integer> rowWidths, int rowNr) {
         int w = 0;
-        for (int i = 0; i < cell.colspan; i++) w += rowWidths.get(rowNr + i);
+        for (int i = 0; i < cell.colspan && rowNr + i < rowWidths.size(); i++) w += rowWidths.get(rowNr + i);
         w += (cell.colspan - 1) * 3; // bars
         return padding(w - cell.length);
     }
@@ -190,23 +190,19 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     @Override
     public void testComplete(WikiTestPage testPage, TestSummary summary) throws IOException {
+        String fullPath = testPage.getFullPath();
         if (exceptionOccurred != null) {
-            log("##teamcity[testFailed name='%s' message='%s' error='true']", testPage.getFullPath(), exceptionOccurred.getMessage().replace("'", "|'"));
+            log("##teamcity[testFailed name='%s' message='%s' error='true']", fullPath, exceptionOccurred.getMessage() != null ? exceptionOccurred.getMessage().replace("'", "|'") : exceptionOccurred.toString());
             exceptionOccurred = null;
         } else if (summary.getWrong() > 0 || summary.getExceptions() > 0) {
-            log("##teamcity[testFailed name='%s' message='message' error='true']", testPage.getFullPath());
+            log("##teamcity[testFailed name='%s' message='Test failed: R:%d W:%d I:%d E:%d']", fullPath, summary.getRight(), summary.getWrong(), summary.getIgnores(), summary.getExceptions());
         } else {
-            log("##teamcity[testFinished name='%s']", testPage.getFullPath());
+            log("##teamcity[testFinished name='%s']", fullPath);
         }
     }
 
     @Override
     public void testAssertionVerified(Assertion assertion, TestResult testResult) {
-//        log("%s %s", assertion.getInstruction(), assertion.getExpectation());
-//        if (testResult.getExecutionResult() == ExecutionResult.FAIL ||
-//                testResult.getExecutionResult() == ExecutionResult.ERROR) {
-//            executionResult = testResult.getExecutionResult();
-//        }
     }
 
     @Override

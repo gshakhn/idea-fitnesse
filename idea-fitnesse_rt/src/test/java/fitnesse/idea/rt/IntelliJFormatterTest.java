@@ -81,7 +81,7 @@ public class IntelliJFormatterTest {
             }
         }, new TestSummary(1, 1, 0, 0));
 
-        assertThat(out.toString(), is("##teamcity[testFailed name='FullPath' message='message' error='true']\n"));
+        assertThat(out.toString(), is("##teamcity[testFailed name='FullPath' message='Test failed: R:1 W:1 I:0 E:0']\n"));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class IntelliJFormatterTest {
             }
         }, new TestSummary(1, 0, 0, 1));
 
-        assertThat(out.toString(), is("##teamcity[testFailed name='FullPath' message='message' error='true']\n"));
+        assertThat(out.toString(), is("##teamcity[testFailed name='FullPath' message='Test failed: R:1 W:0 I:0 E:1']\n"));
     }
 
     @Test
