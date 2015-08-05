@@ -3,6 +3,7 @@ package fitnesse.idea
 import java.util.ResourceBundle
 
 import com.intellij.CommonBundle
+import com.intellij.reference.SoftReference
 import org.jetbrains.annotations.PropertyKey
 
 object FitnesseBundle {
@@ -19,11 +20,12 @@ object FitnesseBundle {
   }
 
   private def getBundle: ResourceBundle = {
-    var bundle: ResourceBundle = com.intellij.reference.SoftReference.dereference(ourBundle)
-    if (bundle == null) {
-      bundle = ResourceBundle.getBundle(BUNDLE)
-      ourBundle = new com.intellij.reference.SoftReference[ResourceBundle](bundle)
+    Option(SoftReference.dereference(ourBundle)) match {
+      case Some(bundle) => bundle
+      case None =>
+        val bundle = ResourceBundle.getBundle(BUNDLE)
+        ourBundle = new SoftReference[ResourceBundle](bundle)
+        bundle
     }
-    bundle
   }
 }
