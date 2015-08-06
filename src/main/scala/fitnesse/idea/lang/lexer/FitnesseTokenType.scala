@@ -5,7 +5,7 @@ import com.intellij.psi.tree.IElementType
 import fitnesse.idea.lang.FitnesseLanguage
 
 class FitnesseTokenType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
-  override def toString = "Fitnesse:" + this.debugName
+  override def toString = "FitnesseTokenType." + debugName
 }
 
 object FitnesseTokenType {

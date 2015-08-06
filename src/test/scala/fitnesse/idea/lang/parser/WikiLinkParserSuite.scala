@@ -6,7 +6,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Relative reference") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage")
+        Node(FitnesseElementType.WIKI_WORD, List(
+          Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage")
+        ))
       ))
     ) {
       parse("SiblingPage")
@@ -16,7 +18,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Relative reference with child") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage.SiblingsChild")
+        Node(FitnesseElementType.WIKI_WORD, List(
+          Leaf(FitnesseTokenType.WIKI_WORD, "SiblingPage.SiblingsChild")
+        ))
       ))
     ) {
       parse("SiblingPage.SiblingsChild")
@@ -26,7 +30,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Absolute reference") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
+        Node(FitnesseElementType.WIKI_WORD, List(
           Leaf(FitnesseTokenType.WIKI_WORD, ".TopPage")
+        ))
       ))
     ) {
       parse(".TopPage")
@@ -36,7 +42,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Absolute reference with child") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Leaf(FitnesseTokenType.WIKI_WORD, ".TopPage.TopPageChild")
+        Node(FitnesseElementType.WIKI_WORD, List(
+          Leaf(FitnesseTokenType.WIKI_WORD, ".TopPage.TopPageChild")
+        ))
       ))
     ) {
       parse(".TopPage.TopPageChild")
@@ -46,7 +54,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Subpage reference") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Leaf(FitnesseTokenType.WIKI_WORD, ">ChildPage")
+        Node(FitnesseElementType.WIKI_WORD, List(
+          Leaf(FitnesseTokenType.WIKI_WORD, ">ChildPage")
+        ))
       ))
     ) {
       parse(">ChildPage")
@@ -56,7 +66,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Subpage reference with child") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Leaf(FitnesseTokenType.WIKI_WORD, ">ChildPage.GrandChildPage")
+        Node(FitnesseElementType.WIKI_WORD, List(
+          Leaf(FitnesseTokenType.WIKI_WORD, ">ChildPage.GrandChildPage")
+        ))
       ))
     ) {
       parse(">ChildPage.GrandChildPage")
@@ -66,7 +78,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Ancestor reference") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Leaf(FitnesseTokenType.WIKI_WORD, "<AncestorPage")
+        Node(FitnesseElementType.WIKI_WORD, List(
+          Leaf(FitnesseTokenType.WIKI_WORD, "<AncestorPage")
+        ))
       ))
     ) {
       parse("<AncestorPage")
@@ -76,7 +90,9 @@ class WikiLinkParserSuite extends ParserSuite {
   test("Ancestor reference with child") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Leaf(FitnesseTokenType.WIKI_WORD, "<AncestorPage.AncestorChildPage")
+        Node(FitnesseElementType.WIKI_WORD, List(
+          Leaf(FitnesseTokenType.WIKI_WORD, "<AncestorPage.AncestorChildPage")
+        ))
       ))
     ) {
       parse("<AncestorPage.AncestorChildPage")

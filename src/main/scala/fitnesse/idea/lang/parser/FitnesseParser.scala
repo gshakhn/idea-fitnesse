@@ -21,6 +21,7 @@ class FitnesseParser extends PsiParser {
     builder.getTokenType match {
       case FitnesseTokenType.TABLE_START => parseTable(builder)
       case FitnesseTokenType.COLLAPSIBLE_START => parseCollapsible(builder)
+      case FitnesseTokenType.WIKI_WORD => parseWikiWord(builder)
       case _ => builder.advanceLexer()
     }
   }
@@ -177,12 +178,12 @@ class FitnesseParser extends PsiParser {
   }
 
   private def readCellText(builder: PsiBuilder): String = {
-    var s = ""
+    var cellText = ""
     while (!isCellEnd(builder)) {
-      s = s + builder.getTokenText
+      cellText = cellText + builder.getTokenText
       builder.advanceLexer()
     }
-    s
+    cellText
   }
 
   private def isCellEnd(builder: PsiBuilder): Boolean = {
@@ -209,4 +210,9 @@ class FitnesseParser extends PsiParser {
     start.done(FitnesseElementType.COLLAPSIBLE)
   }
 
+  def parseWikiWord(builder: PsiBuilder): Unit = {
+    val start = builder.mark()
+    builder.advanceLexer()
+    start.done(FitnesseElementType.WIKI_WORD)
+  }
 }

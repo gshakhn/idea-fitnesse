@@ -24,6 +24,7 @@ object FitnesseElementType {
   final val CELL= new FitnesseElementType("CELL")
   final val COMMENT = new FitnesseElementType("COMMENT")
   final val COLLAPSIBLE = new FitnesseElementType("COLLAPSIBLE")
+  final val WIKI_WORD = new FitnesseElementType("WIKI_WORD")
 }
 
 class TableElementType(debugName: String) extends FitnesseElementType(debugName) {
