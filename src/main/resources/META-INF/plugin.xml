@@ -24,6 +24,11 @@
       <add-to-group group-id="MarkRootGroup"/>
     </group>
     -->
+
+    <action id="NewFitnesseFile" class="fitnesse.idea.lang.filetype.CreateFitnesseFileAction">
+      <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewXml"/>
+    </action>
+
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -31,6 +36,7 @@
     <projectStructure.sourceRootEditHandler implementation="fitnesse.idea.run.FitNesseRootEditHandler"/>
 
     <fileTypeFactory implementation="fitnesse.idea.lang.filetype.FitnesseFileTypeFactory"/>
+
     <lang.syntaxHighlighterFactory key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseSyntaxHighlighterFactory"/>
 
     <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
