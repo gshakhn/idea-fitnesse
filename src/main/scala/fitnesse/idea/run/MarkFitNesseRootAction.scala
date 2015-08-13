@@ -15,9 +15,7 @@ import org.jetbrains.jps.model.module.JpsModuleSourceRootType
  * This code is not used for now, since we need to store the source root config in the module file.
  */
 
-class MarkFitNesseRootAction extends MarkSourceRootAction(FitNesseRootType.INSTANCE) {
-
-}
+class MarkFitNesseRootAction extends MarkSourceRootAction(FitNesseRootType.INSTANCE)
 
 class FitNesseRootType extends JpsElementTypeWithDummyProperties with JpsModuleSourceRootType[JpsDummyElement] {
   override def createDefaultProperties(): JpsDummyElement = super.createDefaultProperties()

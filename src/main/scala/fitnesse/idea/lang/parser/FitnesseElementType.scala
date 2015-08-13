@@ -27,9 +27,7 @@ object FitnesseElementType {
   final val WIKI_WORD = new FitnesseElementType("WIKI_WORD")
 }
 
-class TableElementType(debugName: String) extends FitnesseElementType(debugName) {
-
-}
+class TableElementType(debugName: String) extends FitnesseElementType(debugName)
 
 object TableElementType {
   final val DECISION_TABLE = new TableElementType("DECISION_TABLE")

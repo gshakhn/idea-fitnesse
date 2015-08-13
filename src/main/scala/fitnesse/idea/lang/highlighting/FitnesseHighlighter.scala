@@ -38,6 +38,6 @@ object FitnesseHighlighter {
 class FitnesseSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
 
   override def  getSyntaxHighlighter(project: Project, virtualFile: VirtualFile): SyntaxHighlighter = {
-    return new FitnesseHighlighter();
+    new FitnesseHighlighter();
   }
 }

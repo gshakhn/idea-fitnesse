@@ -27,6 +27,6 @@ class FixtureClassReferencesSearch extends QueryExecutorBase[PsiReference, Refer
   }
 
   def find(key: String, project: Project, scope: GlobalSearchScope): List[FixtureClass] = {
-    return FixtureClassIndex.INSTANCE.get(key, project, scope).toList
+    FixtureClassIndex.INSTANCE.get(key, project, scope).toList
   }
 }

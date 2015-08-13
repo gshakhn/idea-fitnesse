@@ -13,6 +13,4 @@ trait Cell extends PsiElement {
 
 }
 
-class SimpleCell(node: ASTNode) extends ASTWrapperPsiElement(node) with Cell {
-
-}
+class SimpleCell(node: ASTNode) extends ASTWrapperPsiElement(node) with Cell

@@ -56,8 +56,10 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
     if (module == null) return None
 
     val fitnesseRoot = findFitnesseRoot(module)
-    if (fitnesseRoot == null) return None
-    Some((wikiPageFile, fitnesseRoot))
+    fitnesseRoot match {
+      case null => None
+      case _ => Some((wikiPageFile, fitnesseRoot))
+    }
   }
 
   def findWikiPageFile(context: ConfigurationContext): VirtualFile = {
