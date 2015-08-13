@@ -171,7 +171,6 @@ class LexerSourcePage extends SourcePage {
 
   override def getFullPath: String = {
     // page.getPageCrawler.getFullPath.toString
-    "FULL_PATH_PLACEHOLDER"
     throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.getFullPath() has not been implemented")
   }
 
