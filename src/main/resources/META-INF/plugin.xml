@@ -33,6 +33,8 @@
 
   <extensions defaultExtensionNs="com.intellij">
 
+    <treeStructureProvider implementation="fitnesse.idea.lang.filetype.FitnesseTreeStructureProvider"/>
+
     <projectStructure.sourceRootEditHandler implementation="fitnesse.idea.run.FitNesseRootEditHandler"/>
 
     <fileTypeFactory implementation="fitnesse.idea.lang.filetype.FitnesseFileTypeFactory"/>
