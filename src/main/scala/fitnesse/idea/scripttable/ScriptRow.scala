@@ -51,9 +51,12 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
           parts.view.zipWithIndex.filter(_._2 % 2 == 0).map(_._1).mkString(" ")
       }
 
+      val symbolAssignment = "\\$\\w+=".r
+
       texts match {
         case ("check" | "check not") :: method => constructFixtureName(method.dropRight(1))
         case ("script" | "start" | "reject" | "ensure" | "show" | "note") :: method => constructFixtureName(method)
+        case symbolAssignment() :: method => constructFixtureName(method)
         case method => constructFixtureName(method)
       }
   }

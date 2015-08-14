@@ -79,6 +79,13 @@ class ScriptTableSuite extends PsiSuite {
     }
   }
 
+  test("method name for symbol assignment") {
+    val output = scriptRow("| $TR= | method | foo | invocation |")
+    assertResult("methodInvocation") {
+      output.fixtureMethodName
+    }
+  }
+
   test("method with keyword, name absent") {
     val output = scriptRow("| ensure |")
     assertResult("") {
