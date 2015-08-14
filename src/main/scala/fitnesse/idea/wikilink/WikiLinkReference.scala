@@ -21,11 +21,10 @@ class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](el
         }
       }
 
-    if (targetDir == null) {
-      return null
+    targetDir match {
+      case null => null
+      case _ => targetDir.findFile("content.txt")
     }
-
-    targetDir.findFile("content.txt")
   }
 
   private def getParentDir(pagePath: Array[String]): PsiDirectory = {
