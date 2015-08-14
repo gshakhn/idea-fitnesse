@@ -1,7 +1,15 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id "com.github.maiflai.scalatest" version "0.6-5-g9065d91"
 }
+
+version = "1.0"
+
+description = """Language support for FitNesse, the fully integrated standalone wiki and acceptance testing framework.
+
+This plugin provides syntax highlighting, reference resolution and execution of FitNesse test suites.
+"""
 
 apply plugin: 'scala'
 apply plugin: 'idea'
@@ -61,6 +69,15 @@ task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
 
     from tarTree(resources.gzip(zipFile))
     into outputDir
+}
+
+processResources {
+    from('src/main/resources') {
+        include 'META-INF/plugin.xml'
+        filter(ReplaceTokens, tokens: [
+                version : project.version,
+                description: project.description ])
+    }
 }
 
 test {

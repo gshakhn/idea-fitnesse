@@ -1,7 +1,7 @@
 <idea-plugin version="2">
-  <name>FitNesse IDEA</name>
-  <description>${project.description}</description>
-  <version>${project.version}</version>
+  <name>FitNesse</name>
+  <description>@description@</description>
+  <version>@version@</version>
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
