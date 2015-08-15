@@ -43,14 +43,13 @@ class ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
   override def getName = source match {
     case STUB => getStub.getName
     case NODE =>
-      val snippets = getCells.zipWithIndex.filter(_._2 % 2 == 0).map(_._1)
-      val texts = snippets.map(_.getText.trim)
-
-      texts match {
-        case Nil => ""
-        case h :: _ if h.contains("_") => h.replaceAll("\\s*_\\s*", " ")
-        case t => t.mkString(" ")
-      }
+      getCells.zipWithIndex
+        .filter{ case (_, index) => index % 2 == 0 }
+        .map{ case (cell, _) => cell.getText.trim } match {
+          case Nil => ""
+          case h :: _ if h.contains("_") => h.replaceAll("\\s*_\\s*", " ")
+          case t => t.mkString(" ")
+        }
   }
 
   def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
