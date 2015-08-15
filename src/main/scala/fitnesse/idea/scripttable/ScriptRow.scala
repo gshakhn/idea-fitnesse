@@ -42,14 +42,14 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
     case NODE =>
       val texts = getCells.map(_.getText.trim)
 
-      def constructFixtureName(parts: List[String]) = {
-        if (parts.isEmpty)
-          ""
-        else if (parts.head.endsWith(";"))
-          parts.head
-        else
-          parts.view.zipWithIndex.filter(_._2 % 2 == 0).map(_._1).mkString(" ")
-      }
+      def constructFixtureName(parts: List[String]) = parts match {
+        case Nil => ""
+        case head :: _ if head.endsWith(";") => head
+        case _ => parts.zipWithIndex
+          .filter{ case (_, index) => index % 2 == 0 }
+          .map{ case (text, _) => text }
+          .mkString(" ")
+        }
 
       val symbolAssignment = "\\$\\w+=".r
 

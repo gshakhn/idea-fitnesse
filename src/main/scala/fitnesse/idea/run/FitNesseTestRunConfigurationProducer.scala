@@ -48,19 +48,17 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
           configuration.wikiPageName == wikiPageName
     }
 
-  def wikiPageInfo(project: Project, context: ConfigurationContext): Option[(VirtualFile, VirtualFile)] = {
-    val wikiPageFile: VirtualFile = findWikiPageFile(context)
-    if (wikiPageFile == null) return None
-
-    val module: Module = ModuleUtilCore.findModuleForFile(wikiPageFile, project)
-    if (module == null) return None
-
-    val fitnesseRoot = findFitnesseRoot(module)
-    fitnesseRoot match {
+  def wikiPageInfo(project: Project, context: ConfigurationContext): Option[(VirtualFile, VirtualFile)] =
+    findWikiPageFile(context) match {
       case null => None
-      case _ => Some((wikiPageFile, fitnesseRoot))
+      case wikiPageFile => ModuleUtilCore.findModuleForFile(wikiPageFile, project) match {
+        case null => None
+        case module => findFitnesseRoot(module) match {
+          case null => None
+          case fitnesseRoot => Some((wikiPageFile, fitnesseRoot))
+        }
+      }
     }
-  }
 
   def findWikiPageFile(context: ConfigurationContext): VirtualFile = {
     val pageFile = context.getPsiLocation.getContainingFile.getVirtualFile

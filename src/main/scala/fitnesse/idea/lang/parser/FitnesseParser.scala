@@ -51,24 +51,24 @@ class FitnesseParser extends PsiParser {
   }
 
   private def parseDecisionMethodRow(builder: PsiBuilder): Unit = {
-    if  (builder.getTokenType == FitnesseTokenType.TABLE_END) return
+    if  (builder.getTokenType != FitnesseTokenType.TABLE_END) {
+      val start = builder.mark()
 
-    val start = builder.mark()
-
-    while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
-      if (builder.getTokenType == FitnesseTokenType.WORD) {
-        val method = builder.mark()
-        val methodType = readCellText(builder) match {
-          case output if output.endsWith("?") => FitnesseElementType.DECISION_OUTPUT
-          case comment if comment.startsWith("#") => FitnesseElementType.COMMENT
-          case _ => FitnesseElementType.DECISION_INPUT
+      while (!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
+        if (builder.getTokenType == FitnesseTokenType.WORD) {
+          val method = builder.mark()
+          val methodType = readCellText(builder) match {
+            case output if output.endsWith("?") => FitnesseElementType.DECISION_OUTPUT
+            case comment if comment.startsWith("#") => FitnesseElementType.COMMENT
+            case _ => FitnesseElementType.DECISION_INPUT
+          }
+          method.done(methodType)
         }
-        method.done(methodType)
+        builder.advanceLexer()
       }
-      builder.advanceLexer()
-    }
 
-    start.done(FitnesseElementType.ROW)
+      start.done(FitnesseElementType.ROW)
+    }
   }
 
   private def parseTopRow(builder: PsiBuilder) : TableElementType = {
