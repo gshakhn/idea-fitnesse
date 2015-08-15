@@ -1,42 +1,22 @@
 Introduction
 ===========
 
-This is an [IntelliJ] plugin for [Fitnesse].
-
-[IntelliJ]: http://www.jetbrains.com/idea/
-[Fitnesse]: http://www.fitnesse.org/
+This is an [IntelliJ] plugin for [FitNesse].
 
 Current Status
 ===========
+[![Build Status][travis-ci-badge]][travis-ci] [![Codacy Badge][codacy-badge]][codacy] [![Dependency Status][versioneye-badge]][versioneye]
 
-[![Build Status](https://travis-ci.org/gshakhn/idea-fitnesse.svg)](https://travis-ci.org/gshakhn/idea-fitnesse)
 
-[![Codacy Badge](https://www.codacy.com/project/badge/655882f037764ee195733a479e0eaaa6)](https://www.codacy.com/app/gshakhn/idea-fitnesse)
+The plugin fully functional and supports the following features:
 
-[![Dependency Status](https://www.versioneye.com/user/projects/554989f65d4f9a0b990012e5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/554989f65d4f9a0b990012e5)
-
-The plugin has very minimal features and is a work in progress.
-
-Working Features
-----------------
-* Highlighting of WikiWords and table cell text. (Default color scheme is super ugly. Suggestions welcome).
-* Links to other test pages.
-* Find test by file name (CTRL-SHIFT-N and type in test name).
-
-Planned Features
-----------------
-* Goto Java class/method from Fitnesse.
-* Find Fitnesse references in Java code (i.e. Which Fitnesse test uses this fixture?)
-* Goto/Reference support for Scenario Libraries.
-* Auto complete in tables.
-* Run the Fitnesse server from IntelliJ. Have a goto wiki action on a file to open the browser with the test loaded.
-
-Maybe Features
---------------
-* Make the formatting in IntelliJ match the wiki.
-* Run tests in IntelliJ and show results inline.
-* Create test/suite action in IntelliJ so you don't have to copy/paste files or goto the wiki
-* Edit test/suite properties in IntelliJ.
+ * Syntax highlighting
+ * Links to other wiki pages
+ * Supports Slim Decision, Query, Script, Scenario and Table tables
+ * Syntax checking: warning for missing references
+ * Execution of test suites, with readable console output
+ * Folding of collapsible sections
+ * Create wiki page action
 
 Building the plugin
 ===================
@@ -51,12 +31,14 @@ Make sure the following plugins are enabled:
  * Plugin DevKit
  * UI Designer
 
-Read the [Guidelines for plugin development](https://www.jetbrains.com/idea/help/plugin-development-guidelines.html) for info on writing a plugin.
+Read the [Guidelines for plugin development] for info on writing a plugin.
 
-Try their [Custom language support tutorial](https://confluence.jetbrains.com/display/IntelliJIDEA/Custom+Language+Support)
+Try their [Custom language support tutorial].
 
 Building
 --------
+
+Run `./gradlew dist` to build the plugin distribution.
 
 Run `./gradlew idea` to generate the module and project files. Because this is a IntelliJ plugin project, you should
 not try to import the gradle file directly in IntelliJ.
@@ -76,7 +58,7 @@ I use the following VM options for the plugin: `-Xms128m -Xmx750m -XX:MaxPermSiz
 Participating
 =============
 
-If you want to help out with the plugin, please check the [wiki](https://github.com/amolenaar/idea-fitnesse/wiki) for tasks that are still to be done.
+If you want to help out with the plugin, please check the [wiki] for tasks that are still to be done.
 
 License
 =======
@@ -85,4 +67,17 @@ This plugin is licensed under [Apache License, V2.0].
 
 Feel free to fork and submit pull requests. I'll try to get them into the mainline ASAP.
 
+[IntelliJ]: http://www.jetbrains.com/idea/
+[Fitnesse]: http://www.fitnesse.org/
+[Guidelines for plugin development]: https://www.jetbrains.com/idea/help/plugin-development-guidelines.html
+[Custom language support tutorial]: https://confluence.jetbrains.com/display/IntelliJIDEA/Custom+Language+Support
+[wiki]: https://github.com/amolenaar/idea-fitnesse/wiki
 [Apache License, V2.0]: http://www.apache.org/licenses/LICENSE-2.0
+
+[travis-ci-badge]: https://travis-ci.org/gshakhn/idea-fitnesse.svg
+[travis-ci]: https://travis-ci.org/gshakhn/idea-fitnesse
+[codacy-badge]: https://www.codacy.com/project/badge/655882f037764ee195733a479e0eaaa6
+[codacy]: https://www.codacy.com/app/gshakhn/idea-fitnesse
+[versioneye-badge]: https://www.versioneye.com/user/projects/554989f65d4f9a0b990012e5/badge.svg?style=flat
+[versioneye]: https://www.versioneye.com/user/projects/554989f65d4f9a0b990012e5
+
