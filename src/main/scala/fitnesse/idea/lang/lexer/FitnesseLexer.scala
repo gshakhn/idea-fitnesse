@@ -75,10 +75,6 @@ class FitnesseLexer extends LexerBase {
     }
   }
 
-  override def getTokenStart: Int = symbolList.head.getStartOffset
-
-  override def getTokenEnd: Int = symbolList.head.getEndOffset
-
   override def getTokenType: IElementType = {
     symbolList match {
       case Nil => null
@@ -101,8 +97,18 @@ class FitnesseLexer extends LexerBase {
     }
   }
 
+  override def getTokenStart: Int = symbolList match {
+    case symbol :: _ => symbol.getStartOffset
+    // case Nil is covered by getTokenType()
+  }
+
+  override def getTokenEnd: Int = symbolList match {
+    case symbol :: _ => symbol.getEndOffset
+    // case Nil is covered by getTokenType()
+  }
+
   override def getState: Int = {
-    state //throw new IllegalStateException("FitnesseLexer does not have state that can be represented in an integer")
+    state
   }
 
   override def getBufferEnd: Int = buffer.length
