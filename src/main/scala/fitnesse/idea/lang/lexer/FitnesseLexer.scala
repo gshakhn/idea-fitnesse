@@ -99,17 +99,15 @@ class FitnesseLexer extends LexerBase {
 
   override def getTokenStart: Int = symbolList match {
     case symbol :: _ => symbol.getStartOffset
-    // case Nil is covered by getTokenType()
+    case Nil => throw new IllegalStateException("case Nil should have been covered by getTokenType()")
   }
 
   override def getTokenEnd: Int = symbolList match {
     case symbol :: _ => symbol.getEndOffset
-    // case Nil is covered by getTokenType()
+    case Nil => throw new IllegalStateException("case Nil should have been covered by getTokenType()")
   }
 
-  override def getState: Int = {
-    state
-  }
+  override def getState: Int = state
 
   override def getBufferEnd: Int = buffer.length
 
