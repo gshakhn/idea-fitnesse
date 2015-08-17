@@ -40,7 +40,7 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
   override def isConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext): Boolean =
     wikiPageInfo(configuration.getProject, context) match {
       case None => false
-      case Some((wikiPageFile: VirtualFile, fitnesseRoot: VirtualFile)) =>
+      case Some((wikiPageFile, fitnesseRoot)) =>
         val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
 
         configuration.fitnesseRoot == fitnesseRoot.getName &&
@@ -50,26 +50,30 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
 
   def wikiPageInfo(project: Project, context: ConfigurationContext): Option[(VirtualFile, VirtualFile)] =
     findWikiPageFile(context) match {
-      case null => None
-      case wikiPageFile => ModuleUtilCore.findModuleForFile(wikiPageFile, project) match {
-        case null => None
-        case module => findFitnesseRoot(module) match {
-          case null => None
-          case fitnesseRoot => Some((wikiPageFile, fitnesseRoot))
+      case None => None
+      case Some(wikiPageFile) => Option(ModuleUtilCore.findModuleForFile(wikiPageFile, project)) match {
+        case None => None
+        case Some(module) => findFitnesseRoot(module) match {
+          case None => None
+          case Some(fitnesseRoot) => Some((wikiPageFile, fitnesseRoot))
         }
       }
     }
 
-  def findWikiPageFile(context: ConfigurationContext): VirtualFile = {
-    val pageFile = context.getPsiLocation.getContainingFile.getVirtualFile
-    if (pageFile.isDirectory) {
-      pageFile
-    } else {
-      pageFile.getParent
+  def findWikiPageFile(context: ConfigurationContext): Option[VirtualFile] = {
+    Option(context.getPsiLocation.getContainingFile) match {
+      case None => None
+      case Some(containingFile) =>
+        val pageFile = containingFile.getVirtualFile
+        if (pageFile.isDirectory) {
+          Some(pageFile)
+        } else {
+          Some(pageFile.getParent)
+        }
     }
   }
 
-  def findFitnesseRoot(module: Module) = module.getProject.getBaseDir.findChild("FitNesseRoot")
+  def findFitnesseRoot(module: Module) = Option(module.getProject.getBaseDir.findChild("FitNesseRoot"))
 
   def makeWikiPageName(fitnesseRoot: VirtualFile, wikiPageFile: VirtualFile) = {
     FileUtil.getRelativePath(fitnesseRoot.getCanonicalPath, wikiPageFile.getCanonicalPath, File.separatorChar).replace(File.separatorChar, '.')
