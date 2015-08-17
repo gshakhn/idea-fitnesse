@@ -42,12 +42,8 @@ class FitnesseParserDefinition extends ParserDefinition {
       case FitnesseElementType.DECISION_INPUT => new DecisionInputImpl(astNode)
       case FitnesseElementType.DECISION_OUTPUT => new DecisionOutputImpl(astNode)
       case FitnesseElementType.QUERY_OUTPUT => new QueryOutput(astNode)
-      case FitnesseElementType.WIKI_WORD =>
-        println(s"Found a wiki word! ${astNode.getText}")
-        new WikiLink(astNode)
-      case _ =>
-        println(s"No PSI element defined for ${astNode.getElementType}")
-        new ASTWrapperPsiElement(astNode)
+      case FitnesseElementType.WIKI_WORD => new WikiLink(astNode)
+      case _ => new ASTWrapperPsiElement(astNode)
     }
   }
 
