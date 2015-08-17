@@ -4,7 +4,7 @@ plugins {
     id "com.github.maiflai.scalatest" version "0.6-5-g9065d91"
 }
 
-version = "1.0.1"
+version = "1.0.2"
 
 description = """Language support for FitNesse, the fully integrated standalone wiki and acceptance testing framework.
 
