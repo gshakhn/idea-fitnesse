@@ -4,7 +4,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
-import fitnesse.idea.fixturemethod.{FixtureMethodIndex, MethodReferences}
+import fitnesse.idea.fixturemethod.{FixtureMethodIndex, FixtureMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._
@@ -15,7 +15,7 @@ trait DecisionInputStub extends StubElement[DecisionInput] {
 }
 
 
-trait DecisionInput extends StubBasedPsiElement[DecisionInputStub] with Cell with MethodReferences {
+trait DecisionInput extends StubBasedPsiElement[DecisionInputStub] with Cell with FixtureMethod {
   def fixtureMethodName: String
   def getName: String
 }

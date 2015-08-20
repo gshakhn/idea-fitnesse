@@ -3,7 +3,7 @@ package fitnesse.idea.decisiontable
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
 import com.intellij.psi.{PsiElement, StubBasedPsiElement}
-import fitnesse.idea.fixturemethod.{FixtureMethodIndex, MethodReferences}
+import fitnesse.idea.fixturemethod.{FixtureMethodIndex, FixtureMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._
@@ -14,7 +14,7 @@ trait DecisionOutputStub extends StubElement[DecisionOutput] {
 }
 
 
-trait DecisionOutput extends StubBasedPsiElement[DecisionOutputStub] with Cell with MethodReferences {
+trait DecisionOutput extends StubBasedPsiElement[DecisionOutputStub] with Cell with FixtureMethod {
   def fixtureMethodName: String
   def getName: String
 }

@@ -12,7 +12,8 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
   val project = referer.getProject
 
   override def getVariants = {
-    // If decision table: include scenario's and java classes
+    // TODO: If decision table: include scenario's and java classes
+    // Return array of String, {@link PsiElement} and/or {@link LookupElement}
     Array("foo bar", "late at night")
   }
 

@@ -5,7 +5,7 @@ import com.intellij.psi.{PsiClass, PsiElement, PsiMethod, PsiReference}
 import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.scripttable.ScenarioName
 
-trait MethodReferences extends PsiElement {
+trait FixtureMethod extends PsiElement {
 
   def getFixtureClass: Option[FixtureClass]
 
