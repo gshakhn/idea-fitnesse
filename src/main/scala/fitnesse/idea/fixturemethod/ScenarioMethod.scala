@@ -6,7 +6,7 @@ import fitnesse.idea.scripttable.{ScenarioName, ScenarioNameIndex}
 
 import scala.collection.JavaConversions._
 
-trait ScenarioReferences extends PsiElement {
+trait ScenarioMethod extends PsiElement {
 
   def fixtureMethodName: String
 
