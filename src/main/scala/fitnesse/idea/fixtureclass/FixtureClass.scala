@@ -2,16 +2,10 @@ package fitnesse.idea.fixtureclass
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi._
-import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
-import fitnesse.idea.decisiontable.DecisionTable
-import fitnesse.idea.fixturemethod.{ScenarioReferences, ScenarioReference}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Row, ScalaFriendlyStubBasedPsiElementBase}
-import fitnesse.idea.scripttable.{ScenarioNameIndex, ScenarioName}
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
-
-import scala.collection.JavaConversions._
 
 
 trait FixtureClassStub extends StubElement[FixtureClass] {
@@ -45,55 +39,7 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
       case className => Some(className)
     }
 
-  protected def isQualifiedName: Boolean = {
-    fixtureClassName match {
-      case Some(name) =>
-        val dotIndex: Int = name.indexOf(".")
-        dotIndex != -1 && dotIndex != name.length - 1
-      case None => false
-    }
-  }
-
-  protected def shortName: Option[String] = {
-    fixtureClassName match {
-      case Some(name) => name.split('.').toList.reverse match {
-        case "" :: n :: _ => Some(n)
-        case n :: _ => Some(n)
-        case _ => Some(name)
-      }
-      case None => None
-    }
-  }
-
-  protected def getReferencedClasses: Seq[PsiReference] = {
-    def createReference(psiClass: PsiClass): FixtureClassReference = new FixtureClassReference(psiClass, this)
-
-    fixtureClassName match {
-      case Some(className) if isQualifiedName =>
-          JavaPsiFacade.getInstance(getProject).findClasses(className, GlobalSearchScope.projectScope(getProject)).map(createReference)
-      case Some(className) =>
-          PsiShortNamesCache.getInstance(getProject).getClassesByName(shortName.get, GlobalSearchScope.projectScope(getProject)).map(createReference)
-      case None => Seq()
-    }
-  }
-
-  protected def getReferencedScenarios: Seq[PsiReference] = {
-    def createReference(scenarioName: ScenarioName): ScenarioReference = new ScenarioReference(scenarioName, this)
-
-    fixtureClassName match {
-      case Some(className) if isQualifiedName => Seq()
-      case Some(className) =>
-        ScenarioNameIndex.INSTANCE.get(className, getProject, GlobalSearchScope.projectScope(getProject)).map(createReference).toSeq
-      case None => Seq()
-    }
-  }
-
-  override def getReferences = getTable match {
-    case _: DecisionTable =>
-      (getReferencedScenarios ++ getReferencedClasses).toArray
-    case _ =>
-      getReferencedClasses.toArray
-  }
+  override def getReference: PsiReference = new FixtureClassReference(this)
 
   override def getName = source match {
     case STUB => getStub.getName
