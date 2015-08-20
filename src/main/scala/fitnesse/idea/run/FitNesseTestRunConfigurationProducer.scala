@@ -23,7 +23,7 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
   override def setupConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext, sourceElement: Ref[PsiElement]): Boolean =
     wikiPageInfo(configuration.getProject, context) match {
       case None => false
-      case Some((wikiPageFile: VirtualFile, fitnesseRoot: VirtualFile)) =>
+      case Some((wikiPageFile, fitnesseRoot)) =>
         val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
 
         configuration.fitnesseRoot = fitnesseRoot.getName
