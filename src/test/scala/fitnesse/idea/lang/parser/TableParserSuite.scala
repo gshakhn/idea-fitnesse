@@ -596,4 +596,39 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+  test("partial table") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.UNKNOWN_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+          ))
+        ))
+      ))
+    ) {
+      parse("|")
+    }
+  }
+
+  test("partial table, editing second cell") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+//        Node(TableElementType.UNKNOWN_TABLE, List(
+//          Leaf(FitnesseTokenType.TABLE_START, "|"),
+//          Node(FitnesseElementType.ROW, List(
+//            Node(FitnesseElementType.TABLE_TYPE, List(
+//              Leaf(FitnesseTokenType.WORD, "script")
+//            )),
+//            Leaf(FitnesseTokenType.CELL_END, "|")
+//          ))
+//        ))
+        Leaf(FitnesseTokenType.WORD,"|script|"),
+        Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+        Leaf(FitnesseTokenType.WORD, "foo")
+      ))
+    ) {
+      parse("|script| foo")
+    }
+  }
+
 }

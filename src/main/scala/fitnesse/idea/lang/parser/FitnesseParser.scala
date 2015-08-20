@@ -77,31 +77,36 @@ class FitnesseParser extends PsiParser {
     assert(builder.getTokenType == FitnesseTokenType.ROW_START)
     builder.advanceLexer() // Past ROW_START
 
-    assert(builder.getTokenType == FitnesseTokenType.CELL_START)
-    builder.advanceLexer() // Past CELL_START
+    builder.getTokenType match {
+      case FitnesseTokenType.CELL_START =>
+        builder.advanceLexer() // Past CELL_START
 
-    val tableType = findTableType(builder)
+        val tableType = findTableType(builder)
 
-    tableType match {
-      case TableElementType.SCENARIO_TABLE =>
-        val scenarioName = builder.mark()
-        parseCells(builder, TableElementType.SCENARIO_TABLE)
-        scenarioName.done(FitnesseElementType.SCENARIO_NAME)
-      case _ =>
-        if (!isCellEnd(builder)) {
-          val fixtureClassOrScenarioName = builder.mark()
-          while (!isCellEnd(builder)) builder.advanceLexer() // Past FIXTURE_CLASS
-          fixtureClassOrScenarioName.done(FitnesseElementType.FIXTURE_CLASS)
+        tableType match {
+          case TableElementType.SCENARIO_TABLE =>
+            val scenarioName = builder.mark()
+            parseCells(builder, TableElementType.SCENARIO_TABLE)
+            scenarioName.done(FitnesseElementType.SCENARIO_NAME)
+          case _ =>
+            if (!isCellEnd(builder)) {
+              val fixtureClassOrScenarioName = builder.mark()
+              while (!isCellEnd(builder)) builder.advanceLexer() // Past FIXTURE_CLASS
+              fixtureClassOrScenarioName.done(FitnesseElementType.FIXTURE_CLASS)
+            }
+
+            advanceTillEndOfRow(builder)
         }
+        start.done(FitnesseElementType.ROW)
 
-        advanceTillEndOfRow(builder)
+        assert(builder.getTokenType == FitnesseTokenType.ROW_END)
+        builder.advanceLexer() // Past ROW_END
+
+        tableType
+      case _ =>
+        start.done(FitnesseElementType.ROW)
+        TableElementType.UNKNOWN_TABLE
     }
-    start.done(FitnesseElementType.ROW)
-
-    assert(builder.getTokenType == FitnesseTokenType.ROW_END)
-    builder.advanceLexer() // Past ROW_END
-
-    tableType
   }
 
   private def findTableType(builder: PsiBuilder) : TableElementType = {
