@@ -93,7 +93,25 @@ task dist(type: Zip, dependsOn: [jar, test]) {
     baseName 'idea-fitnesse'
 }
 
-compileScala.dependsOn extractIdeaSdk
+compileScala {
+    dependsOn extractIdeaSdk
+    doLast{
+        ant {
+            println "Instrumenting form classes..."
+            taskdef(name: "instrumentIdeaExtensions",
+                    classname: "com.intellij.ant.InstrumentIdeaExtensions",
+                    classpath: configurations.ideaSdk.asPath)
+
+            instrumentIdeaExtensions(srcdir: sourceSets.main.scala.srcDirs[0],
+                    classpath: classpath.asPath,
+                    destdir: destinationDir,
+                    includeAntRuntime: true,
+                    source: sourceCompatibility,
+                    target: targetCompatibility
+            )
+        }
+    }
+}
 
 // ========= Workspace setup tasks ========= //
 
