@@ -10,11 +10,11 @@ class MissingReferencesAnnotator extends Annotator {
   def annotate(element: PsiElement, holder: AnnotationHolder): Unit = {
     element match {
       case fixtureClass: FixtureClass =>
-        if (fixtureClass.getReferences.isEmpty) {
+        if (Option(fixtureClass.getReference.resolve).isEmpty) {
           holder.createErrorAnnotation(element.getTextRange, "No fixture class found")
         }
-      case methodReferences: FixtureMethod =>
-        if (methodReferences.getReferences.isEmpty) {
+      case fixtureMethod: FixtureMethod =>
+        if (Option(fixtureMethod.getReference.resolve).isEmpty) {
           holder.createErrorAnnotation(element.getTextRange, "No fixture method found")
         }
       case _ =>

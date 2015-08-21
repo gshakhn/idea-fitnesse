@@ -1,9 +1,9 @@
 package fitnesse.idea.decisiontable
 
-import com.intellij.psi.{PsiElement, PsiMethod}
+import com.intellij.psi.PsiElement
 import fitnesse.idea.fixturemethod.MethodReference
 
-class DecisionInputReference(psiMethod: PsiMethod, element: DecisionInput) extends MethodReference(psiMethod, element) {
+class DecisionInputReference(element: DecisionInput) extends MethodReference(element) {
 
   override def handleElementRename(newElementName: String): PsiElement = {
     if (newElementName.startsWith("set")) {

@@ -27,45 +27,36 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
 
   protected def fixtureClassName = referer.fixtureClassName
 
-  protected def isQualifiedName: Boolean = {
-    fixtureClassName match {
-      case Some(name) =>
-        val dotIndex: Int = name.indexOf(".")
-        dotIndex != -1 && dotIndex != name.length - 1
-      case None => false
-    }
+  protected def isQualifiedName: Boolean = fixtureClassName match {
+    case Some(name) =>
+      val dotIndex: Int = name.indexOf(".")
+      dotIndex != -1 && dotIndex != name.length - 1
+    case None => false
   }
 
-  protected def shortName: Option[String] = {
-    fixtureClassName match {
-      case Some(name) => name.split('.').toList.reverse match {
-        case "" :: n :: _ => Some(n)
-        case n :: _ => Some(n)
-        case _ => Some(name)
-      }
-      case None => None
+  protected def shortName: Option[String] = fixtureClassName match {
+    case Some(name) => name.split('.').toList.reverse match {
+      case "" :: n :: _ => Some(n)
+      case n :: _ => Some(n)
+      case _ => Some(name)
     }
+    case None => None
   }
 
   private def createReference(element: PsiElement): ResolveResult = new PsiElementResolveResult(element)
 
-  protected def getReferencedClasses: Seq[ResolveResult] = {
-    fixtureClassName match {
-      case Some(className) if isQualifiedName =>
-        JavaPsiFacade.getInstance(project).findClasses(className, GlobalSearchScope.projectScope(project)).map(createReference)
-      case Some(className) =>
-        PsiShortNamesCache.getInstance(project).getClassesByName(shortName.get, GlobalSearchScope.projectScope(project)).map(createReference)
-      case None => Seq()
-    }
+  protected def getReferencedClasses: Seq[ResolveResult] = fixtureClassName match {
+    case Some(className) if isQualifiedName =>
+      JavaPsiFacade.getInstance(project).findClasses(className, GlobalSearchScope.projectScope(project)).map(createReference)
+    case Some(className) =>
+      PsiShortNamesCache.getInstance(project).getClassesByName(shortName.get, GlobalSearchScope.projectScope(project)).map(createReference)
+    case None => Seq()
   }
 
-  protected def getReferencedScenarios: Seq[ResolveResult] = {
-
-    referer.fixtureClassName match {
-      case Some(className) if isQualifiedName => Seq()
-      case Some(className) =>
-        ScenarioNameIndex.INSTANCE.get(className, project, GlobalSearchScope.projectScope(project)).map(createReference).toSeq
-      case None => Seq()
-    }
+  protected def getReferencedScenarios: Seq[ResolveResult] = referer.fixtureClassName match {
+    case Some(className) if isQualifiedName => Seq()
+    case Some(className) =>
+      ScenarioNameIndex.INSTANCE.get(className, project, GlobalSearchScope.projectScope(project)).map(createReference).toSeq
+    case None => Seq()
   }
 }

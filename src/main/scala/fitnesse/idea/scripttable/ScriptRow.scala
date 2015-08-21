@@ -4,7 +4,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
 import com.intellij.psi.{PsiMethod, PsiReference, PsiElement, StubBasedPsiElement}
 import fitnesse.idea.fixtureclass.FixtureClass
-import fitnesse.idea.fixturemethod.{MethodReference, ScenarioMethod, FixtureMethodIndex, FixtureMethod}
+import fitnesse.idea.fixturemethod._
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.parser.FitnesseElementType
 import fitnesse.idea.lang.psi.{Cell, Row, ScalaFriendlyStubBasedPsiElementBase}
@@ -29,7 +29,7 @@ class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String
 }
 
 
-class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] with ScriptRow with FixtureMethod with ScenarioMethod {
+class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] with ScriptRow with FixtureMethod {
 
   def this(node: ASTNode) = { this(); init(node) }
   def this(stub: ScriptRowStub) = { this(); init(stub) }
@@ -61,9 +61,7 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
       }
   }
 
-  override def getReferences: Array[PsiReference] = (getReferencedScenarios ++ getReferencedMethods).toArray
-
-  override protected def createReference(psiMethod: PsiMethod): MethodReference = new MethodReference(psiMethod, this)
+  override def getReference: PsiReference = new MethodOrScenarioReference(this)
 
   override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 
