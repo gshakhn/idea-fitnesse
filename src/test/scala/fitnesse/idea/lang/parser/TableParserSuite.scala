@@ -555,7 +555,7 @@ class TableParserSuite extends ParserSuite {
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
-            Node(FitnesseElementType.CELL,List(
+            Node(FitnesseElementType.IMPORT, List(
               Leaf(FitnesseTokenType.WORD, "fixtures")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " ")
@@ -583,7 +583,7 @@ class TableParserSuite extends ParserSuite {
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
-            Node(FitnesseElementType.CELL, List(
+            Node(FitnesseElementType.LIBRARY_CLASS, List(
               Leaf(FitnesseTokenType.WORD, "fixtures")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " ")
@@ -593,6 +593,40 @@ class TableParserSuite extends ParserSuite {
       ))
     ) {
       parse("| library |\n| fixtures |")
+    }
+  }
+
+  test("library table with constructor argument") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.LIBRARY_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "library")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.LIBRARY_CLASS, List(
+              Leaf(FitnesseTokenType.WORD, "fixtures")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "arg")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          ))
+        )),
+        Leaf(FitnesseTokenType.TABLE_END, "|")
+      ))
+    ) {
+      parse("| library |\n| fixtures | arg |")
     }
   }
 
@@ -630,5 +664,4 @@ class TableParserSuite extends ParserSuite {
       parse("|script| foo")
     }
   }
-
 }

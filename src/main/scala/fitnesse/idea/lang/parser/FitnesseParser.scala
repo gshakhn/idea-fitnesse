@@ -169,14 +169,18 @@ class FitnesseParser extends PsiParser {
   }
 
   def parseCells(builder: PsiBuilder, tableType: TableElementType): Unit = {
+    var firstCell = true
     while (!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       if (builder.getTokenType == FitnesseTokenType.WORD) {
         val cell = builder.mark()
         readCellText(builder)
         cell.done(tableType match {
           case TableElementType.QUERY_TABLE => FitnesseElementType.QUERY_OUTPUT
+          case TableElementType.IMPORT_TABLE => FitnesseElementType.IMPORT
+          case TableElementType.LIBRARY_TABLE if firstCell => FitnesseElementType.LIBRARY_CLASS
           case _ => FitnesseElementType.CELL
         })
+        firstCell = false
       }
       builder.advanceLexer()
     }

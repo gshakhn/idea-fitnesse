@@ -11,7 +11,6 @@ class FitnesseElementType(debugName: String) extends IElementType(debugName, Fit
 }
 
 object FitnesseElementType {
-
   final val FILE = new IStubFileElementType(FitnesseLanguage.INSTANCE)
   final val TABLE_TYPE = new FitnesseElementType("TABLE_TYPE")
   final val ROW = new FitnesseElementType("ROW")
@@ -21,6 +20,8 @@ object FitnesseElementType {
   final val DECISION_INPUT = DecisionInputElementTypeHolder.INSTANCE
   final val DECISION_OUTPUT = DecisionOutputElementTypeHolder.INSTANCE
   final val QUERY_OUTPUT = new FitnesseElementType("QUERY_OUTPUT")
+  final val IMPORT = new FitnesseElementType("IMPORT")
+  final val LIBRARY_CLASS = new FitnesseElementType("LIBRARY_CLASS")
   final val CELL= new FitnesseElementType("CELL")
   final val COMMENT = new FitnesseElementType("COMMENT")
   final val COLLAPSIBLE = new FitnesseElementType("COLLAPSIBLE")
