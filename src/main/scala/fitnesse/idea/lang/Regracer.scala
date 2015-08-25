@@ -8,6 +8,6 @@ object Regracer {
    * @param s
    * @return
    */
-  def regrace(s: String) = s.replaceAll("(.)(\\p{Upper})", "$1 $2").toLowerCase
+  def regrace(s: String): String = s.replaceAll("(.)(\\p{Upper})", "$1 $2").toLowerCase
 
 }

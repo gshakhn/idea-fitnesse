@@ -39,8 +39,6 @@ class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
     case NODE => getNode.getText
   }
 
-  // TODO: Check for method if fixture class references Java classes. Else reference ScenarioName
-
   override def getReference: PsiReference = new DecisionInputReference(this)
 }
 

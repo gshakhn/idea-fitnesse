@@ -8,6 +8,7 @@ class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBas
 
   val project = referer.getProject
 
+  // TODO: take into account Library and Import tables. Search for ancestors.
   override def getVariants = Array()
 
   override def multiResolve(b: Boolean): Array[ResolveResult] = getReferencedMethods.toArray

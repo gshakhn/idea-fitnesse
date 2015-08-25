@@ -3,6 +3,7 @@ package fitnesse.idea.fixtureclass
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.decisiontable.DecisionTable
+import fitnesse.idea.lang.Regracer
 import fitnesse.idea.scripttable.ScenarioNameIndex
 
 import scala.collection.JavaConversions._
@@ -11,10 +12,16 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
 
   val project = referer.getProject
 
+  // Return array of String, {@link PsiElement} and/or {@link LookupElement}
   override def getVariants = {
-    // TODO: If decision table: include scenario's and java classes
-    // Return array of String, {@link PsiElement} and/or {@link LookupElement}
-    Array("foo bar", "late at night")
+
+    val allClassNames: Array[String] = PsiShortNamesCache.getInstance(project).getAllClassNames.filter(p => p != null).map(Regracer.regrace)
+    if (referer.getTable.isInstanceOf[DecisionTable]) {
+      val scenarioNames =  ScenarioNameIndex.INSTANCE.getAllKeys(project).map(Regracer.regrace).toArray
+      Array.concat(allClassNames, scenarioNames).asInstanceOf[Array[AnyRef]]
+    } else {
+      allClassNames.asInstanceOf[Array[AnyRef]]
+    }
   }
 
   override def multiResolve(b: Boolean): Array[ResolveResult] = referer.getTable match {
