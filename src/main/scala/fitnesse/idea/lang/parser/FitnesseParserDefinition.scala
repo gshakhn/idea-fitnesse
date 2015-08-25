@@ -8,8 +8,10 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.tree.TokenSet
 import fitnesse.idea.decisiontable._
 import fitnesse.idea.fixtureclass.FixtureClassImpl
+import fitnesse.idea.importtable.Import
 import fitnesse.idea.lang.lexer.{FitnesseLexer, FitnesseTokenType}
 import fitnesse.idea.lang.psi._
+import fitnesse.idea.librarytable.LibraryClass
 import fitnesse.idea.querytable.{QueryOutput, QueryTable}
 import fitnesse.idea.scripttable._
 import fitnesse.idea.wikilink.WikiLink
@@ -42,6 +44,8 @@ class FitnesseParserDefinition extends ParserDefinition {
       case FitnesseElementType.DECISION_INPUT => new DecisionInputImpl(astNode)
       case FitnesseElementType.DECISION_OUTPUT => new DecisionOutputImpl(astNode)
       case FitnesseElementType.QUERY_OUTPUT => new QueryOutput(astNode)
+      case FitnesseElementType.IMPORT => new Import(astNode)
+      case FitnesseElementType.LIBRARY_CLASS => new LibraryClass(astNode)
       case FitnesseElementType.WIKI_WORD => new WikiLink(astNode)
       case _ => new ASTWrapperPsiElement(astNode)
     }
