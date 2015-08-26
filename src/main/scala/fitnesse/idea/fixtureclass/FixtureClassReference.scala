@@ -14,13 +14,13 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
 
   // Return array of String, {@link PsiElement} and/or {@link LookupElement}
   override def getVariants = {
-
     val allClassNames: Array[String] = PsiShortNamesCache.getInstance(project).getAllClassNames.filter(p => p != null).map(Regracer.regrace)
-    if (referer.getTable.isInstanceOf[DecisionTable]) {
-      val scenarioNames =  ScenarioNameIndex.INSTANCE.getAllKeys(project).map(Regracer.regrace).toArray
-      Array.concat(allClassNames, scenarioNames).asInstanceOf[Array[AnyRef]]
-    } else {
-      allClassNames.asInstanceOf[Array[AnyRef]]
+    referer.getTable match {
+      case _ : DecisionTable =>
+        val scenarioNames =  ScenarioNameIndex.INSTANCE.getAllKeys(project).map(Regracer.regrace).toArray
+        Array.concat(allClassNames, scenarioNames).asInstanceOf[Array[AnyRef]]
+      case _ =>
+       allClassNames.asInstanceOf[Array[AnyRef]]
     }
   }
 
