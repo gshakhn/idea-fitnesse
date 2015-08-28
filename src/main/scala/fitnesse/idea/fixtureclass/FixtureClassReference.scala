@@ -32,7 +32,7 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
   }
 
 
-  protected def fixtureClassName = referer.fixtureClassName
+  private def fixtureClassName = referer.fixtureClassName
 
   protected def isQualifiedName: Boolean = fixtureClassName match {
     case Some(name) =>

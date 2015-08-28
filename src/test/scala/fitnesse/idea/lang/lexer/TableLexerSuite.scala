@@ -283,6 +283,32 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
+  test("Table with spaces in cells") {
+    assertResult(
+      List(
+        (FitnesseTokenType.TABLE_START, "| Some table | Some value |"),
+        (FitnesseTokenType.ROW_START, " Some table | Some value |"),
+        (FitnesseTokenType.CELL_START, " Some table |"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "Some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "table"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.CELL_END, "|"),
+        (FitnesseTokenType.CELL_START, " Some value |"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "Some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "value"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.CELL_END, "|"),
+        (FitnesseTokenType.ROW_END,"|"),
+        (FitnesseTokenType.TABLE_END,"|")
+      )) {
+      lex("| Some table | Some value |")
+    }
+  }
+
   test("'Table' with newline after the first |") {
     assertResult(
       List(

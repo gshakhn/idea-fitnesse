@@ -16,6 +16,7 @@ trait FixtureClassStub extends StubElement[FixtureClass] {
 trait FixtureClass extends StubBasedPsiElement[FixtureClassStub] {
   def fixtureClassName: Option[String]
   def getName: String
+  def getReference: FixtureClassReference
 }
 
 
@@ -39,11 +40,11 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
       case className => Some(className)
     }
 
-  override def getReference: PsiReference = new FixtureClassReference(this)
+  override def getReference: FixtureClassReference = new FixtureClassReference(this)
 
   override def getName = source match {
     case STUB => getStub.getName
-    case NODE => getNode.getText
+    case NODE => getNode.getText.trim
   }
 
   override def setName(s: String): PsiElement = FixtureClassManipulator.createFixtureClass(getProject, s)
