@@ -2,7 +2,7 @@ package fitnesse.idea.decisiontable
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
-import com.intellij.psi.{PsiElement, StubBasedPsiElement}
+import com.intellij.psi.{PsiReference, PsiMethod, PsiElement, StubBasedPsiElement}
 import fitnesse.idea.fixturemethod.{FixtureMethodIndex, FixtureMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
@@ -38,7 +38,7 @@ class DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
     case NODE => getNode.getText
   }
 
-//  override def createReference(psiMethod: PsiMethod) = new DecisionOutputReference(psiMethod, this)
+  override def getReference: PsiReference = new DecisionOutputReference(this)
 }
 
 

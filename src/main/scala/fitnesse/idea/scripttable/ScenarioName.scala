@@ -14,6 +14,7 @@ import scala.collection.JavaConversions._
 
 trait ScenarioNameStub extends StubElement[ScenarioName] {
   def getName: String
+  def getArguments: List[String]
 }
 
 
@@ -24,11 +25,13 @@ trait ScenarioName extends StubBasedPsiElement[ScenarioNameStub] {
    */
   def scenarioName: String
   def getName: String
+  def getArguments: List[String]
 }
 
 
-class ScenarioNameStubImpl(parent: StubElement[_ <: PsiElement], methodName: String) extends StubBase[ScenarioName](parent, ScenarioNameElementTypeHolder.INSTANCE) with ScenarioNameStub {
-  override def getName: String = methodName
+class ScenarioNameStubImpl(parent: StubElement[_ <: PsiElement], name: String, arguments: List[String]) extends StubBase[ScenarioName](parent, ScenarioNameElementTypeHolder.INSTANCE) with ScenarioNameStub {
+  override def getName: String = name
+  override def getArguments: List[String] = arguments
 }
 
 
@@ -39,6 +42,14 @@ class ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
 
   override def scenarioName =
     disgraceClassName(getName)
+
+  override def getArguments = source match {
+    case STUB => getStub.getArguments
+    case NODE =>
+      getCells.zipWithIndex
+        .filter{ case (_, index) => index % 2 == 1 }
+        .map{ case (cell, _) => cell.getText.trim }
+  }
 
   override def getName = source match {
     case STUB => getStub.getName
@@ -73,7 +84,7 @@ object ScenarioNameIndex {
 class ScenarioNameElementType(debugName: String) extends IStubElementType[ScenarioNameStub, ScenarioName](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.scenarioName"
 
-  override def createStub(psi: ScenarioName, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = new ScenarioNameStubImpl(parentStub, psi.getName)
+  override def createStub(psi: ScenarioName, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = new ScenarioNameStubImpl(parentStub, psi.getName, psi.getArguments)
 
   override def createPsi(stub: ScenarioNameStub): ScenarioName = new ScenarioNameImpl(stub)
 
@@ -84,11 +95,13 @@ class ScenarioNameElementType(debugName: String) extends IStubElementType[Scenar
 
   override def serialize(t: ScenarioNameStub, stubOutputStream: StubOutputStream): Unit = {
     stubOutputStream.writeName(t.getName)
+    stubOutputStream.writeName(t.getArguments.mkString("|"))
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = {
-    val ref = stubInputStream.readName
-    new ScenarioNameStubImpl(parentStub, ref.getString)
+    val nameRef = stubInputStream.readName
+    val argsRef = stubInputStream.readName
+    new ScenarioNameStubImpl(parentStub, nameRef.getString, argsRef.getString.split("|").toList)
   }
 }
 
