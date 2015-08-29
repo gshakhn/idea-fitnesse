@@ -16,6 +16,14 @@ class MethodOrScenarioReference(referer: FixtureMethod) extends MethodReference(
 
   override def multiResolve(b: Boolean): Array[ResolveResult] = (getReferencedScenarios ++ getReferencedMethods).toArray
 
+//// Change to this implementation, once we handle only the applicable ScenarioLibrary pages:
+//  override def multiResolve(b: Boolean): Array[ResolveResult] = {
+//    getReferencedScenarios match {
+//      case Nil => getReferencedMethods.toArray
+//      case referencedScenarios => referencedScenarios.toArray
+//    }
+//  }
+
   protected def getReferencedScenarios: Seq[ResolveResult] = {
     ScenarioNameIndex.INSTANCE.get(referer.fixtureMethodName, project, GlobalSearchScope.projectScope(project)).map(createReference).toSeq
   }

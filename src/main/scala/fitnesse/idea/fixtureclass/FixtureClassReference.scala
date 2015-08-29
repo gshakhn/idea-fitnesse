@@ -31,7 +31,6 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
       getReferencedClasses.toArray
   }
 
-
   private def fixtureClassName = referer.fixtureClassName
 
   protected def isQualifiedName: Boolean = fixtureClassName match {

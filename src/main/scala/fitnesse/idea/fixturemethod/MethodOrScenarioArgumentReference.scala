@@ -8,6 +8,7 @@ class MethodOrScenarioArgumentReference(referer: FixtureMethod) extends MethodRe
 
   override def getVariants = referer.getFixtureClass match {
     case Some(fixtureClass) =>
+      // FixtureClassReference knows when scenario's can be used along with (Java) fixtures.
       fixtureClass.getReference.resolve match {
         case c: PsiClass => c.getAllMethods.map(m => Regracer.regrace(m.getName))
         case s: ScenarioName => s.getArguments.toArray

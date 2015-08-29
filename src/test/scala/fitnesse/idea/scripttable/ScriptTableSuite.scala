@@ -114,7 +114,7 @@ class ScriptTableSuite extends PsiSuite {
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("callMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
     assertResult(myScenarioCallMe) {
       val refs: Array[PsiReference] = output.getReferences
-      refs.head.resolve
+      refs(0).resolve
     }
   }
 }
