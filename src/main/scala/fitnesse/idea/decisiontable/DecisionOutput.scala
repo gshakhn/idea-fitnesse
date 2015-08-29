@@ -38,7 +38,7 @@ class DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
     case NODE => getNode.getText
   }
 
-  override def getReference: PsiReference = new DecisionOutputReference(this)
+  override def getReference = new DecisionOutputReference(this)
 }
 
 

@@ -10,5 +10,5 @@ class QueryOutput(node: ASTNode) extends ASTWrapperPsiElement(node) with Cell wi
 
   override def fixtureMethodName = "query"
 
-  override def getReference: PsiReference = new MethodReference(this)
+  override def getReference = new MethodReference(this)
 }

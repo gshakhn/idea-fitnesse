@@ -61,7 +61,7 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
       }
   }
 
-  override def getReference: PsiReference = new MethodOrScenarioReference(this)
+  override def getReference = new MethodOrScenarioReference(this)
 
   override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 

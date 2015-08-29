@@ -2,9 +2,8 @@ package fitnesse.idea.decisiontable
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi._
-import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import com.intellij.psi.stubs._
-import fitnesse.idea.fixturemethod.{FixtureMethodIndex, FixtureMethod}
+import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._
@@ -39,7 +38,7 @@ class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
     case NODE => getNode.getText
   }
 
-  override def getReference: PsiReference = new DecisionInputReference(this)
+  override def getReference = new DecisionInputReference(this)
 }
 
 
