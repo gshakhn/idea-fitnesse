@@ -70,7 +70,7 @@ class ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
 class ScenarioNameIndex extends StringStubIndexExtension[ScenarioName] {
   override def getKey: StubIndexKey[String, ScenarioName] = ScenarioNameIndex.KEY
 
-  override def getVersion: Int = 2
+  override def getVersion: Int = 3
 }
 
 
