@@ -11,5 +11,5 @@ trait FixtureMethod extends PsiElement {
 
   def fixtureMethodName: String
 
-  override def getReference: PsiReference = new MethodReference(this)
+  override def getReference: PsiReference
 }
