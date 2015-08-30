@@ -2,14 +2,17 @@ package fitnesse.idea.decisiontable
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.stubs.{StubBase, StubElement}
 import com.intellij.psi.{ElementManipulators, PsiClass, PsiMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite, Table}
-import fitnesse.idea.scripttable.{ScenarioName, ScenarioNameIndex}
+import fitnesse.idea.scripttable.{ScenarioNameStubImpl, ScenarioNameImpl, ScenarioName, ScenarioNameIndex}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
+import org.mockito.stubbing.OngoingStubbing
 
 import scala.collection.JavaConverters._
+import scala.collection.JavaConversions._
 
 class DecisionTableSuite extends PsiSuite {
 
@@ -84,13 +87,30 @@ class DecisionTableSuite extends PsiSuite {
   }
 
   test("scenario reference") {
-    val myScenarioCallMe = mock[ScenarioName]
+    val myScenarioCallMe: ScenarioName = new ScenarioNameImpl(new ScenarioNameStubImpl(mock[StubBase[Table]], "callMe", List("arg1", "arg2")))
     val output = decisionTable("| call me |").getFixtureClass.get
-    when(myPsiShortNamesCache.getClassesByName(m_eq("CallMe"), any[GlobalSearchScope])).thenReturn(Array[PsiClass]())
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("CallMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
+    bypassShortNameCache
     assertResult(myScenarioCallMe) {
       val refs = output.getReferences
       refs(0).resolve
     }
+  }
+
+
+  test("scenario arguments as completion options") {
+    val myScenarioCallMe: ScenarioName = new ScenarioNameImpl(new ScenarioNameStubImpl(mock[StubBase[Table]], "decision table", List("arg1", "arg2")))
+    val decisionInput = table.getRows(1).getCells(0)
+    when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("DecisionTable"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
+    bypassShortNameCache
+    assertResult(List("arg1", "arg2")) {
+      val ref = decisionInput.getReference
+      ref.getVariants
+    }
+  }
+
+  /* Call this in case the PsiShortNameCache is hit, but no results are expected. Defaults to empty array */
+  def bypassShortNameCache: Unit = {
+    when(myPsiShortNamesCache.getClassesByName(any[String], any[GlobalSearchScope])).thenReturn(Array[PsiClass]())
   }
 }

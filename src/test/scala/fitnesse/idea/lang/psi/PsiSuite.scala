@@ -3,13 +3,12 @@ package fitnesse.idea.lang.psi
 import com.intellij.psi.search.{ProjectScopeBuilder, ProjectScopeBuilderImpl, PsiShortNamesCache}
 import com.intellij.psi.stubs.StubIndex
 import fitnesse.idea.lang.parser.ParserSuite
-import fitnesse.idea.scripttable.ScenarioNameIndex
 import org.scalatest.mock.MockitoSugar
 
 trait PsiSuite extends ParserSuite with MockitoSugar {
 
-  var myPsiShortNamesCache: PsiShortNamesCache = mock[PsiShortNamesCache]
-  var myStubIndex: StubIndex = PsiSuite.myStaticStubIndex
+  val myPsiShortNamesCache: PsiShortNamesCache = mock[PsiShortNamesCache]
+  val myStubIndex: StubIndex = PsiSuite.myStaticStubIndex
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
