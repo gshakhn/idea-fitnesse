@@ -1,11 +1,21 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-plugins {
-    id 'com.github.maiflai.scalatest' version '0.9'
-    id 'scala'
-    id 'idea'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.scoverage:gradle-scoverage:1.0.9'
+    }
 }
 
+plugins {
+    id 'scala'
+    id 'idea'
+    id 'com.github.maiflai.scalatest' version '0.9'
+//    id 'org.scoverage.gradle-scoverage' version '1.0.9'
+}
+apply plugin: 'scoverage'
 
 version = "1.0.3"
 
@@ -51,6 +61,11 @@ dependencies {
 
     // Scalatest requires:
     testRuntime 'org.pegdown:pegdown:1.1.0'
+
+    // task testScoverage
+    scoverage 'org.scala-lang:scala-library:2.11.7'
+    scoverage 'org.scoverage:scalac-scoverage-plugin_2.11:1.1.0'
+    scoverage 'org.scoverage:scalac-scoverage-runtime_2.11:1.1.0'
 }
 
 sourceCompatibility = 1.6
@@ -111,6 +126,11 @@ compileScala {
             )
         }
     }
+}
+
+task coverage {
+    dependsOn 'testScoverage'
+    dependsOn 'reportScoverage'
 }
 
 // ========= Workspace setup tasks ========= //
