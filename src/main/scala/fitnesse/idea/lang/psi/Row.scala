@@ -14,7 +14,7 @@ trait Row extends PsiElement {
 
   // Make this method public (it's protected in PsiElement,
   // hence Scala visibility rules prevent us from accessing it
-  def findChildByClass[T](clazz: Class[T]): T
+  def findInRow[T](clazz: Class[T]): T
 }
 
 
@@ -22,6 +22,6 @@ class SimpleRow(node: ASTNode) extends ASTWrapperPsiElement(node) with Row {
 
   def getCells = findChildrenByClass(classOf[Cell]).toList
 
-  override def findChildByClass[T](clazz: Class[T]): T = super.findChildByClass(clazz)
+  override def findInRow[T](clazz: Class[T]): T = super.findChildByClass(clazz)
 
 }

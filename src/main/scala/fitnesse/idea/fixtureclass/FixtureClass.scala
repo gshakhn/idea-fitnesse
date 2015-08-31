@@ -1,5 +1,6 @@
 package fitnesse.idea.fixtureclass
 
+import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.stubs._
@@ -20,15 +21,13 @@ trait FixtureClass extends StubBasedPsiElement[FixtureClassStub] {
 }
 
 
-class FixtureClassStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[FixtureClass](parent, FixtureClassElementTypeHolder.INSTANCE) with FixtureClassStub {
+class FixtureClassStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[FixtureClass](parent, FixtureClassElementType.INSTANCE) with FixtureClassStub {
   override def getName: String = name
 }
 
 
-class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClassStub] with FixtureClass with PsiNamedElement {
-
-  def this(node: ASTNode) = { this(); init(node) }
-  def this(stub: FixtureClassStub) = { this(); init(stub) }
+trait FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClassStub] with FixtureClass with PsiNamedElement {
+  this: StubBasedPsiElementBase[FixtureClassStub] =>
 
   def getRow = getParent.asInstanceOf[Row]
 
@@ -50,6 +49,10 @@ class FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
   override def setName(s: String): PsiElement = FixtureClassManipulator.createFixtureClass(getProject, s)
 }
 
+object FixtureClassImpl {
+  def apply(node: ASTNode) = new StubBasedPsiElementBase[FixtureClassStub](node) with FixtureClassImpl
+  def apply(stub: FixtureClassStub) = new StubBasedPsiElementBase[FixtureClassStub](stub, FixtureClassElementType.INSTANCE) with FixtureClassImpl
+}
 
 class FixtureClassIndex extends StringStubIndexExtension[FixtureClass] {
   override def getKey: StubIndexKey[String, FixtureClass] = FixtureClassIndex.KEY
@@ -70,7 +73,7 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
 
   override def createStub(psi: FixtureClass, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = new FixtureClassStubImpl(parentStub, psi.getName)
 
-  override def createPsi(stub: FixtureClassStub): FixtureClass = new FixtureClassImpl(stub)
+  override def createPsi(stub: FixtureClassStub): FixtureClass = FixtureClassImpl(stub)
 
   override def indexStub(stub: FixtureClassStub, sink: IndexSink): Unit = {
     val className = disgraceClassName(stub.getName)
@@ -88,6 +91,6 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
 }
 
 
-object FixtureClassElementTypeHolder {
+object FixtureClassElementType {
   val INSTANCE: IStubElementType[FixtureClassStub, FixtureClass] = new FixtureClassElementType("FIXTURE_CLASS")
 }

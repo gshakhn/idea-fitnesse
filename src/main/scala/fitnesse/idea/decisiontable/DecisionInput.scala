@@ -1,5 +1,6 @@
 package fitnesse.idea.decisiontable
 
+import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.stubs._
@@ -20,15 +21,13 @@ trait DecisionInput extends StubBasedPsiElement[DecisionInputStub] with Cell wit
 }
 
 
-class DecisionInputStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[DecisionInput](parent, DecisionInputElementTypeHolder.INSTANCE) with DecisionInputStub {
+class DecisionInputStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[DecisionInput](parent, DecisionInputElementType.INSTANCE) with DecisionInputStub {
   override def getName: String = name
 }
 
 
-class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInputStub] with DecisionInput {
-
-  def this(node: ASTNode) = { this(); init(node) }
-  def this(stub: DecisionInputStub) = { this(); init(stub) }
+trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInputStub] with DecisionInput {
+  this: StubBasedPsiElementBase[DecisionInputStub] =>
 
   override def fixtureMethodName =
     disgraceMethodName("set " + getName)
@@ -41,14 +40,17 @@ class DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
   override def getReference = new DecisionInputReference(this)
 }
 
-
+object DecisionInputImpl {
+  def apply(node: ASTNode) = new StubBasedPsiElementBase[DecisionInputStub](node) with DecisionInputImpl
+  def apply(stub: DecisionInputStub) = new StubBasedPsiElementBase[DecisionInputStub](stub, DecisionInputElementType.INSTANCE) with DecisionInputImpl
+}
 
 class DecisionInputElementType(debugName: String) extends IStubElementType[DecisionInputStub, DecisionInput](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.decisionInput"
 
   override def createStub(psi: DecisionInput, parentStub: StubElement[_ <: PsiElement]): DecisionInputStub = new DecisionInputStubImpl(parentStub, psi.getName)
 
-  override def createPsi(stub: DecisionInputStub): DecisionInput = new DecisionInputImpl(stub)
+  override def createPsi(stub: DecisionInputStub): DecisionInput = DecisionInputImpl(stub)
 
   override def indexStub(stub: DecisionInputStub, sink: IndexSink): Unit = {
     val methodName = disgraceMethodName("set " + stub.getName)
@@ -66,6 +68,6 @@ class DecisionInputElementType(debugName: String) extends IStubElementType[Decis
 }
 
 
-object DecisionInputElementTypeHolder {
+object DecisionInputElementType {
   val INSTANCE: IStubElementType[DecisionInputStub, DecisionInput] = new DecisionInputElementType("DECISION_INPUT")
 }

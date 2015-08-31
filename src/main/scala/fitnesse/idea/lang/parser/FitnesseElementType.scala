@@ -1,10 +1,10 @@
 package fitnesse.idea.lang.parser
 
 import com.intellij.psi.tree.{IElementType, IStubFileElementType}
-import fitnesse.idea.decisiontable.{DecisionInputElementTypeHolder, DecisionOutputElementTypeHolder}
-import fitnesse.idea.fixtureclass.FixtureClassElementTypeHolder
+import fitnesse.idea.decisiontable.{DecisionInputElementType, DecisionOutputElementType}
+import fitnesse.idea.fixtureclass.FixtureClassElementType
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.scripttable.{ScenarioNameElementTypeHolder, ScriptRowElementTypeHolder}
+import fitnesse.idea.scripttable.{ScenarioNameElementType, ScriptRowElementType}
 
 class FitnesseElementType(debugName: String) extends IElementType(debugName, FitnesseLanguage.INSTANCE) {
   override def toString = "Fitnesse:" + this.debugName
@@ -14,11 +14,11 @@ object FitnesseElementType {
   final val FILE = new IStubFileElementType(FitnesseLanguage.INSTANCE)
   final val TABLE_TYPE = new FitnesseElementType("TABLE_TYPE")
   final val ROW = new FitnesseElementType("ROW")
-  final val SCRIPT_ROW = ScriptRowElementTypeHolder.INSTANCE
-  final val FIXTURE_CLASS = FixtureClassElementTypeHolder.INSTANCE
-  final val SCENARIO_NAME = ScenarioNameElementTypeHolder.INSTANCE
-  final val DECISION_INPUT = DecisionInputElementTypeHolder.INSTANCE
-  final val DECISION_OUTPUT = DecisionOutputElementTypeHolder.INSTANCE
+  final val SCRIPT_ROW = ScriptRowElementType.INSTANCE
+  final val FIXTURE_CLASS = FixtureClassElementType.INSTANCE
+  final val SCENARIO_NAME = ScenarioNameElementType.INSTANCE
+  final val DECISION_INPUT = DecisionInputElementType.INSTANCE
+  final val DECISION_OUTPUT = DecisionOutputElementType.INSTANCE
   final val QUERY_OUTPUT = new FitnesseElementType("QUERY_OUTPUT")
   final val IMPORT = new FitnesseElementType("IMPORT")
   final val LIBRARY_CLASS = new FitnesseElementType("LIBRARY_CLASS")

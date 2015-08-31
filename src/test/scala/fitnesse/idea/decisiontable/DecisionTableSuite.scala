@@ -84,7 +84,7 @@ class DecisionTableSuite extends PsiSuite {
   }
 
   test("scenario reference") {
-    val myScenarioCallMe: ScenarioName = new ScenarioNameImpl(new ScenarioNameStubImpl(mock[StubBase[Table]], "callMe", List("arg1", "arg2")))
+    val myScenarioCallMe: ScenarioName = ScenarioNameImpl(new ScenarioNameStubImpl(mock[StubBase[Table]], "callMe", List("arg1", "arg2")))
     val output = decisionTable("| call me |").getFixtureClass.get
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("CallMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
     bypassShortNameCache()
@@ -96,7 +96,7 @@ class DecisionTableSuite extends PsiSuite {
 
 
   test("scenario arguments as completion options") {
-    val myScenarioCallMe: ScenarioName = ScenarioNameElementTypeHolder.INSTANCE.createPsi(new ScenarioNameStubImpl(mock[StubBase[Table]], "decision table", List("arg1", "arg2")))
+    val myScenarioCallMe: ScenarioName = ScenarioNameElementType.INSTANCE.createPsi(new ScenarioNameStubImpl(mock[StubBase[Table]], "decision table", List("arg1", "arg2")))
     val decisionInput = table.getRows(1).getCells(0)
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("DecisionTable"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
     bypassShortNameCache()

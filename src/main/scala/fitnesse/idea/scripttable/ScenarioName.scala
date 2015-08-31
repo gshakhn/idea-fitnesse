@@ -1,12 +1,13 @@
 package fitnesse.idea.scripttable
 
+import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
 import com.intellij.psi.{PsiElement, StubBasedPsiElement}
 import fitnesse.idea.fixturemethod.FixtureMethodIndex
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
+import fitnesse.idea.lang.psi.{StubBasedPsiElementBase2, Cell, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._
 
 import scala.collection.JavaConversions._
@@ -29,16 +30,14 @@ trait ScenarioName extends StubBasedPsiElement[ScenarioNameStub] {
 }
 
 
-class ScenarioNameStubImpl(parent: StubElement[_ <: PsiElement], name: String, arguments: List[String]) extends StubBase[ScenarioName](parent, ScenarioNameElementTypeHolder.INSTANCE) with ScenarioNameStub {
+class ScenarioNameStubImpl(parent: StubElement[_ <: PsiElement], name: String, arguments: List[String]) extends StubBase[ScenarioName](parent, ScenarioNameElementType.INSTANCE) with ScenarioNameStub {
   override def getName: String = name
   override def getArguments: List[String] = arguments
 }
 
 
-class ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioNameStub] with ScenarioName {
-
-  def this(node: ASTNode) = { this(); init(node) }
-  def this(stub: ScenarioNameStub) = { this(); init(stub) }
+trait ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioNameStub] with ScenarioName {
+  this: StubBasedPsiElementBase2[ScenarioNameStub] =>
 
   override def scenarioName =
     disgraceClassName(getName)
@@ -66,6 +65,11 @@ class ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
   def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 }
 
+object ScenarioNameImpl {
+  def apply(node: ASTNode) = new StubBasedPsiElementBase2[ScenarioNameStub](node) with ScenarioNameImpl
+  def apply(stub: ScenarioNameStub) = new StubBasedPsiElementBase2[ScenarioNameStub](stub, ScenarioNameElementType.INSTANCE) with ScenarioNameImpl
+}
+
 
 class ScenarioNameIndex extends StringStubIndexExtension[ScenarioName] {
   override def getKey: StubIndexKey[String, ScenarioName] = ScenarioNameIndex.KEY
@@ -86,7 +90,7 @@ class ScenarioNameElementType(debugName: String) extends IStubElementType[Scenar
 
   override def createStub(psi: ScenarioName, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = new ScenarioNameStubImpl(parentStub, psi.getName, psi.getArguments)
 
-  override def createPsi(stub: ScenarioNameStub): ScenarioName = new ScenarioNameImpl(stub)
+  override def createPsi(stub: ScenarioNameStub): ScenarioName = ScenarioNameImpl(stub)
 
   override def indexStub(stub: ScenarioNameStub, sink: IndexSink): Unit = {
     sink.occurrence(ScenarioNameIndex.KEY, disgraceClassName(stub.getName))
@@ -106,6 +110,6 @@ class ScenarioNameElementType(debugName: String) extends IStubElementType[Scenar
 }
 
 
-object ScenarioNameElementTypeHolder {
+object ScenarioNameElementType {
   val INSTANCE: IStubElementType[ScenarioNameStub, ScenarioName] = new ScenarioNameElementType("SCENARIO_NAME")
 }

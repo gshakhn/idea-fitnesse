@@ -1,5 +1,6 @@
 package fitnesse.idea.scripttable
 
+import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
 import com.intellij.psi.{PsiMethod, PsiReference, PsiElement, StubBasedPsiElement}
@@ -7,7 +8,7 @@ import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.fixturemethod._
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{Cell, Row, ScalaFriendlyStubBasedPsiElementBase}
+import fitnesse.idea.lang.psi.{StubBasedPsiElementBase2, Cell, Row, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._
 
 import scala.collection.JavaConversions._
@@ -24,15 +25,13 @@ trait ScriptRow extends StubBasedPsiElement[ScriptRowStub] with Row {
 }
 
 
-class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String) extends StubBase[ScriptRow](parent, ScriptRowElementTypeHolder.INSTANCE) with ScriptRowStub {
+class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String) extends StubBase[ScriptRow](parent, ScriptRowElementType.INSTANCE) with ScriptRowStub {
   override def getName: String = methodName
 }
 
 
-class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] with ScriptRow with FixtureMethod {
-
-  def this(node: ASTNode) = { this(); init(node) }
-  def this(stub: ScriptRowStub) = { this(); init(stub) }
+trait ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] with ScriptRow with FixtureMethod {
+  this: StubBasedPsiElementBase2[ScriptRowStub] =>
 
   override def fixtureMethodName =
     disgraceMethodName(getName)
@@ -67,16 +66,20 @@ class ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
 
   override def getFixtureClass: Option[FixtureClass] = getTable.getFixtureClass
 
-  override def findChildByClass[T](clazz: Class[T]): T = super.findChildByClass(clazz)
+  override def findInRow[T](clazz: Class[T]): T = findChildByClass(clazz)
 }
 
+object ScriptRowImpl {
+  def apply(node: ASTNode) = new StubBasedPsiElementBase2[ScriptRowStub](node) with ScriptRowImpl
+  def apply(stub: ScriptRowStub) = new StubBasedPsiElementBase2[ScriptRowStub](stub, ScriptRowElementType.INSTANCE) with ScriptRowImpl
+}
 
 class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRowStub, ScriptRow](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.scriptRow"
 
   override def createStub(psi: ScriptRow, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = new ScriptRowStubImpl(parentStub, psi.getName)
 
-  override def createPsi(stub: ScriptRowStub): ScriptRow = new ScriptRowImpl(stub)
+  override def createPsi(stub: ScriptRowStub): ScriptRow = ScriptRowImpl(stub)
 
   override def indexStub(stub: ScriptRowStub, sink: IndexSink): Unit = {
     val methodName = disgraceMethodName(stub.getName)
@@ -94,6 +97,6 @@ class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRow
 }
 
 
-object ScriptRowElementTypeHolder {
+object ScriptRowElementType {
   val INSTANCE: IStubElementType[ScriptRowStub, ScriptRow] = new ScriptRowElementType("SCRIPT_ROW")
 }

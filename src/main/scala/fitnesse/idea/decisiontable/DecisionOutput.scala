@@ -1,5 +1,6 @@
 package fitnesse.idea.decisiontable
 
+import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
 import com.intellij.psi.{PsiReference, PsiMethod, PsiElement, StubBasedPsiElement}
@@ -20,15 +21,13 @@ trait DecisionOutput extends StubBasedPsiElement[DecisionOutputStub] with Cell w
 }
 
 
-class DecisionOutputStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[DecisionOutput](parent, DecisionOutputElementTypeHolder.INSTANCE) with DecisionOutputStub {
+class DecisionOutputStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[DecisionOutput](parent, DecisionOutputElementType.INSTANCE) with DecisionOutputStub {
   override def getName: String = name
 }
 
 
-class DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOutputStub] with DecisionOutput {
-
-  def this(node: ASTNode) = { this(); init(node) }
-  def this(stub: DecisionOutputStub) = { this(); init(stub) }
+trait DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOutputStub] with DecisionOutput {
+  this: StubBasedPsiElementBase[DecisionOutputStub] =>
 
   override def fixtureMethodName =
     disgraceMethodName(getName)
@@ -41,6 +40,10 @@ class DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
   override def getReference = new DecisionOutputReference(this)
 }
 
+object DecisionOutputImpl {
+  def apply(node: ASTNode) = new StubBasedPsiElementBase[DecisionOutputStub](node) with DecisionOutputImpl
+  def apply(stub: DecisionOutputStub) = new StubBasedPsiElementBase[DecisionOutputStub](stub, DecisionOutputElementType.INSTANCE) with DecisionOutputImpl
+}
 
 
 class DecisionOutputElementType(debugName: String) extends IStubElementType[DecisionOutputStub, DecisionOutput](debugName, FitnesseLanguage.INSTANCE) {
@@ -48,7 +51,7 @@ class DecisionOutputElementType(debugName: String) extends IStubElementType[Deci
 
   override def createStub(psi: DecisionOutput, parentStub: StubElement[_ <: PsiElement]): DecisionOutputStub = new DecisionOutputStubImpl(parentStub, psi.getName)
 
-  override def createPsi(stub: DecisionOutputStub): DecisionOutput = new DecisionOutputImpl(stub)
+  override def createPsi(stub: DecisionOutputStub): DecisionOutput = DecisionOutputImpl(stub)
 
   override def indexStub(stub: DecisionOutputStub, sink: IndexSink): Unit = {
     val methodName = disgraceMethodName(stub.getName)
@@ -66,6 +69,6 @@ class DecisionOutputElementType(debugName: String) extends IStubElementType[Deci
 }
 
 
-object DecisionOutputElementTypeHolder {
+object DecisionOutputElementType {
   val INSTANCE: IStubElementType[DecisionOutputStub, DecisionOutput] = new DecisionOutputElementType("DECISION_OUTPUT")
 }

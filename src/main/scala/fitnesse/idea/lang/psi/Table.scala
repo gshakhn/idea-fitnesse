@@ -14,5 +14,5 @@ class Table(node: ASTNode) extends ASTWrapperPsiElement(node) {
 
   def getScenarioName: Option[ScenarioName] = findInFirstRow(classOf[ScenarioName])
 
-  private def findInFirstRow[T](clazz: Class[T]): Option[T] = Option(getRows(0).findChildByClass(clazz))
+  private def findInFirstRow[T](clazz: Class[T]): Option[T] = Option(getRows(0).findInRow(clazz))
 }
