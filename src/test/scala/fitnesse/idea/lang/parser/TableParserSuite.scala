@@ -412,6 +412,78 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+  test("Script table with comment lines") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCRIPT_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "script")
+            ))
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "note")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "comment")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "#")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "comment")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "*")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "comment")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Node(FitnesseElementType.CELL, List(
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "comment")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+          ))
+        )),
+        Leaf(FitnesseTokenType.TABLE_END, "|")
+      ))
+    ) {
+      parse("|script|\n| note | comment |\n| # | comment |\n| * | comment |\n| | comment |")
+    }
+  }
+
   test("Script table with extra white space") {
     assertResult(
       Node(FitnesseElementType.FILE, List(

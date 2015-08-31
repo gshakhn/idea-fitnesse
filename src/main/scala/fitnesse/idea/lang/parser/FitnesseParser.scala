@@ -3,6 +3,7 @@ package fitnesse.idea.lang.parser
 import com.intellij.lang.{PsiBuilder, PsiParser}
 import com.intellij.psi.tree.IElementType
 import fitnesse.idea.lang.lexer.FitnesseTokenType
+import fitnesse.idea.lang.parser.FitnesseElementType
 
 class FitnesseParser extends PsiParser {
 
@@ -160,20 +161,29 @@ class FitnesseParser extends PsiParser {
 
     val start = builder.mark()
 
-    parseCells(builder, tableType)
+    val cellText = parseCells(builder, tableType)
 
     start.done(tableType match {
-      case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE => FitnesseElementType.SCRIPT_ROW
+      case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE =>
+        if (isScriptCommentRow(cellText)) FitnesseElementType.ROW else FitnesseElementType.SCRIPT_ROW
       case _ => FitnesseElementType.ROW
     })
   }
 
-  def parseCells(builder: PsiBuilder, tableType: TableElementType): Unit = {
+  def parseCells(builder: PsiBuilder, tableType: TableElementType): String = {
     var firstCell = true
+    var cellText = ""
     while (!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
-      if (builder.getTokenType == FitnesseTokenType.WORD) {
+      if (builder.getTokenType == FitnesseTokenType.CELL_START || builder.getTokenType == FitnesseTokenType.WORD) {
+        if (builder.getTokenType == FitnesseTokenType.CELL_START) {
+          builder.advanceLexer() // Past CELL_START
+        }
+        skipWhitespace(builder)
         val cell = builder.mark()
-        readCellText(builder)
+        if (firstCell)
+          cellText = readCellText(builder)
+        else
+          readCellText(builder)
         cell.done(tableType match {
           case TableElementType.QUERY_TABLE => FitnesseElementType.QUERY_OUTPUT
           case TableElementType.IMPORT_TABLE => FitnesseElementType.IMPORT
@@ -184,6 +194,7 @@ class FitnesseParser extends PsiParser {
       }
       builder.advanceLexer()
     }
+    cellText
   }
 
   private def readCellText(builder: PsiBuilder): String = {
@@ -200,11 +211,21 @@ class FitnesseParser extends PsiParser {
     tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
   }
 
-  private def advanceTillEndOfRow(builder: PsiBuilder): Unit = {
+  def isScriptCommentRow(cellText: String): Boolean = cellText match {
+    case "note" | "#" | "*" | "" => true
+    case _ => false
+  }
+
+  def skipWhitespace(builder: PsiBuilder) =
+    while(!builder.eof() && builder.getTokenType == FitnesseTokenType.WHITE_SPACE) {
+      builder.advanceLexer()
+    }
+
+
+  private def advanceTillEndOfRow(builder: PsiBuilder): Unit =
     while(!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       builder.advanceLexer()
     }
-  }
 
   private def parseCollapsible(builder: PsiBuilder): Unit = {
     val start = builder.mark()

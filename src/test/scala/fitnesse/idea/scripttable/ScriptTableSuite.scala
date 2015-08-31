@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.{PsiReference, PsiClass, PsiMethod}
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite}
+import fitnesse.idea.lang.psi.{SimpleRow, FitnesseFile, PsiSuite}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 
@@ -86,6 +86,28 @@ class ScriptTableSuite extends PsiSuite {
     }
   }
 
+  def assertCommentRow(s: String): SimpleRow = {
+    val psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE,
+      "| script|\n" + s)
+    psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0).getRows(1).asInstanceOf[SimpleRow]
+  }
+
+  test("rows starting with note should be considered comments") {
+    assertCommentRow("| note | this is a comment |")
+  }
+
+  test("rows starting with '*' should be considered comments") {
+    assertCommentRow("| * | this is a comment |")
+  }
+
+  test("rows starting with '#' should be considered comments") {
+    assertCommentRow("| # | this is a comment |")
+  }
+
+  test("rows starting with black first cell should be considered comments") {
+    assertCommentRow("| | this is a comment |")
+  }
+
   test("method with keyword, name absent") {
     val output = scriptRow("| ensure |")
     assertResult("") {
@@ -101,10 +123,7 @@ class ScriptTableSuite extends PsiSuite {
   }
 
   test("method name absent") {
-    val output = scriptRow("| |")
-    assertResult("") {
-      output.fixtureMethodName
-    }
+    assertCommentRow("| |")
   }
 
   test("scenario method") {
