@@ -1,8 +1,9 @@
 package fitnesse.idea.lang.psi
 
 import com.intellij.psi.JavaPsiFacade
-import com.intellij.psi.search.{ProjectScopeBuilder, ProjectScopeBuilderImpl, PsiShortNamesCache}
+import com.intellij.psi.search.{GlobalSearchScope, ProjectScopeBuilder, ProjectScopeBuilderImpl, PsiShortNamesCache}
 import com.intellij.psi.stubs.StubIndex
+import fitnesse.idea.fixtureclass.FixtureClassReference
 import fitnesse.idea.lang.parser.ParserSuite
 import org.scalatest.mock.MockitoSugar
 
@@ -20,6 +21,8 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
     myProject.getPicoContainer.registerComponentInstance(classOf[PsiShortNamesCache].getName, myPsiShortNamesCache)
     myProject.getPicoContainer.registerComponentInstance(classOf[JavaPsiFacade].getName, myJavaPsiFacade)
     myProject.getPicoContainer.registerComponentInstance(classOf[ProjectScopeBuilder].getName, new ProjectScopeBuilderImpl(myProject))
+
+    FixtureClassReference.scopeForTesting = Option(mock[GlobalSearchScope])
   }
 
   override protected def afterAll(): Unit = {

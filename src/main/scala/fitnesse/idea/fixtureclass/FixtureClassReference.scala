@@ -1,5 +1,6 @@
 package fitnesse.idea.fixtureclass
 
+import com.intellij.openapi.module.{Module, ModuleUtilCore}
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.decisiontable.DecisionTable
@@ -11,6 +12,7 @@ import scala.collection.JavaConversions._
 class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantReferenceBase[FixtureClass](referer) {
 
   val project = referer.getProject
+  def module = ModuleUtilCore.findModuleForPsiElement(referer)
 
   // Return array of String, {@link PsiElement} and/or {@link LookupElement}
   override def getVariants = {
@@ -53,16 +55,36 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
 
   protected def getReferencedClasses: Seq[ResolveResult] = fixtureClassName match {
     case Some(className) if isQualifiedName =>
-      JavaPsiFacade.getInstance(project).findClasses(className, GlobalSearchScope.projectScope(project)).map(createReference)
+      JavaPsiFacade.getInstance(project).findClasses(className, FixtureClassReference.moduleWithDependenciesAndLibrariesScope(module)).map(createReference)
     case Some(className) =>
-      PsiShortNamesCache.getInstance(project).getClassesByName(shortName.get, GlobalSearchScope.projectScope(project)).map(createReference)
+      PsiShortNamesCache.getInstance(project).getClassesByName(shortName.get, FixtureClassReference.moduleWithDependenciesAndLibrariesScope(module)).map(createReference)
     case None => Seq()
   }
 
   protected def getReferencedScenarios: Seq[ResolveResult] = referer.fixtureClassName match {
     case Some(className) if isQualifiedName => Seq()
     case Some(className) =>
-      ScenarioNameIndex.INSTANCE.get(className, project, GlobalSearchScope.projectScope(project)).map(createReference).toSeq
+      ScenarioNameIndex.INSTANCE.get(className, project, FixtureClassReference.moduleScope(module)).map(createReference).toSeq
     case None => Seq()
+  }
+
+}
+
+// This is a work-around for testing:
+
+object FixtureClassReference {
+  /**
+   * Override `scopeForTesting` for testing.
+   */
+  var scopeForTesting: Option[GlobalSearchScope] = None
+
+  def moduleWithDependenciesAndLibrariesScope(module: Module): GlobalSearchScope = scopeForTesting match {
+    case Some(scope) => scope
+    case None => GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module)
+  }
+
+  def moduleScope(module: Module): GlobalSearchScope = scopeForTesting match {
+    case Some(scope) => scope
+    case None => GlobalSearchScope.moduleScope(module)
   }
 }

@@ -22,15 +22,11 @@ class ScriptTableSuite extends PsiSuite {
   }
 
   def scriptRow(s: String): ScriptRow = {
-    val psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE,
-      "| script:MyScriptTable|\n" + s)
-    psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0).getRows(1).asInstanceOf[ScriptRow]
+    createTable("| script:MyScriptTable|\n" + s).getRows(1).asInstanceOf[ScriptRow]
   }
 
   test("find table name") {
-    val psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE,
-      "| script:MyScriptTable|")
-    val table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
+    val table = createTable("| script:MyScriptTable|")
 
     assertResult("MyScriptTable") {
       table.getFixtureClass.get.fixtureClassName.get

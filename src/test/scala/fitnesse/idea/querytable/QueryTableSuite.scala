@@ -12,7 +12,6 @@ class QueryTableSuite extends PsiSuite {
   val myPsiClass = mock[PsiClass]
   val myPsiMethodQuery = mock[PsiMethod]
 
-  var psiFile: PsiFile = null
   var table: Table = null
 
   override protected def beforeAll(): Unit = {
@@ -21,8 +20,7 @@ class QueryTableSuite extends PsiSuite {
     when(myPsiShortNamesCache.getClassesByName(m_eq("QueryTable"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
     when(myPsiClass.findMethodsByName(m_eq("query"), anyBoolean)).thenReturn(Array(myPsiMethodQuery))
 
-    psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE, "| query: query table |\n| a | b | two words |\n| 1 | 2 | 3 |")
-    table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
+    table = createTable("| query: query table |\n| a | b | two words |\n| 1 | 2 | 3 |")
   }
 
   test("find table name") {
