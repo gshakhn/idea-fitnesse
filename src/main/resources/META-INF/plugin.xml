@@ -1,6 +1,6 @@
 <idea-plugin version="2">
   <name>FitNesse</name>
-  <description>@description@</description>
+  <description><![CDATA[@description@]]></description>
   <version>@version@</version>
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
 
