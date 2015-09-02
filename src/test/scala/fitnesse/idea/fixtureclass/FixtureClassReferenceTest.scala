@@ -1,17 +1,17 @@
 package fitnesse.idea.fixtureclass
 
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.stubs.StubBase
 import fitnesse.idea.lang.psi.{FitnesseElementFactory, FitnesseFile, PsiSuite, Table}
+import fitnesse.idea.scripttable.{ScenarioNameStubImpl, ScenarioNameElementType, ScenarioName, ScenarioNameIndex}
 import org.mockito.Matchers.{any, eq => m_eq}
 import org.mockito.Mockito._
 
-class FixtureClassReferenceTest extends PsiSuite {
+import scala.collection.JavaConverters._
 
-  def createTable(s: String): Table = {
-    val psiFile = FitnesseElementFactory.createFile(myProject, s)
-    psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
-  }
+class FixtureClassReferenceTest extends PsiSuite {
 
   test("resolve simple class name") {
     val table = createTable("| script | table name |")
@@ -24,9 +24,50 @@ class FixtureClassReferenceTest extends PsiSuite {
     assertResult(myPsiClass) { result(0).getElement }
   }
 
-  // TODO: resolve fully qualified class name
+  test("resolve fully qualified class name") {
+    val table = createTable("| script | eg.SampleTable |")
+    val myPsiClass = mock[PsiClass]
+    when(myJavaPsiFacade.findClasses(m_eq("eg.SampleTable"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
 
-  // TODO: resolve class + scenario for decision table
+    val result = table.getFixtureClass.get.getReference.multiResolve(false)
 
-  // TODO: variants
+    assertResult(1) { result.length }
+    assertResult(myPsiClass) { result(0).getElement }
+  }
+
+  test("resolve class + scenario for decision table") {
+    val table = createTable("| script | table name |")
+    val myPsiClass = mock[PsiClass]
+    val myScenario: ScenarioName = ScenarioNameElementType.INSTANCE.createPsi(new ScenarioNameStubImpl(mock[StubBase[Table]], "decision table", List()))
+    when(myPsiShortNamesCache.getClassesByName(m_eq("TableName"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
+    when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("TableName"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenario).asJava)
+    val result = table.getFixtureClass.get.getReference.multiResolve(false)
+
+    assertResult(1) { result.length }
+    assertResult(myPsiClass) { result(0).getElement }
+  }
+
+  test("completion options for a fixture class") {
+    val table = createTable("| script | table name |")
+    when(myPsiShortNamesCache.getAllClassNames()).thenReturn(Array("FixtureClass"))
+    when(myStubIndex.getAllKeys(m_eq(ScenarioNameIndex.KEY), any[Project])).thenReturn(List("Scenario").asJava)
+
+    val result = table.getFixtureClass.get.getReference.getVariants()
+
+    assertResult(1) { result.length }
+    assertResult("fixture class") { result(0) }
+  }
+
+  test("completion options for decision table should contain both fixture classes and scenarios") {
+    val table = createTable("| table name |")
+    when(myPsiShortNamesCache.getAllClassNames()).thenReturn(Array("FixtureClass"))
+    when(myStubIndex.getAllKeys(m_eq(ScenarioNameIndex.KEY), any[Project])).thenReturn(List("Scenario").asJava)
+
+    val result = table.getFixtureClass.get.getReference.getVariants()
+
+    assertResult(2) { result.length }
+    assertResult("fixture class") { result(0) }
+    assertResult("scenario") { result(1) }
+  }
+
 }

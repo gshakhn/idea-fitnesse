@@ -33,12 +33,7 @@ class DecisionTableSuite extends PsiSuite {
 
     ElementManipulators.INSTANCE.addExplicitExtension(classOf[DecisionInput], new DecisionInputManipulator)
 
-    table = decisionTable("| decision table |\n| a | b | c? | fancy long name | fancy query name? |\n| 1 | 2 | 3 |")
-  }
-
-  def decisionTable(s: String): Table = {
-    val psiFile = FitnesseElementFactory.createFile(myProject, s)
-    psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
+    table = createTable("| decision table |\n| a | b | c? | fancy long name | fancy query name? |\n| 1 | 2 | 3 |")
   }
 
   test("find table name") {
@@ -85,7 +80,7 @@ class DecisionTableSuite extends PsiSuite {
 
   test("scenario reference") {
     val myScenarioCallMe: ScenarioName = ScenarioNameImpl(new ScenarioNameStubImpl(mock[StubBase[Table]], "callMe", List("arg1", "arg2")))
-    val output = decisionTable("| call me |").getFixtureClass.get
+    val output = createTable("| call me |").getFixtureClass.get
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("CallMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
     bypassShortNameCache()
     assertResult(myScenarioCallMe) {
