@@ -3,7 +3,6 @@ package fitnesse.idea.lang.parser
 import com.intellij.lang.{PsiBuilder, PsiParser}
 import com.intellij.psi.tree.IElementType
 import fitnesse.idea.lang.lexer.FitnesseTokenType
-import fitnesse.idea.lang.parser.FitnesseElementType
 
 class FitnesseParser extends PsiParser {
 
