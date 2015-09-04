@@ -14,7 +14,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Ref
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.{VfsUtil, VirtualFile}
-import com.intellij.psi.{PsiDirectory, PsiElement}
+import com.intellij.psi.{PsiFile, PsiDirectory, PsiElement}
 import fitnesse.idea.FitnesseBundle
 import fitnesse.idea.lang.filetype.FitnesseFileType
 
@@ -42,7 +42,6 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
       case None => false
       case Some((wikiPageFile, fitnesseRoot)) =>
         val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
-
         configuration.fitnesseRoot == fitnesseRoot.getName &&
           configuration.getWorkingDirectory == fitnesseRoot.getParent.getCanonicalPath &&
           configuration.wikiPageName == wikiPageName
@@ -60,18 +59,26 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
       }
     }
 
-  def findWikiPageFile(context: ConfigurationContext): Option[VirtualFile] = {
-    Option(context.getPsiLocation.getContainingFile) match {
-      case None => None
-      case Some(containingFile) =>
-        val pageFile = containingFile.getVirtualFile
-        if (pageFile.isDirectory) {
-          Some(pageFile)
+  def findWikiPageFile(context: ConfigurationContext): Option[VirtualFile] =
+    Option(context.getPsiLocation) match {
+      case Some(directory: PsiDirectory) =>
+        if (Option(directory.getChildren).getOrElse(Array.empty).exists {
+          case file: PsiFile => file.getFileType == FitnesseFileType.INSTANCE
+          case _ => false
+        }) {
+          Some(directory.getVirtualFile)
         } else {
-          Some(pageFile.getParent)
+          None
         }
+      case Some(elem: PsiElement) =>
+        val file = elem.getContainingFile
+        if (file.getFileType == FitnesseFileType.INSTANCE) {
+          Some(file.getParent.getVirtualFile)
+        } else {
+          None
+        }
+      case _ => None
     }
-  }
 
   def findFitnesseRoot(module: Module) = Option(module.getProject.getBaseDir.findChild("FitNesseRoot"))
 
