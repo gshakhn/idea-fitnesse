@@ -19,9 +19,9 @@ apply plugin: 'scoverage'
 
 version = "1.0.3"
 
-description = """<p>Language support for FitNesse, the fully integrated standalone wiki and acceptance testing framework.</p>
+description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
 
-<p>This plugin provides syntax highlighting, reference resolution and execution of FitNesse test suites.</p>
+<p>This plugin provides syntax highlighting, auto-completion and execution of FitNesse test suites all from within your IDE.</p>
 """
 
 repositories {
