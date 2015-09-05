@@ -77,6 +77,9 @@
     <stubIndex implementation="fitnesse.idea.fixturemethod.FixtureMethodIndex"/>
     <stubIndex implementation="fitnesse.idea.scripttable.ScenarioNameIndex"/>
 
+    <implicitUsageProvider implementation="fitnesse.idea.FitnesseImplicitUsageProvider"/>
+
+
     <!-- TODO: Need something like code inspections-->
     <!--
     <referencesSearch implementation="org.jetbrains.plugins.cucumber.java.steps.search.CucumberJavaStepDefinitionSearch"/>
@@ -84,8 +87,6 @@
 
      * Allows to disable highlighting of certain elements as unused when such elements are not referenced
      * from the code but are referenced in some other way (for example, from generated code).
-
-    <implicitUsageProvider implementation="org.jetbrains.plugins.cucumber.java.steps.reference.CucumberJavaImplicitUsageProvider"/>
 
     <localInspection language="JAVA" shortName="CucumberJavaStepDefClassIsPublic" displayName="Step definition class is not public"
                      groupBundle="org.jetbrains.plugins.cucumber.java.CucumberJavaBundle" groupKey="cucumber.java.inspection.group.name" enabledByDefault="true"
