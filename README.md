@@ -18,11 +18,18 @@ The plugin fully functional and supports the following features:
  * Folding of collapsible sections
  * Create wiki page action
 
+This plugin is available via the [IntelliJ plugin repository].
+
 Building the plugin
 ===================
 
-Prerequisites
--------------
+Run `./gradlew dist` to build the plugin distribution.
+
+Participating
+=============
+
+If you want to help out with the plugin, please check the [wiki] for tasks that are still to be done.
+
 To develop on the plugin you'll need IntelliJ (14).
 
 Make sure the following plugins are enabled:
@@ -30,15 +37,6 @@ Make sure the following plugins are enabled:
  * Scala
  * Plugin DevKit
  * UI Designer
-
-Read the [Guidelines for plugin development] for info on writing a plugin.
-
-Try their [Custom language support tutorial].
-
-Building
---------
-
-Run `./gradlew dist` to build the plugin distribution.
 
 Run `./gradlew idea` to generate the module and project files. Because this is a IntelliJ plugin project, you should
 not try to import the gradle file directly in IntelliJ.
@@ -55,10 +53,10 @@ Of course you can also build the plugin with Gradle: `./gradlew build`.
 
 I use the following VM options for the plugin: `-Xms128m -Xmx750m -XX:MaxPermSize=350m -XX:ReservedCodeCacheSize=225m -XX:+UseCompressedOops`, for what it's worth.
 
-Participating
-=============
+Read the [Guidelines for plugin development] for info on writing a plugin.
 
-If you want to help out with the plugin, please check the [wiki] for tasks that are still to be done.
+Try their [Custom language support tutorial].
+
 
 License
 =======
@@ -69,6 +67,7 @@ Feel free to fork and submit pull requests. I'll try to get them into the mainli
 
 [IntelliJ]: http://www.jetbrains.com/idea/
 [Fitnesse]: http://www.fitnesse.org/
+[IntelliJ plugin repository]: https://plugins.jetbrains.com/plugin/7908
 [Guidelines for plugin development]: https://www.jetbrains.com/idea/help/plugin-development-guidelines.html
 [Custom language support tutorial]: https://confluence.jetbrains.com/display/IntelliJIDEA/Custom+Language+Support
 [wiki]: https://github.com/amolenaar/idea-fitnesse/wiki
