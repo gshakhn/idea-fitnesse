@@ -55,9 +55,10 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
 
   protected def getReferencedClasses: Seq[ResolveResult] = fixtureClassName match {
     case Some(className) if isQualifiedName =>
-      JavaPsiFacade.getInstance(project).findClasses(className, FixtureClassReference.moduleWithDependenciesAndLibrariesScope(module)).map(createReference)
+//      JavaPsiFacade.getInstance(project).findClasses(className, GlobalSearchScope.projectScope(project)).map(createReference)
+      JavaPsiFacade.getInstance(project).findClasses(className, FixtureClassReference.moduleWithDependenciesScope(module)).map(createReference)
     case Some(className) =>
-      PsiShortNamesCache.getInstance(project).getClassesByName(shortName.get, FixtureClassReference.moduleWithDependenciesAndLibrariesScope(module)).map(createReference)
+      PsiShortNamesCache.getInstance(project).getClassesByName(shortName.get, FixtureClassReference.moduleWithDependenciesScope(module)).map(createReference)
     case None => Seq()
   }
 
@@ -78,9 +79,9 @@ object FixtureClassReference {
    */
   var scopeForTesting: Option[GlobalSearchScope] = None
 
-  def moduleWithDependenciesAndLibrariesScope(module: Module): GlobalSearchScope = scopeForTesting match {
+  def moduleWithDependenciesScope(module: Module): GlobalSearchScope = scopeForTesting match {
     case Some(scope) => scope
-    case None => GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module)
+    case None => GlobalSearchScope.moduleWithDependenciesScope(module)
   }
 
   def moduleScope(module: Module): GlobalSearchScope = scopeForTesting match {
