@@ -4,7 +4,7 @@ import com.intellij.lang.annotation.{AnnotationHolder, Annotator}
 import com.intellij.psi.{ResolveResult, PsiElement}
 import fitnesse.idea.FitnesseBundle
 import fitnesse.idea.fixtureclass.{CreateClassQuickFix, FixtureClass}
-import fitnesse.idea.fixturemethod.FixtureMethod
+import fitnesse.idea.fixturemethod.{CreateMethodQuickFix, FixtureMethod}
 
 class MissingReferencesAnnotator extends Annotator {
 
@@ -22,6 +22,7 @@ class MissingReferencesAnnotator extends Annotator {
         val results: Array[ResolveResult] = fixtureMethod.getReference.multiResolve(false)
         if (results.isEmpty) {
           holder.createErrorAnnotation(element.getTextRange, FitnesseBundle.message("no.fixture.method.found"))
+            .registerFix(new CreateMethodQuickFix(fixtureMethod))
         } else if (results.length > 1) {
           holder.createWarningAnnotation(element.getTextRange, FitnesseBundle.message("multiple.candidates.found"))
         }
