@@ -3,7 +3,7 @@ package fitnesse.idea.lang.psi
 import com.intellij.lang.annotation.{AnnotationHolder, Annotator}
 import com.intellij.psi.{ResolveResult, PsiElement}
 import fitnesse.idea.FitnesseBundle
-import fitnesse.idea.fixtureclass.FixtureClass
+import fitnesse.idea.fixtureclass.{CreateClassQuickFix, FixtureClass}
 import fitnesse.idea.fixturemethod.FixtureMethod
 
 class MissingReferencesAnnotator extends Annotator {
@@ -14,14 +14,15 @@ class MissingReferencesAnnotator extends Annotator {
         val results: Array[ResolveResult] = fixtureClass.getReference.multiResolve(false)
         if (results.isEmpty) {
           holder.createErrorAnnotation(element.getTextRange, FitnesseBundle.message("no.fixture.class.found"))
-        } else if (results.size > 1) {
+            .registerFix(new CreateClassQuickFix(fixtureClass))
+        } else if (results.length > 1) {
           holder.createWarningAnnotation(element.getTextRange, FitnesseBundle.message("multiple.candidates.found"))
         }
       case fixtureMethod: FixtureMethod =>
         val results: Array[ResolveResult] = fixtureMethod.getReference.multiResolve(false)
         if (results.isEmpty) {
           holder.createErrorAnnotation(element.getTextRange, FitnesseBundle.message("no.fixture.method.found"))
-        } else if (results.size > 1) {
+        } else if (results.length > 1) {
           holder.createWarningAnnotation(element.getTextRange, FitnesseBundle.message("multiple.candidates.found"))
         }
       case _ =>

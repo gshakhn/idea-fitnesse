@@ -1,6 +1,14 @@
 package fitnesse.idea.lang.psi
 
-import com.intellij.psi.JavaPsiFacade
+import java.util
+
+import com.intellij.codeInsight.FileModificationService
+import com.intellij.mock.MockPsiDocumentManager
+import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
+import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, ProjectScopeBuilder, ProjectScopeBuilderImpl, PsiShortNamesCache}
 import com.intellij.psi.stubs.StubIndex
 import fitnesse.idea.fixtureclass.FixtureClassReference
@@ -17,10 +25,18 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
     super.beforeAll()
 
     app.getPicoContainer.registerComponentInstance(classOf[StubIndex].getName, myStubIndex)
+    app.getPicoContainer.registerComponentInstance(classOf[FileModificationService].getName, new FileModificationService() {
+      override def prepareVirtualFilesForWrite(project: Project, collection: util.Collection[VirtualFile]): Boolean = true
+      override def preparePsiElementsForWrite(collection: util.Collection[_ <: PsiElement]): Boolean = true
+      override def prepareFileForWrite(psiFile: PsiFile): Boolean = true
+      override def preparePsiElementForWrite(psiElement: PsiElement): Boolean = true
+    })
 
     myProject.getPicoContainer.registerComponentInstance(classOf[PsiShortNamesCache].getName, myPsiShortNamesCache)
     myProject.getPicoContainer.registerComponentInstance(classOf[JavaPsiFacade].getName, myJavaPsiFacade)
     myProject.getPicoContainer.registerComponentInstance(classOf[ProjectScopeBuilder].getName, new ProjectScopeBuilderImpl(myProject))
+    myProject.getPicoContainer.registerComponentInstance(classOf[SmartPointerManager].getName, new SmartPointerManagerImpl(myProject))
+    myProject.getPicoContainer.registerComponentInstance(classOf[PsiDocumentManager].getName, new MockPsiDocumentManager())
 
     FixtureClassReference.scopeForTesting = Option(mock[GlobalSearchScope])
   }
