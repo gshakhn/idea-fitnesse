@@ -164,7 +164,8 @@ class FitnesseParser extends PsiParser {
 
     start.done(tableType match {
       case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE =>
-        if (isScriptCommentRow(cellText)) FitnesseElementType.ROW else FitnesseElementType.SCRIPT_ROW
+        // if first cell is "start", remaining cells form a FixtureClass
+        scriptRowType(cellText)
       case _ => FitnesseElementType.ROW
     })
   }
@@ -210,9 +211,9 @@ class FitnesseParser extends PsiParser {
     tokenType == FitnesseTokenType.CELL_END || tokenType == FitnesseTokenType.ROW_END || tokenType == FitnesseTokenType.TABLE_END
   }
 
-  def isScriptCommentRow(cellText: String): Boolean = cellText match {
-    case "note" | "#" | "*" | "" => true
-    case _ => false
+  def scriptRowType(cellText: String): IElementType = cellText match {
+    case "note" | "#" | "*" | "" => FitnesseElementType.ROW
+    case _ => FitnesseElementType.SCRIPT_ROW
   }
 
   def skipWhitespace(builder: PsiBuilder) =
