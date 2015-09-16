@@ -3,16 +3,18 @@ package fitnesse.idea.lang.psi
 import java.util
 
 import com.intellij.codeInsight.FileModificationService
-import com.intellij.mock.MockPsiDocumentManager
-import com.intellij.openapi.components.ServiceManager
+import com.intellij.mock.{MockPsiDocumentManager, MockResolveScopeManager}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
 import com.intellij.psi._
+import com.intellij.psi.impl.ResolveScopeManager
+import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
 import com.intellij.psi.search.{GlobalSearchScope, ProjectScopeBuilder, ProjectScopeBuilderImpl, PsiShortNamesCache}
 import com.intellij.psi.stubs.StubIndex
 import fitnesse.idea.fixtureclass.FixtureClassReference
 import fitnesse.idea.lang.parser.ParserSuite
+import org.mockito.Matchers.{any, eq => m_eq}
+import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 
 trait PsiSuite extends ParserSuite with MockitoSugar {
@@ -37,6 +39,7 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
     myProject.getPicoContainer.registerComponentInstance(classOf[ProjectScopeBuilder].getName, new ProjectScopeBuilderImpl(myProject))
     myProject.getPicoContainer.registerComponentInstance(classOf[SmartPointerManager].getName, new SmartPointerManagerImpl(myProject))
     myProject.getPicoContainer.registerComponentInstance(classOf[PsiDocumentManager].getName, new MockPsiDocumentManager())
+    myProject.getPicoContainer.registerComponentInstance(classOf[ResolveScopeManager].getName, new MockResolveScopeManager(myProject))
 
     FixtureClassReference.scopeForTesting = Option(mock[GlobalSearchScope])
   }
@@ -52,6 +55,14 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
   def createTable(s: String): Table = {
     val psiFile = FitnesseElementFactory.createFile(myProject, s)
     psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
+  }
+
+  def psiClassType(className: String): PsiClassType = {
+    val psiElementFactory: PsiElementFactory = mock[PsiElementFactory]
+    val classType = mock[PsiClassType]
+    when(myJavaPsiFacade.getElementFactory).thenReturn(psiElementFactory)
+    when(psiElementFactory.createTypeByFQClassName(m_eq(className), any(classOf[GlobalSearchScope]))).thenReturn(classType)
+    classType
   }
 
 }

@@ -73,22 +73,21 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
     val codeStyleManager = JavaCodeStyleManager.getInstance(project)
     val factory = JavaPsiFacade.getInstance(project).getElementFactory
 
-    var setMethod: PsiMethod = factory.createMethodFromText(factory.createMethod(fixtureMethod.fixtureMethodName, PsiType.VOID).getText, fixtureMethod)
+    var method: PsiMethod = factory.createMethodFromText(factory.createMethod(fixtureMethod.fixtureMethodName, fixtureMethod.returnType).getText, fixtureMethod)
 
-    // if setter: fixtureMethod.parameters.map(toPsiParameter
-    val parameterName: String = codeStyleManager.propertyNameToVariableName("value", VariableKind.PARAMETER)
-    val param: PsiParameter = factory.createParameter(parameterName, PsiType.getJavaLangString(aClass.getManager, aClass.getResolveScope))
+    fixtureMethod.parameters.foreach(parameterName => {
+      val param = factory.createParameter(parameterName, PsiType.getJavaLangString(aClass.getManager, aClass.getResolveScope))
+      method.getParameterList.add(param)
+    })
 
-    setMethod.getParameterList.add(param)
-
-    PsiUtil.setModifierProperty(setMethod, PsiModifier.PUBLIC, true)
+    PsiUtil.setModifierProperty(method, PsiModifier.PUBLIC, true)
 
     val buffer: StringBuilder = new StringBuilder
     buffer.append("{\n")
     buffer.append("}")
     val body: PsiCodeBlock = factory.createCodeBlockFromText(buffer.toString(), null)
-    setMethod.getBody.replace(body)
-    setMethod = CodeStyleManager.getInstance(project).reformat(setMethod).asInstanceOf[PsiMethod]
-    Option(setMethod)
+    method.getBody.replace(body)
+    method = CodeStyleManager.getInstance(project).reformat(method).asInstanceOf[PsiMethod]
+    Option(method)
   }
 }

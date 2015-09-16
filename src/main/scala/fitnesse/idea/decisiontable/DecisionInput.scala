@@ -16,7 +16,6 @@ trait DecisionInputStub extends StubElement[DecisionInput] {
 
 
 trait DecisionInput extends StubBasedPsiElement[DecisionInputStub] with Cell with FixtureMethod {
-  def fixtureMethodName: String
   def getName: String
 }
 
@@ -31,6 +30,10 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
 
   override def fixtureMethodName =
     disgraceMethodName("set " + getName)
+
+  override def parameters = disgraceMethodName(getName) :: Nil
+
+  def returnType = PsiType.VOID
 
   override def getName = source match {
     case STUB => getStub.getName

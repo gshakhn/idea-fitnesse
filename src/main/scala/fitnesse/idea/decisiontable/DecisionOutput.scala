@@ -3,7 +3,7 @@ package fitnesse.idea.decisiontable
 import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs._
-import com.intellij.psi.{PsiReference, PsiMethod, PsiElement, StubBasedPsiElement}
+import com.intellij.psi._
 import fitnesse.idea.fixturemethod.{FixtureMethodIndex, FixtureMethod}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
@@ -16,7 +16,6 @@ trait DecisionOutputStub extends StubElement[DecisionOutput] {
 
 
 trait DecisionOutput extends StubBasedPsiElement[DecisionOutputStub] with Cell with FixtureMethod {
-  def fixtureMethodName: String
   def getName: String
 }
 
@@ -31,6 +30,10 @@ trait DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
 
   override def fixtureMethodName =
     disgraceMethodName(getName)
+
+  override def parameters = Nil
+
+  override def returnType = PsiType.getJavaLangString(getManager, getResolveScope)
 
   override def getName = source match {
     case STUB => getStub.getName

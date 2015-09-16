@@ -3,7 +3,7 @@ package fitnesse.idea.decisiontable
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubBase
-import com.intellij.psi.{ElementManipulators, PsiClass, PsiMethod}
+import com.intellij.psi._
 import fitnesse.idea.lang.psi.{FitnesseElementFactory, FitnesseFile, PsiSuite, Table}
 import fitnesse.idea.scripttable._
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
@@ -75,6 +75,37 @@ class DecisionTableSuite extends PsiSuite {
     assertResult(myPsiMethodFancyQueryName) {
       val refs = output.getReferences
       refs(0).resolve
+    }
+  }
+
+  test("parameters for input fields") {
+    val input = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
+    assertResult("a" :: Nil) {
+      input.parameters
+    }
+  }
+
+  test("return for input fields") {
+    val input = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
+    assertResult(PsiType.VOID) {
+      input.returnType
+    }
+  }
+
+  test("parameters for output fields") {
+    val output = table.getRows(1).getCells(4).asInstanceOf[DecisionOutput]
+    assertResult(Nil) {
+      output.parameters
+    }
+  }
+
+
+
+  test("return for output fields") {
+    val output = table.getRows(1).getCells(4).asInstanceOf[DecisionOutput]
+
+    assertResult(psiClassType("java.lang.String")) {
+      output.returnType
     }
   }
 

@@ -73,6 +73,15 @@ class ScriptTableSuite extends PsiSuite {
     assertResult("methodInvocation") {
       output.fixtureMethodName
     }
+
+    assertResult("foo" :: Nil) {
+      output.parameters
+    }
+
+    assertResult(psiClassType("java.lang.String")) {
+      output.returnType
+    }
+
   }
 
   test("method name for symbol assignment") {
@@ -132,4 +141,12 @@ class ScriptTableSuite extends PsiSuite {
       refs(0).resolve
     }
   }
+
+  test("parameters name for sequencial function call") {
+    val output = scriptRow("| method | foo | invocation | bar baz |")
+    assertResult("foo" :: "barBaz" :: Nil) {
+      output.parameters
+    }
+  }
+
 }

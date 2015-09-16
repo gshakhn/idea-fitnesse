@@ -1,9 +1,8 @@
 package fitnesse.idea.querytable
 
+import com.intellij.psi._
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.{PsiClass, PsiFile, PsiMethod}
-import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite, Table}
+import fitnesse.idea.lang.psi.{PsiSuite, Table}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 
@@ -13,6 +12,7 @@ class QueryTableSuite extends PsiSuite {
   val myPsiMethodQuery = mock[PsiMethod]
 
   var table: Table = null
+  var output: QueryOutput = null
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
@@ -21,6 +21,7 @@ class QueryTableSuite extends PsiSuite {
     when(myPsiClass.findMethodsByName(m_eq("query"), anyBoolean)).thenReturn(Array(myPsiMethodQuery))
 
     table = createTable("| query: query table |\n| a | b | two words |\n| 1 | 2 | 3 |")
+    output = table.getRows(1).getCells(2).asInstanceOf[QueryOutput]
   }
 
   test("find table name") {
@@ -30,7 +31,6 @@ class QueryTableSuite extends PsiSuite {
   }
   
   test("find query table query") {
-    val output = table.getRows(1).getCells(2).asInstanceOf[QueryOutput]
     assertResult("query") {
       output.fixtureMethodName
     }
@@ -38,6 +38,18 @@ class QueryTableSuite extends PsiSuite {
     assertResult(myPsiMethodQuery) {
       val refs = output.getReferences
       refs(0).resolve
+    }
+  }
+
+  test("parameters for query table query") {
+    assertResult(Nil) {
+      output.parameters
+    }
+  }
+
+  test("return type for query table query") {
+    assertResult(psiClassType("java.util.List")) {
+      output.returnType
     }
   }
 
