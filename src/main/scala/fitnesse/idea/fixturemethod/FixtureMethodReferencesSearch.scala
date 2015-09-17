@@ -2,10 +2,9 @@ package fitnesse.idea.fixturemethod
 
 import com.intellij.openapi.application.QueryExecutorBase
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiReferenceBase.Immediate
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.MethodReferencesSearch
-import com.intellij.psi.{PsiReferenceBase, PsiMethod, PsiReference}
+import com.intellij.psi.{PsiMethod, PsiReference, PsiReferenceBase}
 import com.intellij.util.Processor
 import fitnesse.idea.lang.filetype.FitnesseFileType
 

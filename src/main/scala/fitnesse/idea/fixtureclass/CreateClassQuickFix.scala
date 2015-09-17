@@ -2,13 +2,13 @@ package fitnesse.idea.fixtureclass
 
 import com.intellij.codeInsight.FileModificationService
 import com.intellij.codeInsight.daemon.QuickFixBundle
-import com.intellij.codeInsight.daemon.impl.quickfix.{CreateFromUsageUtils, CreateClassKind}
-import com.intellij.codeInsight.intention.impl.{CreateClassDialog, BaseIntentionAction}
+import com.intellij.codeInsight.daemon.impl.quickfix.{CreateClassKind, CreateFromUsageUtils}
+import com.intellij.codeInsight.intention.impl.{BaseIntentionAction, CreateClassDialog}
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.fileEditor.{FileEditorManager, OpenFileDescriptor}
 import com.intellij.openapi.fileEditor.ex.IdeDocumentHistory
-import com.intellij.openapi.module.{ModuleUtilCore, Module}
+import com.intellij.openapi.fileEditor.{FileEditorManager, OpenFileDescriptor}
+import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.util.text.StringUtil

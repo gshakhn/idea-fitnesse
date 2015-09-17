@@ -5,15 +5,9 @@ import java.util
 import com.intellij.codeInsight.daemon.{RelatedItemLineMarkerInfo, RelatedItemLineMarkerProvider}
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.openapi.project.Project
-import com.intellij.psi.search.{FileTypeIndex, GlobalSearchScope}
-import com.intellij.psi.tree.TokenSet
-import com.intellij.psi.{PsiIdentifier, PsiClass, PsiElement, PsiManager}
-import com.intellij.util.indexing.FileBasedIndex
+import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.{PsiClass, PsiElement, PsiIdentifier}
 import fitnesse.idea.lang.filetype.FitnesseFileType
-import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.FitnesseFile
-
-import scala.collection.JavaConversions._
 
 
 class FitNesseLineMarkerProvider extends RelatedItemLineMarkerProvider {

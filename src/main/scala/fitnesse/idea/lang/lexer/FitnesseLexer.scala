@@ -3,6 +3,7 @@ package fitnesse.idea.lang.lexer
 import com.intellij.lexer.LexerBase
 import com.intellij.psi.tree.IElementType
 import fitnesse.wikitext.parser._
+
 import scala.collection.JavaConversions._
 
 class FitnesseLexer extends LexerBase {

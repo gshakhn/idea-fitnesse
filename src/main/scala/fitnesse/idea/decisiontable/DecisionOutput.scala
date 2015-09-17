@@ -2,9 +2,9 @@ package fitnesse.idea.decisiontable
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
-import com.intellij.psi.stubs._
 import com.intellij.psi._
-import fitnesse.idea.fixturemethod.{FixtureMethodIndex, FixtureMethod}
+import com.intellij.psi.stubs._
+import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex}
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.psi.{Cell, ScalaFriendlyStubBasedPsiElementBase}
 import fitnesse.testsystems.slim.tables.Disgracer._

@@ -5,8 +5,6 @@ import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.lang.Regracer
 import fitnesse.idea.scripttable.ScenarioName
 
-import scala.collection.JavaConversions._
-
 class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBase[FixtureMethod](referer) {
 
   val project = referer.getProject

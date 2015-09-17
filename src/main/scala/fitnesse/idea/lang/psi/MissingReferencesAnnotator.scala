@@ -1,7 +1,7 @@
 package fitnesse.idea.lang.psi
 
 import com.intellij.lang.annotation.{AnnotationHolder, Annotator}
-import com.intellij.psi.{ResolveResult, PsiElement}
+import com.intellij.psi.{PsiElement, ResolveResult}
 import fitnesse.idea.FitnesseBundle
 import fitnesse.idea.fixtureclass.{CreateClassQuickFix, FixtureClass}
 import fitnesse.idea.fixturemethod.{CreateMethodQuickFix, FixtureMethod}

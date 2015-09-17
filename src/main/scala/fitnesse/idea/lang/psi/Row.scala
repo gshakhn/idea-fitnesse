@@ -3,8 +3,6 @@ package fitnesse.idea.lang.psi
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
-import fitnesse.idea.fixtureclass.FixtureClass
-import fitnesse.idea.scripttable.ScenarioName
 
 trait Row extends PsiElement {
 

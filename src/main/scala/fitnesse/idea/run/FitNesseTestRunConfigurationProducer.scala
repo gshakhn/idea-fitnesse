@@ -5,16 +5,14 @@ import javax.swing.Icon
 
 import com.intellij.execution.JavaRunConfigurationExtensionManager
 import com.intellij.execution.actions.ConfigurationContext
-import com.intellij.execution.application.ApplicationConfigurationType
-import com.intellij.execution.configuration.ConfigurationFactoryEx
 import com.intellij.execution.configurations._
 import com.intellij.execution.junit.JavaRunConfigurationProducerBase
 import com.intellij.openapi.module.{Module, ModuleUtilCore}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Ref
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.openapi.vfs.{VfsUtil, VirtualFile}
-import com.intellij.psi.{PsiFile, PsiDirectory, PsiElement}
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.{PsiDirectory, PsiElement, PsiFile}
 import fitnesse.idea.FitnesseBundle
 import fitnesse.idea.lang.filetype.FitnesseFileType
 

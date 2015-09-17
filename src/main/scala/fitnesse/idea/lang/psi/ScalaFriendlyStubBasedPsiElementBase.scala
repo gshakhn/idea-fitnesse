@@ -1,12 +1,8 @@
 package fitnesse.idea.lang.psi
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase
-import com.intellij.lang.ASTNode
-import com.intellij.psi.{StubBasedPsiElement, PsiElement}
-import com.intellij.psi.impl.source.tree.{TreeElementVisitor, TreeElement}
+import com.intellij.psi.PsiElement
 import com.intellij.psi.stubs.{IStubElementType, StubElement}
-import com.intellij.psi.tree.{TokenSet, IElementType}
-import fitnesse.idea.lang.FitnesseLanguage
 
 
 trait ScalaFriendlyStubBasedPsiElementBase[T <: StubElement[_ <: PsiElement]] {

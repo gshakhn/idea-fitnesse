@@ -1,14 +1,13 @@
 package fitnesse.idea.scripttable
 
-import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
-import com.intellij.psi.stubs._
 import com.intellij.psi._
+import com.intellij.psi.stubs._
 import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.fixturemethod._
 import fitnesse.idea.lang.FitnesseLanguage
 import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{StubBasedPsiElementBase2, Cell, Row, ScalaFriendlyStubBasedPsiElementBase}
+import fitnesse.idea.lang.psi.{Cell, Row, ScalaFriendlyStubBasedPsiElementBase, StubBasedPsiElementBase2}
 import fitnesse.testsystems.slim.tables.Disgracer
 import fitnesse.testsystems.slim.tables.Disgracer._
 

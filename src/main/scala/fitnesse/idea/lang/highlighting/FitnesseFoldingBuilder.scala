@@ -6,7 +6,6 @@ import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.PsiElementProcessor
 import com.intellij.psi.util.PsiTreeUtil
-import fitnesse.idea.lang.lexer.FitnesseTokenType
 import fitnesse.idea.lang.parser.FitnesseElementType
 import fitnesse.idea.lang.psi.FitnesseFile
 

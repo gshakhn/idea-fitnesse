@@ -1,6 +1,6 @@
 package fitnesse.idea.fixturemethod
 
-import com.intellij.psi.stubs.{StubIndexKey, StringStubIndexExtension}
+import com.intellij.psi.stubs.{StringStubIndexExtension, StubIndexKey}
 
 
 class FixtureMethodIndex extends StringStubIndexExtension[FixtureMethod] {

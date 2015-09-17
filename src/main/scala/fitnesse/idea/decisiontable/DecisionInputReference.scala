@@ -1,7 +1,7 @@
 package fitnesse.idea.decisiontable
 
 import com.intellij.psi.PsiElement
-import fitnesse.idea.fixturemethod.{MethodOrScenarioArgumentReference, MethodReference}
+import fitnesse.idea.fixturemethod.MethodOrScenarioArgumentReference
 
 class DecisionInputReference(element: DecisionInput) extends MethodOrScenarioArgumentReference(element) {
 

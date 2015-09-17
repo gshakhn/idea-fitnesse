@@ -2,7 +2,7 @@ package fitnesse.idea
 
 import com.intellij.codeInsight.daemon.ImplicitUsageProvider
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.{PsiMethod, PsiClass, PsiElement}
+import com.intellij.psi.{PsiClass, PsiElement, PsiMethod}
 import fitnesse.idea.fixtureclass.FixtureClassIndex
 import fitnesse.idea.fixturemethod.FixtureMethodIndex
 
