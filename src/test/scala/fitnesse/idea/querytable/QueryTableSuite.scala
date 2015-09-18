@@ -21,12 +21,12 @@ class QueryTableSuite extends PsiSuite {
     when(myPsiClass.findMethodsByName(m_eq("query"), anyBoolean)).thenReturn(Array(myPsiMethodQuery))
 
     table = createTable("| query: query table |\n| a | b | two words |\n| 1 | 2 | 3 |")
-    output = table.getRows(1).getCells(2).asInstanceOf[QueryOutput]
+    output = table.rows(1).cells(2).asInstanceOf[QueryOutput]
   }
 
   test("find table name") {
     assertResult("QueryTable") {
-      table.getFixtureClass.get.fixtureClassName.get
+      table.fixtureClass.get.fixtureClassName.get
     }
   }
   

@@ -18,7 +18,7 @@ class FixtureClassReferenceTest extends PsiSuite {
     val myPsiClass = mock[PsiClass]
     when(myPsiShortNamesCache.getClassesByName(m_eq("TableName"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
 
-    val result = table.getFixtureClass.get.getReference.multiResolve(false)
+    val result = table.fixtureClass.get.getReference.multiResolve(false)
 
     assertResult(1) { result.length }
     assertResult(myPsiClass) { result(0).getElement }
@@ -29,7 +29,7 @@ class FixtureClassReferenceTest extends PsiSuite {
     val myPsiClass = mock[PsiClass]
     when(myJavaPsiFacade.findClasses(m_eq("eg.SampleTable"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
 
-    val result = table.getFixtureClass.get.getReference.multiResolve(false)
+    val result = table.fixtureClass.get.getReference.multiResolve(false)
 
     assertResult(1) { result.length }
     assertResult(myPsiClass) { result(0).getElement }
@@ -41,7 +41,7 @@ class FixtureClassReferenceTest extends PsiSuite {
     val myScenario: ScenarioName = ScenarioNameElementType.INSTANCE.createPsi(new ScenarioNameStubImpl(mock[StubBase[Table]], "decision table", List()))
     when(myPsiShortNamesCache.getClassesByName(m_eq("TableName"), any[GlobalSearchScope])).thenReturn(Array(myPsiClass))
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("TableName"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenario).asJava)
-    val result = table.getFixtureClass.get.getReference.multiResolve(false)
+    val result = table.fixtureClass.get.getReference.multiResolve(false)
 
     assertResult(1) { result.length }
     assertResult(myPsiClass) { result(0).getElement }
@@ -52,7 +52,7 @@ class FixtureClassReferenceTest extends PsiSuite {
     when(myPsiShortNamesCache.getAllClassNames()).thenReturn(Array("FixtureClass"))
     when(myStubIndex.getAllKeys(m_eq(ScenarioNameIndex.KEY), any[Project])).thenReturn(List("Scenario").asJava)
 
-    val result = table.getFixtureClass.get.getReference.getVariants()
+    val result = table.fixtureClass.get.getReference.getVariants()
 
     assertResult(1) { result.length }
     assertResult("fixture class") { result(0) }
@@ -63,7 +63,7 @@ class FixtureClassReferenceTest extends PsiSuite {
     when(myPsiShortNamesCache.getAllClassNames()).thenReturn(Array("FixtureClass"))
     when(myStubIndex.getAllKeys(m_eq(ScenarioNameIndex.KEY), any[Project])).thenReturn(List("Scenario").asJava)
 
-    val result = table.getFixtureClass.get.getReference.getVariants()
+    val result = table.fixtureClass.get.getReference.getVariants()
 
     assertResult(2) { result.length }
     assertResult("fixture class") { result(0) }

@@ -56,7 +56,7 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
 
   def getClassForFixtureClass: Option[PsiClass] = {
     val element: FixtureMethod = getRefElement
-    element.getFixtureClass match {
+    element.fixtureClass match {
       case Some(fixtureClass) => Option(fixtureClass.getReference.resolve()) match {
         case Some(aClass : PsiClass) => Some(aClass)
         case _ => None

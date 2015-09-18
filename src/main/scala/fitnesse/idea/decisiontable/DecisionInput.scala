@@ -11,17 +11,17 @@ import fitnesse.testsystems.slim.tables.Disgracer._
 
 
 trait DecisionInputStub extends StubElement[DecisionInput] {
-  def getName: String
+  def name: String
 }
 
 
 trait DecisionInput extends StubBasedPsiElement[DecisionInputStub] with Cell with FixtureMethod {
-  def getName: String
+  def name: String
 }
 
 
-class DecisionInputStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[DecisionInput](parent, DecisionInputElementType.INSTANCE) with DecisionInputStub {
-  override def getName: String = name
+class DecisionInputStubImpl(parent: StubElement[_ <: PsiElement], _name: String) extends StubBase[DecisionInput](parent, DecisionInputElementType.INSTANCE) with DecisionInputStub {
+  def name: String = _name
 }
 
 
@@ -29,14 +29,14 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
   this: StubBasedPsiElementBase[DecisionInputStub] =>
 
   override def fixtureMethodName =
-    disgraceMethodName("set " + getName)
+    disgraceMethodName("set " + name)
 
-  override def parameters = disgraceMethodName(getName) :: Nil
+  override def parameters = disgraceMethodName(name) :: Nil
 
   def returnType = PsiType.VOID
 
-  override def getName = source match {
-    case STUB => getStub.getName
+  override def name = source match {
+    case STUB => getStub.name
     case NODE => getNode.getText
   }
 
@@ -51,17 +51,17 @@ object DecisionInputImpl {
 class DecisionInputElementType(debugName: String) extends IStubElementType[DecisionInputStub, DecisionInput](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.decisionInput"
 
-  override def createStub(psi: DecisionInput, parentStub: StubElement[_ <: PsiElement]): DecisionInputStub = new DecisionInputStubImpl(parentStub, psi.getName)
+  override def createStub(psi: DecisionInput, parentStub: StubElement[_ <: PsiElement]): DecisionInputStub = new DecisionInputStubImpl(parentStub, psi.name)
 
   override def createPsi(stub: DecisionInputStub): DecisionInput = DecisionInputImpl(stub)
 
   override def indexStub(stub: DecisionInputStub, sink: IndexSink): Unit = {
-    val methodName = disgraceMethodName("set " + stub.getName)
+    val methodName = disgraceMethodName("set " + stub.name)
     sink.occurrence(FixtureMethodIndex.KEY, methodName)
   }
 
   override def serialize(t: DecisionInputStub, stubOutputStream: StubOutputStream): Unit = {
-    stubOutputStream.writeName(t.getName)
+    stubOutputStream.writeName(t.name)
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): DecisionInputStub = {

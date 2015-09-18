@@ -5,11 +5,11 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 
 trait Cell extends PsiElement {
-  def getRow = getParent.asInstanceOf[Row]
+  def row = getParent.asInstanceOf[Row]
 
-  def getTable = getRow.getTable
+  def table = row.table
 
-  def getFixtureClass = getTable.getFixtureClass
+  def fixtureClass = table.fixtureClass
 
 }
 

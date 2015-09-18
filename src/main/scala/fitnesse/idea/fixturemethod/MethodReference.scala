@@ -10,7 +10,7 @@ class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBas
   val project = referer.getProject
 
   // TODO: take into account Library and Import tables. Search for ancestors.
-  override def getVariants = referer.getFixtureClass match {
+  override def getVariants = referer.fixtureClass match {
     case Some(fixtureClass) =>
       fixtureClass.getReference.resolve match {
         case c: PsiClass => c.getAllMethods.map(m => Regracer.regrace(m.getName))
@@ -23,7 +23,7 @@ class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBas
 
   protected def createReference(element: PsiElement): ResolveResult = new PsiElementResolveResult(element)
 
-  protected def getReferencedMethods: Seq[ResolveResult] = referer.getFixtureClass match {
+  protected def getReferencedMethods: Seq[ResolveResult] = referer.fixtureClass match {
     case Some(fixtureClass) =>
       // TODO: take into account Library and Import tables. Search for ancestors.
       fixtureClass.getReference.resolve match {

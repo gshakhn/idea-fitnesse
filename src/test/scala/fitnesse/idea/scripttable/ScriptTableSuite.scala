@@ -22,14 +22,14 @@ class ScriptTableSuite extends PsiSuite {
   }
 
   def scriptRow(s: String): ScriptRow = {
-    createTable("| script:MyScriptTable|\n" + s).getRows(1).asInstanceOf[ScriptRow]
+    createTable("| script:MyScriptTable|\n" + s).rows(1).asInstanceOf[ScriptRow]
   }
 
   test("find table name") {
     val table = createTable("| script:MyScriptTable|")
 
     assertResult("MyScriptTable") {
-      table.getFixtureClass.get.fixtureClassName.get
+      table.fixtureClass.get.fixtureClassName.get
     }
   }
   
@@ -94,7 +94,7 @@ class ScriptTableSuite extends PsiSuite {
   def assertCommentRow(s: String): SimpleRow = {
     val psiFile = myPsiFileFactory.createFileFromText(FitnesseLanguage.INSTANCE,
       "| script|\n" + s)
-    psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0).getRows(1).asInstanceOf[SimpleRow]
+    psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0).rows(1).asInstanceOf[SimpleRow]
   }
 
   test("rows starting with note should be considered comments") {

@@ -15,17 +15,17 @@ import scala.collection.JavaConversions._
 
 
 trait ScriptRowStub extends StubElement[ScriptRow] {
-  def getName: String
+  def name: String
 }
 
 
 trait ScriptRow extends StubBasedPsiElement[ScriptRowStub] with Row with FixtureMethod {
-  def getName: String
+  def name: String
 }
 
 
 class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String) extends StubBase[ScriptRow](parent, ScriptRowElementType.INSTANCE) with ScriptRowStub {
-  override def getName: String = methodName
+  override def name: String = methodName
 }
 
 
@@ -35,23 +35,23 @@ trait ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
   val symbolAssignment = "\\$\\w+=".r
 
   override def fixtureMethodName =
-    disgraceMethodName(getName)
+    disgraceMethodName(name)
 
   override def parameters = processMethod(constructFixtureParameters)
 
-  override def returnType = getCells.map(_.getText.trim) match {
+  override def returnType = cells.map(_.getText.trim) match {
     case ("check" | "check not" ) :: _ => PsiType.getJavaLangString(getManager, getResolveScope)
     case ( "reject" | "ensure") :: _ => PsiType.BOOLEAN
     case ("show" | symbolAssignment()) :: _ => PsiType.getJavaLangObject(getManager, getResolveScope)
     case method => PsiType.BOOLEAN
   }
 
-  override def getName = source match {
-    case STUB => getStub.getName
+  override def name = source match {
+    case STUB => getStub.name
     case NODE => processMethod(constructFixtureName)
   }
 
-  def processMethod[T]( methodHandler: List[String] => T): T = getCells.map(_.getText.trim) match {
+  def processMethod[T]( methodHandler: List[String] => T): T = cells.map(_.getText.trim) match {
       case ("check" | "check not") :: method => methodHandler(method.dropRight(1))
       case ("start" | "reject" | "ensure" | "show") :: method => methodHandler(method)
       case symbolAssignment() :: method => methodHandler(method)
@@ -77,9 +77,9 @@ trait ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
 
   override def getReference = new MethodOrScenarioReference(this)
 
-  override def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
+  override def cells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 
-  override def getFixtureClass: Option[FixtureClass] = getTable.getFixtureClass
+  override def fixtureClass: Option[FixtureClass] = table.fixtureClass
 
   override def findInRow[T](clazz: Class[T]): T = findChildByClass(clazz)
 }
@@ -92,17 +92,17 @@ object ScriptRowImpl {
 class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRowStub, ScriptRow](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.scriptRow"
 
-  override def createStub(psi: ScriptRow, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = new ScriptRowStubImpl(parentStub, psi.getName)
+  override def createStub(psi: ScriptRow, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = new ScriptRowStubImpl(parentStub, psi.name)
 
   override def createPsi(stub: ScriptRowStub): ScriptRow = ScriptRowImpl(stub)
 
   override def indexStub(stub: ScriptRowStub, sink: IndexSink): Unit = {
-    val methodName = disgraceMethodName(stub.getName)
+    val methodName = disgraceMethodName(stub.name)
     sink.occurrence(FixtureMethodIndex.KEY, methodName)
   }
 
   override def serialize(t: ScriptRowStub, stubOutputStream: StubOutputStream): Unit = {
-    stubOutputStream.writeName(t.getName)
+    stubOutputStream.writeName(t.name)
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = {

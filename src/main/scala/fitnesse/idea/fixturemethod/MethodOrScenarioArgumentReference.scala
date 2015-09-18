@@ -6,12 +6,12 @@ import fitnesse.idea.scripttable.ScenarioName
 
 class MethodOrScenarioArgumentReference(referer: FixtureMethod) extends MethodReference(referer) {
 
-  override def getVariants = referer.getFixtureClass match {
+  override def getVariants = referer.fixtureClass match {
     case Some(fixtureClass) =>
       // FixtureClassReference knows when scenario's can be used along with (Java) fixtures.
       fixtureClass.getReference.resolve match {
         case c: PsiClass => c.getAllMethods.map(m => Regracer.regrace(m.getName))
-        case s: ScenarioName => s.getArguments.toArray
+        case s: ScenarioName => s.arguments.toArray
       }
     case None => Array.emptyObjectArray
   }

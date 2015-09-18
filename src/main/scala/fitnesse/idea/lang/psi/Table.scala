@@ -7,11 +7,11 @@ import fitnesse.idea.scripttable.ScenarioName
 
 class Table(node: ASTNode) extends ASTWrapperPsiElement(node) {
 
-  def getRows = findChildrenByClass(classOf[Row])
+  def rows = findChildrenByClass(classOf[Row])
 
-  def getFixtureClass: Option[FixtureClass] = findInFirstRow(classOf[FixtureClass])
+  def fixtureClass: Option[FixtureClass] = findInFirstRow(classOf[FixtureClass])
 
-  def getScenarioName: Option[ScenarioName] = findInFirstRow(classOf[ScenarioName])
+  def scenarioName: Option[ScenarioName] = findInFirstRow(classOf[ScenarioName])
 
-  private def findInFirstRow[T](clazz: Class[T]): Option[T] = Option(getRows(0).findInRow(clazz))
+  private def findInFirstRow[T](clazz: Class[T]): Option[T] = Option(rows(0).findInRow(clazz))
 }

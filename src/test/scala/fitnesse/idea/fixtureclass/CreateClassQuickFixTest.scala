@@ -6,7 +6,7 @@ class CreateClassQuickFixTest extends PsiSuite {
 
   test("quick fix is available") {
     val table = createTable("| foo bar |")
-    val quickFix = new CreateClassQuickFix(table.getFixtureClass.get)
+    val quickFix = new CreateClassQuickFix(table.fixtureClass.get)
 
     assertResult(false) {
       // because the mock isInProject implementation returns False

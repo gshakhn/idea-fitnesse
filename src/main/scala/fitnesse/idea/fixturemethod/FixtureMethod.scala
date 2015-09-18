@@ -5,7 +5,7 @@ import fitnesse.idea.fixtureclass.FixtureClass
 
 trait FixtureMethod extends PsiElement {
 
-  def getFixtureClass: Option[FixtureClass]
+  def fixtureClass: Option[FixtureClass]
 
   def fixtureMethodName: String
 

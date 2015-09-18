@@ -39,12 +39,12 @@ class DecisionTableSuite extends PsiSuite {
 
   test("find table name") {
     assertResult("DecisionTable") {
-      table.getFixtureClass.get.fixtureClassName.get
+      table.fixtureClass.get.fixtureClassName.get
     }
   }
 
   test("find decision table setter") {
-    val input = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
+    val input = table.rows(1).cells(0).asInstanceOf[DecisionInput]
     assertResult("setA") {
       input.fixtureMethodName
     }
@@ -56,7 +56,7 @@ class DecisionTableSuite extends PsiSuite {
   }
 
   test("find decision table query") {
-    val output = table.getRows(1).getCells(2).asInstanceOf[DecisionOutput]
+    val output = table.rows(1).cells(2).asInstanceOf[DecisionOutput]
     assertResult("c") {
       output.fixtureMethodName
     }
@@ -68,7 +68,7 @@ class DecisionTableSuite extends PsiSuite {
   }
 
   test("handle graceful names") {
-    val output = table.getRows(1).getCells(4).asInstanceOf[DecisionOutput]
+    val output = table.rows(1).cells(4).asInstanceOf[DecisionOutput]
     assertResult("fancyQueryName") {
       output.fixtureMethodName
     }
@@ -80,21 +80,21 @@ class DecisionTableSuite extends PsiSuite {
   }
 
   test("parameters for input fields") {
-    val input = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
+    val input = table.rows(1).cells(0).asInstanceOf[DecisionInput]
     assertResult("a" :: Nil) {
       input.parameters
     }
   }
 
   test("return for input fields") {
-    val input = table.getRows(1).getCells(0).asInstanceOf[DecisionInput]
+    val input = table.rows(1).cells(0).asInstanceOf[DecisionInput]
     assertResult(PsiType.VOID) {
       input.returnType
     }
   }
 
   test("parameters for output fields") {
-    val output = table.getRows(1).getCells(4).asInstanceOf[DecisionOutput]
+    val output = table.rows(1).cells(4).asInstanceOf[DecisionOutput]
     assertResult(Nil) {
       output.parameters
     }
@@ -103,7 +103,7 @@ class DecisionTableSuite extends PsiSuite {
 
 
   test("return for output fields") {
-    val output = table.getRows(1).getCells(4).asInstanceOf[DecisionOutput]
+    val output = table.rows(1).cells(4).asInstanceOf[DecisionOutput]
 
     assertResult(psiClassType("java.lang.String")) {
       output.returnType
@@ -112,7 +112,7 @@ class DecisionTableSuite extends PsiSuite {
 
   test("scenario reference") {
     val myScenarioCallMe: ScenarioName = ScenarioNameImpl(new ScenarioNameStubImpl(mock[StubBase[Table]], "callMe", List("arg1", "arg2")))
-    val output = createTable("| call me |").getFixtureClass.get
+    val output = createTable("| call me |").fixtureClass.get
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("CallMe"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
     bypassShortNameCache()
     assertResult(myScenarioCallMe) {
@@ -124,7 +124,7 @@ class DecisionTableSuite extends PsiSuite {
 
   test("scenario arguments as completion options") {
     val myScenarioCallMe: ScenarioName = ScenarioNameElementType.INSTANCE.createPsi(new ScenarioNameStubImpl(mock[StubBase[Table]], "decision table", List("arg1", "arg2")))
-    val decisionInput = table.getRows(1).getCells(0)
+    val decisionInput = table.rows(1).cells(0)
     when(myStubIndex.get(m_eq(ScenarioNameIndex.KEY), m_eq("DecisionTable"), any[Project], any[GlobalSearchScope])).thenReturn(List(myScenarioCallMe).asJava)
     bypassShortNameCache()
     assertResult(List("arg1", "arg2")) {
@@ -143,7 +143,7 @@ class DecisionTableSuite extends PsiSuite {
     val decisionInputStub = deserialized.getChildrenStubs.get(1).asInstanceOf[DecisionInputStub]
     val decisionInputPsi = FitnesseElementType.DECISION_INPUT.createPsi(decisionInputStub)
 
-    assertResult("a") { decisionInputPsi.getName }
+    assertResult("a") { decisionInputPsi.name }
     assertResult("a" :: Nil) { decisionInputPsi.parameters }
     assertResult(PsiType.VOID) { decisionInputPsi.returnType }
   }
@@ -158,7 +158,7 @@ class DecisionTableSuite extends PsiSuite {
     val decisionOutputStub = deserialized.getChildrenStubs.get(1).asInstanceOf[DecisionOutputStub]
     val decisionOutputPsi = FitnesseElementType.DECISION_OUTPUT.createPsi(decisionOutputStub)
 
-    assertResult("foo bar?") { decisionOutputPsi.getName }
+    assertResult("foo bar?") { decisionOutputPsi.name }
     assertResult(Nil) { decisionOutputPsi.parameters }
 //    assertResult("java.lang.String") { decisionOutputPsi.returnType.toString } can only resolve with a Node
   }

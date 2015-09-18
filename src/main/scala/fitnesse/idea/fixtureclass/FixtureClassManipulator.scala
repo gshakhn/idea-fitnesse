@@ -18,7 +18,7 @@ object FixtureClassManipulator {
     val text = "|" + className + "|"
     // Why parse text as a file and retrieve the fixtureClass from there?
     val file = createFile(project, text)
-    file.getTables(0).getFixtureClass match {
+    file.getTables(0).fixtureClass match {
       case Some(fixtureClass) => fixtureClass
       case None => null
     }

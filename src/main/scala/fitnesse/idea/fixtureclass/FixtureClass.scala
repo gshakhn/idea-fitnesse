@@ -10,39 +10,39 @@ import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 
 trait FixtureClassStub extends StubElement[FixtureClass] {
-  def getName: String
+  def name: String
 }
 
 
 trait FixtureClass extends StubBasedPsiElement[FixtureClassStub] {
   def fixtureClassName: Option[String]
-  def getName: String
+  def name: String
   def getReference: FixtureClassReference
 }
 
 
-class FixtureClassStubImpl(parent: StubElement[_ <: PsiElement], name: String) extends StubBase[FixtureClass](parent, FixtureClassElementType.INSTANCE) with FixtureClassStub {
-  override def getName: String = name
+class FixtureClassStubImpl(parent: StubElement[_ <: PsiElement], _name: String) extends StubBase[FixtureClass](parent, FixtureClassElementType.INSTANCE) with FixtureClassStub {
+  override def name: String = _name
 }
 
 
 trait FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClassStub] with FixtureClass with PsiNamedElement {
   this: StubBasedPsiElementBase[FixtureClassStub] =>
 
-  def getRow = getParent.asInstanceOf[Row]
+  def row = getParent.asInstanceOf[Row]
 
-  def getTable = getRow.getTable
+  def table = row.table
 
   def fixtureClassName: Option[String] =
-    disgraceClassName(getName) match {
+    disgraceClassName(name) match {
       case "" => None
       case className => Some(className)
     }
 
   override def getReference: FixtureClassReference = new FixtureClassReference(this)
 
-  override def getName = source match {
-    case STUB => getStub.getName
+  override def name = source match {
+    case STUB => getStub.name
     case NODE => getNode.getText.trim
   }
 
@@ -71,17 +71,17 @@ object FixtureClassIndex {
 class FixtureClassElementType(debugName: String) extends IStubElementType[FixtureClassStub, FixtureClass](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.fixtureClass"
 
-  override def createStub(psi: FixtureClass, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = new FixtureClassStubImpl(parentStub, psi.getName)
+  override def createStub(psi: FixtureClass, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = new FixtureClassStubImpl(parentStub, psi.name)
 
   override def createPsi(stub: FixtureClassStub): FixtureClass = FixtureClassImpl(stub)
 
   override def indexStub(stub: FixtureClassStub, sink: IndexSink): Unit = {
-    val className = disgraceClassName(stub.getName)
+    val className = disgraceClassName(stub.name)
     sink.occurrence(FixtureClassIndex.KEY, className)
   }
 
   override def serialize(t: FixtureClassStub, stubOutputStream: StubOutputStream): Unit = {
-    stubOutputStream.writeName(t.getName)
+    stubOutputStream.writeName(t.name)
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): FixtureClassStub = {

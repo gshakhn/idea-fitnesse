@@ -12,11 +12,11 @@ class ScenarioTableSuite extends PsiSuite {
     val table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
 
     assertResult("my scenario table") {
-      table.getScenarioName.get.getName
+      table.scenarioName.get.name
     }
 
     assertResult("MyScenarioTable") {
-      table.getScenarioName.get.scenarioName
+      table.scenarioName.get.scenarioName
     }
   }
 
@@ -26,11 +26,11 @@ class ScenarioTableSuite extends PsiSuite {
     val table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
 
     assertResult("my scenario table") {
-      table.getScenarioName.get.getName
+      table.scenarioName.get.name
     }
 
     assertResult("MyScenarioTable") {
-      table.getScenarioName.get.scenarioName
+      table.scenarioName.get.scenarioName
     }
   }
 
@@ -40,11 +40,11 @@ class ScenarioTableSuite extends PsiSuite {
     val table = psiFile.getNode.getPsi(classOf[FitnesseFile]).getTables(0)
 
     assertResult("my scenario table") {
-      table.getScenarioName.get.getName
+      table.scenarioName.get.name
     }
 
     assertResult("MyScenarioTable") {
-      table.getScenarioName.get.scenarioName
+      table.scenarioName.get.scenarioName
     }
   }
 

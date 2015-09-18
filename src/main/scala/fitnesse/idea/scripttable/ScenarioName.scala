@@ -12,8 +12,8 @@ import scala.collection.JavaConversions._
 
 
 trait ScenarioNameStub extends StubElement[ScenarioName] {
-  def getName: String
-  def getArguments: List[String]
+  def name: String
+  def arguments: List[String]
 }
 
 
@@ -23,14 +23,14 @@ trait ScenarioName extends StubBasedPsiElement[ScenarioNameStub] {
    * @return
    */
   def scenarioName: String
-  def getName: String
-  def getArguments: List[String]
+  def name: String
+  def arguments: List[String]
 }
 
 
-class ScenarioNameStubImpl(parent: StubElement[_ <: PsiElement], name: String, arguments: List[String]) extends StubBase[ScenarioName](parent, ScenarioNameElementType.INSTANCE) with ScenarioNameStub {
-  override def getName: String = name
-  override def getArguments: List[String] = arguments
+class ScenarioNameStubImpl(parent: StubElement[_ <: PsiElement], _name: String, _arguments: List[String]) extends StubBase[ScenarioName](parent, ScenarioNameElementType.INSTANCE) with ScenarioNameStub {
+  override def name: String = _name
+  override def arguments: List[String] = _arguments
 }
 
 
@@ -38,20 +38,20 @@ trait ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
   this: StubBasedPsiElementBase2[ScenarioNameStub] =>
 
   override def scenarioName =
-    disgraceClassName(getName)
+    disgraceClassName(name)
 
-  override def getArguments = source match {
-    case STUB => getStub.getArguments
+  override def arguments = source match {
+    case STUB => getStub.arguments
     case NODE =>
-      getCells.zipWithIndex
+      cells.zipWithIndex
         .filter{ case (_, index) => index % 2 == 1 }
         .map{ case (cell, _) => cell.getText.trim }
   }
 
-  override def getName = source match {
-    case STUB => getStub.getName
+  override def name = source match {
+    case STUB => getStub.name
     case NODE =>
-      getCells.zipWithIndex
+      cells.zipWithIndex
         .filter{ case (_, index) => index % 2 == 0 }
         .map{ case (cell, _) => cell.getText.trim } match {
           case Nil => ""
@@ -60,7 +60,7 @@ trait ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
         }
   }
 
-  def getCells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
+  def cells: List[Cell] = findChildrenByType(FitnesseElementType.CELL).toList
 }
 
 object ScenarioNameImpl {
@@ -86,18 +86,18 @@ object ScenarioNameIndex {
 class ScenarioNameElementType(debugName: String) extends IStubElementType[ScenarioNameStub, ScenarioName](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.scenarioName"
 
-  override def createStub(psi: ScenarioName, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = new ScenarioNameStubImpl(parentStub, psi.getName, psi.getArguments)
+  override def createStub(psi: ScenarioName, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = new ScenarioNameStubImpl(parentStub, psi.name, psi.arguments)
 
   override def createPsi(stub: ScenarioNameStub): ScenarioName = ScenarioNameImpl(stub)
 
   override def indexStub(stub: ScenarioNameStub, sink: IndexSink): Unit = {
-    sink.occurrence(ScenarioNameIndex.KEY, disgraceClassName(stub.getName))
-    sink.occurrence(ScenarioNameIndex.KEY, disgraceMethodName(stub.getName))
+    sink.occurrence(ScenarioNameIndex.KEY, disgraceClassName(stub.name))
+    sink.occurrence(ScenarioNameIndex.KEY, disgraceMethodName(stub.name))
   }
 
   override def serialize(t: ScenarioNameStub, stubOutputStream: StubOutputStream): Unit = {
-    stubOutputStream.writeName(t.getName)
-    stubOutputStream.writeName(t.getArguments.mkString("|"))
+    stubOutputStream.writeName(t.name)
+    stubOutputStream.writeName(t.arguments.mkString("|"))
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = {

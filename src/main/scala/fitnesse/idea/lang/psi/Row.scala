@@ -6,9 +6,9 @@ import com.intellij.psi.PsiElement
 
 trait Row extends PsiElement {
 
-  def getTable = getParent.asInstanceOf[Table]
+  def table = getParent.asInstanceOf[Table]
 
-  def getCells: List[Cell]
+  def cells: List[Cell]
 
   // Make this method public (it's protected in PsiElement,
   // hence Scala visibility rules prevent us from accessing it
@@ -18,7 +18,7 @@ trait Row extends PsiElement {
 
 class SimpleRow(node: ASTNode) extends ASTWrapperPsiElement(node) with Row {
 
-  def getCells = findChildrenByClass(classOf[Cell]).toList
+  def cells = findChildrenByClass(classOf[Cell]).toList
 
   override def findInRow[T](clazz: Class[T]): T = super.findChildByClass(clazz)
 
