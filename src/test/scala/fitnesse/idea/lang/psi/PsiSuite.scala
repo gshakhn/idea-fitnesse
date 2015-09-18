@@ -1,18 +1,22 @@
 package fitnesse.idea.lang.psi
 
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream, File}
 import java.util
 
 import com.intellij.codeInsight.FileModificationService
+import com.intellij.lang.FileASTNode
 import com.intellij.mock.{MockPsiDocumentManager, MockResolveScopeManager}
+import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi._
 import com.intellij.psi.impl.ResolveScopeManager
 import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
 import com.intellij.psi.search.{GlobalSearchScope, ProjectScopeBuilder, ProjectScopeBuilderImpl, PsiShortNamesCache}
-import com.intellij.psi.stubs.StubIndex
+import com.intellij.psi.stubs._
+import com.intellij.util.io.PersistentStringEnumerator
 import fitnesse.idea.fixtureclass.FixtureClassReference
-import fitnesse.idea.lang.parser.ParserSuite
+import fitnesse.idea.lang.parser.{FitnesseElementType, ParserSuite}
 import org.mockito.Matchers.{any, eq => m_eq}
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
@@ -65,6 +69,25 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
     classType
   }
 
+  def createFileAndSerializeAndDeserialize(content: String): Stub = {
+    val file = FitnesseElementFactory.createFile(myProject, content)
+    val fileNode: FileASTNode = file.getNode
+    assert(fileNode.isParsed)
+    val indexFile: File = File.createTempFile("idea", "fitnesse")
+    val persistentStringEnumerator = new PersistentStringEnumerator(indexFile)
+    val stubSerializationHelper = new StubSerializationHelper(persistentStringEnumerator)
+
+    stubSerializationHelper.assignId(PsiFileStubImpl.TYPE)
+    stubSerializationHelper.assignId(FitnesseElementType.DECISION_INPUT)
+    stubSerializationHelper.assignId(FitnesseElementType.DECISION_OUTPUT)
+    stubSerializationHelper.assignId(FitnesseElementType.FIXTURE_CLASS)
+
+    val outputStream = new ByteArrayOutputStream()
+    stubSerializationHelper.serialize(file.calcStubTree().getRoot, outputStream)
+
+    val deserialized = stubSerializationHelper.deserialize(new ByteArrayInputStream(outputStream.toByteArray))
+    deserialized
+  }
 }
 
 object PsiSuite extends MockitoSugar {

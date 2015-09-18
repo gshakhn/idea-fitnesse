@@ -1,10 +1,11 @@
 package fitnesse.idea.decisiontable
 
 import com.intellij.openapi.project.Project
-import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.stubs.StubBase
 import com.intellij.psi._
-import fitnesse.idea.lang.psi.{FitnesseElementFactory, FitnesseFile, PsiSuite, Table}
+import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.stubs._
+import fitnesse.idea.lang.parser.FitnesseElementType
+import fitnesse.idea.lang.psi.{PsiSuite, Table}
 import fitnesse.idea.scripttable._
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
@@ -130,6 +131,36 @@ class DecisionTableSuite extends PsiSuite {
       val ref = decisionInput.getReference
       ref.getVariants
     }
+  }
+
+  test("can create stubs for decision table input") {
+    val deserialized: Stub = createFileAndSerializeAndDeserialize("| decision table |\n| a |\n| 1 | 2 | 3 |")
+
+    assertResult("[FixtureClassStubImpl, DecisionInputStubImpl]") {
+      deserialized.getChildrenStubs.toString
+    }
+
+    val decisionInputStub = deserialized.getChildrenStubs.get(1).asInstanceOf[DecisionInputStub]
+    val decisionInputPsi = FitnesseElementType.DECISION_INPUT.createPsi(decisionInputStub)
+
+    assertResult("a") { decisionInputPsi.getName }
+    assertResult("a" :: Nil) { decisionInputPsi.parameters }
+    assertResult(PsiType.VOID) { decisionInputPsi.returnType }
+  }
+
+  test("can create stubs for decision table output") {
+    val deserialized: Stub = createFileAndSerializeAndDeserialize("| decision table |\n| foo bar? |\n| 1 | 2 | 3 |")
+
+    assertResult("[FixtureClassStubImpl, DecisionOutputStubImpl]") {
+      deserialized.getChildrenStubs.toString
+    }
+
+    val decisionOutputStub = deserialized.getChildrenStubs.get(1).asInstanceOf[DecisionOutputStub]
+    val decisionOutputPsi = FitnesseElementType.DECISION_OUTPUT.createPsi(decisionOutputStub)
+
+    assertResult("foo bar?") { decisionOutputPsi.getName }
+    assertResult(Nil) { decisionOutputPsi.parameters }
+//    assertResult("java.lang.String") { decisionOutputPsi.returnType.toString } can only resolve with a Node
   }
 
   /* Call this in case the PsiShortNameCache is hit, but no results are expected. Defaults to empty array */
