@@ -18,7 +18,7 @@ class FitnesseFileNameContributor extends ChooseByNameContributor {
   override def getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean) = {
     getFitnesseFiles(includeNonProjectItems, project)
       .filter(_.getParent.getName.equalsIgnoreCase(name))
-      .map(PsiManager.getInstance(project).findFile(_)).toArray
+      .map(PsiManager.getInstance(project).findFile).toArray
   }
 
   private def getFitnesseFiles(includeNonProjectItems: Boolean, project: Project): Iterable[VirtualFile] = {

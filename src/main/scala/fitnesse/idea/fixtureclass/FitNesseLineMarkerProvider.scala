@@ -15,7 +15,7 @@ class FitNesseLineMarkerProvider extends RelatedItemLineMarkerProvider {
     element match {
       case clazz: PsiIdentifier if clazz.getParent.isInstanceOf[PsiClass] =>
         val project = element.getProject
-        val fixtureClasses = findFixtureClasses(element.getProject, clazz);
+        val fixtureClasses = findFixtureClasses(element.getProject, clazz)
         if (fixtureClasses.size > 0) {
           val builder = NavigationGutterIconBuilder
             .create(FitnesseFileType.FILE_ICON)

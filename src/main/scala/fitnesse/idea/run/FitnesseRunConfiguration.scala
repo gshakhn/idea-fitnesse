@@ -47,7 +47,7 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
 
   override def getActionName = wikiPageName
 
-  override def getConfigurationEditor(): SettingsEditor[_ <: RunConfiguration] = {
+  override def getConfigurationEditor: SettingsEditor[_ <: RunConfiguration] = {
     val group: SettingsEditorGroup[FitnesseRunConfiguration] = new SettingsEditorGroup[FitnesseRunConfiguration]
     group.addEditor(ExecutionBundle.message("run.configuration.configuration.tab.title"), new FitnesseApplicationConfigurable(getProject))
     group
@@ -127,7 +127,7 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
     val componentFactory = new ComponentFactory(properties)
 
     val wikiPageFactory = componentFactory.createComponent(WIKI_PAGE_FACTORY_CLASS, classOf[FileSystemPageFactory])
-    val rootPage = wikiPageFactory.makePage(new File(workingDir, fitnesseRoot), fitnesseRoot, null, new SystemVariableSource());
+    val rootPage = wikiPageFactory.makePage(new File(workingDir, fitnesseRoot), fitnesseRoot, null, new SystemVariableSource())
 
     if (!rootPage.getPageCrawler.pageExists(PathParser.parse(wikiPageName))) {
       throw new RuntimeConfigurationWarning(FitnesseBundle.message("run.configuration.wikiPageName.notfound", wikiPageName))
