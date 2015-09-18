@@ -6,7 +6,6 @@ import java.util
 import com.intellij.codeInsight.FileModificationService
 import com.intellij.lang.FileASTNode
 import com.intellij.mock.{MockPsiDocumentManager, MockResolveScopeManager}
-import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi._

@@ -31,32 +31,37 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
   override def startInWriteAction: Boolean = false
 
   override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = {
-    val element: FixtureClass = getRefElement
+    val element = getRefElement
     element != null && element.getManager.isInProject(element) && CreateFromUsageUtils.shouldShowTag(editor.getCaretModel.getOffset, element, element)
   }
 
   override def invoke(project: Project, editor: Editor, file: PsiFile) {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
-    val element: FixtureClass = getRefElement
+    val element = getRefElement
     if (element == null) return
     if (!FileModificationService.getInstance.preparePsiElementForWrite(element)) return
-    createClass(element, CreateClassKind.CLASS) match {
-      case Some(aClass: PsiClass) =>
-        ApplicationManager.getApplication.runWriteAction(new Runnable() {
-          override def run() = {
-            IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace()
-            val descriptor: OpenFileDescriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, aClass.getTextOffset)
-            FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
-          }
-        })
+
+    askForTargetPackage(element, CreateClassKind.CLASS) match {
+      case Some(directory) =>
+        Option(CreateFromUsageUtils.createClass(CreateClassKind.CLASS, directory, element.fixtureClassName.get, element.getManager, element, element.getContainingFile, null)) match {
+          case Some(aClass) =>
+            ApplicationManager.getApplication.runWriteAction(new Runnable() {
+              override def run() = {
+                IdeDocumentHistory.getInstance(element.getProject).includeCurrentPlaceAsChangePlace()
+                val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, aClass.getTextOffset)
+                FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
+              }
+            })
+          case _ =>
+        }
       case _ =>
     }
   }
 
-  def createClass(referenceElement: FixtureClass, classKind: CreateClassKind): Option[PsiClass] = {
-    assert(!ApplicationManager.getApplication.isWriteAccessAllowed, "You must not run createClass() from under write action")
+  def askForTargetPackage(referenceElement: FixtureClass, classKind: CreateClassKind): Option[PsiDirectory] = {
+    assert(!ApplicationManager.getApplication.isWriteAccessAllowed, "You must not run askForTargetPackage() from under write action")
     val manager = referenceElement.getManager
-    val project = manager.getProject
+    val project = referenceElement.getProject
     val name = referenceElement.fixtureClassName.get
     val qualifierName = ""
     val sourceFile = referenceElement.getContainingFile
@@ -64,9 +69,8 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     val title = QuickFixBundle.message("create.class.title", StringUtil.capitalize(classKind.getDescription))
     val dialog = new CreateClassDialog(project, title, name, qualifierName, classKind, false, module)
     dialog.show()
-    (dialog.getExitCode, dialog.getTargetDirectory) match {
-      case (DialogWrapper.OK_EXIT_CODE, directory) =>
-        Option(CreateFromUsageUtils.createClass(classKind, directory, name, manager, referenceElement, sourceFile, null))
+    dialog.getExitCode match {
+      case DialogWrapper.OK_EXIT_CODE => Some(dialog.getTargetDirectory)
       case _ => None
     }
   }
