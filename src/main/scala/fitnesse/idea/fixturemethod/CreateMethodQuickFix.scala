@@ -27,14 +27,14 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
   override def startInWriteAction: Boolean = false
 
   override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = {
-    val element: FixtureMethod = getRefElement
+    val element = getRefElement
     val fixtureClassRef = getClassForFixtureClass
     element != null && element.getManager.isInProject(element) && CreateFromUsageUtils.shouldShowTag(editor.getCaretModel.getOffset, element, element) && fixtureClassRef.isDefined
   }
 
   override def invoke(project: Project, editor: Editor, file: PsiFile) {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
-    val element: FixtureMethod = getRefElement
+    val element = getRefElement
     if (element == null) return
     if (!FileModificationService.getInstance.preparePsiElementForWrite(element)) return
     getClassForFixtureClass match {
@@ -44,7 +44,7 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
             override def run() = {
               aClass.add(method)
               IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace()
-              val descriptor: OpenFileDescriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, method.getTextOffset)
+              val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, method.getTextOffset)
               FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
             }
           })
@@ -67,23 +67,28 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
 
   def createMethod(aClass: PsiClass, fixtureMethod: FixtureMethod): Option[PsiMethod] = {
     val project = aClass.getProject
-    val codeStyleManager = JavaCodeStyleManager.getInstance(project)
+    val javaLangString = PsiType.getJavaLangString(aClass.getManager, aClass.getResolveScope)
     val factory = JavaPsiFacade.getInstance(project).getElementFactory
 
-    var method: PsiMethod = factory.createMethodFromText(factory.createMethod(fixtureMethod.fixtureMethodName, fixtureMethod.returnType).getText, fixtureMethod)
-
+    var method: PsiMethod = factory.createMethod(fixtureMethod.fixtureMethodName, fixtureMethod.returnType)
     fixtureMethod.parameters.foreach(parameterName => {
-      val param = factory.createParameter(parameterName, PsiType.getJavaLangString(aClass.getManager, aClass.getResolveScope))
+      val param = factory.createParameter(parameterName, javaLangString)
       method.getParameterList.add(param)
     })
 
     PsiUtil.setModifierProperty(method, PsiModifier.PUBLIC, true)
 
-    val buffer: StringBuilder = new StringBuilder
+    val buffer = new StringBuilder
     buffer.append("{\n")
+    buffer.append(fixtureMethod.returnType match {
+      case PsiType.BOOLEAN => "return false;\n"
+      case _: PsiClassType => "return null;\n"
+      case _ => ""
+    })
     buffer.append("}")
     val body: PsiCodeBlock = factory.createCodeBlockFromText(buffer.toString(), null)
     method.getBody.replace(body)
+
     method = CodeStyleManager.getInstance(project).reformat(method).asInstanceOf[PsiMethod]
     Option(method)
   }
