@@ -31,7 +31,6 @@ import org.jdom.Element
 
 import scala.beans.BeanProperty
 
-// How to persist this run configuration???
 class FitnesseRunConfiguration(testFrameworkName: String, project: Project, factory: ConfigurationFactory) extends ApplicationConfiguration(testFrameworkName, project, factory) {
 
   @BeanProperty
