@@ -2,7 +2,7 @@ package fitnesse.idea.fixtureclass
 
 import com.intellij.codeInsight.FileModificationService
 import com.intellij.codeInsight.daemon.QuickFixBundle
-import com.intellij.codeInsight.daemon.impl.quickfix.{CreateClassKind, CreateFromUsageUtils}
+import com.intellij.codeInsight.daemon.impl.quickfix.CreateClassKind
 import com.intellij.codeInsight.intention.impl.{BaseIntentionAction, CreateClassDialog}
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
@@ -10,9 +10,12 @@ import com.intellij.openapi.fileEditor.ex.IdeDocumentHistory
 import com.intellij.openapi.fileEditor.{FileEditorManager, OpenFileDescriptor}
 import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.ui.{DialogWrapper, Messages}
+import com.intellij.openapi.util.Computable
 import com.intellij.psi._
+import com.intellij.psi.util.PsiUtil
+import com.intellij.util.IncorrectOperationException
+import fitnesse.idea.FitnesseBundle
 
 class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction {
   val elementPointer = SmartPointerManager.getInstance(_refElement.getProject).createSmartPsiElementPointer(_refElement)
@@ -32,7 +35,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
 
   override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = {
     val element = getRefElement
-    element != null && element.getManager.isInProject(element) && CreateFromUsageUtils.shouldShowTag(editor.getCaretModel.getOffset, element, element)
+    element != null && element.getManager.isInProject(element)
   }
 
   override def invoke(project: Project, editor: Editor, file: PsiFile) {
@@ -41,9 +44,9 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     if (element == null) return
     if (!FileModificationService.getInstance.preparePsiElementForWrite(element)) return
 
-    askForTargetPackage(element, CreateClassKind.CLASS) match {
+    askForTargetPackage(element) match {
       case Some(directory) =>
-        Option(CreateFromUsageUtils.createClass(CreateClassKind.CLASS, directory, element.fixtureClassName.get, element.getManager, element, element.getContainingFile, null)) match {
+        createClass(directory, element.fixtureClassName.get, element.getManager, element.getContainingFile) match {
           case Some(aClass) =>
             ApplicationManager.getApplication.runWriteAction(new Runnable() {
               override def run() = {
@@ -58,7 +61,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     }
   }
 
-  def askForTargetPackage(referenceElement: FixtureClass, classKind: CreateClassKind): Option[PsiDirectory] = {
+  def askForTargetPackage(referenceElement: FixtureClass): Option[PsiDirectory] = {
     assert(!ApplicationManager.getApplication.isWriteAccessAllowed, "You must not run askForTargetPackage() from under write action")
     val manager = referenceElement.getManager
     val project = referenceElement.getProject
@@ -66,12 +69,40 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     val qualifierName = ""
     val sourceFile = referenceElement.getContainingFile
     val module = ModuleUtilCore.findModuleForPsiElement(sourceFile)
-    val title = QuickFixBundle.message("create.class.title", StringUtil.capitalize(classKind.getDescription))
-    val dialog = new CreateClassDialog(project, title, name, qualifierName, classKind, false, module)
+    val title = FitnesseBundle.message("quickfix.create.class")
+    // Warning: hooking into code from idea.jar (not openapi.jar)
+    val dialog = new CreateClassDialog(project, title, name, qualifierName, CreateClassKind.CLASS, false, module)
     dialog.show()
     dialog.getExitCode match {
       case DialogWrapper.OK_EXIT_CODE => Some(dialog.getTargetDirectory)
       case _ => None
     }
+  }
+
+  def createClass(directory: PsiDirectory, name: String, manager: PsiManager, sourceFile: PsiFile): Option[PsiClass] = {
+    val facade: JavaPsiFacade = JavaPsiFacade.getInstance(manager.getProject)
+    val factory: PsiElementFactory = facade.getElementFactory
+    ApplicationManager.getApplication.runWriteAction(new Computable[Option[PsiClass]]() {
+      def compute: Option[PsiClass] = {
+        try {
+          val targetClass = JavaDirectoryService.getInstance.createClass(directory, name)
+          PsiUtil.setModifierProperty(targetClass, PsiModifier.PUBLIC, true)
+          Some(targetClass)
+        } catch {
+          case e: IncorrectOperationException =>
+            scheduleFileOrPackageCreationFailedMessageBox(e, name, directory, false)
+            None
+        }
+      }
+    })
+  }
+
+  def scheduleFileOrPackageCreationFailedMessageBox(e: IncorrectOperationException, name: String, directory: PsiDirectory, isPackage: Boolean) {
+    ApplicationManager.getApplication.invokeLater(new Runnable() {
+      def run() {
+        Messages.showErrorDialog(QuickFixBundle.message(if (isPackage) "cannot.create.java.package.error.text" else "cannot.create.java.file.error.text", name, directory.getVirtualFile.getName, e.getLocalizedMessage),
+          QuickFixBundle.message(if (isPackage) "cannot.create.java.package.error.title" else "cannot.create.java.file.error.title"))
+      }
+    })
   }
 }

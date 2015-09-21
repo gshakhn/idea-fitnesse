@@ -2,7 +2,6 @@ package fitnesse.idea.fixturemethod
 
 import com.intellij.codeInsight.FileModificationService
 import com.intellij.codeInsight.daemon.QuickFixBundle
-import com.intellij.codeInsight.daemon.impl.quickfix.CreateFromUsageUtils
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
@@ -10,7 +9,7 @@ import com.intellij.openapi.fileEditor.ex.IdeDocumentHistory
 import com.intellij.openapi.fileEditor.{FileEditorManager, OpenFileDescriptor}
 import com.intellij.openapi.project.Project
 import com.intellij.psi._
-import com.intellij.psi.codeStyle.{CodeStyleManager, JavaCodeStyleManager}
+import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.util.PsiUtil
 
 class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionAction {
@@ -29,7 +28,7 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
   override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = {
     val element = getRefElement
     val fixtureClassRef = getClassForFixtureClass
-    element != null && element.getManager.isInProject(element) && CreateFromUsageUtils.shouldShowTag(editor.getCaretModel.getOffset, element, element) && fixtureClassRef.isDefined
+    element != null && element.getManager.isInProject(element) && fixtureClassRef.isDefined
   }
 
   override def invoke(project: Project, editor: Editor, file: PsiFile) {
