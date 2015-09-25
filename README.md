@@ -5,7 +5,7 @@ This is an [IntelliJ] plugin for [FitNesse].
 
 Current Status
 ===========
-[![Build Status][travis-ci-badge]][travis-ci] [![Codacy Badge][codacy-badge]][codacy] [![Dependency Status][versioneye-badge]][versioneye]
+[![GitHub release][gh-release-badge]](gh-release) [![Build Status][travis-ci-badge]][travis-ci] [![Codacy Badge][codacy-badge]][codacy] [![Dependency Status][versioneye-badge]][versioneye]
 
 
 The plugin fully functional and supports the following features:
@@ -73,6 +73,8 @@ Feel free to fork and submit pull requests. I'll try to get them into the mainli
 [wiki]: https://github.com/amolenaar/idea-fitnesse/wiki
 [Apache License, V2.0]: http://www.apache.org/licenses/LICENSE-2.0
 
+[gh-release-badge]: https://img.shields.io/github/release/gshakhn/idea-fitnesse.svg
+[gh-release]: https://github.com/gshakhn/idea-fitnesse/releases
 [travis-ci-badge]: https://travis-ci.org/gshakhn/idea-fitnesse.svg
 [travis-ci]: https://travis-ci.org/gshakhn/idea-fitnesse
 [codacy-badge]: https://www.codacy.com/project/badge/655882f037764ee195733a479e0eaaa6
