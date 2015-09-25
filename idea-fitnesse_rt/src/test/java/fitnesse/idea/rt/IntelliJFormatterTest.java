@@ -1,7 +1,9 @@
 package fitnesse.idea.rt;
 
 import fitnesse.testrunner.WikiTestPage;
-import fitnesse.testsystems.*;
+import fitnesse.testsystems.ExceptionResult;
+import fitnesse.testsystems.ExecutionResult;
+import fitnesse.testsystems.TestSummary;
 import fitnesse.testsystems.fit.CommandRunningFitClient;
 import fitnesse.testsystems.fit.FitTestSystem;
 import org.junit.Before;
@@ -9,9 +11,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

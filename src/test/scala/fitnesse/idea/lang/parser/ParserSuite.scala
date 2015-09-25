@@ -20,7 +20,6 @@ import com.intellij.psi.{PsiFileFactory, SingleRootFileViewProvider}
 import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.Function
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.lexer.FitnesseTokenType
 import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
 
 trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {

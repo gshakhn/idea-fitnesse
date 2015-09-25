@@ -1,7 +1,6 @@
 package fitnesse.idea.lang.filetype
 
 import com.intellij.mock.{MockPsiDirectory, MockPsiFile, MockVirtualFile}
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.{PsiDirectory, PsiFile}
 import fitnesse.idea.lang.parser.ParserSuite
 import org.scalatest.BeforeAndAfter

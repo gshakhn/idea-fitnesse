@@ -2,9 +2,9 @@ package fitnesse.idea.scripttable
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.{PsiReference, PsiClass, PsiMethod}
+import com.intellij.psi.{PsiClass, PsiMethod, PsiReference}
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.{SimpleRow, FitnesseFile, PsiSuite}
+import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite, SimpleRow}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 
