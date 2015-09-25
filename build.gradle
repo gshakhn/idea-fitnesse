@@ -36,8 +36,11 @@ ext {
 }
 
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that
-def IDEA_ID = 'IC-139.1603.1'
-def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
+// Older versions:
+//  - IDEA_ID = 'IC-139.1603.1', IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
+def IDEA_ID = 'IC-141.2735.5'
+def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.1.5.tar.gz'
+
 def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA_ID}"
 def IDEA_LIB = "lib/sdk/idea-${IDEA_ID}/lib"
 
