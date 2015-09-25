@@ -13,7 +13,6 @@ plugins {
     id 'scala'
     id 'idea'
     id 'com.github.maiflai.scalatest' version '0.9'
-//    id 'org.scoverage.gradle-scoverage' version '1.0.9'
 }
 apply plugin: 'scoverage'
 
@@ -40,6 +39,7 @@ ext {
 def IDEA_ID = 'IC-139.1603.1'
 def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
 def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA_ID}"
+def IDEA_LIB = "lib/sdk/idea-${IDEA_ID}/lib"
 
 configurations {
     ideaSdk
@@ -50,13 +50,18 @@ configurations {
 }
 
 dependencies {
-    ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar'])
+    ideaSdk fileTree(dir: IDEA_LIB, include: ['*.jar'])
+
     bundle "org.scala-lang:scala-library:${SCALA_VERSION}"
     bundle "org.fitnesse:fitnesse:${FITNESSE_VERSION}:standalone"
     bundle project('idea-fitnesse_rt')
 
-    compile configurations.ideaSdk
     compile configurations.bundle
+    compile fileTree(dir: IDEA_LIB,
+                     include: ['openapi.jar', 'idea.jar', 'util.jar', 'extensions.jar', 'annotations.jar',
+                               'jdom.jar', 'picocontainer.jar', 'trove4j.jar'])
+
+    testCompile configurations.ideaSdk
     testCompile 'org.scalatest:scalatest_2.11:2.2.5'
     testCompile 'org.mockito:mockito-core:1.10.19'
 
