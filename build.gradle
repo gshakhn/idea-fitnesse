@@ -13,6 +13,7 @@ plugins {
     id 'scala'
     id 'idea'
     id 'com.github.maiflai.scalatest' version '0.9'
+    id "de.undercouch.download" version "2.0.0"
 }
 apply plugin: 'scoverage'
 
@@ -37,9 +38,10 @@ ext {
 
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that
 // Older versions:
-//  - IDEA_ID = 'IC-139.1603.1', IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
+//  - IDEA_ID = 'IC-139.1603.1', IDEA_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
 def IDEA_ID = 'IC-141.2735.5'
-def IDEA_SDK_URL = 'http://download.jetbrains.com/idea/ideaIC-14.1.5.tar.gz'
+def IDEA_URL = 'http://download.jetbrains.com/idea/ideaIC-14.1.5.tar.gz'
+def IDEA_CSUM = 'b866babcc49e549718ef9527a07ac0aa54814c23'
 
 def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA_ID}"
 def IDEA_LIB = "lib/sdk/idea-${IDEA_ID}/lib"
@@ -80,15 +82,23 @@ dependencies {
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-task downloadIdeaSdk(type: Download) {
+task downloadIdeaSdk(type: de.undercouch.gradle.tasks.download.Verify) {
     description 'Download IDEA SDK from the interwebz'
-    sourceUrl = IDEA_SDK_URL
-    target = file('lib/idea-sdk.tar.gz')
+    doFirst {
+        download {
+            src IDEA_URL
+            dest file("lib/idea-${IDEA_ID}.tar.gz")
+            onlyIfNewer true
+        }
+    }
+    src file("lib/idea-${IDEA_ID}.tar.gz")
+    algorithm 'SHA-1'
+    checksum IDEA_CSUM
 }
 
 task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
     description 'Extract IDEA SDK'
-    def zipFile = file('lib/idea-sdk.tar.gz')
+    def zipFile = file("lib/idea-${IDEA_ID}.tar.gz")
     def outputDir = file("lib/sdk")
 
     from tarTree(resources.gzip(zipFile))
@@ -184,22 +194,4 @@ ideaProject.dependsOn extractIdeaSdk
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.6'
-}
-
-// ========= Custom tasks ========= //
-
-class Download extends DefaultTask {
-    @Input
-    String sourceUrl
-
-    @OutputFile
-    File target
-
-    @TaskAction
-    void download() {
-       if (!target.parentFile.exists()) {
-           target.parentFile.mkdirs()
-       }
-       ant.get(src: sourceUrl, dest: target, skipexisting: 'true')
-    }
 }
