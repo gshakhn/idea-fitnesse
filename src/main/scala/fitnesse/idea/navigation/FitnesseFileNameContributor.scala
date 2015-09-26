@@ -21,10 +21,7 @@ class FitnesseFileNameContributor extends ChooseByNameContributor {
       .map(PsiManager.getInstance(project).findFile).toArray
   }
 
-  private def getFitnesseFiles(includeNonProjectItems: Boolean, project: Project): Iterable[VirtualFile] = {
-    FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, includeNonProjectItems match {
-      case true => GlobalSearchScope.projectScope(project)
-      case false => GlobalSearchScope.allScope(project)
-    })
-  }
+  private def getFitnesseFiles(includeNonProjectItems: Boolean, project: Project): Iterable[VirtualFile] =
+    FileTypeIndex.getFiles(FitnesseFileType.INSTANCE, if (includeNonProjectItems) GlobalSearchScope.projectScope(project) else GlobalSearchScope.allScope(project))
+
 }
