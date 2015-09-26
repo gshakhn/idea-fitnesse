@@ -80,6 +80,8 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
     stubSerializationHelper.assignId(FitnesseElementType.DECISION_INPUT)
     stubSerializationHelper.assignId(FitnesseElementType.DECISION_OUTPUT)
     stubSerializationHelper.assignId(FitnesseElementType.FIXTURE_CLASS)
+    stubSerializationHelper.assignId(FitnesseElementType.SCENARIO_NAME)
+    stubSerializationHelper.assignId(FitnesseElementType.SCRIPT_ROW)
 
     val outputStream = new ByteArrayOutputStream()
     stubSerializationHelper.serialize(file.calcStubTree().getRoot, outputStream)
@@ -91,4 +93,10 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
 
 object PsiSuite extends MockitoSugar {
   val myStaticStubIndex: StubIndex = mock[StubIndex]
+}
+
+class MockIndexSink extends IndexSink {
+  var value: Any = None
+
+  override def occurrence[Psi <: PsiElement, K](stubIndexKey: StubIndexKey[K, Psi], k: K): Unit = value = k
 }
