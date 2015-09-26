@@ -42,10 +42,13 @@ trait ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
 
   override def arguments = source match {
     case STUB => getStub.arguments
-    case NODE =>
-      cells.zipWithIndex
-        .filter{ case (_, index) => index % 2 == 1 }
-        .map{ case (cell, _) => cell.getText.trim }
+    case NODE => cells match {
+      case name :: args :: Nil if name.getText.contains("_") =>
+        args.getText.split(",").map(_.trim).toList
+      case cells => cells.zipWithIndex
+        .filter { case (_, index) => index % 2 == 1 }
+        .map { case (cell, _) => cell.getText.trim }
+    }
   }
 
   override def name = source match {
@@ -103,7 +106,7 @@ class ScenarioNameElementType(debugName: String) extends IStubElementType[Scenar
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): ScenarioNameStub = {
     val nameRef = stubInputStream.readName
     val argsRef = stubInputStream.readName
-    new ScenarioNameStubImpl(parentStub, nameRef.getString, argsRef.getString.split("|").toList)
+    new ScenarioNameStubImpl(parentStub, nameRef.getString, argsRef.getString.split("\\|").toList)
   }
 }
 
