@@ -2,9 +2,11 @@ package fitnesse.idea.scripttable
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.stubs.Stub
 import com.intellij.psi.{PsiClass, PsiMethod, PsiReference}
 import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.{FitnesseFile, PsiSuite, SimpleRow}
+import fitnesse.idea.lang.parser.FitnesseElementType
+import fitnesse.idea.lang.psi.{FitnesseFile, MockIndexSink, PsiSuite, SimpleRow}
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 
@@ -143,10 +145,33 @@ class ScriptTableSuite extends PsiSuite {
   }
 
   test("parameters name for sequencial function call") {
-    val output = scriptRow("| method | foo | invocation | bar baz |")
+    val row = scriptRow("| method | foo | invocation | bar baz |")
     assertResult("foo" :: "barBaz" :: Nil) {
-      output.parameters
+      row.parameters
     }
   }
 
+  test("can create stubs for script row") {
+    val deserialized: Stub = createFileAndSerializeAndDeserialize("| script |\n| method | foo | invocation | bar baz |")
+
+    assertResult("[ScriptRowStubImpl]") {
+      deserialized.getChildrenStubs.toString
+    }
+
+    val scriptRowStub = deserialized.getChildrenStubs.get(0).asInstanceOf[ScriptRowStub]
+    val scriptRowPsi = FitnesseElementType.SCRIPT_ROW.createPsi(scriptRowStub)
+
+    assertResult("method invocation") { scriptRowPsi.name }
+    assertResult(List("foo", "barBaz")) { scriptRowPsi.parameters }
+  }
+
+  test("index script row") {
+    val row = scriptRow("| method | foo | invocation | bar baz |")
+    val stub = ScriptRowElementType.INSTANCE.createStub(row, null)
+    val indexSink = new MockIndexSink()
+    ScriptRowElementType.INSTANCE.indexStub(stub, indexSink)
+    assertResult("methodInvocation") {
+      indexSink.value
+    }
+  }
 }

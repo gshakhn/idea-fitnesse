@@ -16,6 +16,7 @@ import scala.collection.JavaConversions._
 
 trait ScriptRowStub extends StubElement[ScriptRow] {
   def name: String
+  def parameters: List[String]
 }
 
 
@@ -24,8 +25,9 @@ trait ScriptRow extends StubBasedPsiElement[ScriptRowStub] with Row with Fixture
 }
 
 
-class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String) extends StubBase[ScriptRow](parent, ScriptRowElementType.INSTANCE) with ScriptRowStub {
+class ScriptRowStubImpl(parent: StubElement[_ <: PsiElement], methodName: String, _parameters: List[String]) extends StubBase[ScriptRow](parent, ScriptRowElementType.INSTANCE) with ScriptRowStub {
   override def name: String = methodName
+  override def parameters: List[String] = _parameters
 }
 
 
@@ -37,7 +39,10 @@ trait ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
   override def fixtureMethodName =
     disgraceMethodName(name)
 
-  override def parameters = processMethod(constructFixtureParameters)
+  override def parameters = source match {
+    case STUB => getStub.parameters
+    case NODE => processMethod(constructFixtureParameters)
+  }
 
   override def returnType = cells.map(_.getText.trim) match {
     case ("check" | "check not" ) :: _ => PsiType.getJavaLangString(getManager, getResolveScope)
@@ -92,7 +97,7 @@ object ScriptRowImpl {
 class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRowStub, ScriptRow](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.scriptRow"
 
-  override def createStub(psi: ScriptRow, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = new ScriptRowStubImpl(parentStub, psi.name)
+  override def createStub(psi: ScriptRow, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = new ScriptRowStubImpl(parentStub, psi.name, psi.parameters)
 
   override def createPsi(stub: ScriptRowStub): ScriptRow = ScriptRowImpl(stub)
 
@@ -103,11 +108,14 @@ class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRow
 
   override def serialize(t: ScriptRowStub, stubOutputStream: StubOutputStream): Unit = {
     stubOutputStream.writeName(t.name)
+    stubOutputStream.writeName(t.parameters.mkString("|"))
+
   }
 
   override def deserialize(stubInputStream: StubInputStream, parentStub: StubElement[_ <: PsiElement]): ScriptRowStub = {
     val ref = stubInputStream.readName
-    new ScriptRowStubImpl(parentStub, ref.getString)
+    val paramRef = stubInputStream.readName
+    new ScriptRowStubImpl(parentStub, ref.getString, paramRef.getString.split("\\|").toList)
   }
 }
 
