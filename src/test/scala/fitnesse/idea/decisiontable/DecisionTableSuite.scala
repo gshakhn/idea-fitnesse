@@ -5,7 +5,7 @@ import com.intellij.psi._
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs._
 import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{PsiSuite, Table}
+import fitnesse.idea.lang.psi.{MockIndexSink, PsiSuite, Table}
 import fitnesse.idea.scripttable._
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
@@ -161,6 +161,26 @@ class DecisionTableSuite extends PsiSuite {
     assertResult("foo bar?") { decisionOutputPsi.name }
     assertResult(Nil) { decisionOutputPsi.parameters }
 //    assertResult("java.lang.String") { decisionOutputPsi.returnType.toString } can only resolve with a Node
+  }
+
+  test("index input field") {
+    val input = table.rows(1).cells(0).asInstanceOf[DecisionInput]
+    val stub = DecisionInputElementType.INSTANCE.createStub(input, null)
+    val indexSink = new MockIndexSink()
+    DecisionInputElementType.INSTANCE.indexStub(stub, indexSink)
+    assertResult("setA") {
+      indexSink.value
+    }
+  }
+
+  test("index output field") {
+    val output = table.rows(1).cells(2).asInstanceOf[DecisionOutput]
+    val stub = DecisionOutputElementType.INSTANCE.createStub(output, null)
+    val indexSink = new MockIndexSink()
+    DecisionOutputElementType.INSTANCE.indexStub(stub, indexSink)
+    assertResult("c") {
+      indexSink.value
+    }
   }
 
   /* Call this in case the PsiShortNameCache is hit, but no results are expected. Defaults to empty array */
