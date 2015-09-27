@@ -2,10 +2,11 @@ package fitnesse.idea.rt;
 
 import fitnesse.reporting.Formatter;
 import fitnesse.testrunner.TestsRunnerListener;
-import fitnesse.testrunner.WikiTestPage;
+import fitnesse.testrunner.WikiTestPageUtil;
 import fitnesse.testsystems.*;
 import fitnesse.wiki.WikiPage;
 import fitnesse.wiki.fs.FileSystemPage;
+import fitnesse.wiki.fs.FileSystemPageFactory;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.Tag;
@@ -75,12 +76,12 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     @Override
-    public void testStarted(WikiTestPage testPage) throws IOException {
+    public void testStarted(TestPage testPage) throws IOException {
         log("##teamcity[testStarted name='%s' locationHint='%s' captureStandardOutput='true']", testPage.getFullPath(), locationHint(testPage));
     }
 
-    private String locationHint(WikiTestPage testPage) throws IOException {
-        WikiPage wikiPage = testPage.getSourcePage();
+    private String locationHint(TestPage testPage) throws IOException {
+        WikiPage wikiPage = WikiTestPageUtil.getSourcePage(testPage);
         if (wikiPage instanceof FileSystemPage) {
             return "fitnesse://" + new File(((FileSystemPage) wikiPage).getFileSystemPath(), "content.txt").getCanonicalPath();
         }
@@ -189,7 +190,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     @Override
-    public void testComplete(WikiTestPage testPage, TestSummary summary) throws IOException {
+    public void testComplete(TestPage testPage, TestSummary summary) throws IOException {
         String fullPath = testPage.getFullPath();
         if (exceptionOccurred != null) {
             log("##teamcity[testFailed name='%s' message='%s' error='true']", fullPath, exceptionOccurred.getMessage() != null ? exceptionOccurred.getMessage().replace("'", "|'") : exceptionOccurred.toString());
