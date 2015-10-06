@@ -166,7 +166,7 @@ idea {
                 }.'@project-jdk-type' = 'IDEA JDK'
 
                 logger.warn "=" * 74
-                logger.warn " Configured IDEA JDK '${jdkName}'."
+                logger.warn " Configured IDEA SDK '${jdkName}'."
                 logger.warn " Make sure you have it configured in IntelliJ before opening the project!"
                 logger.warn "=" * 74
             }
