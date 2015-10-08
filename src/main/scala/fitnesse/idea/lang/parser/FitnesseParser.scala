@@ -47,6 +47,8 @@ class FitnesseParser extends PsiParser {
       }
     }
 
+    builder.advanceLexer() // Past TABLE_END
+
     start.done(tableType)
   }
 

@@ -88,10 +88,8 @@ class FitnesseLexer extends LexerBase {
         case SymbolType.Whitespace => FitnesseTokenType.WHITE_SPACE
         case SymbolType.Newline => FitnesseTokenType.LINE_TERMINATOR
         case _: ColoredSlimTable => FitnesseTokenType.TABLE_START
-        case FitnesseLexer.TABLE_END => FitnesseTokenType.TABLE_END
         case Table.tableRow => FitnesseTokenType.ROW_START
         case Table.tableCell => FitnesseTokenType.CELL_START
-        case FitnesseLexer.TABLE_CELL_END => FitnesseTokenType.CELL_END
         case SymbolType.Colon => FitnesseTokenType.COLON
         case _ => FitnesseTokenType.WORD
       }

@@ -39,7 +39,7 @@ object TableElementType {
   final val COMMENT_TABLE = new TableElementType("COMMENT_TABLE")
   final val SCENARIO_TABLE = new TableElementType("SCENARIO_TABLE")
   final val LIBRARY_TABLE = new TableElementType("LIBRARY_TABLE")
-  final val UNKNOWN_TABLE = new TableElementType("UNKNOWN_TABLE")
   final val DEFINE_TABLE_TYPE_TABLE = new TableElementType("DEFINE_TABLE_TYPE_TABLE")
   final val DEFINE_ALIAS_TABLE = new TableElementType("DEFINE_ALIAS_TABLE")
+  final val UNKNOWN_TABLE = new TableElementType("UNKNOWN_TABLE")
 }

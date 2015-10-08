@@ -16,7 +16,6 @@ object FitnesseTokenType {
 
   final val LINE_TERMINATOR: IElementType = new FitnesseTokenType("LINE_TERMINATOR")
 
-  final val TABLE_TYPE: IElementType = new FitnesseTokenType("TABLE_TYPE")
   final val TABLE_START: IElementType = new FitnesseTokenType("TABLE_START")
   final val TABLE_END: IElementType = new FitnesseTokenType("TABLE_END")
   final val ROW_START: IElementType = new FitnesseTokenType("ROW_START")

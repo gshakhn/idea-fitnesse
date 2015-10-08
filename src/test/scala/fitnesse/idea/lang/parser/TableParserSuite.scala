@@ -13,9 +13,10 @@ class TableParserSuite extends ParserSuite {
             Node(FitnesseElementType.FIXTURE_CLASS, List(
               Leaf(FitnesseTokenType.WORD, "A")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END,"|")))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END,"|")
+        ))
+      ))
     ) {
       parse("|A|")
     }
@@ -42,9 +43,9 @@ class TableParserSuite extends ParserSuite {
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "C")
             ))
-          ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END,"|\n")
         )),
-        Leaf(FitnesseTokenType.TABLE_END,"|\n"),
         Leaf(FitnesseTokenType.LINE_TERMINATOR,"\n")))
     ) {
       parse("|A|\n|B|\n|C|\n\n")
@@ -90,9 +91,9 @@ class TableParserSuite extends ParserSuite {
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "yes")
             ))
-          ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|\n")
         )),
-        Leaf(FitnesseTokenType.TABLE_END, "|\n"),
         Leaf(FitnesseTokenType.LINE_TERMINATOR, "\n")
       ))
     ) {
@@ -143,9 +144,9 @@ class TableParserSuite extends ParserSuite {
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "yes")
             ))
-          ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|\n")
         )),
-        Leaf(FitnesseTokenType.TABLE_END, "|\n"),
         Leaf(FitnesseTokenType.LINE_TERMINATOR, "\n")
       ))
     ) {
@@ -196,9 +197,9 @@ class TableParserSuite extends ParserSuite {
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "yes")
             ))
-          ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|\n")
         )),
-        Leaf(FitnesseTokenType.TABLE_END, "|\n"),
         Leaf(FitnesseTokenType.LINE_TERMINATOR, "\n")
       ))
     ) {
@@ -245,9 +246,9 @@ class TableParserSuite extends ParserSuite {
             Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "2")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|query:stuff|param1|\n|foo field|bar field|\n|1|2|")
@@ -295,9 +296,9 @@ class TableParserSuite extends ParserSuite {
             Node(FitnesseElementType.QUERY_OUTPUT, List(
               Leaf(FitnesseTokenType.WORD, "2")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|subset query:stuff|param1|\n|foo field|bar field|\n|1|2|")
@@ -333,9 +334,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|script:stuff|param1|\n|foo field|bar field|")
@@ -371,9 +372,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|script|stuff|param1|\n|foo field|bar field|")
@@ -403,9 +404,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|script|\n|foo field|bar field|")
@@ -475,9 +476,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "comment")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " ")
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|script|\n| note | comment |\n| # | comment |\n| * | comment |\n| | comment |")
@@ -519,9 +520,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "field")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, "  ")
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|  script  |  stuff  |\n|  foo field  |  bar field  |")
@@ -561,9 +562,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|scenario:stuff|param1|\n|foo field|bar field|")
@@ -603,9 +604,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
             ))
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("|scenario|stuff|param1|\n|foo field|bar field|")
@@ -631,9 +632,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "fixtures")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " ")
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("| import |\n| fixtures |")
@@ -659,9 +660,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "fixtures")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " ")
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("| library |\n| fixtures |")
@@ -693,9 +694,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "arg")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " ")
-          ))
-        )),
-        Leaf(FitnesseTokenType.TABLE_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
       ))
     ) {
       parse("| library |\n| fixtures | arg |")
