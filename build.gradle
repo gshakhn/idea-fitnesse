@@ -12,9 +12,9 @@ buildscript {
 
 plugins {
     id 'scala'
-    id 'idea'
     id 'com.github.maiflai.scalatest' version '0.9'
     id "de.undercouch.download" version "2.0.0"
+    id "org.jetbrains.intellij" version "0.0.23"
 }
 apply plugin: 'scoverage'
 
@@ -35,54 +35,13 @@ ext {
     SCALA_VERSION = '2.11.7'
 }
 
-// Pick the Linux version, as it is a tar.gz, since we can simply extract that
-// Older versions:
-//  - IDEA_ID = 'IC-139.1603.1', IDEA_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
-
-def IDEA_VERSIONS = [
-    15: [
-        ID: 'IC-143.2287.1',
-        URL: 'http://download.jetbrains.com/idea/ideaIC-15.0.4.tar.gz',
-        CSUM: '7653edd0687de6948b3c5b128c0683c96f89dea96bedd995a279f4d359816a16',
-        JAVA: '1.6'
-    ],
-    16: [
-        ID: 'IC-144.4199.23',
-        URL: 'https://download.jetbrains.com/idea/ideaIC-2016.1.tar.gz',
-        CSUM: 'd8d889c42dfde1f41030e9d3f5850d364109df73a6a35081edc72d7d95f22fbf',
-        JAVA: '1.8'
-    ]
-]
-
-def idea_version = System.getenv('IDEA_VERSION')
-def IDEA = IDEA_VERSIONS[idea_version ? idea_version.toInteger() : 15]
-
-def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA.ID}"
-def IDEA_LIB = "lib/sdk/idea-${IDEA.ID}/lib"
-
-configurations {
-    ideaSdk
-    bundle {
-        // dependencies bundled with the plugin
-        transitive = false
-    }
-}
-
 def jdkHome = System.getenv("JAVA_HOME")
 
 dependencies {
-    ideaSdk fileTree(dir: IDEA_LIB, include: ['*.jar'])
+    compile "org.scala-lang:scala-library:${SCALA_VERSION}"
+    compile("org.fitnesse:fitnesse:${FITNESSE_VERSION}:standalone") { transitive = false }
+    compile project('idea-fitnesse_rt')
 
-    bundle "org.scala-lang:scala-library:${SCALA_VERSION}"
-    bundle "org.fitnesse:fitnesse:${FITNESSE_VERSION}:standalone"
-    bundle project('idea-fitnesse_rt')
-
-    compile configurations.bundle
-    compile fileTree(dir: IDEA_LIB,
-                     include: ['openapi.jar', 'idea.jar', 'util.jar', 'extensions.jar', 'annotations.jar',
-                               'jdom.jar', 'picocontainer.jar', 'trove4j.jar',])
-
-    testCompile configurations.ideaSdk
     testCompile 'org.scalatest:scalatest_2.11:2.2.5'
     testCompile 'org.mockito:mockito-core:1.10.19'
 
@@ -96,31 +55,8 @@ dependencies {
     scoverage 'org.scoverage:scalac-scoverage-runtime_2.11:1.1.1'
 }
 
-sourceCompatibility = IDEA.JAVA
-targetCompatibility = IDEA.JAVA
-
-task downloadIdeaSdk(type: de.undercouch.gradle.tasks.download.Verify) {
-    description 'Download IDEA SDK from the interwebz'
-    doFirst {
-        download {
-            src IDEA.URL
-            dest file("lib/idea-${IDEA.ID}.tar.gz")
-            overwrite false
-        }
-    }
-    src file("lib/idea-${IDEA.ID}.tar.gz")
-    algorithm 'SHA-256'
-    checksum IDEA.CSUM
-}
-
-task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
-    description 'Extract IDEA SDK'
-    def zipFile = file("lib/idea-${IDEA.ID}.tar.gz")
-    def outputDir = file("lib/sdk")
-
-    from tarTree(resources.gzip(zipFile))
-    into outputDir
-}
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 processResources {
     from('src/main/resources') {
@@ -137,30 +73,22 @@ test {
 }
 
 task dist(type: Zip, dependsOn: [jar, test]) {
-    from configurations.bundle
+    from configurations.compile
     from jar.archivePath
     rename { f -> "lib/${f}" }
     into 'idea-fitnesse'
     baseName 'idea-fitnesse'
 }
 
-compileScala {
-    dependsOn extractIdeaSdk
-    doLast{
-        ant {
-            println "Instrumenting form classes..."
-            taskdef(name: "instrumentIdeaExtensions",
-                    classname: "com.intellij.ant.InstrumentIdeaExtensions",
-                    classpath: configurations.ideaSdk.asPath)
+intellij {
+    version '15.0.5'
+    pluginName 'idea-fitnesse'
+    sandboxDirectory 'build/ideasandbox'
 
-            instrumentIdeaExtensions(srcdir: sourceSets.main.scala.srcDirs[0],
-                    classpath: classpath.asPath,
-                    destdir: destinationDir,
-                    includeAntRuntime: true,
-                    source: sourceCompatibility,
-                    target: targetCompatibility
-            )
-        }
+    publish {
+        username jetbrainsUsername ?: ""
+        password jetbrainsPassword ?: ""
+        pluginId '7908'
     }
 }
 
@@ -168,47 +96,6 @@ task coverage {
     dependsOn 'testScoverage'
     dependsOn 'reportScoverage'
 }
-
-// ========= Workspace setup tasks ========= //
-
-idea {
-    targetVersion = '14'
-    project {
-        languageLevel = IDEA.JAVA
-        jdkName = IDEA_SDK_NAME
-
-        ipr {
-            withXml {
-                it.node.find { node ->
-                    node.@name == 'ProjectRootManager'
-                }.'@project-jdk-type' = 'IDEA JDK'
-
-                logger.warn "=" * 74
-                logger.warn " Configured IDEA SDK '${jdkName}'."
-                logger.warn " Make sure you have it configured in IntelliJ before opening the project!"
-                logger.warn "=" * 74
-            }
-        }
-    }
-
-    module {
-        scopes.COMPILE.minus = [ configurations.ideaSdk ]
-
-        iml {
-            beforeMerged { module ->
-                module.dependencies.clear()
-            }
-            withXml {
-                it.node.@type = 'PLUGIN_MODULE'
-                //  <component name="DevKit.ModuleBuildProperties" url="file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml" />
-                def cmp = it.node.appendNode('component')
-                cmp.@name = 'DevKit.ModuleBuildProperties'
-                cmp.@url = 'file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml'
-            }
-        }
-    }
-}
-ideaProject.dependsOn extractIdeaSdk
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'

@@ -9,14 +9,8 @@ repositories {
     }
 }
 
-configurations {
-    compile {
-        transitive = false
-    }
-}
-
 dependencies {
-    compile "org.fitnesse:fitnesse:${FITNESSE_VERSION}:standalone"
+    compile("org.fitnesse:fitnesse:${FITNESSE_VERSION}:standalone") { transitive = false }
 
     testCompile "junit:junit:4.12"
 }
