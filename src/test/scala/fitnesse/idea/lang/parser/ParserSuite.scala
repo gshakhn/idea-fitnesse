@@ -13,13 +13,14 @@ import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.impl.ProgressManagerImpl
 import com.intellij.psi.impl.source.SourceTreeToPsiMap
-import com.intellij.psi.impl.source.tree.CompositeElement
+import com.intellij.psi.impl.source.tree.{FileElement, CompositeElement}
 import com.intellij.psi.impl.{PsiFileFactoryImpl, PsiManagerEx}
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.{PsiFileFactory, SingleRootFileViewProvider}
 import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.Function
 import fitnesse.idea.lang.FitnesseLanguage
+import fitnesse.idea.lang.psi.FitnesseFile
 import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
 
 trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
@@ -84,11 +85,19 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   case class Leaf(elementType: IElementType, text: String) extends Tree
 
   def parse(text: String) = {
+    convertToTree(parseFile(text))
+  }
+
+  def parseFile(text: String): FileElement = {
+    val file: FitnesseFile = parsePsiFile(text)
+    SourceTreeToPsiMap.psiElementToTree(file).asInstanceOf[FileElement]
+  }
+
+  def parsePsiFile(text: String): FitnesseFile = {
     val virtualFile: LightVirtualFile = new LightVirtualFile("content.txt", FitnesseLanguage.INSTANCE, text)
     val viewProvider = new SingleRootFileViewProvider(myPsiManager, virtualFile, true)
     val file = parserDefinition.createFile(viewProvider)
-    val rootNode = SourceTreeToPsiMap.psiElementToTree(file)
-    convertToTree(rootNode)
+    file
   }
 
   private def convertToTree(node: ASTNode): Tree = {
