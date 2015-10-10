@@ -37,7 +37,7 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
    * @param newChildIndex the index where a new child is inserted.
    * @return the object containing the indent and alignment settings for the new child.
    */
-  override def getChildAttributes(newChildIndex: Int): ChildAttributes = ChildAttributes.DELEGATE_TO_NEXT_CHILD
+  override def getChildAttributes(newChildIndex: Int): ChildAttributes = new ChildAttributes(Indent.getAbsoluteNoneIndent(), Alignment.createAlignment())
 
   /**
    * Returns a wrap object indicating the conditions under which a line break
@@ -95,6 +95,6 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
     collectBlocks(node.getFirstChildNode, List(), subBlockMatcher)
   }
 
-  override def toString: String = s"${getClass.getName}:${node.getElementType}"
+  override def toString: String = s"${getClass.getSimpleName}:${node.getElementType}"
 
 }

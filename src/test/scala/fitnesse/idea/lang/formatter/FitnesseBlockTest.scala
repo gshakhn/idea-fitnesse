@@ -16,7 +16,7 @@ class FitnesseBlockTest extends ParserSuite {
 
     val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
 
-    assert(rootBlock.getSubBlocks.size == 1)
+    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE]")
   }
 
   test("should create blocks for multiple tables found in a file") {
@@ -24,15 +24,16 @@ class FitnesseBlockTest extends ParserSuite {
 
     val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
 
-    assert(rootBlock.getSubBlocks.size == 3)
+    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE, LeafBlock:FitnesseTokenType.LINE_TERMINATOR, TableBlock:Fitnesse:SCRIPT_TABLE]")
   }
 
-  ignore("should create blocks for table found in a collapsible section") {
+  test("should create blocks for table found in a collapsible section") {
     val parseTree = parseFile("!*** title\n|Should I buy it|\n|have money|buy it?|\n*!\n")
 
     val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
 
-    assert(rootBlock.getSubBlocks.size == 1)
+    assert(rootBlock.getSubBlocks.toString == "[FitnesseBlock:Fitnesse:COLLAPSIBLE]")
+    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString == "[LeafBlock:FitnesseTokenType.COLLAPSIBLE_START, LeafBlock:FitnesseTokenType.WORD, TableBlock:Fitnesse:DECISION_TABLE, LeafBlock:FitnesseTokenType.COLLAPSIBLE_END]")
   }
 
   ignore("find all row and cell endings, since those are the elements we have to align") {
