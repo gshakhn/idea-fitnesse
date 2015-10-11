@@ -188,7 +188,7 @@ class FitnesseParser extends PsiParser {
         cell.done(tableType match {
           case TableElementType.QUERY_TABLE => FitnesseElementType.QUERY_OUTPUT
           case TableElementType.IMPORT_TABLE => FitnesseElementType.IMPORT
-          case TableElementType.LIBRARY_TABLE if firstCell => FitnesseElementType.LIBRARY_CLASS // Fixture class?
+          case TableElementType.LIBRARY_TABLE if firstCell => FitnesseElementType.FIXTURE_CLASS
           case _ => FitnesseElementType.CELL
         })
         firstCell = false

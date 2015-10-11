@@ -742,7 +742,7 @@ class TableParserSuite extends ParserSuite {
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
-            Node(FitnesseElementType.LIBRARY_CLASS, List(
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
               Leaf(FitnesseTokenType.WORD, "fixtures")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " ")
@@ -770,7 +770,7 @@ class TableParserSuite extends ParserSuite {
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
-            Node(FitnesseElementType.LIBRARY_CLASS, List(
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
               Leaf(FitnesseTokenType.WORD, "fixtures")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),

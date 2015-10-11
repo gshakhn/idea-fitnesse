@@ -21,7 +21,6 @@ object FitnesseElementType {
   final val DECISION_OUTPUT = DecisionOutputElementType.INSTANCE
   final val QUERY_OUTPUT = new FitnesseElementType("QUERY_OUTPUT")
   final val IMPORT = new FitnesseElementType("IMPORT")
-  final val LIBRARY_CLASS = new FitnesseElementType("LIBRARY_CLASS")
   final val CELL= new FitnesseElementType("CELL")
   final val COMMENT = new FitnesseElementType("COMMENT")
   final val COLLAPSIBLE = new FitnesseElementType("COLLAPSIBLE")
