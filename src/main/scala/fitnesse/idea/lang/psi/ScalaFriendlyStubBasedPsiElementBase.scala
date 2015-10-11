@@ -23,5 +23,7 @@ trait ScalaFriendlyStubBasedPsiElementBase[T <: StubElement[_ <: PsiElement]] {
     case STUB => getStub.getStubType
     case NODE => getNode.getElementType.asInstanceOf[IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement]]
   }
+
+  override def toString = s"${getClass.getSimpleName}(${getElementType}})"
 }
 

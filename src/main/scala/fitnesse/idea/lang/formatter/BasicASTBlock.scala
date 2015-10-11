@@ -3,6 +3,8 @@ package fitnesse.idea.lang.formatter
 import com.intellij.formatting._
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiWhiteSpace
+import fitnesse.idea.lang.lexer.FitnesseTokenType
 
 import scala.annotation.tailrec
 
@@ -37,7 +39,7 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
    * @param newChildIndex the index where a new child is inserted.
    * @return the object containing the indent and alignment settings for the new child.
    */
-  override def getChildAttributes(newChildIndex: Int): ChildAttributes = new ChildAttributes(Indent.getAbsoluteNoneIndent(), Alignment.createAlignment())
+  override def getChildAttributes(newChildIndex: Int): ChildAttributes = new ChildAttributes(Indent.getNoneIndent, null)
 
   /**
    * Returns a wrap object indicating the conditions under which a line break
@@ -57,7 +59,7 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
    * @return the indent object, or null if the default indent ("continuation without first") should be used.
    * @see com.intellij.formatting.Indent#getContinuationWithoutFirstIndent()
    */
-  override def getIndent: Indent = Indent.getAbsoluteNoneIndent()
+  override def getIndent: Indent = Indent.getNoneIndent
 
   /**
    * Returns an alignment object indicating how this block is aligned with other blocks. Blocks
@@ -88,6 +90,7 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
     def collectBlocks(n: ASTNode, blocks: List[Block], toBlock: ((ASTNode) => ASTBlock)): List[Block] = {
       n match {
         case null => blocks
+        case _: PsiWhiteSpace => collectBlocks(n.getTreeNext, blocks, toBlock)
         case _ => collectBlocks(n.getTreeNext, blocks ::: List(toBlock(n)), toBlock)
       }
 

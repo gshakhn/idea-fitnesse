@@ -1,6 +1,6 @@
 package fitnesse.idea.lang.formatter
 
-import com.intellij.formatting.{FormattingModel, FormattingModelBuilder}
+import com.intellij.formatting.{FormattingModelProvider, FormattingModel, FormattingModelBuilder}
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.formatter.{FormattingDocumentModelImpl, DocumentBasedFormattingModel}
@@ -15,10 +15,8 @@ class FitnesseFormattingModelBuilder extends FormattingModelBuilder {
     val fileElement: FileElement = TreeUtil.getFileElement (SourceTreeToPsiMap.psiElementToTree(element).asInstanceOf[TreeElement] )
     val rootBlock: FitnesseBlock = new FitnesseBlock(fileElement)
     new DocumentBasedFormattingModel(rootBlock, file.getProject, settings, file.getFileType, file)
-//    FormattingDocumentModelImpl.createOn(file)
+//    FormattingModelProvider.createFormattingModelForPsiFile(file, rootBlock, settings)
   }
 
-  def getRangeAffectingIndent (file: PsiFile, offset: Int, elementAtOffset: ASTNode): TextRange = {
-    null
-  }
+  def getRangeAffectingIndent (file: PsiFile, offset: Int, elementAtOffset: ASTNode): TextRange = null
 }

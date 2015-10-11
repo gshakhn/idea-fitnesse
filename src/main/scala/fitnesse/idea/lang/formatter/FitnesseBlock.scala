@@ -15,10 +15,11 @@ import scala.collection.JavaConversions._
 class FitnesseBlock(node: ASTNode) extends BasicASTBlock(node) {
 
   override lazy val getSubBlocks: util.List[Block] = findSubBlocks(n => n.getElementType match {
-    case t: TableElementType => new TableBlock(n)
+    case _: TableElementType => new TableBlock(n)
     case FitnesseElementType.COLLAPSIBLE => new FitnesseBlock(n)
     case _ => new LeafBlock(n)
   })
 
   override def isLeaf: Boolean = getSubBlocks.isEmpty
+
 }

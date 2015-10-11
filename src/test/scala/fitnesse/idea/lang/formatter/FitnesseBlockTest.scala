@@ -24,7 +24,18 @@ class FitnesseBlockTest extends ParserSuite {
 
     val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
 
-    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE, LeafBlock:FitnesseTokenType.LINE_TERMINATOR, TableBlock:Fitnesse:SCRIPT_TABLE]")
+    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE, TableBlock:Fitnesse:SCRIPT_TABLE]")
+  }
+
+  test("should create blocks in tables") {
+    val parseTree = parseFile("|Should I buy it|\n|have money|buy it?|\n|no| yes |\n")
+
+    val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
+
+    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE]")
+    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString == "[LeafBlock:FitnesseTokenType.TABLE_START, TableBlock:Fitnesse:ROW, LeafBlock:FitnesseTokenType.ROW_END, TableBlock:Fitnesse:ROW, LeafBlock:FitnesseTokenType.ROW_END, TableBlock:Fitnesse:ROW, LeafBlock:FitnesseTokenType.TABLE_END]")
+    // |no| yes |
+    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.get(5).getSubBlocks.toString == "[TableBlock:Fitnesse:CELL, LeafBlock:FitnesseTokenType.CELL_END, TableBlock:Fitnesse:CELL]")
   }
 
   test("should create blocks for table found in a collapsible section") {
