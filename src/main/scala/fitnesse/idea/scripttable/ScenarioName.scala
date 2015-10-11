@@ -55,8 +55,8 @@ trait ScenarioNameImpl extends ScalaFriendlyStubBasedPsiElementBase[ScenarioName
     case STUB => getStub.name
     case NODE =>
       cells.zipWithIndex
-        .filter{ case (_, index) => index % 2 == 0 }
-        .map{ case (cell, _) => cell.getText.trim } match {
+        .filter { case (_, index) => index % 2 == 0 }
+        .map { case (cell, _) => cell.getText.trim } match {
           case Nil => ""
           case h :: _ if h.contains("_") => h.replaceAll("\\s*_\\s*", " ")
           case t => t.mkString(" ")
