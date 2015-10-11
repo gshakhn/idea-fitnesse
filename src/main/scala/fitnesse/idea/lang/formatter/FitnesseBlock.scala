@@ -4,13 +4,9 @@ import java.util
 
 import com.intellij.formatting._
 import com.intellij.lang.ASTNode
-import com.intellij.openapi.util.TextRange
-import com.intellij.psi.impl.source.tree.FileElement
-import com.intellij.psi.tree.TokenSet
 import fitnesse.idea.lang.parser.{FitnesseElementType, TableElementType}
 
-import scala.annotation.tailrec
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class FitnesseBlock(node: ASTNode) extends BasicASTBlock(node) {
 
@@ -18,7 +14,7 @@ class FitnesseBlock(node: ASTNode) extends BasicASTBlock(node) {
     case _: TableElementType => new TableBlock(n)
     case FitnesseElementType.COLLAPSIBLE => new FitnesseBlock(n)
     case _ => new LeafBlock(n)
-  })
+  }).asJava
 
   override def isLeaf: Boolean = getSubBlocks.isEmpty
 

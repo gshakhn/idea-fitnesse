@@ -4,11 +4,10 @@ import java.util
 
 import com.intellij.formatting._
 import com.intellij.lang.ASTNode
-import com.intellij.psi.tree.TokenSet
 import fitnesse.idea.lang.lexer.FitnesseTokenType
 import fitnesse.idea.lang.parser.FitnesseElementType
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
@@ -20,7 +19,7 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
     case FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW => new TableBlock(n)
     case FitnesseElementType.CELL | FitnesseElementType.FIXTURE_CLASS => new TableBlock(n)
     case _ => new LeafBlock(n)
-  })
+  }).asJava
 
   override def isLeaf: Boolean = getSubBlocks.isEmpty
 
@@ -56,6 +55,7 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
             FitnesseTokenType.CELL_END) =>
         // Second and subsequent lines
         createSpacing(7)
+
       case _ => null
     }
   }
