@@ -613,6 +613,84 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+  test("Scenario table with cell separator and extra spaces") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCENARIO_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "scenario")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.SCENARIO_NAME, List(
+              Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+              Node(FitnesseElementType.CELL, List(
+                Leaf(FitnesseTokenType.WORD, "stuff")
+              )),
+              Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+              Leaf(FitnesseTokenType.CELL_END, "|"),
+              Node(FitnesseElementType.CELL, List(
+                Leaf(FitnesseTokenType.WORD, "param1")
+              ))
+            ))
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.SCRIPT_ROW, List(
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "foo"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "bar"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
+      ))
+    ) {
+      parse("|scenario|  stuff  |param1|\n|foo field|bar field|")
+    }
+  }
+
+  test("Scenario table without name") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCENARIO_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "scenario")
+            )),
+            Node(FitnesseElementType.SCENARIO_NAME, List(
+            ))
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.SCRIPT_ROW, List(
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "foo"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "bar"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
+      ))
+    ) {
+      parse("|scenario|\n|foo field|bar field|")
+    }
+  }
+
   test("import table") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
