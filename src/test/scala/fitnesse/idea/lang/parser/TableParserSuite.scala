@@ -46,7 +46,7 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.TABLE_END,"|\n")
         )),
-        Leaf(FitnesseTokenType.LINE_TERMINATOR,"\n")))
+        Leaf(FitnesseTokenType.WHITE_SPACE,"\n")))
     ) {
       parse("|A|\n|B|\n|C|\n\n")
     }
@@ -94,7 +94,7 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.TABLE_END, "|\n")
         )),
-        Leaf(FitnesseTokenType.LINE_TERMINATOR, "\n")
+        Leaf(FitnesseTokenType.WHITE_SPACE, "\n")
       ))
     ) {
       parse("|Should I buy it|\n|have money|buy it?|\n|yes|yes|\n\n")
@@ -147,7 +147,7 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.TABLE_END, "|\n")
         )),
-        Leaf(FitnesseTokenType.LINE_TERMINATOR, "\n")
+        Leaf(FitnesseTokenType.WHITE_SPACE, "\n")
       ))
     ) {
       parse("|dt:Should I buy it|\n|have money|buy it?|\n|yes|yes|\n\n")
@@ -200,7 +200,7 @@ class TableParserSuite extends ParserSuite {
           )),
           Leaf(FitnesseTokenType.TABLE_END, "|\n")
         )),
-        Leaf(FitnesseTokenType.LINE_TERMINATOR, "\n")
+        Leaf(FitnesseTokenType.WHITE_SPACE, "\n")
       ))
     ) {
       parse("|decision:Should I buy it|\n|have money|buy it?|\n|yes|yes|\n\n")

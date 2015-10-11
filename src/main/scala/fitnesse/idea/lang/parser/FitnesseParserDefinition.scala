@@ -17,17 +17,17 @@ import fitnesse.idea.scripttable._
 import fitnesse.idea.wikilink.WikiLink
 
 class FitnesseParserDefinition extends ParserDefinition {
+  override val getFileNodeType = FitnesseElementType.FILE
+
+  override val getWhitespaceTokens = TokenSet.create(FitnesseTokenType.WHITE_SPACE, FitnesseTokenType.LINE_TERMINATOR)
+
+  override val getCommentTokens = TokenSet.EMPTY
+
+  override val getStringLiteralElements = TokenSet.EMPTY
+
   override def createLexer(project: Project) = new FitnesseLexer
 
   override def createParser(project: Project) = new FitnesseParser
-
-  override def getFileNodeType = FitnesseElementType.FILE
-
-  override def getWhitespaceTokens = TokenSet.create(FitnesseTokenType.WHITE_SPACE)
-
-  override def getCommentTokens = TokenSet.EMPTY
-
-  override def getStringLiteralElements = TokenSet.EMPTY
 
   override def createElement(astNode: ASTNode) = {
     astNode.getElementType match {
