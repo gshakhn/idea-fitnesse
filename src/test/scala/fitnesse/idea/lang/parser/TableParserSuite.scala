@@ -221,7 +221,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "stuff")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.WORD, "param1")
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "param1")
+            ))
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
@@ -271,7 +273,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "stuff")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.WORD, "param1")
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "param1")
+            ))
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
@@ -319,7 +323,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "stuff")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.WORD, "param1")
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "param1")
+            ))
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.SCRIPT_ROW, List(
@@ -357,7 +363,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "stuff")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.WORD, "param1")
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "param1")
+            ))
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.SCRIPT_ROW, List(

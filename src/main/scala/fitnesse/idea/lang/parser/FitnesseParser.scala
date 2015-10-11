@@ -96,8 +96,7 @@ class FitnesseParser extends PsiParser {
               while (!isCellEnd(builder)) builder.advanceLexer() // Past FIXTURE_CLASS
               fixtureClassOrScenarioName.done(FitnesseElementType.FIXTURE_CLASS)
             }
-
-            advanceTillEndOfRow(builder)
+            parseCells(builder, TableElementType.UNKNOWN_TABLE)
         }
         start.done(FitnesseElementType.ROW)
 
@@ -189,7 +188,7 @@ class FitnesseParser extends PsiParser {
         cell.done(tableType match {
           case TableElementType.QUERY_TABLE => FitnesseElementType.QUERY_OUTPUT
           case TableElementType.IMPORT_TABLE => FitnesseElementType.IMPORT
-          case TableElementType.LIBRARY_TABLE if firstCell => FitnesseElementType.LIBRARY_CLASS
+          case TableElementType.LIBRARY_TABLE if firstCell => FitnesseElementType.LIBRARY_CLASS // Fixture class?
           case _ => FitnesseElementType.CELL
         })
         firstCell = false
