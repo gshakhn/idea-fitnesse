@@ -6,7 +6,6 @@ import fitnesse.testrunner.WikiTestPageUtil;
 import fitnesse.testsystems.*;
 import fitnesse.wiki.WikiPage;
 import fitnesse.wiki.fs.FileSystemPage;
-import fitnesse.wiki.fs.FileSystemPageFactory;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.Tag;
@@ -110,47 +109,39 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     private String translateTable(NodeList nodes) throws IOException {
-        List<List<Cell>> table = new ArrayList<List<Cell>>();
-        List<Integer> rowWidths = new ArrayList<Integer>();
-        for (Node row : nodeListIterator(nodes.extractAllNodesThatMatch(new NodeClassFilter(TableRow.class)))) {
-            List<Cell> tableRow = new ArrayList<Cell>();
-            int rowNr = 0;
-            for (Node cell : nodeListIterator(row.getChildren().extractAllNodesThatMatch(new NodeClassFilter(TableColumn.class)))) {
-                Cell tableCell = new Cell(translate(cell.getChildren()), ((TableColumn) cell).getAttribute("colspan"));
-                tableRow.add(tableCell);
-                if (rowNr < rowWidths.size()) {
-                    rowWidths.set(rowNr, Math.max(rowWidths.get(rowNr), tableCell.length));
-                } else {
-                    rowWidths.add(tableCell.length);
-                }
-                rowNr++;
+        List<List<Integer>> table = new ArrayList<List<Integer>>();
+        for (Node row : rowIterator(nodes)) {
+            List<Integer> tableRow = new ArrayList<Integer>();
+            for (Node cell : columnIterator(row)) {
+                tableRow.add(cellLength(translate(cell.getChildren())));
             }
             table.add(tableRow);
         }
 
+        TableFormatter tableFormatter = new TableFormatter(table);
         StringBuilder sb = new StringBuilder();
-        for (List<Cell> row : table) {
-            int rowNr = 0;
-            for (Cell cell : row) {
-                sb.append(" | ").append(cell).append(padding(cell, rowWidths, rowNr));
-                rowNr += cell.colspan;
+        int rowNr = 0;
+        for (Node row : rowIterator(nodes)) {
+            int colNr = 0;
+            for (Node cell : columnIterator(row)) {
+                sb.append("|")
+                        .append(tableFormatter.leftPaddingString())
+                        .append(translate(cell.getChildren()))
+                        .append(tableFormatter.rightPaddingString(rowNr, colNr));
+                colNr++;
             }
-            sb.append(" |\n");
+            sb.append("|\n");
+            rowNr++;
         }
         return sb.toString();
     }
 
-    private char[] padding(Cell cell, List<Integer> rowWidths, int rowNr) {
-        int w = 0;
-        for (int i = 0; i < cell.colspan && rowNr + i < rowWidths.size(); i++) w += rowWidths.get(rowNr + i);
-        w += (cell.colspan - 1) * 3; // add extra width for cell separators (" | ")
-        return padding(w - cell.length);
+    private Iterable<Node> columnIterator(Node row) {
+        return nodeListIterator(row.getChildren().extractAllNodesThatMatch(new NodeClassFilter(TableColumn.class)));
     }
 
-    private char[] padding(int i) {
-        char[] chars = new char[i > 0 ? i : 0];
-        Arrays.fill(chars, ' ');
-        return chars;
+    private Iterable<Node> rowIterator(NodeList nodes) {
+        return nodeListIterator(nodes.extractAllNodesThatMatch(new NodeClassFilter(TableRow.class)));
     }
 
     private Iterable<Node> nodeListIterator(NodeList nodes) {
@@ -215,32 +206,8 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
         out.print(s);
     }
 
-    private static class Cell {
-        private final String cellContent;
-        private final int length;
-        private final int colspan;
-
-        private Cell(String cellContent, String colspan) {
-            this.cellContent = cellContent;
-            this.length = cellLength(cellContent);
-            this.colspan = parseInt(colspan);
-        }
-
-        @Override
-        public String toString() {
-            return cellContent;
-        }
-
-        private static int cellLength(String tableCell) {
-            return tableCell.replaceAll("\u001B.*?m", "").split("\n")[0].length();
-        }
-
-        private static int parseInt(String colspan) {
-            try {
-                return Integer.parseInt(colspan);
-            } catch (NumberFormatException e) {
-                return 1;
-            }
-        }
+    private static int cellLength(String tableCell) {
+        return tableCell.replaceAll("\u001B.*?m", "").split("\n")[0].length();
     }
+
 }

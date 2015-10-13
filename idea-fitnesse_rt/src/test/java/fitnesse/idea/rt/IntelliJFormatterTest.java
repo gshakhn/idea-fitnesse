@@ -138,9 +138,10 @@ public class IntelliJFormatterTest {
                 "\t</tr>\n" +
                 "</table>");
 
+        System.out.println(out.toString());
         assertThat(out.toString().replace('\u001B', '^'), is(
-                " | import    |\n" +
-                " | ^[42mfixtures^[0m  |\n"));
+                "| import    |\n" +
+                "| ^[42mfixtures^[0m  |\n"));
     }
 
     @Test
@@ -150,6 +151,7 @@ public class IntelliJFormatterTest {
                         "\t<li>list item 2</li>\n"+
                         "</ul>\n");
 
+        System.out.println(out.toString());
         assertThat(out.toString(), is("\n\n\tlist item 1\n\tlist item 2\n\n"));
     }
 
@@ -165,7 +167,7 @@ public class IntelliJFormatterTest {
                 "</table>");
 
         System.out.println(out.toString());
-        assertThat(out.toString().replace('\u001B', '^'), is(" | ^[42mpass me^[0m  | ^[41mfail me^[0m  | ^[43merror me^[0m  | ^[46mignore me^[0m  |\n"));
+        assertThat(out.toString().replace('\u001B', '^'), is("| ^[42mpass me^[0m  | ^[41mfail me^[0m  | ^[43merror me^[0m  | ^[46mignore me^[0m  |\n"));
     }
 
     @Test
@@ -186,9 +188,32 @@ public class IntelliJFormatterTest {
 
         System.out.println(out.toString());
         assertThat(out.toString().replace('\u001B', '^'), is(
-                " | Foo                 |\n" +
-                " | one   | longer cell |\n" +
-                " | three | four        |\n"));
+                "| Foo                 |\n" +
+                "| one   | longer cell |\n" +
+                "| three | four        |\n"));
+    }
+
+    @Test
+    public void layoutTableWithLongFixtureName() throws IOException {
+        formatter.testOutputChunk("<table>\n" +
+                "\t<tr>\n" +
+                "\t\t<td colspan=\"2\">Foo bar baz</td>\n" +
+                "\t</tr>\n" +
+                "\t<tr>\n" +
+                "\t\t<td>one</td>\n" +
+                "\t\t<td>longer cell</td>\n" +
+                "\t</tr>\n" +
+                "\t<tr>\n" +
+                "\t\t<td>three</td>\n" +
+                "\t\t<td>four</td>\n" +
+                "\t</tr>\n" +
+                "</table>");
+
+        System.out.println(out.toString());
+        assertThat(out.toString().replace('\u001B', '^'), is(
+                "| Foo bar baz         |\n" +
+                "| one   | longer cell |\n" +
+                "| three | four        |\n"));
     }
 
 }
