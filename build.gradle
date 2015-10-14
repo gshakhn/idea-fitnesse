@@ -32,7 +32,7 @@ repositories {
 }
 
 ext {
-    FITNESSE_VERSION = '20150927-SNAPSHOT'
+    FITNESSE_VERSION = '20151014-SNAPSHOT'
     SCALA_VERSION = '2.11.7'
 }
 
