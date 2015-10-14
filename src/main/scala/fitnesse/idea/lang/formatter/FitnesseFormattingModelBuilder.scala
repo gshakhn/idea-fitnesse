@@ -14,8 +14,8 @@ class FitnesseFormattingModelBuilder extends FormattingModelBuilder {
     val file: PsiFile = element.getContainingFile
     val fileElement: FileElement = TreeUtil.getFileElement (SourceTreeToPsiMap.psiElementToTree(element).asInstanceOf[TreeElement] )
     val rootBlock: FitnesseBlock = new FitnesseBlock(fileElement)
-    new DocumentBasedFormattingModel(rootBlock, file.getProject, settings, file.getFileType, file)
-//    FormattingModelProvider.createFormattingModelForPsiFile(file, rootBlock, settings)
+//    new DocumentBasedFormattingModel(rootBlock, file.getProject, settings, file.getFileType, file)
+    FormattingModelProvider.createFormattingModelForPsiFile(file, rootBlock, settings)
   }
 
   def getRangeAffectingIndent (file: PsiFile, offset: Int, elementAtOffset: ASTNode): TextRange = null
