@@ -28,7 +28,7 @@ public class FuncUtils {
 
         List<List<A>> out = new ArrayList<List<A>>();
         for(int i = 0; i < nColumns; i++) {
-            List<A> row = new ArrayList<>();
+            List<A> row = new ArrayList<A>();
             for (List<A> c : collection) {
                 if (i < c.size()) {
                     row.add(c.get(i));
