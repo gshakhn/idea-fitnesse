@@ -121,12 +121,15 @@ object FitnesseLexer {
 
   case class LexerSymbolType(elementType: IElementType) extends SymbolType(elementType.toString)
 
-  def terminatorFor(symbol: Symbol): Option[Symbol] = symbol.getType match {
-    case _ : ColoredSlimTable => Some(new Symbol(TABLE_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
-    case _ : Collapsible => Some(new Symbol(COLLAPSIBLE_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
-    case s if s eq Table.tableRow => Some(new Symbol(TABLE_ROW_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
-    case s if s eq Table.tableCell => Some(new Symbol(TABLE_CELL_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
-    case _ => None
+  def terminatorFor(symbol: Symbol): Option[Symbol] = {
+    val startOffset = if (lastChild(symbol).getEndOffset == symbol.getEndOffset) lastChild(symbol).getStartOffset else lastChild(symbol).getEndOffset
+    symbol.getType match {
+      case _ : ColoredSlimTable => Some(new Symbol(TABLE_END, "", startOffset, symbol.getEndOffset))
+      case _ : Collapsible => Some(new Symbol(COLLAPSIBLE_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
+      case s if s eq Table.tableRow => Some(new Symbol(TABLE_ROW_END, "", startOffset, symbol.getEndOffset))
+      case s if s eq Table.tableCell => Some(new Symbol(TABLE_CELL_END, "", startOffset, symbol.getEndOffset))
+      case _ => None
+    }
   }
 
   private def lastChild(symbol: Symbol): Symbol = {

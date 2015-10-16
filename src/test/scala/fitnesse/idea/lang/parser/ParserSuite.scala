@@ -2,6 +2,7 @@ package fitnesse.idea.lang.parser
 
 import com.intellij.lang._
 import com.intellij.lang.impl.PsiBuilderFactoryImpl
+import com.intellij.lang.injection.MultiHostInjector
 import com.intellij.mock._
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
@@ -49,6 +50,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
 
     Extensions.registerAreaClass("IDEA_PROJECT", null)
     Extensions.registerAreaClass("IDEA_PROJECT", null)
+    Extensions.registerAreaClass(MultiHostInjector.MULTIHOST_INJECTOR_EP_NAME.getName, null)
 
     app = new MockApplicationEx(myTestRootDisposable)
     myProject = new MockProjectEx(myTestRootDisposable)

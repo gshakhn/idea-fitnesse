@@ -16,6 +16,9 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
   lazy val width: Integer = node.getText.trim.length
 
+  // fixMe: SCENARIO_NAME
+  // fixMe: empty cells -> how to deal with those? They have no width, so how do we handle those?
+
   lazy val subBlocks = findSubBlocks(n => n.getElementType match {
     case FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW =>
       createTableBlock(n)
@@ -46,20 +49,20 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
         /*
          * Leading spaces:
          */
-      case (FitnesseTokenType.TABLE_START | FitnesseTokenType.ROW_END, FitnesseElementType.ROW) =>
+      case (FitnesseTokenType.TABLE_START | FitnesseTokenType.ROW_END, FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW) =>
         // Indent for first column
         createSpacing(TableFormatter.MIN_PADDING)
-      case (FitnesseTokenType.CELL_END, FitnesseElementType.TABLE_TYPE | FitnesseElementType.FIXTURE_CLASS) =>
+      case (FitnesseTokenType.CELL_END | null, FitnesseElementType.TABLE_TYPE | FitnesseElementType.FIXTURE_CLASS) =>
         // Fixture class line (with arguments)
         createSpacing(TableFormatter.MIN_PADDING)
-      case (FitnesseTokenType.CELL_END, FitnesseElementType.CELL | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT) =>
+      case (FitnesseTokenType.CELL_END | null, FitnesseElementType.CELL | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT | FitnesseTokenType.CELL_END) =>
         // Second and subsequent lines
         createSpacing(TableFormatter.MIN_PADDING)
 
       /*
        * Trailing spaces:
        */
-      case (FitnesseElementType.ROW, FitnesseTokenType.ROW_END | FitnesseTokenType.TABLE_END) =>
+      case (FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW, FitnesseTokenType.ROW_END | FitnesseTokenType.TABLE_END) =>
         // last column
         val subBlock: TableSubBlock = child1.asInstanceOf[TableSubBlock]
         subBlock.coordinates match {
@@ -75,7 +78,7 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
             createSpacing(subBlock.rightPadding(row, col))
           case _ => createSpacing(1)
         }
-      case (FitnesseElementType.CELL | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT,
+      case (FitnesseElementType.CELL | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT | FitnesseTokenType.CELL_END,
             FitnesseTokenType.CELL_END) =>
         // Second and subsequent lines
         val subBlock: TableSubBlock = child1.asInstanceOf[TableSubBlock]

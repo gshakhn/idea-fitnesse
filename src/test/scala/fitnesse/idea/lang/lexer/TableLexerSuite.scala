@@ -254,9 +254,9 @@ class TableLexerSuite extends LexerSuite {
         (FitnesseTokenType.WORD, "table"),
         (FitnesseTokenType.CELL_END, "|"),
         (FitnesseTokenType.CELL_START, "|\n"),
-        (FitnesseTokenType.CELL_END, ""),
-        (FitnesseTokenType.ROW_END, ""),
-        (FitnesseTokenType.TABLE_END, ""),
+        (FitnesseTokenType.CELL_END, "|\n"),
+        (FitnesseTokenType.ROW_END, "|\n"),
+        (FitnesseTokenType.TABLE_END, "|\n"),
         (FitnesseTokenType.LINE_TERMINATOR, "\n")
       )) {
       lex("|Some table||\n\n")
@@ -269,7 +269,7 @@ class TableLexerSuite extends LexerSuite {
         (FitnesseTokenType.TABLE_START, "||Some table|\n"),
         (FitnesseTokenType.ROW_START, "|Some table|\n"),
         (FitnesseTokenType.CELL_START, "|"),
-        (FitnesseTokenType.CELL_END, ""),
+        (FitnesseTokenType.CELL_END, "|"),
         (FitnesseTokenType.CELL_START, "Some table|\n"),
         (FitnesseTokenType.WORD, "Some"),
         (FitnesseTokenType.WHITE_SPACE, " "),

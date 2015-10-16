@@ -101,6 +101,48 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+  test("Empty cells 1/2") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.DECISION_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.WORD, "A")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  ")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END,"|")
+        ))
+      ))
+    ) {
+      parse("|A||  |")
+    }
+  }
+
+  test("Empty cells 2/2") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.DECISION_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.WORD, "A")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+            Leaf(FitnesseTokenType.CELL_END, "|")
+          )),
+          Leaf(FitnesseTokenType.TABLE_END,"|")
+        ))
+      ))
+    ) {
+      parse("|A|  ||")
+    }
+  }
+
   test("Simple decision table with 'dt' prefix") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
@@ -476,8 +518,6 @@ class TableParserSuite extends ParserSuite {
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
           Node(FitnesseElementType.ROW, List(
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
-              Node(FitnesseElementType.CELL, List(
-            )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(

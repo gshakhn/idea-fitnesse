@@ -173,7 +173,7 @@ class FitnesseParser extends PsiParser {
 
   def parseCells(builder: PsiBuilder, tableType: TableElementType): String = {
     var firstCell = true
-    var cellText = ""
+    var firstCellText = ""
     while (!builder.eof() && builder.getTokenType != FitnesseTokenType.ROW_END) {
       if (builder.getTokenType == FitnesseTokenType.CELL_START || builder.getTokenType == FitnesseTokenType.WORD) {
         if (builder.getTokenType == FitnesseTokenType.CELL_START) {
@@ -181,21 +181,25 @@ class FitnesseParser extends PsiParser {
         }
         skipWhitespace(builder)
         val cell = builder.mark()
-        if (firstCell)
-          cellText = readCellText(builder)
-        else
-          readCellText(builder)
-        cell.done(tableType match {
-          case TableElementType.QUERY_TABLE => FitnesseElementType.QUERY_OUTPUT
-          case TableElementType.IMPORT_TABLE => FitnesseElementType.IMPORT
-          case TableElementType.LIBRARY_TABLE if firstCell => FitnesseElementType.FIXTURE_CLASS
-          case _ => FitnesseElementType.CELL
-        })
+        val cellText = readCellText(builder)
+        if (firstCell) {
+          firstCellText = cellText
+        }
+        if (cellText != "") {
+          cell.done(tableType match {
+            case TableElementType.QUERY_TABLE => FitnesseElementType.QUERY_OUTPUT
+            case TableElementType.IMPORT_TABLE => FitnesseElementType.IMPORT
+            case TableElementType.LIBRARY_TABLE if firstCell => FitnesseElementType.FIXTURE_CLASS
+            case _ => FitnesseElementType.CELL
+          })
+        } else {
+          cell.drop()
+        }
         firstCell = false
       }
       builder.advanceLexer()
     }
-    cellText
+    firstCellText
   }
 
   private def readCellText(builder: PsiBuilder): String = {

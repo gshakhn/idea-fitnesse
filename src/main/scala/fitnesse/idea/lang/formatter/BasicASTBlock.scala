@@ -91,6 +91,7 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
       n match {
         case null => blocks
         case _: PsiWhiteSpace => collectBlocks(n.getTreeNext, blocks, toBlock)
+        case _ if n.getTextLength == 0 => collectBlocks(n.getTreeNext, blocks, toBlock)
         case _ => collectBlocks(n.getTreeNext, blocks ::: List(toBlock(n)), toBlock)
       }
 
