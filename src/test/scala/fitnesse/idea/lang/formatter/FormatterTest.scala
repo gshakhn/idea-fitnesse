@@ -4,6 +4,7 @@ import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import fitnesse.idea.lang.filetype.FitnesseFileType
 import org.scalatest._
 
+@Ignore
 class FormatterTest extends LightCodeInsightFixtureTestCase with FunSuiteLike with Matchers with BeforeAndAfter {
 
   before {
