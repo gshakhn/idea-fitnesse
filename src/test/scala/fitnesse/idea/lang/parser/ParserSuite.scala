@@ -78,6 +78,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
     app.getPicoContainer.unregisterComponent(classOf[FileDocumentManager].getName)
     app.getPicoContainer.unregisterComponent(classOf[DefaultASTFactory].getName)
     app.getPicoContainer.unregisterComponent(classOf[PsiBuilderFactory].getName)
+    app.getPicoContainer.unregisterComponent(classOf[ProgressManager].getName)
 
     myProject.getPicoContainer.unregisterComponent(classOf[PsiFileFactory].getName)
   }

@@ -1,8 +1,11 @@
 package fitnesse.idea.fixtureclass
 
+import com.intellij.psi.SmartPointerManager
+import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
 import fitnesse.idea.lang.psi.PsiSuite
 
 class CreateClassQuickFixTest extends PsiSuite {
+
 
   test("quick fix is available") {
     val table = createTable("| foo bar |")
@@ -12,5 +15,10 @@ class CreateClassQuickFixTest extends PsiSuite {
       // because the mock isInProject implementation returns False
       quickFix.isAvailable(myProject, null, null)
     }
+  }
+
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    myProject.getPicoContainer.registerComponentInstance(classOf[SmartPointerManager].getName, new SmartPointerManagerImpl(myProject))
   }
 }

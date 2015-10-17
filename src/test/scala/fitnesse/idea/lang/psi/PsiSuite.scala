@@ -20,6 +20,7 @@ import org.mockito.Matchers.{any, eq => m_eq}
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 
+//class FormatterTest extends LightCodeInsightFixtureTestCase with FunSuiteLike with Matchers with BeforeAndAfter {
 trait PsiSuite extends ParserSuite with MockitoSugar {
 
   val myPsiShortNamesCache: PsiShortNamesCache = mock[PsiShortNamesCache]
@@ -30,17 +31,10 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
     super.beforeAll()
 
     app.getPicoContainer.registerComponentInstance(classOf[StubIndex].getName, myStubIndex)
-    app.getPicoContainer.registerComponentInstance(classOf[FileModificationService].getName, new FileModificationService() {
-      override def prepareVirtualFilesForWrite(project: Project, collection: util.Collection[VirtualFile]): Boolean = true
-      override def preparePsiElementsForWrite(collection: util.Collection[_ <: PsiElement]): Boolean = true
-      override def prepareFileForWrite(psiFile: PsiFile): Boolean = true
-      override def preparePsiElementForWrite(psiElement: PsiElement): Boolean = true
-    })
 
     myProject.getPicoContainer.registerComponentInstance(classOf[PsiShortNamesCache].getName, myPsiShortNamesCache)
     myProject.getPicoContainer.registerComponentInstance(classOf[JavaPsiFacade].getName, myJavaPsiFacade)
     myProject.getPicoContainer.registerComponentInstance(classOf[ProjectScopeBuilder].getName, new ProjectScopeBuilderImpl(myProject))
-    myProject.getPicoContainer.registerComponentInstance(classOf[SmartPointerManager].getName, new SmartPointerManagerImpl(myProject))
     myProject.getPicoContainer.registerComponentInstance(classOf[PsiDocumentManager].getName, new MockPsiDocumentManager())
     myProject.getPicoContainer.registerComponentInstance(classOf[ResolveScopeManager].getName, new MockResolveScopeManager(myProject))
 

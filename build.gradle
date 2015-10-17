@@ -54,6 +54,8 @@ configurations {
     }
 }
 
+def jdkHome = System.getenv("JAVA_HOME")
+
 dependencies {
     ideaSdk fileTree(dir: IDEA_LIB, include: ['*.jar'])
 
@@ -64,7 +66,7 @@ dependencies {
     compile configurations.bundle
     compile fileTree(dir: IDEA_LIB,
                      include: ['openapi.jar', 'idea.jar', 'util.jar', 'extensions.jar', 'annotations.jar',
-                               'jdom.jar', 'picocontainer.jar', 'trove4j.jar'])
+                               'jdom.jar', 'picocontainer.jar', 'trove4j.jar',])
 
     testCompile configurations.ideaSdk
     testCompile 'org.scalatest:scalatest_2.11:2.2.5'
@@ -72,6 +74,7 @@ dependencies {
 
     // Scalatest requires:
     testRuntime 'org.pegdown:pegdown:1.1.0'
+    testRuntime files("$jdkHome/lib/tools.jar")
 
     // task testScoverage
     scoverage "org.scala-lang:scala-library:${SCALA_VERSION}"
@@ -88,7 +91,7 @@ task downloadIdeaSdk(type: de.undercouch.gradle.tasks.download.Verify) {
         download {
             src IDEA_URL
             dest file("lib/idea-${IDEA_ID}.tar.gz")
-            onlyIfNewer true
+            overwrite false
         }
     }
     src file("lib/idea-${IDEA_ID}.tar.gz")
