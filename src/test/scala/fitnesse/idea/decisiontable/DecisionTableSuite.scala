@@ -48,7 +48,10 @@ class DecisionTableSuite extends PsiSuite {
     assertResult("setA") {
       input.fixtureMethodName
     }
+  }
 
+  test("find decision table setter reference") {
+    val input = table.rows(1).cells(0).asInstanceOf[DecisionInput]
     assertResult(myPsiMethodSetA) {
       val refs = input.getReferences
       refs(0).resolve
@@ -60,7 +63,10 @@ class DecisionTableSuite extends PsiSuite {
     assertResult("c") {
       output.fixtureMethodName
     }
+  }
 
+  test("find decision table query references") {
+    val output = table.rows(1).cells(2).asInstanceOf[DecisionOutput]
     assertResult(myPsiMethodC) {
       val refs = output.getReferences
       refs(0).resolve
@@ -72,7 +78,10 @@ class DecisionTableSuite extends PsiSuite {
     assertResult("fancyQueryName") {
       output.fixtureMethodName
     }
+  }
 
+  test("handle gracefully named references") {
+    val output = table.rows(1).cells(4).asInstanceOf[DecisionOutput]
     assertResult(myPsiMethodFancyQueryName) {
       val refs = output.getReferences
       refs(0).resolve

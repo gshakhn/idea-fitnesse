@@ -36,13 +36,15 @@ class ScriptTableSuite extends PsiSuite {
   }
   
   test("find script table ensure method") {
-    when(myPsiClass.findMethodsByName(m_eq("twoWords"), anyBoolean)).thenReturn(Array(myPsiMethodTwoWords))
-
     val output = scriptRow("| ensure | two | 3 | words |")
     assertResult("twoWords") {
       output.fixtureMethodName
     }
+  }
 
+  test("find script table ensure method reference") {
+    when(myPsiClass.findMethodsByName(m_eq("twoWords"), anyBoolean)).thenReturn(Array(myPsiMethodTwoWords))
+    val output = scriptRow("| ensure | two | 3 | words |")
     assertResult(myPsiMethodTwoWords) {
       val refs = output.getReferences
       refs(0).resolve
