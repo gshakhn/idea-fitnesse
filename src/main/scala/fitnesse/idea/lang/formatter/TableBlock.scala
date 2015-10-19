@@ -1,7 +1,5 @@
 package fitnesse.idea.lang.formatter
 
-import java.util
-
 import com.intellij.formatting._
 import com.intellij.lang.ASTNode
 import fitnesse.idea.lang.lexer.FitnesseTokenType
@@ -10,28 +8,60 @@ import fitnesse.idea.rt.TableFormatter
 
 import scala.collection.JavaConverters._
 
+
+case class CellBlock(node: ASTNode, row: Int, col: Int) extends LeafBlock(node) {
+  override def toString: String = s"${getClass.getSimpleName}:${node.getElementType}(${row},${col})"
+}
+
+case class BarBlock(node: ASTNode) extends LeafBlock(node)
+
 class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
-  protected val nextRowOrCellId = { var i = -1; () => { i += 1; i} }
+  def createCounter: () => Int = {var i = -1; () => { i += 1; i } }
 
   lazy val width: Integer = node.getText.trim.length
 
-  // fixMe: SCENARIO_NAME
-  // fixMe: empty cells -> how to deal with those? They have no width, so how do we handle those?
+  override lazy val subBlocks: List[ASTBlock] = {
+    val nextRowId = createCounter
+    findSubBlocks(n => n.getElementType match {
+      case FitnesseTokenType.TABLE_START | FitnesseTokenType.TABLE_END | FitnesseTokenType.ROW_END =>
+        List(BarBlock(n))
+      case FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW =>
+        val rowId = nextRowId()
+        findInRow(n, rowId, createCounter)
+      case _ =>
+        List(new LeafBlock(n))
+    })
+  }
 
-  lazy val subBlocks = findSubBlocks(n => n.getElementType match {
-    case FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW =>
-      createTableBlock(n)
-    case FitnesseElementType.CELL | FitnesseElementType.FIXTURE_CLASS | FitnesseElementType.TABLE_TYPE | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT =>
-      createTableBlock(n)
-    case _ => new LeafBlock(n)
-  })
+  def findInRow(n: ASTNode, rowId: Int, nextCellId: () => Int): List[ASTBlock] = {
+    findSubBlocks(n, n => n.getElementType match {
+      case FitnesseTokenType.CELL_END =>
+        List(BarBlock(n))
+      case FitnesseElementType.CELL | FitnesseElementType.FIXTURE_CLASS | FitnesseElementType.TABLE_TYPE | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT =>
+        List(CellBlock(n, rowId, nextCellId()))
+      case FitnesseElementType.SCENARIO_NAME =>
+        findInRow(n, rowId, nextCellId)
+      case _ =>
+        List(new LeafBlock(n))
+    })
+  }
 
-  def createTableBlock(node: ASTNode): TableBlock = new TableSubBlock(node, this, List(nextRowOrCellId()))
+  /** Returns shortest possible list of lists xss such that
+    *   - xss.flatten == xs
+    *   - No sublist in xss contains an element matching p in its tail
+    */
+  def groupPrefix[T](xs: List[T])(p: T => Boolean): List[List[T]] = xs match {
+    case List() => List()
+    case x :: xs1 =>
+      val (ys, zs) = xs1 span (!p(_))
+      (x :: ys) :: groupPrefix(zs)(p)
+  }
 
-  lazy val tableBlocks: List[TableBlock] = subBlocks.filter(b => b.isInstanceOf[TableBlock]).asInstanceOf[List[TableBlock]]
+  lazy val cellBlocks: List[List[CellBlock]] = groupPrefix(subBlocks)(_.getNode.getElementType == FitnesseTokenType.ROW_END)
+    .map(row => row.filter(b => b.isInstanceOf[CellBlock]).asInstanceOf[List[CellBlock]])
 
-  lazy val tableFormatter: TableFormatter = new TableFormatter(tableBlocks.map(row => row.tableBlocks.map(cell => cell.width).asJava).asJava)
+  lazy val tableFormatter: TableFormatter = new TableFormatter(cellBlocks.map(row => row.map(cell => cell.width).asJava).asJava)
 
   def rightPadding(row: Int): Int = tableFormatter.rightPadding(row)
 
@@ -39,55 +69,12 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
   override def isLeaf: Boolean = subBlocks.isEmpty
 
-  override lazy val getSubBlocks: util.List[Block] = subBlocks.asJava
-
   override def getSpacing(child1: Block, child2: Block): Spacing = {
-    val type1 = if (child1 != null) child1.asInstanceOf[ASTBlock].getNode.getElementType else null
-    val type2 = child2.asInstanceOf[ASTBlock].getNode.getElementType
-
-    (type1, type2) match {
-        /*
-         * Leading spaces:
-         */
-      case (FitnesseTokenType.TABLE_START | FitnesseTokenType.ROW_END, FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW) =>
-        // Indent for first column
-        createSpacing(TableFormatter.MIN_PADDING)
-      case (FitnesseTokenType.CELL_END | null, FitnesseElementType.TABLE_TYPE | FitnesseElementType.FIXTURE_CLASS) =>
-        // Fixture class line (with arguments)
-        createSpacing(TableFormatter.MIN_PADDING)
-      case (FitnesseTokenType.CELL_END | null, FitnesseElementType.CELL | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT | FitnesseTokenType.CELL_END) =>
-        // Second and subsequent lines
-        createSpacing(TableFormatter.MIN_PADDING)
-
-      /*
-       * Trailing spaces:
-       */
-      case (FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW, FitnesseTokenType.ROW_END | FitnesseTokenType.TABLE_END) =>
-        // last column
-        val subBlock: TableSubBlock = child1.asInstanceOf[TableSubBlock]
-        subBlock.coordinates match {
-          case row :: Nil =>
-            createSpacing(subBlock.rightPadding(row))
-          case _ => createSpacing(1)
-        }
-      case (FitnesseElementType.TABLE_TYPE | FitnesseElementType.FIXTURE_CLASS, FitnesseTokenType.CELL_END) =>
-        // Fixture class line (with arguments)
-        val subBlock: TableSubBlock = child1.asInstanceOf[TableSubBlock]
-        subBlock.coordinates match {
-          case col :: row :: Nil =>
-            createSpacing(subBlock.rightPadding(row, col))
-          case _ => createSpacing(1)
-        }
-      case (FitnesseElementType.CELL | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT | FitnesseTokenType.CELL_END,
-            FitnesseTokenType.CELL_END) =>
-        // Second and subsequent lines
-        val subBlock: TableSubBlock = child1.asInstanceOf[TableSubBlock]
-        subBlock.coordinates match {
-          case col :: row :: Nil =>
-            createSpacing(subBlock.rightPadding(row, col))
-          case _ => createSpacing(1)
-        }
-
+    (child1, child2) match {
+      case (BarBlock(bar), CellBlock(cell, row, col)) =>
+        createSpacing(1)
+      case (CellBlock(cell, row, col), BarBlock(bar)) =>
+        createSpacing(tableFormatter.rightPadding(row, col))
       case _ => null
     }
   }
@@ -97,18 +84,15 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
 }
 
+
 /**
- * TableSubBlock is slightly different in that it refers up to the table for padding and all.
- *
- * @param node
- * @param table
- * @param coordinates
+ * TableFormatterBlock is slightly different in that it refers up to the table for padding and all.
  */
-class TableSubBlock(node: ASTNode, table: TableBlock, val coordinates: List[Int]) extends TableBlock(node) {
+trait TableFormatterBlock {
 
-  override def createTableBlock(node: ASTNode): TableBlock = new TableSubBlock(node, table, nextRowOrCellId() :: coordinates)
+  val tableFormatter: TableFormatter
 
-  override def rightPadding(row: Int): Int = table.rightPadding(row)
+  val coordinates: Tuple2[Int, Int]
 
-  override def rightPadding(row: Int, col: Int): Int = table.rightPadding(row, col)
+  def rightPadding: Int = tableFormatter.rightPadding(coordinates._1, coordinates._2)
 }

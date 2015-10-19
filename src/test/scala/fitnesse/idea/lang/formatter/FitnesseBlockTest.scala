@@ -31,15 +31,30 @@ class FitnesseBlockTest extends ParserSuite {
     assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE, TableBlock:Fitnesse:SCRIPT_TABLE]")
   }
 
-  test("should create blocks in tables") {
+  test("should create blocks for decision table") {
     val parseTree = parseFile("|Should I buy it|\n|have money|buy it?|\n|no| yes |\n")
 
     val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
 
     assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE]")
-    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString == "[LeafBlock:FitnesseTokenType.TABLE_START, TableSubBlock:Fitnesse:ROW, LeafBlock:FitnesseTokenType.ROW_END, TableSubBlock:Fitnesse:ROW, LeafBlock:FitnesseTokenType.ROW_END, TableSubBlock:Fitnesse:ROW, LeafBlock:FitnesseTokenType.TABLE_END]")
-    // |no| yes |
-    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.get(5).getSubBlocks.toString == "[TableSubBlock:Fitnesse:CELL, LeafBlock:FitnesseTokenType.CELL_END, TableSubBlock:Fitnesse:CELL]")
+    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString ==
+      "[BarBlock:FitnesseTokenType.TABLE_START, CellBlock:FIXTURE_CLASS(0,0), BarBlock:FitnesseTokenType.ROW_END," +
+      " CellBlock:DECISION_INPUT(1,0), BarBlock:FitnesseTokenType.CELL_END, CellBlock:DECISION_OUTPUT(1,1), BarBlock:FitnesseTokenType.ROW_END," +
+      " CellBlock:Fitnesse:CELL(2,0), BarBlock:FitnesseTokenType.CELL_END, CellBlock:Fitnesse:CELL(2,1), BarBlock:FitnesseTokenType.TABLE_END]")
+  }
+
+  test("should create blocks for scenario table") {
+    val parseTree = parseFile("|scenario | Should | something | happen|\n|do good |\n")
+
+    val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
+
+    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:SCENARIO_TABLE]")
+    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString ==
+      "[BarBlock:FitnesseTokenType.TABLE_START, CellBlock:Fitnesse:TABLE_TYPE(0,0), BarBlock:FitnesseTokenType.CELL_END," +
+        " CellBlock:Fitnesse:CELL(0,1), BarBlock:FitnesseTokenType.CELL_END," +
+        " CellBlock:Fitnesse:CELL(0,2), BarBlock:FitnesseTokenType.CELL_END," +
+        " CellBlock:Fitnesse:CELL(0,3), BarBlock:FitnesseTokenType.ROW_END," +
+      " CellBlock:Fitnesse:CELL(1,0), BarBlock:FitnesseTokenType.TABLE_END]")
   }
 
   test("should create blocks for table found in a collapsible section") {
@@ -56,6 +71,7 @@ class FitnesseBlockTest extends ParserSuite {
 
     val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
     val table = rootBlock.getSubBlocks.get(0).asInstanceOf[TableBlock]
+    println(table.cellBlocks)
     val formatter = table.tableFormatter
 
     assert(formatter.rightPadding(0, 0) == 6)
@@ -64,4 +80,20 @@ class FitnesseBlockTest extends ParserSuite {
     assert(formatter.rightPadding(2, 0) == 9)
     assert(formatter.rightPadding(2, 1) == 5)
   }
+
+  test("create width for escaped tables") {
+    val parseTree = parseFile("!|Should I buy it|\n|have money|buy it?|\n|no| yes |\n")
+
+    val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
+    val table = rootBlock.getSubBlocks.get(0).asInstanceOf[TableBlock]
+    println(table.cellBlocks)
+    val formatter = table.tableFormatter
+
+    assert(formatter.rightPadding(0, 0) == 6)
+    assert(formatter.rightPadding(1, 0) == 1)
+    assert(formatter.rightPadding(1, 1) == 1)
+    assert(formatter.rightPadding(2, 0) == 9)
+    assert(formatter.rightPadding(2, 1) == 5)
+  }
+
 }

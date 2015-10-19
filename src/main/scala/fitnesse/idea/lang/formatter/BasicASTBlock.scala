@@ -1,12 +1,14 @@
 package fitnesse.idea.lang.formatter
 
+import java.util
+
 import com.intellij.formatting._
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiWhiteSpace
-import fitnesse.idea.lang.lexer.FitnesseTokenType
 
 import scala.annotation.tailrec
+import scala.collection.JavaConverters._
 
 abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
 
@@ -18,6 +20,10 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
    * @return the text range.
    */
   override def getTextRange: TextRange = node.getTextRange
+
+  def subBlocks: List[ASTBlock] = List.empty[ASTBlock]
+
+  final override def getSubBlocks: util.List[Block] = subBlocks.asJava.asInstanceOf[util.List[Block]]
 
   /**
    * Checks if the current block is incomplete (contains elements that the user will
@@ -85,18 +91,21 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
    */
   override def getSpacing(child1: Block, child2: Block): Spacing = null
 
-  def findSubBlocks(subBlockMatcher: (ASTNode) => ASTBlock): List[Block] = {
+  def findSubBlocks(n: ASTNode, subBlockMatcher: (ASTNode) => List[ASTBlock]): List[ASTBlock] = {
     @tailrec
-    def collectBlocks(n: ASTNode, blocks: List[Block], toBlock: ((ASTNode) => ASTBlock)): List[Block] = {
+    def collectBlocks(n: ASTNode, blocks: List[ASTBlock], toBlock: ((ASTNode) => List[ASTBlock])): List[ASTBlock] = {
       n match {
         case null => blocks
         case _: PsiWhiteSpace => collectBlocks(n.getTreeNext, blocks, toBlock)
         case _ if n.getTextLength == 0 => collectBlocks(n.getTreeNext, blocks, toBlock)
-        case _ => collectBlocks(n.getTreeNext, blocks ::: List(toBlock(n)), toBlock)
+        case _ => collectBlocks(n.getTreeNext, blocks ::: toBlock(n), toBlock)
       }
-
     }
-    collectBlocks(node.getFirstChildNode, List(), subBlockMatcher)
+    collectBlocks(n.getFirstChildNode, List(), subBlockMatcher)
+  }
+
+  def findSubBlocks(subBlockMatcher: (ASTNode) => List[ASTBlock]): List[ASTBlock] = {
+    findSubBlocks(node, subBlockMatcher)
   }
 
   override def toString: String = s"${getClass.getSimpleName}:${node.getElementType}"
