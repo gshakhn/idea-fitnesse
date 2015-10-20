@@ -91,10 +91,12 @@ class FitnesseParser extends PsiParser {
             parseCells(builder, TableElementType.SCENARIO_TABLE)
             scenarioName.done(FitnesseElementType.SCENARIO_NAME)
           case _ =>
+            if (builder.getTokenType == FitnesseTokenType.CELL_START) builder.advanceLexer()
+            skipWhitespace(builder)
             if (!isCellEnd(builder)) {
-              val fixtureClassOrScenarioName = builder.mark()
+              val fixtureClass = builder.mark()
               while (!isCellEnd(builder)) builder.advanceLexer() // Past FIXTURE_CLASS
-              fixtureClassOrScenarioName.done(FitnesseElementType.FIXTURE_CLASS)
+              fixtureClass.done(FitnesseElementType.FIXTURE_CLASS)
             }
             parseCells(builder, TableElementType.UNKNOWN_TABLE)
         }

@@ -89,7 +89,7 @@ class FitnesseBlockTest extends ParserSuite {
     println(table.cellBlocks)
     val formatter = table.tableFormatter
 
-    assert(formatter.rightPadding(0, 0) == 6)
+    assert(formatter.rightPadding(0, 0) == 5)
     assert(formatter.rightPadding(1, 0) == 1)
     assert(formatter.rightPadding(1, 1) == 1)
     assert(formatter.rightPadding(2, 0) == 9)

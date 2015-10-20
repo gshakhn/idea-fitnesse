@@ -21,6 +21,8 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
   lazy val width: Integer = node.getText.trim.length
 
+  // TODO: deal with empty cells
+  // TODO: deal with table prefix (!|, -!|)
   override lazy val subBlocks: List[ASTBlock] = {
     val nextRowId = createCounter
     findSubBlocks(n => n.getElementType match {
@@ -58,10 +60,25 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
       (x :: ys) :: groupPrefix(zs)(p)
   }
 
-  lazy val cellBlocks: List[List[CellBlock]] = groupPrefix(subBlocks)(_.getNode.getElementType == FitnesseTokenType.ROW_END)
-    .map(row => row.filter(b => b.isInstanceOf[CellBlock]).asInstanceOf[List[CellBlock]])
+  def calculateWidths(blocks: List[ASTBlock]): List[Int] = blocks match {
+    case (barBlock @ BarBlock(bar)) :: (cellBlock: CellBlock) :: rest if bar.getElementType == FitnesseTokenType.TABLE_START =>
+      (barBlock.width - 1 + cellBlock.width) :: calculateWidths(rest)
+    case (cellBlock : CellBlock) :: rest =>
+      cellBlock.width :: calculateWidths(rest)
+    case BarBlock(bar1) :: BarBlock(bar2) :: rest =>
+      // do something with empty cells:
+      0 :: calculateWidths(rest)
+    case _ :: rest => calculateWidths(rest)
+    case Nil => Nil
+  }
 
-  lazy val tableFormatter: TableFormatter = new TableFormatter(cellBlocks.map(row => row.map(cell => cell.width).asJava).asJava)
+  lazy val cellBlocks: List[List[Int]] = splitBlocksByRow.map(row => calculateWidths(row))
+
+  def splitBlocksByRow: List[List[ASTBlock]] = {
+    groupPrefix(subBlocks)(_.getNode.getElementType == FitnesseTokenType.ROW_END)
+  }
+
+  lazy val tableFormatter: TableFormatter = new TableFormatter(cellBlocks.map(row => row.map(Integer.valueOf).asJava).asJava)
 
   def rightPadding(row: Int): Int = tableFormatter.rightPadding(row)
 
@@ -75,6 +92,9 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
         createSpacing(1)
       case (CellBlock(cell, row, col), BarBlock(bar)) =>
         createSpacing(tableFormatter.rightPadding(row, col))
+      case (BarBlock(bar1), BarBlock(bar2)) =>
+        // create some spacing here...
+        null
       case _ => null
     }
   }

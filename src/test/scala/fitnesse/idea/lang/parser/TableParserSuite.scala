@@ -545,8 +545,8 @@ class TableParserSuite extends ParserSuite {
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
             Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
             Node(FitnesseElementType.FIXTURE_CLASS, List(
-              Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
               Leaf(FitnesseTokenType.WORD, "stuff")
             )),
             Leaf(FitnesseTokenType.WHITE_SPACE, "  ")
