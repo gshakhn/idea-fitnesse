@@ -91,20 +91,20 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
    */
   override def getSpacing(child1: Block, child2: Block): Spacing = null
 
-  def findSubBlocks(n: ASTNode, subBlockMatcher: (ASTNode) => List[ASTBlock]): List[ASTBlock] = {
+  def findSubBlocks(n: ASTNode, subBlockMatcher: (ASTNode, Option[ASTBlock]) => List[ASTBlock]): List[ASTBlock] = {
     @tailrec
-    def collectBlocks(n: ASTNode, blocks: List[ASTBlock], toBlock: ((ASTNode) => List[ASTBlock])): List[ASTBlock] = {
+    def collectBlocks(n: ASTNode, blocks: List[ASTBlock], toBlock: ((ASTNode, Option[ASTBlock]) => List[ASTBlock])): List[ASTBlock] = {
       n match {
         case null => blocks
         case _: PsiWhiteSpace => collectBlocks(n.getTreeNext, blocks, toBlock)
         case _ if n.getTextLength == 0 => collectBlocks(n.getTreeNext, blocks, toBlock)
-        case _ => collectBlocks(n.getTreeNext, blocks ::: toBlock(n), toBlock)
+        case _ => collectBlocks(n.getTreeNext, blocks ::: toBlock(n, blocks.lastOption), toBlock)
       }
     }
     collectBlocks(n.getFirstChildNode, List(), subBlockMatcher)
   }
 
-  def findSubBlocks(subBlockMatcher: (ASTNode) => List[ASTBlock]): List[ASTBlock] = {
+  def findSubBlocks(subBlockMatcher: (ASTNode, Option[ASTBlock]) => List[ASTBlock]): List[ASTBlock] = {
     findSubBlocks(node, subBlockMatcher)
   }
 

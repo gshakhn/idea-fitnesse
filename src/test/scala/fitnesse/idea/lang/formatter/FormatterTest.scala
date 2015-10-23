@@ -47,12 +47,12 @@ class FormatterTest extends LightCodeInsightFixtureTestCase with FunSuiteLike wi
       "|script:echo fixture|\n" +
       "|check|echo|Hello|Hello|\n",
 
-      "| script:echo fixture         |\n" +
+      "| script :echo fixture         |\n" +
       "| check  | echo | Hello | Hello |\n"
     )
   }
 
-  ignore("escaped script table") {
+  test("escaped script table") {
     assertFormat(
       "!|script|echo fixture|\n" +
       "|check|echo|Hello|Hello|\n",
@@ -62,27 +62,27 @@ class FormatterTest extends LightCodeInsightFixtureTestCase with FunSuiteLike wi
     )
   }
 
-  ignore("empty table cells") {
+  test("empty table cells") {
     assertFormat(
       "!|script|echo fixture|\n" +
         "|check||Hello||\n",
 
-      "!| script | echo fixture         |\n" +
-      "| check   | | Hello |            |\n"
+      "!| script | echo fixture |\n" +
+      "| check   |  | Hello |   |\n"
     )
   }
 
-  ignore("scenario table") {
+  test("scenario table") {
     assertFormat(
       "|scenario|Mydivision|numerator||denominator||quotient?|\n"+
       "|setNumerator|@numerator|\n"+
       "|setDenominator|@denominator|\n"+
       "|$quotient=|quotient|",
 
-      "| scenario       | Mydivision | numerator |  | denominator|  | quotient? |\n" +
-      "| setNumerator   | @numerator   |\n" +
-      "| setDenominator | @denominator |\n" +
-      "| $quotient=     | quotient     |"
+      "| scenario       | Mydivision | numerator |  | denominator |  | quotient? |\n" +
+      "| setNumerator   | @numerator                                             |\n" +
+      "| setDenominator | @denominator                                           |\n" +
+      "| $quotient=     | quotient                                               |"
     )
   }
 

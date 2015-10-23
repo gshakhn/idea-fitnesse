@@ -13,6 +13,10 @@ case class CellBlock(node: ASTNode, row: Int, col: Int) extends LeafBlock(node) 
   override def toString: String = s"${getClass.getSimpleName}:${node.getElementType}(${row},${col})"
 }
 
+case class EmptyCellBarBlock(node: ASTNode, row: Int, col: Int) extends LeafBlock(node) {
+  override def toString: String = s"${getClass.getSimpleName}:${node.getElementType}(${row},${col})"
+}
+
 case class BarBlock(node: ASTNode) extends LeafBlock(node)
 
 class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
@@ -21,31 +25,44 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
   lazy val width: Integer = node.getText.trim.length
 
-  // TODO: deal with empty cells
-  // TODO: deal with table prefix (!|, -!|)
   override lazy val subBlocks: List[ASTBlock] = {
     val nextRowId = createCounter
-    findSubBlocks(n => n.getElementType match {
-      case FitnesseTokenType.TABLE_START | FitnesseTokenType.TABLE_END | FitnesseTokenType.ROW_END =>
-        List(BarBlock(n))
+    var rowId = 0
+    var nextCellId: () => Int = createCounter
+    findSubBlocks((node, previous) => node.getElementType match {
+      case FitnesseTokenType.TABLE_START =>
+        List(BarBlock(node))
+      case FitnesseTokenType.TABLE_END | FitnesseTokenType.ROW_END =>
+        List(previous match {
+          case Some(_: BarBlock) => EmptyCellBarBlock(node, rowId, nextCellId())
+          case Some(_: EmptyCellBarBlock) => EmptyCellBarBlock(node, rowId, nextCellId())
+          case _ => BarBlock(node)
+        })
       case FitnesseElementType.ROW | FitnesseElementType.SCRIPT_ROW =>
-        val rowId = nextRowId()
-        findInRow(n, rowId, createCounter)
+        // Update counters:
+        rowId = nextRowId()
+        nextCellId = createCounter
+        findInRow(node, rowId, nextCellId)
       case _ =>
-        List(new LeafBlock(n))
+        List(new LeafBlock(node))
     })
   }
 
-  def findInRow(n: ASTNode, rowId: Int, nextCellId: () => Int): List[ASTBlock] = {
-    findSubBlocks(n, n => n.getElementType match {
-      case FitnesseTokenType.CELL_END =>
-        List(BarBlock(n))
+  def findInRow(rowNode: ASTNode, rowId: Int, nextCellId: () => Int): List[ASTBlock] = {
+    findSubBlocks(rowNode, (node, previous) => node.getElementType match {
+      case FitnesseTokenType.CELL_END | FitnesseTokenType.ROW_END =>
+        List(previous match {
+          case Some(_: BarBlock) => EmptyCellBarBlock(node, rowId, nextCellId())
+          case Some(_: EmptyCellBarBlock) => EmptyCellBarBlock(node, rowId, nextCellId())
+          case None => /* first in line */ EmptyCellBarBlock(node, rowId, nextCellId())
+          case _ => BarBlock(node)
+        })
       case FitnesseElementType.CELL | FitnesseElementType.FIXTURE_CLASS | FitnesseElementType.TABLE_TYPE | FitnesseElementType.DECISION_INPUT | FitnesseElementType.DECISION_OUTPUT | FitnesseElementType.QUERY_OUTPUT | FitnesseElementType.IMPORT =>
-        List(CellBlock(n, rowId, nextCellId()))
+        List(CellBlock(node, rowId, nextCellId()))
       case FitnesseElementType.SCENARIO_NAME =>
-        findInRow(n, rowId, nextCellId)
+        findInRow(node, rowId, nextCellId)
       case _ =>
-        List(new LeafBlock(n))
+        List(new LeafBlock(node))
     })
   }
 
@@ -62,12 +79,11 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
   def calculateWidths(blocks: List[ASTBlock]): List[Int] = blocks match {
     case (barBlock @ BarBlock(bar)) :: (cellBlock: CellBlock) :: rest if bar.getElementType == FitnesseTokenType.TABLE_START =>
-      (barBlock.width - 1 + cellBlock.width) :: calculateWidths(rest)
-    case (cellBlock : CellBlock) :: rest =>
+      (barBlock.width - TableFormatter.MIN_PADDING + cellBlock.width) :: calculateWidths(rest)
+    case (cellBlock: CellBlock) :: rest =>
       cellBlock.width :: calculateWidths(rest)
-    case BarBlock(bar1) :: BarBlock(bar2) :: rest =>
-      // do something with empty cells:
-      0 :: calculateWidths(rest)
+    case (cellBlock: EmptyCellBarBlock) :: rest =>
+      0 :: calculateWidths(rest) // compensate for leading space and " |" at end of block
     case _ :: rest => calculateWidths(rest)
     case Nil => Nil
   }
@@ -87,14 +103,16 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
   override def isLeaf: Boolean = subBlocks.isEmpty
 
   override def getSpacing(child1: Block, child2: Block): Spacing = {
+    println(s"Calc spacing for ${child1} ${child2}")
     (child1, child2) match {
-      case (BarBlock(bar), CellBlock(cell, row, col)) =>
-        createSpacing(1)
-      case (CellBlock(cell, row, col), BarBlock(bar)) =>
+      case (_: BarBlock, _: CellBlock) =>
+        createSpacing(TableFormatter.MIN_PADDING)
+      case (_: EmptyCellBarBlock, _: CellBlock) =>
+        createSpacing(TableFormatter.MIN_PADDING)
+      case (CellBlock(cell, row, col), _) =>
         createSpacing(tableFormatter.rightPadding(row, col))
-      case (BarBlock(bar1), BarBlock(bar2)) =>
-        // create some spacing here...
-        null
+      case (_, EmptyCellBarBlock(bar, row, col)) =>
+        createSpacing(tableFormatter.rightPadding(row, col) + 1)
       case _ => null
     }
   }

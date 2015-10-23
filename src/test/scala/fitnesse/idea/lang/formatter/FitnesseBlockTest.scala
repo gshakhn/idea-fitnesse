@@ -66,6 +66,32 @@ class FitnesseBlockTest extends ParserSuite {
     assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString == "[LeafBlock:FitnesseTokenType.COLLAPSIBLE_START, LeafBlock:FitnesseTokenType.WORD, TableBlock:Fitnesse:DECISION_TABLE, LeafBlock:FitnesseTokenType.COLLAPSIBLE_END]")
   }
 
+  test("should create blocks for decision table with empty cells") {
+    val parseTree = parseFile("|Should I buy it|\n|have money|buy it?|\n| | yes |\n|no|  |\n")
+
+    val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
+
+    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE]")
+    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString ==
+      "[BarBlock:FitnesseTokenType.TABLE_START, CellBlock:FIXTURE_CLASS(0,0), BarBlock:FitnesseTokenType.ROW_END," +
+        " CellBlock:DECISION_INPUT(1,0), BarBlock:FitnesseTokenType.CELL_END, CellBlock:DECISION_OUTPUT(1,1), BarBlock:FitnesseTokenType.ROW_END," +
+        " EmptyCellBarBlock:FitnesseTokenType.CELL_END(2,0), CellBlock:Fitnesse:CELL(2,1), BarBlock:FitnesseTokenType.ROW_END," +
+        " CellBlock:Fitnesse:CELL(3,0), BarBlock:FitnesseTokenType.CELL_END, EmptyCellBarBlock:FitnesseTokenType.TABLE_END(3,1)]")
+  }
+
+  test("should create blocks for decision table with all empty cells") {
+    val parseTree = parseFile("|Should I buy it|\n|have money|buy it?|\n| |  |\n| |  |\n")
+
+    val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
+
+    assert(rootBlock.getSubBlocks.toString == "[TableBlock:Fitnesse:DECISION_TABLE]")
+    assert(rootBlock.getSubBlocks.get(0).getSubBlocks.toString ==
+      "[BarBlock:FitnesseTokenType.TABLE_START, CellBlock:FIXTURE_CLASS(0,0), BarBlock:FitnesseTokenType.ROW_END," +
+        " CellBlock:DECISION_INPUT(1,0), BarBlock:FitnesseTokenType.CELL_END, CellBlock:DECISION_OUTPUT(1,1), BarBlock:FitnesseTokenType.ROW_END," +
+        " EmptyCellBarBlock:FitnesseTokenType.CELL_END(2,0), EmptyCellBarBlock:FitnesseTokenType.ROW_END(2,1)," +
+        " EmptyCellBarBlock:FitnesseTokenType.CELL_END(3,0), EmptyCellBarBlock:FitnesseTokenType.TABLE_END(3,1)]")
+  }
+
   test("create width for tables") {
     val parseTree = parseFile("|Should I buy it|\n|have money|buy it?|\n|no| yes |\n")
 
@@ -93,6 +119,21 @@ class FitnesseBlockTest extends ParserSuite {
     assert(formatter.rightPadding(1, 0) == 1)
     assert(formatter.rightPadding(1, 1) == 1)
     assert(formatter.rightPadding(2, 0) == 9)
+    assert(formatter.rightPadding(2, 1) == 5)
+  }
+
+  test("create width for table with empty cell") {
+    val parseTree = parseFile("|Should I buy it|\n|have money|buy it?|\n| | yes |\n")
+
+    val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
+    val table = rootBlock.getSubBlocks.get(0).asInstanceOf[TableBlock]
+    println(table.cellBlocks)
+    val formatter = table.tableFormatter
+
+    assert(formatter.rightPadding(0, 0) == 6)
+    assert(formatter.rightPadding(1, 0) == 1)
+    assert(formatter.rightPadding(1, 1) == 1)
+    assert(formatter.rightPadding(2, 0) == 11)
     assert(formatter.rightPadding(2, 1) == 5)
   }
 
