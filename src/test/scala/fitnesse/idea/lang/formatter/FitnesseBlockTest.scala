@@ -92,6 +92,12 @@ class FitnesseBlockTest extends ParserSuite {
         " EmptyCellBarBlock:FitnesseTokenType.CELL_END(3,0), EmptyCellBarBlock:FitnesseTokenType.TABLE_END(3,1)]")
   }
 
+  test("groupPrefix") {
+    assertResult(List(List(1,2,3), List(4,5))) {
+      TableBlock.groupPrefix(List(1, 2, 3, 4, 5))(_ == 3)
+    }
+  }
+
   test("create width for tables") {
     val parseTree = parseFile("|Should I buy it|\n|have money|buy it?|\n|no| yes |\n")
 

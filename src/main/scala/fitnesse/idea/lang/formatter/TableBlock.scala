@@ -66,17 +66,6 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
     })
   }
 
-  /** Returns shortest possible list of lists xss such that
-    *   - xss.flatten == xs
-    *   - No sublist in xss contains an element matching p in its tail
-    */
-  def groupPrefix[T](xs: List[T])(p: T => Boolean): List[List[T]] = xs match {
-    case List() => List()
-    case x :: xs1 =>
-      val (ys, zs) = xs1 span (!p(_))
-      (x :: ys) :: groupPrefix(zs)(p)
-  }
-
   def calculateWidths(blocks: List[ASTBlock]): List[Int] = blocks match {
     case (barBlock @ BarBlock(bar)) :: (cellBlock: CellBlock) :: rest if bar.getElementType == FitnesseTokenType.TABLE_START =>
       (barBlock.width - TableFormatter.MIN_PADDING + cellBlock.width) :: calculateWidths(rest)
@@ -91,7 +80,7 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
   lazy val cellBlocks: List[List[Int]] = splitBlocksByRow.map(row => calculateWidths(row))
 
   def splitBlocksByRow: List[List[ASTBlock]] = {
-    groupPrefix(subBlocks)(_.getNode.getElementType == FitnesseTokenType.ROW_END)
+    TableBlock.groupPrefix(subBlocks)(_.getNode.getElementType == FitnesseTokenType.ROW_END)
   }
 
   lazy val tableFormatter: TableFormatter = new TableFormatter(cellBlocks.map(row => row.map(Integer.valueOf).asJava).asJava)
@@ -112,6 +101,7 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
       case (CellBlock(cell, row, col), _) =>
         createSpacing(tableFormatter.rightPadding(row, col))
       case (_, EmptyCellBarBlock(bar, row, col)) =>
+        println(s"empty cell block ${row},${col}, ${bar.getElementType}")
         createSpacing(tableFormatter.rightPadding(row, col) + 1)
       case _ => null
     }
@@ -122,15 +112,19 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
 }
 
+object TableBlock {
 
-/**
- * TableFormatterBlock is slightly different in that it refers up to the table for padding and all.
- */
-trait TableFormatterBlock {
+  /** Returns shortest possible list of lists xss such that
+    *   - xss.flatten == xs
+    *   - No sublist in xss contains an element matching p in its tail
+    */
+  def groupPrefix[T](xs: List[T])(p: T => Boolean): List[List[T]] = xs match {
+    case Nil => Nil
+    case xs =>
+      xs span (!p(_)) match {
+        case (ys, z :: zs) => (ys ::: List(z)) :: groupPrefix(zs)(p)
+        case (ys, Nil) => List(ys)
+      }
 
-  val tableFormatter: TableFormatter
-
-  val coordinates: Tuple2[Int, Int]
-
-  def rightPadding: Int = tableFormatter.rightPadding(coordinates._1, coordinates._2)
+  }
 }
