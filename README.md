@@ -17,8 +17,9 @@ The plugin fully functional and supports the following features:
  * Execution of test suites, with readable console output
  * Folding of collapsible sections
  * Create wiki page action
+ * Page (table) formatting
 
-This plugin is available via the [IntelliJ plugin repository].
+This plugin is available from the [IntelliJ plugin repository].
 
 Building the plugin
 ===================
