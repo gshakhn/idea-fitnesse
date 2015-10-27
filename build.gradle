@@ -17,7 +17,7 @@ plugins {
 }
 apply plugin: 'scoverage'
 
-version = "1.1.1"
+version = "1.2.0"
 
 description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
 
@@ -32,7 +32,7 @@ repositories {
 }
 
 ext {
-    FITNESSE_VERSION = '20151014-SNAPSHOT'
+    FITNESSE_VERSION = '20151027-SNAPSHOT'
     SCALA_VERSION = '2.11.7'
 }
 
