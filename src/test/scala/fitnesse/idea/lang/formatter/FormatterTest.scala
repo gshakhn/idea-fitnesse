@@ -86,5 +86,16 @@ class FormatterTest extends LightCodeInsightFixtureTestCase with FunSuiteLike wi
     )
   }
 
+  test("empty last row") {
+    assertFormat(
+      "|Response Examiner|\n" +
+      "|wrapped html?|\n" +
+      "||",
+
+      "| Response Examiner |\n" +
+      "| wrapped html?     |\n" +
+      "|                   |"
+    )
+  }
 
 }

@@ -6,6 +6,8 @@ import com.intellij.formatting._
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiWhiteSpace
+import fitnesse.idea.lang.lexer.FitnesseTokenType
+import fitnesse.idea.lang.parser.FitnesseElementType
 
 import scala.annotation.tailrec
 import scala.collection.JavaConverters._
@@ -97,6 +99,8 @@ abstract class BasicASTBlock(node: ASTNode) extends ASTBlock {
       n match {
         case null => blocks
         case _: PsiWhiteSpace => collectBlocks(n.getTreeNext, blocks, toBlock)
+        case row if row.getElementType == FitnesseElementType.ROW || row.getElementType == FitnesseElementType.SCRIPT_ROW =>
+          collectBlocks(n.getTreeNext, blocks ::: toBlock(n, blocks.lastOption), toBlock)
         case _ if n.getTextLength == 0 => collectBlocks(n.getTreeNext, blocks, toBlock)
         case _ => collectBlocks(n.getTreeNext, blocks ::: toBlock(n, blocks.lastOption), toBlock)
       }

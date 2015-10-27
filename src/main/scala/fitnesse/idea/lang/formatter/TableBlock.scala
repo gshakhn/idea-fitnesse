@@ -100,7 +100,7 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
       case (CellBlock(cell, row, col), _) =>
         createSpacing(tableFormatter.rightPadding(row, col))
       case (_, EmptyCellBarBlock(bar, row, col)) =>
-        createSpacing(tableFormatter.rightPadding(row, col) + 1)
+        createSpacing(tableFormatter.rightPadding(row, col) + TableFormatter.MIN_PADDING)
       case _ => null
     }
   }

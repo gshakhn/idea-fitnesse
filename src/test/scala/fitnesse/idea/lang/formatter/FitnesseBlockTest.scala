@@ -143,4 +143,18 @@ class FitnesseBlockTest extends ParserSuite {
     assert(formatter.rightPadding(2, 1) == 5)
   }
 
+  test("create width for table with empty row") {
+    val parseTree = parseFile("|Response Examiner|\n|wrapped html?|\n||")
+
+    val rootBlock: FitnesseBlock = new FitnesseBlock(parseTree)
+    val table = rootBlock.getSubBlocks.get(0).asInstanceOf[TableBlock]
+    println(table.cellBlocks)
+    val formatter = table.tableFormatter
+
+    assert(formatter.rightPadding(0, 0) == 1)
+    assert(formatter.rightPadding(1, 0) == 5)
+    assert(formatter.rightPadding(2, 0) == 18)
+  }
+
+
 }
