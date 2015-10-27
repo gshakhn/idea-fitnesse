@@ -3,6 +3,52 @@
   <description><![CDATA[@description@]]></description>
   <version>@version@</version>
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
+  <change-notes>
+    <![CDATA[<pre>
+1.2.0
+
+ * Reformat Code works for wiki pages (Ctrl-Alt-L/Cmd-Option-L)
+ * Better formatting for tables during test execution
+ * Library classes are referenced like fixture classes
+
+1.1.1
+
+ * Fix issue in QuickFix for class and method creation
+
+1.1.0
+
+ * Quick fixes (Alt-Enter) for fixture and fixture method creation
+
+1.0.4
+
+ * Fixes in parser (IDEA 15 compatible)
+ * Editor tabs show page name
+
+1.0.3
+
+ * Auto completion for fixture classes and scenario's
+ * Comment lines in script and scenario tables
+
+1.0.2
+
+ * Our build script needed some tweaks in order to render the run configuration dialog well
+
+1.0.1
+
+ * Fix issue where test execution could fail due to a NPE in the FitNesse plugin
+
+1.0
+
+ * Syntax highlighting
+ * Links to sibling wiki pages
+ * Supports Slim Decision, Query, Script, Scenario and Table tables
+ * Syntax checking: warning for missing references
+ * Execution of test suites, with readable console output
+ * Folding of collapsible sections
+ * Create wiki page action
+
+</pre>]]>
+  </change-notes>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
   <idea-version since-build="131"/>
