@@ -92,7 +92,6 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
   override def isLeaf: Boolean = subBlocks.isEmpty
 
   override def getSpacing(child1: Block, child2: Block): Spacing = {
-    println(s"Calc spacing for ${child1} ${child2}")
     (child1, child2) match {
       case (_: BarBlock, _: CellBlock) =>
         createSpacing(TableFormatter.MIN_PADDING)
@@ -101,7 +100,6 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
       case (CellBlock(cell, row, col), _) =>
         createSpacing(tableFormatter.rightPadding(row, col))
       case (_, EmptyCellBarBlock(bar, row, col)) =>
-        println(s"empty cell block ${row},${col}, ${bar.getElementType}")
         createSpacing(tableFormatter.rightPadding(row, col) + 1)
       case _ => null
     }
