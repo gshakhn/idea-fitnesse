@@ -17,6 +17,7 @@ class MissingReferencesAnnotator extends Annotator {
               .registerFix(new CreateClassQuickFix(fixtureClass))
           case results if results.length > 1 =>
             holder.createWarningAnnotation(element.getTextRange, FitnesseBundle.message("multiple.candidates.found"))
+          case _ =>
         }
       case fixtureMethod: FixtureMethod =>
         fixtureMethod.getReference.multiResolve(false) match {
@@ -25,6 +26,7 @@ class MissingReferencesAnnotator extends Annotator {
               .registerFix(new CreateMethodQuickFix(fixtureMethod))
           case results if results.length > 1 =>
             holder.createWarningAnnotation(element.getTextRange, FitnesseBundle.message("multiple.candidates.found"))
+          case _ =>
         }
       case _ =>
     }
