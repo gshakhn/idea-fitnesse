@@ -1,6 +1,7 @@
 package fitnesse.idea.fixtureclass
 
 import com.intellij.openapi.module.{Module, ModuleUtilCore}
+import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.decisiontable.DecisionTable
@@ -65,7 +66,7 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
   protected def getReferencedScenarios: Seq[ResolveResult] = referer.fixtureClassName match {
     case Some(className) if isQualifiedName => Seq()
     case Some(className) =>
-      ScenarioNameIndex.INSTANCE.get(className, project, FixtureClassReference.moduleScope(module)).map(createReference).toSeq
+      ScenarioNameIndex.INSTANCE.get(className, project, FixtureClassReference.projectScope(project)).map(createReference).toSeq
     case None => Seq()
   }
 
@@ -87,5 +88,10 @@ object FixtureClassReference {
   def moduleScope(module: Module): GlobalSearchScope = scopeForTesting match {
     case Some(scope) => scope
     case None => GlobalSearchScope.moduleScope(module)
+  }
+
+  def projectScope(project: Project): GlobalSearchScope = scopeForTesting match {
+    case Some(scope) => scope
+    case None => GlobalSearchScope.projectScope(project)
   }
 }
