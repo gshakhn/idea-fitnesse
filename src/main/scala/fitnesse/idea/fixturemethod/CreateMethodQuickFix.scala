@@ -34,22 +34,22 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
   override def invoke(project: Project, editor: Editor, file: PsiFile) {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
     val element = getRefElement
-    if (element == null) return
-    if (!FileModificationService.getInstance.preparePsiElementForWrite(element)) return
-    getClassForFixtureClass match {
-      case Some(aClass) => createMethod(aClass, element) match {
-        case Some(method) =>
-          ApplicationManager.getApplication.runWriteAction(new Runnable() {
-            override def run() = {
-              aClass.add(method)
-              IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace()
-              val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, method.getTextOffset)
-              FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
-            }
-          })
+    if (element != null && FileModificationService.getInstance.preparePsiElementForWrite(element)) {
+      getClassForFixtureClass match {
+        case Some(aClass) => createMethod(aClass, element) match {
+          case Some(method) =>
+            ApplicationManager.getApplication.runWriteAction(new Runnable() {
+              override def run() = {
+                aClass.add(method)
+                IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace()
+                val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, method.getTextOffset)
+                FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
+              }
+            })
+          case _ =>
+        }
         case _ =>
       }
-      case _ =>
     }
   }
 

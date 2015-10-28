@@ -159,18 +159,18 @@ class FitnesseParser extends PsiParser {
   }
 
   private def parseRow(builder: PsiBuilder, tableType: TableElementType): Unit = {
-    if  (builder.getTokenType == FitnesseTokenType.TABLE_END) return
+    if (builder.getTokenType != FitnesseTokenType.TABLE_END) {
+      val start = builder.mark()
 
-    val start = builder.mark()
+      val cellText = parseCells(builder, tableType)
 
-    val cellText = parseCells(builder, tableType)
-
-    start.done(tableType match {
-      case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE =>
-        // if first cell is "start", remaining cells form a FixtureClass
-        scriptRowType(cellText)
-      case _ => FitnesseElementType.ROW
-    })
+      start.done(tableType match {
+        case TableElementType.SCRIPT_TABLE | TableElementType.SCENARIO_TABLE =>
+          // if first cell is "start", remaining cells form a FixtureClass
+          scriptRowType(cellText)
+        case _ => FitnesseElementType.ROW
+      })
+    }
   }
 
   def parseCells(builder: PsiBuilder, tableType: TableElementType): String = {

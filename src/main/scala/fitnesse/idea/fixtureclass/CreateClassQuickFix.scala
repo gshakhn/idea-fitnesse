@@ -41,23 +41,22 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
   override def invoke(project: Project, editor: Editor, file: PsiFile) {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
     val element = getRefElement
-    if (element == null) return
-    if (!FileModificationService.getInstance.preparePsiElementForWrite(element)) return
-
-    askForTargetPackage(element) match {
-      case Some(directory) =>
-        createClass(directory, element.fixtureClassName.get, element.getManager, element.getContainingFile) match {
-          case Some(aClass) =>
-            ApplicationManager.getApplication.runWriteAction(new Runnable() {
-              override def run() = {
-                IdeDocumentHistory.getInstance(element.getProject).includeCurrentPlaceAsChangePlace()
-                val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, aClass.getTextOffset)
-                FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
-              }
-            })
-          case _ =>
-        }
-      case _ =>
+    if (element != null && FileModificationService.getInstance.preparePsiElementForWrite(element)) {
+      askForTargetPackage(element) match {
+        case Some(directory) =>
+          createClass(directory, element.fixtureClassName.get, element.getManager, element.getContainingFile) match {
+            case Some(aClass) =>
+              ApplicationManager.getApplication.runWriteAction(new Runnable() {
+                override def run() = {
+                  IdeDocumentHistory.getInstance(element.getProject).includeCurrentPlaceAsChangePlace()
+                  val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, aClass.getTextOffset)
+                  FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
+                }
+              })
+            case _ =>
+          }
+        case _ =>
+      }
     }
   }
 

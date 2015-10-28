@@ -85,18 +85,9 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
                 sb.append(translateTable(node.getChildren()));
             } else if (node instanceof Span) {
                 Span span = (Span) node;
-                String result = span.getAttribute("class");
-                if ("pass".equals(result)) {
-                    sb.append("\u001B[42m");
-                } else if ("fail".equals(result)) {
-                    sb.append("\u001B[41m");
-                } else if ("error".equals(result)) {
-                    sb.append("\u001B[43m");
-                } else if ("ignore".equals(result)) {
-                    sb.append("\u001B[46m");
-                }
-                sb.append(span.getChildrenHTML());
-                sb.append("\u001B[0m ");
+                sb.append(colorResult(span.getAttribute("class")))
+                    .append(span.getChildrenHTML())
+                    .append("\u001B[0m ");
             } else if (node instanceof Tag && "BR".equals(((Tag) node).getTagName())) {
                 sb.append(NEWLINE);
             } else if (node.getChildren() != null) {
@@ -106,6 +97,19 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
             }
         }
         return sb.toString();
+    }
+
+    private String colorResult(String result) {
+        if ("pass".equals(result)) {
+            return "\u001B[42m";
+        } else if ("fail".equals(result)) {
+            return "\u001B[41m";
+        } else if ("error".equals(result)) {
+            return "\u001B[43m";
+        } else if ("ignore".equals(result)) {
+            return "\u001B[46m";
+        }
+        return "";
     }
 
     private String translateTable(NodeList nodes) throws IOException {
@@ -152,7 +156,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
                 return new Iterator<Node>() {
                     @Override public boolean hasNext() { return iter.hasMoreNodes(); }
                     @Override public Node next() { return iter.nextNode(); }
-                    @Override public void remove() { }
+                    @Override public void remove() { throw new RuntimeException("NodeList iterator.remove() should not have been called"); }
                 };
             }
         };
@@ -173,6 +177,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     @Override
     public void testAssertionVerified(Assertion assertion, TestResult testResult) {
+        // Nothing to do here
     }
 
     @Override
@@ -195,7 +200,8 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     @Override
     public void unableToStartTestSystem(String s, Throwable throwable) throws IOException {
-
+        log("Unable to start test system %s", s);
+        throwable.printStackTrace(out);
     }
 
     private void log(String s, Object... args) {

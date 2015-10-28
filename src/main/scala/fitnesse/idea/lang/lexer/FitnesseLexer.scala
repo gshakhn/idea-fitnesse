@@ -132,15 +132,11 @@ object FitnesseLexer {
     }
   }
 
-  private def lastChild(symbol: Symbol): Symbol = {
-    if (symbol.getType == Variable.symbolType) {
-      // Shortcut variables, since it wants to replace the content completely
-      symbol
-    } else if (symbol.getChildren.isEmpty) {
-      symbol
-    } else {
-      lastChild(symbol.getChildren.last)
-    }
+  private def lastChild(symbol: Symbol): Symbol = symbol match {
+    // Shortcut variables, since it wants to replace the content completely
+    case s if s.getType == Variable.symbolType => symbol
+    case s if s.getChildren.isEmpty => symbol
+    case s => lastChild(symbol.getChildren.last)
   }
 }
 
