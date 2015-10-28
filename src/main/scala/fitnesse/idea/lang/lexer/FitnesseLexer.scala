@@ -146,7 +146,7 @@ class LexerParsingPage extends ParsingPage(new LexerSourcePage) {
     throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.copyForNamedPage() has not been implemented")
   }
 
-  override def putVariable(name: String, value: String) {
+  override def putVariable(name: String, value: String): Unit = {
     super.putVariable(name, value)
   }
 

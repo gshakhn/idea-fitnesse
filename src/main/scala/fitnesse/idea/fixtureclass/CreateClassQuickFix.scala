@@ -98,7 +98,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
 
   def scheduleFileOrPackageCreationFailedMessageBox(e: IncorrectOperationException, name: String, directory: PsiDirectory, isPackage: Boolean) {
     ApplicationManager.getApplication.invokeLater(new Runnable() {
-      def run() {
+      def run(): Unit = {
         Messages.showErrorDialog(QuickFixBundle.message(if (isPackage) "cannot.create.java.package.error.text" else "cannot.create.java.file.error.text", name, directory.getVirtualFile.getName, e.getLocalizedMessage),
           QuickFixBundle.message(if (isPackage) "cannot.create.java.package.error.title" else "cannot.create.java.file.error.title"))
       }

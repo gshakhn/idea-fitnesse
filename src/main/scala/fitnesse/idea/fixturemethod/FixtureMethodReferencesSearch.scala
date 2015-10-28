@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 
 class FixtureMethodReferencesSearch extends QueryExecutorBase[PsiReference, MethodReferencesSearch.SearchParameters](true) {
 
-  def processQuery(p: MethodReferencesSearch.SearchParameters, consumer: Processor[PsiReference]) {
+  def processQuery(p: MethodReferencesSearch.SearchParameters, consumer: Processor[PsiReference]): Unit = {
     p.getMethod match {
       case method: PsiMethod =>
         p.getEffectiveSearchScope match {

@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 
 class FixtureClassReferencesSearch extends QueryExecutorBase[PsiReference, ReferencesSearch.SearchParameters](true) {
 
-  override def processQuery(p: ReferencesSearch.SearchParameters, consumer: Processor[PsiReference]) {
+  override def processQuery(p: ReferencesSearch.SearchParameters, consumer: Processor[PsiReference]): Unit = {
     p.getElementToSearch match {
       case clazz: PsiClass =>
         p.getEffectiveSearchScope match {

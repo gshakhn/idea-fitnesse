@@ -31,7 +31,7 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
     element != null && element.getManager.isInProject(element) && fixtureClassRef.isDefined
   }
 
-  override def invoke(project: Project, editor: Editor, file: PsiFile) {
+  override def invoke(project: Project, editor: Editor, file: PsiFile): Unit = {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
     val element = getRefElement
     if (element != null && FileModificationService.getInstance.preparePsiElementForWrite(element)) {
@@ -69,7 +69,7 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
     val javaLangString = PsiType.getJavaLangString(aClass.getManager, aClass.getResolveScope)
     val factory = JavaPsiFacade.getInstance(project).getElementFactory
 
-    var method: PsiMethod = factory.createMethod(fixtureMethod.fixtureMethodName, fixtureMethod.returnType)
+    val method: PsiMethod = factory.createMethod(fixtureMethod.fixtureMethodName, fixtureMethod.returnType)
     fixtureMethod.parameters.foreach(parameterName => {
       val param = factory.createParameter(parameterName, javaLangString)
       method.getParameterList.add(param)
@@ -88,7 +88,6 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
     val body: PsiCodeBlock = factory.createCodeBlockFromText(buffer.toString(), null)
     method.getBody.replace(body)
 
-    method = CodeStyleManager.getInstance(project).reformat(method).asInstanceOf[PsiMethod]
-    Option(method)
+    Option(CodeStyleManager.getInstance(project).reformat(method).asInstanceOf[PsiMethod])
   }
 }

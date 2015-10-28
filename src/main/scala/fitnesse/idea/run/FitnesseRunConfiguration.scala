@@ -151,7 +151,7 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
   }
 
   @throws[WriteExternalException]
-  override def writeExternal(element: Element) {
+  override def writeExternal(element: Element): Unit = {
     super.writeExternal(element)
     JDOMExternalizer.write(element, "wikiPageName", wikiPageName)
     JDOMExternalizer.write(element, "fitnesseRoot", fitnesseRoot)

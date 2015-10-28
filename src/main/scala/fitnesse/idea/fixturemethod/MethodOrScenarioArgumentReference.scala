@@ -14,8 +14,8 @@ class MethodOrScenarioArgumentReference(referer: FixtureMethod) extends MethodRe
           case c: PsiClass => c.getAllMethods.map(m => Regracer.regrace(m.getName))
           case s: ScenarioName => s.arguments.toArray
         }
-        case None => Array.emptyObjectArray
+        case _ => Array.emptyObjectArray
       }
-    case None => Array.emptyObjectArray
+    case _ => Array.emptyObjectArray
   }
 }

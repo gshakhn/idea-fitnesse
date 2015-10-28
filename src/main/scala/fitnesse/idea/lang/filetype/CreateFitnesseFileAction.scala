@@ -6,8 +6,7 @@ import com.intellij.psi.{PsiDirectory, PsiFile}
 
 class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNesse File", "Creates a FitNesse test/suite/static page", FitnesseFileType.FILE_ICON) with DumbAware {
 
-  override def buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder)
-  {
+  override def buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder): Unit = {
     builder.setTitle("New FitNesse page")
       .addKind("Test page", FitnesseFileType.FILE_ICON, "TestPage")
       .addKind("Suite page", FitnesseFileType.FILE_ICON, "SuitePage")
