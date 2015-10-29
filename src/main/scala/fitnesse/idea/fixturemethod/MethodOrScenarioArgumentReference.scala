@@ -13,9 +13,12 @@ class MethodOrScenarioArgumentReference(referer: FixtureMethod) extends MethodRe
         case Some(ref) => ref.resolve match {
           case c: PsiClass => c.getAllMethods.map(m => Regracer.regrace(m.getName))
           case s: ScenarioName => s.arguments.toArray
+          case unknown =>
+            println(s"FitNesse fixture class resolved to unknown type ${unknown}")
+            Array.emptyObjectArray
         }
-        case _ => Array.emptyObjectArray
+        case None => Array.emptyObjectArray
       }
-    case _ => Array.emptyObjectArray
+    case None => Array.emptyObjectArray
   }
 }

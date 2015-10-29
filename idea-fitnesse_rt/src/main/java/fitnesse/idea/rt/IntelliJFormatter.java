@@ -155,7 +155,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
                 return new Iterator<Node>() {
                     @Override public boolean hasNext() { return iter.hasMoreNodes(); }
                     @Override public Node next() { return iter.nextNode(); }
-                    @Override public void remove() { throw new RuntimeException("NodeList iterator.remove() should not have been called"); }
+                    @Override public void remove() { throw new IllegalStateException("NodeList iterator.remove() should not have been called"); }
                 };
             }
         };
