@@ -2,7 +2,8 @@ package fitnesse.idea.querytable
 
 import com.intellij.psi._
 import com.intellij.psi.search.GlobalSearchScope
-import fitnesse.idea.lang.psi.{PsiSuite, Table}
+import fitnesse.idea.psi.PsiSuite
+import fitnesse.idea.table.Table
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 

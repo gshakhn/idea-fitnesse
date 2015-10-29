@@ -1,7 +1,7 @@
 package fitnesse.idea.run
 
 import com.intellij.mock.MockVirtualFile
-import fitnesse.idea.lang.parser.ParserSuite
+import fitnesse.idea.parser.ParserSuite
 import org.scalatest.mock.MockitoSugar
 
 class FitNesseTestRunConfigurationProducerTest extends ParserSuite with MockitoSugar {

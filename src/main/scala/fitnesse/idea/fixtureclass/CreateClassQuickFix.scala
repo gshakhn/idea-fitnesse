@@ -15,7 +15,7 @@ import com.intellij.openapi.util.Computable
 import com.intellij.psi._
 import com.intellij.psi.util.PsiUtil
 import com.intellij.util.IncorrectOperationException
-import fitnesse.idea.FitnesseBundle
+import fitnesse.idea.etc.FitnesseBundle
 
 class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction {
   val elementPointer = SmartPointerManager.getInstance(_refElement.getProject).createSmartPsiElementPointer(_refElement)
@@ -38,7 +38,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     element != null && element.getManager.isInProject(element)
   }
 
-  override def invoke(project: Project, editor: Editor, file: PsiFile) {
+  override def invoke(project: Project, editor: Editor, file: PsiFile): Unit = {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
     val element = getRefElement
     if (element != null && FileModificationService.getInstance.preparePsiElementForWrite(element)) {
@@ -96,7 +96,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     })
   }
 
-  def scheduleFileOrPackageCreationFailedMessageBox(e: IncorrectOperationException, name: String, directory: PsiDirectory, isPackage: Boolean) {
+  def scheduleFileOrPackageCreationFailedMessageBox(e: IncorrectOperationException, name: String, directory: PsiDirectory, isPackage: Boolean): Unit = {
     ApplicationManager.getApplication.invokeLater(new Runnable() {
       def run(): Unit = {
         Messages.showErrorDialog(QuickFixBundle.message(if (isPackage) "cannot.create.java.package.error.text" else "cannot.create.java.file.error.text", name, directory.getVirtualFile.getName, e.getLocalizedMessage),

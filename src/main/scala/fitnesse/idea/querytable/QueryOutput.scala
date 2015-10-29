@@ -4,7 +4,7 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiType
 import fitnesse.idea.fixturemethod.{FixtureMethod, MethodReference}
-import fitnesse.idea.lang.psi.Cell
+import fitnesse.idea.table.Cell
 
 class QueryOutput(node: ASTNode) extends ASTWrapperPsiElement(node) with Cell with FixtureMethod {
 

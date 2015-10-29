@@ -64,7 +64,7 @@
   </module-components>
 
   <actions>
-    <action id="NewFitnesseFile" class="fitnesse.idea.lang.filetype.CreateFitnesseFileAction">
+    <action id="NewFitnesseFile" class="fitnesse.idea.filetype.CreateFitnesseFileAction">
       <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewXml"/>
     </action>
 
@@ -72,17 +72,17 @@
 
   <extensions defaultExtensionNs="com.intellij">
 
-    <treeStructureProvider implementation="fitnesse.idea.lang.filetype.FitnesseTreeStructureProvider"/>
-    <editorTabTitleProvider implementation="fitnesse.idea.lang.FitnesseEditorTabTitleProvider"/>
+    <treeStructureProvider implementation="fitnesse.idea.filetype.FitnesseTreeStructureProvider"/>
+    <editorTabTitleProvider implementation="fitnesse.idea.filetype.FitnesseEditorTabTitleProvider"/>
 
     <!--<projectStructure.sourceRootEditHandler implementation="fitnesse.idea.run.FitNesseRootEditHandler"/>-->
 
-    <fileTypeFactory implementation="fitnesse.idea.lang.filetype.FitnesseFileTypeFactory"/>
+    <fileTypeFactory implementation="fitnesse.idea.filetype.FitnesseFileTypeFactory"/>
 
-    <lang.syntaxHighlighterFactory key="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseSyntaxHighlighterFactory"/>
+    <lang.syntaxHighlighterFactory key="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseSyntaxHighlighterFactory"/>
 
-    <colorSettingsPage implementation="fitnesse.idea.lang.highlighting.FitnesseColorSettingsPage"/>
-    <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.lang.parser.FitnesseParserDefinition"/>
+    <colorSettingsPage implementation="fitnesse.idea.highlighting.FitnesseColorSettingsPage"/>
+    <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.parser.FitnesseParserDefinition"/>
 
     <lang.elementManipulator forClass="fitnesse.idea.wikilink.WikiLink"
                              implementationClass="fitnesse.idea.wikilink.WikiLinkManipulator"/>
@@ -101,25 +101,25 @@
                              implementationClass="fitnesse.idea.scripttable.ScriptRowManipulator"/>
 
     <lang.foldingBuilder language="Fitnesse"
-                         implementationClass="fitnesse.idea.lang.highlighting.FitnesseFoldingBuilder"/>
+                         implementationClass="fitnesse.idea.highlighting.FitnesseFoldingBuilder"/>
     <lang.formatter language="Fitnesse"
-                    implementationClass="fitnesse.idea.lang.formatter.FitnesseFormattingModelBuilder"/>
+                    implementationClass="fitnesse.idea.formatter.FitnesseFormattingModelBuilder"/>
 
-    <lang.commenter language="Fitnesse" implementationClass="fitnesse.idea.lang.highlighting.FitnesseCommenter"/>
+    <lang.commenter language="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseCommenter"/>
 
-    <gotoFileContributor implementation="fitnesse.idea.navigation.FitnesseFileNameContributor"/>
+    <gotoFileContributor implementation="fitnesse.idea.filetype.FitnesseFileNameContributor"/>
 
-    <annotator language="Fitnesse" implementationClass="fitnesse.idea.lang.psi.MissingReferencesAnnotator"/>
+    <annotator language="Fitnesse" implementationClass="fitnesse.idea.fixturemethod.MissingReferencesAnnotator"/>
 
-    <usageTypeProvider implementation="fitnesse.idea.lang.psi.FitNesseUsageTypeProvider" />
+    <usageTypeProvider implementation="fitnesse.idea.usage.FitNesseUsageTypeProvider" />
 
-    <stubElementTypeHolder class="fitnesse.idea.lang.parser.FitnesseElementType"/>
+    <stubElementTypeHolder class="fitnesse.idea.parser.FitnesseElementType"/>
 
     <stubIndex implementation="fitnesse.idea.fixtureclass.FixtureClassIndex"/>
     <stubIndex implementation="fitnesse.idea.fixturemethod.FixtureMethodIndex"/>
-    <stubIndex implementation="fitnesse.idea.scripttable.ScenarioNameIndex"/>
+    <stubIndex implementation="fitnesse.idea.scenariotable.ScenarioNameIndex"/>
 
-    <implicitUsageProvider implementation="fitnesse.idea.FitnesseImplicitUsageProvider"/>
+    <implicitUsageProvider implementation="fitnesse.idea.usage.FitnesseImplicitUsageProvider"/>
 
 
     <!-- TODO: Need something like code inspections-->

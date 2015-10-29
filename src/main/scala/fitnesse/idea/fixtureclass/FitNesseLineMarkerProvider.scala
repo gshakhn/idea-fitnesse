@@ -7,7 +7,7 @@ import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.{PsiClass, PsiElement, PsiIdentifier}
-import fitnesse.idea.lang.filetype.FitnesseFileType
+import fitnesse.idea.filetype.FitnesseFileType
 
 
 class FitNesseLineMarkerProvider extends RelatedItemLineMarkerProvider {

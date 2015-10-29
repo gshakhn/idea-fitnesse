@@ -4,8 +4,9 @@ import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.stubs._
-import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.psi.{Row, ScalaFriendlyStubBasedPsiElementBase}
+import fitnesse.idea.filetype.FitnesseLanguage
+import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
+import fitnesse.idea.table.Row
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
 
 

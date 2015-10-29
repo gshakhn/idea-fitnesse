@@ -15,7 +15,7 @@
         <properties>
           <componentClass value="com.intellij.ui.RawCommandLineEditor"/>
           <labelLocation value="West"/>
-          <text resource-bundle="fitnesse/idea/FitnesseBundle" key="run.configuration.fitnesseRoot"/>
+          <text resource-bundle="fitnesse/idea/etc/FitnesseBundle" key="run.configuration.fitnesseRoot"/>
         </properties>
       </component>
       <component id="4e853" class="com.intellij.openapi.ui.LabeledComponent" binding="myWikiPageName">
@@ -25,7 +25,7 @@
         <properties>
           <componentClass value="com.intellij.ui.RawCommandLineEditor"/>
           <labelLocation value="West"/>
-          <text resource-bundle="fitnesse/idea/FitnesseBundle" key="run.configuration.wikiPageName"/>
+          <text resource-bundle="fitnesse/idea/etc/FitnesseBundle" key="run.configuration.wikiPageName"/>
         </properties>
       </component>
       <vspacer id="84c61">

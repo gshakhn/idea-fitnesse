@@ -6,7 +6,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.psi.{PsiClass, PsiReference, PsiReferenceBase}
 import com.intellij.util.Processor
-import fitnesse.idea.lang.filetype.FitnesseFileType
+import fitnesse.idea.filetype.FitnesseFileType
 
 import scala.collection.JavaConversions._
 

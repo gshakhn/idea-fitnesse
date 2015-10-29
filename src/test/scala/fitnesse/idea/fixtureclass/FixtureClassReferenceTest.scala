@@ -4,8 +4,10 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubBase
-import fitnesse.idea.lang.psi.{PsiSuite, Table}
+import fitnesse.idea.psi.PsiSuite
+import fitnesse.idea.scenariotable.{ScenarioNameElementType, ScenarioNameIndex, ScenarioNameStubImpl, ScenarioName}
 import fitnesse.idea.scripttable._
+import fitnesse.idea.table.Table
 import org.mockito.Matchers.{any, eq => m_eq}
 import org.mockito.Mockito._
 

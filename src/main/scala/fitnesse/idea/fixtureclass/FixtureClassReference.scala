@@ -5,8 +5,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.decisiontable.DecisionTable
-import fitnesse.idea.lang.Regracer
-import fitnesse.idea.scripttable.ScenarioNameIndex
+import fitnesse.idea.etc.Regracer
+import fitnesse.idea.scenariotable.ScenarioNameIndex
 
 import scala.collection.JavaConversions._
 

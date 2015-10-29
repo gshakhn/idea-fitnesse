@@ -3,7 +3,7 @@ package fitnesse.idea.fixtureclass
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.AbstractElementManipulator
-import fitnesse.idea.lang.psi.FitnesseElementFactory.createFile
+import fitnesse.idea.psi.FitnesseElementFactory.createFile
 
 class FixtureClassManipulator extends AbstractElementManipulator[FixtureClass] {
   override def handleContentChange(element: FixtureClass, range: TextRange, newContent: String) = {

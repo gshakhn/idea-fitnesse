@@ -4,9 +4,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs._
-import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{MockIndexSink, PsiSuite, Table}
+import fitnesse.idea.parser.FitnesseElementType
+import fitnesse.idea.psi.{MockIndexSink, PsiSuite}
+import fitnesse.idea.scenariotable._
 import fitnesse.idea.scripttable._
+import fitnesse.idea.table.Table
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
 import org.mockito.Mockito.when
 

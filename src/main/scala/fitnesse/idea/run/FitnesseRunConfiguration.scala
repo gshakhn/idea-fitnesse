@@ -21,7 +21,7 @@ import com.intellij.openapi.util.{InvalidDataException, JDOMExternalizer, WriteE
 import com.intellij.util.PathUtil
 import fitnesse.ConfigurationParameter._
 import fitnesse.components.ComponentFactory
-import fitnesse.idea.FitnesseBundle
+import fitnesse.idea.etc.FitnesseBundle
 import fitnesse.idea.rt.IntelliJFormatter
 import fitnesse.wiki.fs.FileSystemPageFactory
 import fitnesse.wiki.{PathParser, SystemVariableSource}

@@ -1,8 +1,8 @@
 package fitnesse.idea.fixtureclass
 
 import com.intellij.psi.stubs.Stub
-import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{MockIndexSink, PsiSuite}
+import fitnesse.idea.parser.FitnesseElementType
+import fitnesse.idea.psi.{MockIndexSink, PsiSuite}
 
 class FixtureClassTest extends PsiSuite {
 

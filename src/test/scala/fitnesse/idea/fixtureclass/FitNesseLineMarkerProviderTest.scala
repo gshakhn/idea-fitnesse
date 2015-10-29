@@ -8,7 +8,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.impl.light.JavaIdentifier
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.{PsiClass, PsiElement, PsiMethod}
-import fitnesse.idea.lang.psi.PsiSuite
+import fitnesse.idea.psi.PsiSuite
 import org.mockito.Matchers.{any, eq => m_eq}
 import org.mockito.Mockito._
 

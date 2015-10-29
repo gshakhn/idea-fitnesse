@@ -1,7 +1,7 @@
 package fitnesse.idea.wikilink
 
 import com.intellij.psi.{PsiDirectory, PsiElement, PsiReferenceBase}
-import fitnesse.idea.lang.filetype.FitnesseFileType
+import fitnesse.idea.filetype.FitnesseFileType
 
 class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](element) {
   override def resolve() : PsiElement = {

@@ -2,8 +2,8 @@ package fitnesse.idea.fixturemethod
 
 import com.intellij.psi.ResolveResult
 import com.intellij.psi.search.GlobalSearchScope
-import fitnesse.idea.lang.Regracer
-import fitnesse.idea.scripttable.ScenarioNameIndex
+import fitnesse.idea.etc.Regracer
+import fitnesse.idea.scenariotable.ScenarioNameIndex
 
 import scala.collection.JavaConversions._
 

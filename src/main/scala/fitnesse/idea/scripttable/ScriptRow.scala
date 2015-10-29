@@ -5,9 +5,10 @@ import com.intellij.psi._
 import com.intellij.psi.stubs._
 import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.fixturemethod._
-import fitnesse.idea.lang.FitnesseLanguage
-import fitnesse.idea.lang.parser.FitnesseElementType
-import fitnesse.idea.lang.psi.{Cell, Row, ScalaFriendlyStubBasedPsiElementBase, StubBasedPsiElementBase2}
+import fitnesse.idea.filetype.FitnesseLanguage
+import fitnesse.idea.parser.FitnesseElementType
+import fitnesse.idea.psi.{ScalaFriendlyStubBasedPsiElementBase, StubBasedPsiElementBase2}
+import fitnesse.idea.table.{Cell, Row}
 import fitnesse.testsystems.slim.tables.Disgracer
 import fitnesse.testsystems.slim.tables.Disgracer._
 

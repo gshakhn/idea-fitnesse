@@ -13,8 +13,8 @@ import com.intellij.openapi.util.Ref
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.{PsiDirectory, PsiElement, PsiFile}
-import fitnesse.idea.FitnesseBundle
-import fitnesse.idea.lang.filetype.FitnesseFileType
+import fitnesse.idea.etc.FitnesseBundle
+import fitnesse.idea.filetype.FitnesseFileType
 
 class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerBase[FitnesseRunConfiguration](FitnesseRunConfigurationType.INSTANCE) {
 

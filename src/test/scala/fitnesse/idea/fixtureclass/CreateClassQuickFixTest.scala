@@ -2,7 +2,7 @@ package fitnesse.idea.fixtureclass
 
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
-import fitnesse.idea.lang.psi.PsiSuite
+import fitnesse.idea.psi.PsiSuite
 
 class CreateClassQuickFixTest extends PsiSuite {
 

@@ -1,8 +1,8 @@
 package fitnesse.idea.fixturemethod
 
 import com.intellij.psi._
-import fitnesse.idea.lang.Regracer
-import fitnesse.idea.scripttable.ScenarioName
+import fitnesse.idea.etc.Regracer
+import fitnesse.idea.scenariotable.ScenarioName
 
 class MethodOrScenarioArgumentReference(referer: FixtureMethod) extends MethodReference(referer) {
 
