@@ -27,9 +27,8 @@ class FitnesseFoldingBuilder extends FoldingBuilderEx {
     astNode.getElementType match {
       case FitnesseElementType.COLLAPSIBLE =>
         astNode.getText.split("\n").toList match {
-          case head :: Nil => head
-          case head :: last :: Nil => head + " " + last
-          case head :: _ :: last :: Nil => head + " ... " + last
+          case head :: Nil => null
+          case head :: (_ :+ last) => head.trim + " ... " + last.trim
           case _ => null
         }
       case _ => null
