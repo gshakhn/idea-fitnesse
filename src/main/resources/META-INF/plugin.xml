@@ -5,6 +5,12 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+
+1.2.1
+
+ * Fix reference where decision table name refers to a scenario table
+ * Fix some execution issues by ensuring the plugin version of FitNesse is takes precedence over user dependencies
+
 1.2.0
 
  * Reformat Code works for wiki pages (Ctrl-Alt-L/Cmd-Option-L)
