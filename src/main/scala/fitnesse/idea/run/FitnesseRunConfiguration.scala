@@ -67,12 +67,12 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
 
         val classPathType: Int = JavaParameters.JDK_AND_CLASSES_AND_TESTS
 
+        params.getClassPath.add(getFormatterPath)
+        params.getClassPath.add(getFitNesseMainPath)
+
         val jreHome = if (FitnesseRunConfiguration.this.ALTERNATIVE_JRE_PATH_ENABLED) ALTERNATIVE_JRE_PATH else null
         JavaParametersUtil.configureModule(module, params, classPathType, jreHome)
         JavaParametersUtil.configureConfiguration(params, FitnesseRunConfiguration.this)
-
-        params.getClassPath.add(getFormatterPath)
-        params.getClassPath.add(getFitNesseMainPath)
 
         params.setMainClass("fitnesseMain.FitNesseMain")
 
