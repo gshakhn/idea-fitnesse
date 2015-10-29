@@ -128,6 +128,20 @@ public class IntelliJFormatterTest {
     }
 
     @Test
+    public void testOutputChunkWithDivTags() throws IOException {
+        formatter.testOutputChunk("<div>Verify the text is shown as text.</div>");
+
+        assertThat(out.toString(), is("Verify the text is shown as text."));
+    }
+
+    @Test
+    public void testOutputChunkWithInlineTags() throws IOException {
+        formatter.testOutputChunk("Verify <i>the text</i> is shown as text.");
+
+        assertThat(out.toString(), is("Verify the text is shown as text."));
+    }
+
+    @Test
     public void testOutputChunkWithTable() throws IOException {
         formatter.testOutputChunk("<table>\n" +
                 "\t<tr class=\"slimRowTitle\">\n" +

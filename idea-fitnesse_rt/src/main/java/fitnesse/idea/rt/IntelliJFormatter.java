@@ -9,6 +9,7 @@ import fitnesse.wiki.fs.FileSystemPage;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.Tag;
+import org.htmlparser.Text;
 import org.htmlparser.filters.NodeClassFilter;
 import org.htmlparser.lexer.Lexer;
 import org.htmlparser.tags.Span;
@@ -75,9 +76,13 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     private String translate(NodeList nodes) throws IOException {
-        if (nodes == null) return "";
-
         StringBuilder sb = new StringBuilder();
+        translate(nodes, sb);
+        return sb.toString();
+    }
+
+    private void translate(NodeList nodes, StringBuilder sb) throws IOException {
+        if (nodes == null) return;
 
         for (Node node : nodeListIterator(nodes)) {
             if (node instanceof TableTag) {
@@ -90,12 +95,11 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
             } else if (node instanceof Tag && "BR".equals(((Tag) node).getTagName())) {
                 sb.append(NEWLINE);
             } else if (node.getChildren() != null) {
-                sb.append(translate(node.getChildren()));
-            } else {
+                translate(node.getChildren(), sb);
+            } else if (node instanceof Text){
                 sb.append(node.getText());
             }
         }
-        return sb.toString();
     }
 
     private String colorResult(String result) {
