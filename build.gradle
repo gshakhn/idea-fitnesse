@@ -13,10 +13,10 @@ buildscript {
 plugins {
     id 'scala'
     id 'com.github.maiflai.scalatest' version '0.9'
-    id "de.undercouch.download" version "2.0.0"
-    id "org.jetbrains.intellij" version "0.0.23"
+    id 'org.jetbrains.intellij' version '0.0.26'
 }
 apply plugin: 'scoverage'
+apply plugin: 'org.jetbrains.intellij'
 
 description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
 
@@ -83,7 +83,6 @@ task dist(type: Zip, dependsOn: [jar, test]) {
 intellij {
     version '15.0.5'
     pluginName 'idea-fitnesse'
-    sandboxDirectory 'build/ideasandbox'
 
     publish {
         username jetbrainsUsername ?: ""
