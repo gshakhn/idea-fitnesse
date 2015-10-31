@@ -2,12 +2,14 @@ package fitnesse.idea.fixtureclass
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
+import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.stubs._
 import fitnesse.idea.filetype.FitnesseLanguage
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
 import fitnesse.idea.table.Row
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
+import fitnesse.idea.psi.FitnesseElementFactory.createFile
 
 
 trait FixtureClassStub extends StubElement[FixtureClass] {
@@ -47,7 +49,8 @@ trait FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
     case NODE => getNode.getText.trim
   }
 
-  override def setName(s: String): PsiElement = FixtureClassManipulator.createFixtureClass(getProject, s)
+  // Update ASTNode instead?
+  override def setName(s: String): PsiElement = FixtureClassElementType.createFixtureClass(getProject, s)
 }
 
 object FixtureClassImpl {
@@ -94,4 +97,15 @@ class FixtureClassElementType(debugName: String) extends IStubElementType[Fixtur
 
 object FixtureClassElementType {
   val INSTANCE: IStubElementType[FixtureClassStub, FixtureClass] = new FixtureClassElementType("FIXTURE_CLASS")
+
+  def createFixtureClass(project : Project, className : String) = {
+    val text = "|" + className + "|"
+    // Why parse text as a file and retrieve the fixtureClass from there?
+    val file = createFile(project, text)
+    file.getTables(0).fixtureClass match {
+      case Some(fixtureClass) => fixtureClass
+      case None => null
+    }
+  }
+
 }

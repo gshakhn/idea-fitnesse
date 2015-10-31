@@ -91,22 +91,6 @@
     <colorSettingsPage implementation="fitnesse.idea.highlighting.FitnesseColorSettingsPage"/>
     <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.parser.FitnesseParserDefinition"/>
 
-    <lang.elementManipulator forClass="fitnesse.idea.wikilink.WikiLink"
-                             implementationClass="fitnesse.idea.wikilink.WikiLinkManipulator"/>
-    <lang.elementManipulator forClass="fitnesse.idea.fixtureclass.FixtureClass"
-                             implementationClass="fitnesse.idea.fixtureclass.FixtureClassManipulator"/>
-
-    <lang.elementManipulator forClass="fitnesse.idea.decisiontable.DecisionInput"
-                             implementationClass="fitnesse.idea.decisiontable.DecisionInputManipulator"/>
-    <lang.elementManipulator forClass="fitnesse.idea.decisiontable.DecisionOutput"
-                               implementationClass="fitnesse.idea.decisiontable.DecisionOutputManipulator"/>
-
-    <lang.elementManipulator forClass="fitnesse.idea.querytable.QueryOutput"
-                             implementationClass="fitnesse.idea.querytable.QueryOutputManipulator"/>
-
-    <lang.elementManipulator forClass="fitnesse.idea.scripttable.ScriptRow"
-                             implementationClass="fitnesse.idea.scripttable.ScriptRowManipulator"/>
-
     <lang.foldingBuilder language="Fitnesse"
                          implementationClass="fitnesse.idea.highlighting.FitnesseFoldingBuilder"/>
     <lang.formatter language="Fitnesse"

@@ -2,6 +2,7 @@ package fitnesse.idea.fixtureclass
 
 import com.intellij.openapi.application.QueryExecutorBase
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.psi.{PsiClass, PsiReference, PsiReferenceBase}
@@ -19,7 +20,7 @@ class FixtureClassReferencesSearch extends QueryExecutorBase[PsiReference, Refer
           case scope: GlobalSearchScope =>
             val restrictedScope = GlobalSearchScope.getScopeRestrictedByFileTypes(scope, FitnesseFileType.INSTANCE)
             find(clazz.getName, clazz.getProject, restrictedScope)
-              .map(fixtureClass => consumer.process(new PsiReferenceBase.Immediate[FixtureClass](fixtureClass, clazz)))
+              .map(fixtureClass => consumer.process(new PsiReferenceBase.Immediate[FixtureClass](fixtureClass, new TextRange(0, fixtureClass.getTextLength), clazz)))
           case _ =>
         }
       case _ =>

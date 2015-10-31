@@ -1,11 +1,12 @@
 package fitnesse.idea.fixturemethod
 
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.etc.Regracer
 import fitnesse.idea.scenariotable.ScenarioName
 
-class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBase[FixtureMethod](referer) {
+class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBase[FixtureMethod](referer, new TextRange(0, referer.getTextLength)) {
 
   val project = referer.getProject
 

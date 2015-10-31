@@ -2,6 +2,7 @@ package fitnesse.idea.fixtureclass
 
 import com.intellij.openapi.module.{Module, ModuleUtilCore}
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.decisiontable.DecisionTable
@@ -10,7 +11,7 @@ import fitnesse.idea.scenariotable.ScenarioNameIndex
 
 import scala.collection.JavaConversions._
 
-class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantReferenceBase[FixtureClass](referer) {
+class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantReferenceBase[FixtureClass](referer, new TextRange(0, referer.getTextLength)) {
 
   val project = referer.getProject
   def module = ModuleUtilCore.findModuleForPsiElement(referer)

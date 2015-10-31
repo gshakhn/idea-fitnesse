@@ -1,9 +1,10 @@
 package fitnesse.idea.wikilink
 
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.{PsiDirectory, PsiElement, PsiReferenceBase}
 import fitnesse.idea.filetype.FitnesseFileType
 
-class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](element) {
+class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](element, new TextRange(0, element.getTextLength)) {
   override def resolve() : PsiElement = {
     val linkText = element.getText
 
