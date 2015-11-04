@@ -21,6 +21,19 @@ The plugin fully functional and supports the following features:
 
 This plugin is available from the [IntelliJ plugin repository].
 
+FAQ
+===
+
+Q: I try to execute a wiki page, but no "Run" or "Debug" action pops up in my context menu (right mouse click)
+
+Check if the FitNesse root folder can be found. The default FitNesse root directory name should be defined in the Run configuration defaults:
+
+Run -> Edit Configurations... -> Defaults -> FitNesse -> FitNesse Root Directory
+
+The default root folder name is `FitNesseRoot`.
+Change the default configuration settings to match the name of your FitNesse root folder.
+
+
 Building the plugin
 ===================
 

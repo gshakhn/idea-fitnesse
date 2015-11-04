@@ -50,7 +50,7 @@ trait FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
   }
 
   // Update ASTNode instead?
-  override def setName(s: String): PsiElement = FixtureClassElementType.createFixtureClass(getProject, s)
+  override def setName(s: String): PsiElement = replace(FixtureClassElementType.createFixtureClass(getProject, s))
 }
 
 object FixtureClassImpl {

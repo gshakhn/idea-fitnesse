@@ -7,8 +7,8 @@ import com.intellij.execution.JavaRunConfigurationExtensionManager
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.configurations._
 import com.intellij.execution.junit.JavaRunConfigurationProducerBase
-import com.intellij.openapi.module.{Module, ModuleUtilCore}
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.{ProjectFileIndex, ProjectRootManager}
 import com.intellij.openapi.util.Ref
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFile
@@ -19,7 +19,7 @@ import fitnesse.idea.filetype.FitnesseFileType
 class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerBase[FitnesseRunConfiguration](FitnesseRunConfigurationType.INSTANCE) {
 
   override def setupConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext, sourceElement: Ref[PsiElement]): Boolean =
-    wikiPageInfo(configuration.getProject, context) match {
+    wikiPageInfo(configuration, context) match {
       case None => false
       case Some((wikiPageFile, fitnesseRoot)) =>
         val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
@@ -36,7 +36,7 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
     }
 
   override def isConfigurationFromContext(configuration: FitnesseRunConfiguration, context: ConfigurationContext): Boolean =
-    wikiPageInfo(configuration.getProject, context) match {
+    wikiPageInfo(configuration, context) match {
       case None => false
       case Some((wikiPageFile, fitnesseRoot)) =>
         val wikiPageName = makeWikiPageName(fitnesseRoot, wikiPageFile)
@@ -45,15 +45,12 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
           configuration.wikiPageName == wikiPageName
     }
 
-  def wikiPageInfo(project: Project, context: ConfigurationContext): Option[(VirtualFile, VirtualFile)] =
+  def wikiPageInfo(configuration: FitnesseRunConfiguration, context: ConfigurationContext): Option[(VirtualFile, VirtualFile)] =
     findWikiPageFile(context) match {
       case None => None
-      case Some(wikiPageFile) => Option(ModuleUtilCore.findModuleForFile(wikiPageFile, project)) match {
+      case Some(wikiPageFile) => findFitnesseRoot(configuration, ProjectRootManager.getInstance(configuration.getProject).getFileIndex, wikiPageFile) match {
         case None => None
-        case Some(module) => findFitnesseRoot(module) match {
-          case None => None
-          case Some(fitnesseRoot) => Some((wikiPageFile, fitnesseRoot))
-        }
+        case Some(fitnesseRoot) => Some((wikiPageFile, fitnesseRoot))
       }
     }
 
@@ -78,7 +75,15 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
       case _ => None
     }
 
-  def findFitnesseRoot(module: Module) = Option(module.getProject.getBaseDir.findChild("FitNesseRoot"))
+  def findFitnesseRoot(configuration: FitnesseRunConfiguration, fileIndex: ProjectFileIndex, page: VirtualFile): Option[VirtualFile] = {
+    if (page == null || !fileIndex.isInContent(page)) {
+      None
+    } else if (page.getName == configuration.getFitnesseRoot) {
+      Some(page)
+    } else {
+      findFitnesseRoot(configuration, fileIndex, page.getParent)
+    }
+  }
 
   def makeWikiPageName(fitnesseRoot: VirtualFile, wikiPageFile: VirtualFile) = {
     FileUtil.getRelativePath(fitnesseRoot.getCanonicalPath, wikiPageFile.getCanonicalPath, File.separatorChar).replace(File.separatorChar, '.')
