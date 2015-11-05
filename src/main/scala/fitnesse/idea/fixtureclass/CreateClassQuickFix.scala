@@ -64,7 +64,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     assert(!ApplicationManager.getApplication.isWriteAccessAllowed, "You must not run askForTargetPackage() from under write action")
     val manager = referenceElement.getManager
     val project = referenceElement.getProject
-    val name = referenceElement.fixtureClassName.get
+    val name = referenceElement.fixtureClassName.getOrElse("")
     val qualifierName = ""
     val sourceFile = referenceElement.getContainingFile
     val module = ModuleUtilCore.findModuleForPsiElement(sourceFile)
