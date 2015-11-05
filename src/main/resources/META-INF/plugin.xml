@@ -5,6 +5,10 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.2.2
+
+ * Fix test execution from context menu. Now we're looking for a FitNesse root directory as parent of the wiki page.
+   The root folder name can be configured in the Run configuration defaults.
 
 1.2.1
 
