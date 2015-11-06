@@ -13,10 +13,9 @@ buildscript {
 plugins {
     id 'scala'
     id 'com.github.maiflai.scalatest' version '0.9'
-    id 'org.jetbrains.intellij' version '0.0.26'
+    id 'org.jetbrains.intellij' version '0.0.27'
 }
 apply plugin: 'scoverage'
-apply plugin: 'org.jetbrains.intellij'
 
 description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
 
@@ -47,7 +46,7 @@ dependencies {
 
     // Scalatest requires:
     testRuntime 'org.pegdown:pegdown:1.1.0'
-    testRuntime files("$jdkHome/lib/tools.jar")
+    //testRuntime files("$jdkHome/lib/tools.jar")
 
     // task testScoverage
     scoverage "org.scala-lang:scala-library:${SCALA_VERSION}"
