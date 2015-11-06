@@ -1,6 +1,5 @@
 package fitnesse.idea.run
 
-import java.io.File
 import javax.swing.Icon
 
 import com.intellij.execution.JavaRunConfigurationExtensionManager
@@ -10,8 +9,7 @@ import com.intellij.execution.junit.JavaRunConfigurationProducerBase
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.{ProjectFileIndex, ProjectRootManager}
 import com.intellij.openapi.util.Ref
-import com.intellij.openapi.util.io.FileUtil
-import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.{VfsUtilCore, VirtualFile}
 import com.intellij.psi.{PsiDirectory, PsiElement, PsiFile}
 import fitnesse.idea.etc.FitnesseBundle
 import fitnesse.idea.filetype.FitnesseFileType
@@ -86,7 +84,7 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
   }
 
   def makeWikiPageName(fitnesseRoot: VirtualFile, wikiPageFile: VirtualFile) = {
-    FileUtil.getRelativePath(fitnesseRoot.getCanonicalPath, wikiPageFile.getCanonicalPath, File.separatorChar).replace(File.separatorChar, '.')
+    VfsUtilCore.getRelativePath(wikiPageFile, fitnesseRoot, '.')
   }
 }
 
