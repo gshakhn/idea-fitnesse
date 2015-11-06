@@ -8,7 +8,8 @@
 1.2.3
 
  * Fix wiki page name calculation on Windows.
- 
+ * Upgrade FitNesse to 20151106-SNAPSHOT.
+
 1.2.2
 
  * Fix test execution from context menu. Now we're looking for a FitNesse root directory as parent of the wiki page.
