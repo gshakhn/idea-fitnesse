@@ -18,7 +18,7 @@ plugins {
 }
 apply plugin: 'scoverage'
 
-version = "1.2.3"
+version = "1.2.4"
 
 description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
 
