@@ -1,11 +1,14 @@
 package fitnesse.idea.fixtureclass
 
+import javax.swing.Icon
+
 import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
+import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.stubs._
-import fitnesse.idea.filetype.FitnesseLanguage
+import fitnesse.idea.filetype.{FitnesseFileType, FitnesseLanguage}
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
 import fitnesse.idea.table.Row
 import fitnesse.testsystems.slim.tables.Disgracer.disgraceClassName
@@ -51,6 +54,14 @@ trait FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
 
   // Update ASTNode instead?
   override def setName(s: String): PsiElement = replace(FixtureClassElementType.createFixtureClass(getProject, s))
+
+  override def getPresentation: ItemPresentation = new ItemPresentation {
+    override def getIcon(unused: Boolean): Icon = FitnesseFileType.FILE_ICON
+
+    override def getLocationString: String = getContainingFile.getPresentation.getLocationString
+
+    override def getPresentableText: String = name
+  }
 }
 
 object FixtureClassImpl {
