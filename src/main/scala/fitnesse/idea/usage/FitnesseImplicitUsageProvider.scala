@@ -12,8 +12,8 @@ class FitnesseImplicitUsageProvider extends ImplicitUsageProvider {
   override def isImplicitWrite(psiElement: PsiElement): Boolean = false
 
   override def isImplicitUsage(psiElement: PsiElement): Boolean = psiElement match {
-    case cls: PsiClass => FixtureClassIndex.INSTANCE.get(cls.getName, cls.getProject, GlobalSearchScope.projectScope(cls.getProject)) != null
-    case mtd: PsiMethod => FixtureMethodIndex.INSTANCE.get(mtd.getName, mtd.getProject, GlobalSearchScope.projectScope(mtd.getProject)) != null
+    case cls: PsiClass => cls.getName != null && FixtureClassIndex.INSTANCE.get(cls.getName, cls.getProject, GlobalSearchScope.projectScope(cls.getProject)) != null
+    case mtd: PsiMethod => mtd.getName != null && FixtureMethodIndex.INSTANCE.get(mtd.getName, mtd.getProject, GlobalSearchScope.projectScope(mtd.getProject)) != null
     case _ => false
   }
 }
