@@ -155,7 +155,7 @@ public class IntelliJFormatterTest {
         System.out.println(out.toString());
         assertThat(out.toString().replace('\u001B', '^'), is(
                 "| import    |\n" +
-                "| ^[42mfixtures^[0m  |\n"));
+                "| ^[30;42mfixtures^[0m  |\n"));
     }
 
     @Test
@@ -181,7 +181,7 @@ public class IntelliJFormatterTest {
                 "</table>");
 
         System.out.println(out.toString());
-        assertThat(out.toString().replace('\u001B', '^'), is("| ^[42mpass me^[0m  | ^[41mfail me^[0m  | ^[43merror me^[0m  | ^[46mignore me^[0m  |\n"));
+        assertThat(out.toString().replace('\u001B', '^'), is("| ^[30;42mpass me^[0m  | ^[30;41mfail me^[0m  | ^[30;43merror me^[0m  | ^[30;46mignore me^[0m  |\n"));
     }
 
     @Test

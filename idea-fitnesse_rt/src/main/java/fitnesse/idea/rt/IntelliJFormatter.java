@@ -102,15 +102,16 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
         }
     }
 
+    // See https://en.wikipedia.org/wiki/ANSI_escape_code for the codes
     private String colorResult(String result) {
         if ("pass".equals(result)) {
-            return "\u001B[42m";
+            return "\u001B[30;42m";
         } else if ("fail".equals(result)) {
-            return "\u001B[41m";
+            return "\u001B[30;41m";
         } else if ("error".equals(result)) {
-            return "\u001B[43m";
+            return "\u001B[30;43m";
         } else if ("ignore".equals(result)) {
-            return "\u001B[46m";
+            return "\u001B[30;46m";
         }
         return "";
     }
