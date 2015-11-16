@@ -8,6 +8,8 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.stubs._
+import com.intellij.util.IncorrectOperationException
+import fitnesse.idea.etc.Regracer
 import fitnesse.idea.filetype.{FitnesseFileType, FitnesseLanguage}
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
 import fitnesse.idea.table.Row
@@ -20,7 +22,7 @@ trait FixtureClassStub extends StubElement[FixtureClass] {
 }
 
 
-trait FixtureClass extends StubBasedPsiElement[FixtureClassStub] {
+trait FixtureClass extends StubBasedPsiElement[FixtureClassStub] with PsiNamedElement {
   def fixtureClassName: Option[String]
   def name: String
   def getReference: FixtureClassReference
@@ -52,8 +54,19 @@ trait FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
     case NODE => getNode.getText.trim
   }
 
+  override def getName: String = name
+
   // Update ASTNode instead?
-  override def setName(s: String): PsiElement = replace(FixtureClassElementType.createFixtureClass(getProject, s))
+  override def setName(newName: String): PsiElement = {
+//    FixtureClassElementType.createFixtureClass(getProject, newName)
+//    val dummyFixtureClass = FixtureClassElementType.createFixtureClass(getProject, newName)
+//    this.getNode.getTreeParent.replaceChild(this.getNode, dummyFixtureClass.getNode)
+//    this.setNode(dummyFixtureClass.getNode)
+//    this
+    val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
+    this.replace(newElement)
+    newElement
+  }
 
   override def getPresentation: ItemPresentation = new ItemPresentation {
     override def getIcon(unused: Boolean): Icon = FitnesseFileType.FILE_ICON
@@ -110,12 +123,12 @@ object FixtureClassElementType {
   val INSTANCE: IStubElementType[FixtureClassStub, FixtureClass] = new FixtureClassElementType("FIXTURE_CLASS")
 
   def createFixtureClass(project : Project, className : String) = {
-    val text = "|" + className + "|"
+    val text = "|" + Regracer.regrace(className) + "|"
     // Why parse text as a file and retrieve the fixtureClass from there?
     val file = createFile(project, text)
     file.getTables(0).fixtureClass match {
       case Some(fixtureClass) => fixtureClass
-      case None => null
+      case None => throw new IncorrectOperationException(s"No fixture class could be derived for '${className}'")
     }
   }
 

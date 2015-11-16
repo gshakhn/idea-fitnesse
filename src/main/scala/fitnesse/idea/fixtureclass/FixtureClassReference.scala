@@ -11,15 +11,20 @@ import fitnesse.idea.scenariotable.ScenarioNameIndex
 
 import scala.collection.JavaConversions._
 
-class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantReferenceBase[FixtureClass](referer, new TextRange(0, referer.getTextLength)) {
+class FixtureClassReference(referer: FixtureClass) extends PsiPolyVariantReferenceBase[FixtureClass](referer, new TextRange(0, referer.getTextLength)) {
 
   val project = referer.getProject
   def module = ModuleUtilCore.findModuleForPsiElement(referer)
 
+  private def table = referer match {
+    case impl: FixtureClassImpl => impl.table
+    case _ => new IllegalStateException("Expected a FixtureClassImpl referer")
+  }
+
   // Return array of String, {@link PsiElement} and/or {@link LookupElement}
   override def getVariants = {
     val allClassNames: Array[String] = PsiShortNamesCache.getInstance(project).getAllClassNames.filter(p => p != null).map(Regracer.regrace)
-    referer.table match {
+    table match {
       case _ : DecisionTable =>
         val scenarioNames =  ScenarioNameIndex.INSTANCE.getAllKeys(project).map(Regracer.regrace).toArray
         Array.concat(allClassNames, scenarioNames).asInstanceOf[Array[AnyRef]]
@@ -28,7 +33,7 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
     }
   }
 
-  override def multiResolve(b: Boolean): Array[ResolveResult] = referer.table match {
+  override def multiResolve(b: Boolean): Array[ResolveResult] = table match {
     case _: DecisionTable =>
       (getReferencedScenarios ++ getReferencedClasses).toArray
     case _ =>
@@ -71,6 +76,7 @@ class FixtureClassReference(referer: FixtureClassImpl) extends PsiPolyVariantRef
     case None => Seq()
   }
 
+  override def handleElementRename(newElementName: String): PsiElement = referer.setName(newElementName)
 }
 
 // This is a work-around for testing:
