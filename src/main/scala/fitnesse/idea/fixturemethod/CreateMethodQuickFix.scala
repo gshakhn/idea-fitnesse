@@ -27,15 +27,14 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
 
   override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = {
     val element = getRefElement
-    val fixtureClassRef = getClassForFixtureClass
-    element != null && element.getManager.isInProject(element) && fixtureClassRef.isDefined
+    element != null && element.getManager.isInProject(element) && getClassForFixtureClass(element).isDefined
   }
 
   override def invoke(project: Project, editor: Editor, file: PsiFile): Unit = {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
     val element = getRefElement
     if (element != null && FileModificationService.getInstance.preparePsiElementForWrite(element)) {
-      getClassForFixtureClass match {
+      getClassForFixtureClass(element) match {
         case Some(aClass) => createMethod(aClass, element) match {
           case Some(method) =>
             ApplicationManager.getApplication.runWriteAction(new Runnable() {
@@ -53,8 +52,7 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
     }
   }
 
-  def getClassForFixtureClass: Option[PsiClass] = {
-    val element: FixtureMethod = getRefElement
+  def getClassForFixtureClass(element: FixtureMethod): Option[PsiClass] = {
     element.fixtureClass match {
       case Some(fixtureClass) => Option(fixtureClass.getReference.resolve()) match {
         case Some(aClass : PsiClass) => Some(aClass)
