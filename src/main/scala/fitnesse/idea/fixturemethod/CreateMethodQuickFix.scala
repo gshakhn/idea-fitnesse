@@ -17,7 +17,7 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
 
   setText(getTitle(_refElement.fixtureMethodName))
 
-  def getRefElement: FixtureMethod = elementPointer.getElement
+  def getRefElement: Option[FixtureMethod] = Option(elementPointer.getElement)
 
   def getTitle(varName: String): String = QuickFixBundle.message("create.method.from.usage.text", varName)
 
@@ -25,42 +25,35 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
 
   override def startInWriteAction: Boolean = false
 
-  override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = {
-    val element = getRefElement
-    element != null && element.getManager.isInProject(element) && getClassForFixtureClass(element).isDefined
+  override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = getRefElement match {
+    case Some(element) => element.getManager.isInProject(element) && getClassForFixtureClass(element).isDefined
+    case None => false
   }
 
   override def invoke(project: Project, editor: Editor, file: PsiFile): Unit = {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
-    val element = getRefElement
-    if (element != null && FileModificationService.getInstance.preparePsiElementForWrite(element)) {
-      getClassForFixtureClass(element) match {
-        case Some(aClass) => createMethod(aClass, element) match {
-          case Some(method) =>
-            ApplicationManager.getApplication.runWriteAction(new Runnable() {
-              override def run() = {
-                aClass.add(method)
-                IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace()
-                val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, method.getTextOffset)
-                FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
-              }
-            })
-          case _ =>
+    getRefElement collect {
+      case element =>
+        if (FileModificationService.getInstance.preparePsiElementForWrite(element)) {
+          getClassForFixtureClass(element) collect {
+            case aClass => createMethod(aClass, element) collect {
+              case method =>
+                ApplicationManager.getApplication.runWriteAction(new Runnable() {
+                  override def run() = {
+                    aClass.add(method)
+                    IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace()
+                    val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, method.getTextOffset)
+                    FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
+                  }
+                })
+            }
+          }
         }
-        case _ =>
-      }
     }
   }
 
-  def getClassForFixtureClass(element: FixtureMethod): Option[PsiClass] = {
-    element.fixtureClass match {
-      case Some(fixtureClass) => Option(fixtureClass.getReference.resolve()) match {
-        case Some(aClass : PsiClass) => Some(aClass)
-        case _ => None
-      }
-      case None => None
-    }
-  }
+  def getClassForFixtureClass(element: FixtureMethod): Option[PsiClass] =
+    element.fixtureClass collect { case fixtureClass => fixtureClass.getReference.resolve() } collect { case aClass: PsiClass => aClass }
 
   def createMethod(aClass: PsiClass, fixtureMethod: FixtureMethod): Option[PsiMethod] = {
     val project = aClass.getProject
