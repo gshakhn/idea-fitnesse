@@ -25,7 +25,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
     case None => "What's this class called?"
   }))
 
-  def getRefElement: FixtureClass = elementPointer.getElement
+  def getRefElement: Option[FixtureClass] = Option(elementPointer.getElement)
 
   def getTitle(varName: String): String = QuickFixBundle.message("create.class.from.usage.text", CreateClassKind.CLASS.getDescription, varName)
 
@@ -33,30 +33,28 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
 
   override def startInWriteAction: Boolean = false
 
-  override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = {
-    val element = getRefElement
-    element != null && element.getManager.isInProject(element)
-  }
+  override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean =
+    getRefElement collect { case element => element.getManager.isInProject(element) } getOrElse false
 
   override def invoke(project: Project, editor: Editor, file: PsiFile): Unit = {
     PsiDocumentManager.getInstance(project).commitAllDocuments()
-    val element = getRefElement
-    if (element != null && FileModificationService.getInstance.preparePsiElementForWrite(element)) {
-      askForTargetPackage(element) match {
-        case Some(directory) =>
-          createClass(directory, element.fixtureClassName.get, element.getManager, element.getContainingFile) match {
-            case Some(aClass) =>
-              ApplicationManager.getApplication.runWriteAction(new Runnable() {
-                override def run() = {
-                  IdeDocumentHistory.getInstance(element.getProject).includeCurrentPlaceAsChangePlace()
-                  val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, aClass.getTextOffset)
-                  FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
-                }
-              })
-            case _ =>
+    getRefElement collect {
+      case element =>
+        if (FileModificationService.getInstance.preparePsiElementForWrite(element)) {
+          askForTargetPackage(element) collect {
+            case directory =>
+              createClass(directory, element.fixtureClassName.get, element.getManager, element.getContainingFile) collect {
+                case aClass =>
+                  ApplicationManager.getApplication.runWriteAction(new Runnable() {
+                    override def run() = {
+                      IdeDocumentHistory.getInstance(element.getProject).includeCurrentPlaceAsChangePlace()
+                      val descriptor = new OpenFileDescriptor(element.getProject, aClass.getContainingFile.getVirtualFile, aClass.getTextOffset)
+                      FileEditorManager.getInstance(aClass.getProject).openTextEditor(descriptor, true)
+                    }
+                  })
+              }
           }
-        case _ =>
-      }
+        }
     }
   }
 
@@ -89,7 +87,7 @@ class CreateClassQuickFix(_refElement: FixtureClass) extends BaseIntentionAction
           Some(targetClass)
         } catch {
           case e: IncorrectOperationException =>
-            scheduleFileOrPackageCreationFailedMessageBox(e, name, directory, false)
+            scheduleFileOrPackageCreationFailedMessageBox(e, name, directory, isPackage = false)
             None
         }
       }
