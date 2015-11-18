@@ -3,7 +3,7 @@ package fitnesse.idea.fixturemethod
 import com.intellij.psi._
 import fitnesse.idea.fixtureclass.FixtureClass
 
-trait FixtureMethod extends PsiElement {
+trait FixtureMethod extends PsiNamedElement {
 
   def fixtureClass: Option[FixtureClass]
 

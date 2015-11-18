@@ -37,4 +37,6 @@ class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBas
       cache.getMethodsByName(referer.fixtureMethodName, GlobalSearchScope.projectScope(project)).map(createReference)
   }
 
+  override def handleElementRename(newElementName: String): PsiElement = referer.setName(newElementName)
+
 }

@@ -5,7 +5,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.MethodReferencesSearch
-import com.intellij.psi.{PsiMethod, PsiReference, PsiReferenceBase}
+import com.intellij.psi.{PsiElement, PsiMethod, PsiReference, PsiReferenceBase}
 import com.intellij.util.Processor
 import fitnesse.idea.filetype.FitnesseFileType
 
@@ -20,7 +20,9 @@ class FixtureMethodReferencesSearch extends QueryExecutorBase[PsiReference, Meth
           case scope: GlobalSearchScope =>
             val restrictedScope = GlobalSearchScope.getScopeRestrictedByFileTypes(scope, FitnesseFileType.INSTANCE)
             find(method.getName, method.getProject, restrictedScope)
-              .map(methodReferences => consumer.process(new PsiReferenceBase.Immediate[FixtureMethod](methodReferences, new TextRange(0, methodReferences.getTextLength), method)))
+              .map(fixtureMethod => consumer.process(new MethodReference(fixtureMethod) {
+                override def resolve(): PsiElement = method
+              }))
           case _ =>
         }
       case _ =>

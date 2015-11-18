@@ -42,6 +42,16 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
   }
 
   override def getReference = new DecisionInputReference(this)
+
+  override def getName: String = name
+
+  // Update ASTNode instead?
+  override def setName(newName: String): PsiElement = {
+//    val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
+//    this.replace(newElement)
+//    newElement
+    this
+  }
 }
 
 object DecisionInputImpl {

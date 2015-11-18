@@ -88,6 +88,16 @@ trait ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
   override def fixtureClass: Option[FixtureClass] = table.fixtureClass
 
   override def findInRow[T](clazz: Class[T]): T = findChildByClass(clazz)
+
+  override def getName: String = name
+
+  // Update ASTNode instead?
+  override def setName(newName: String): PsiElement = {
+    //    val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
+    //    this.replace(newElement)
+    //    newElement
+    this
+  }
 }
 
 object ScriptRowImpl {
