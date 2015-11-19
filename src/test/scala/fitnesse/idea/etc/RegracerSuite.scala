@@ -17,6 +17,12 @@ class RegracerSuite extends FunSuite {
     }
   }
 
+  test("class name regrace one word") {
+    assertResult("Thing") {
+      Regracer.regrace("Thing")
+    }
+  }
+
   test("method name regrace") {
     assertResult("method name") {
       Regracer.regrace("methodName")

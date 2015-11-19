@@ -69,7 +69,7 @@ class FixtureClassReferenceTest extends PsiSuite {
 
     assertResult(2) { result.length }
     assertResult("fixture class") { result(0) }
-    assertResult("scenario") { result(1) }
+    assertResult("Scenario") { result(1) }
   }
 
 }
