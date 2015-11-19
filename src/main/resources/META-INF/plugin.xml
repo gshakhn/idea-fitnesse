@@ -5,10 +5,16 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.2.4
+
+ * Fix popup for FitNesse gutter icon
+ * Fix a bunch of Null pointer exceptions
+ * Refactor support for fixture classes
+
 1.2.3
 
- * Fix wiki page name calculation on Windows.
- * Upgrade FitNesse to 20151106-SNAPSHOT.
+ * Fix wiki page name calculation on Windows
+ * Upgrade FitNesse to 20151106-SNAPSHOT
 
 1.2.2
 
