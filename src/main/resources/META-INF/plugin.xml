@@ -5,11 +5,12 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
-1.2.4
+1.3.0
 
+ * Refactor support for fixture classes
+ * Fixed colors in FitNesse output for Darcula theme
  * Fix popup for FitNesse gutter icon
  * Fix a bunch of Null pointer exceptions
- * Refactor support for fixture classes
 
 1.2.3
 
