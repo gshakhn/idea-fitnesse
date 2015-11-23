@@ -104,35 +104,33 @@
 
     <fileTypeFactory implementation="fitnesse.idea.filetype.FitnesseFileTypeFactory"/>
 
-    <lang.syntaxHighlighterFactory key="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseSyntaxHighlighterFactory"/>
-
     <colorSettingsPage implementation="fitnesse.idea.highlighting.FitnesseColorSettingsPage"/>
+
+    <lang.syntaxHighlighterFactory key="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseSyntaxHighlighterFactory"/>
     <lang.parserDefinition language="Fitnesse" implementationClass="fitnesse.idea.parser.FitnesseParserDefinition"/>
-
-    <lang.foldingBuilder language="Fitnesse"
-                         implementationClass="fitnesse.idea.highlighting.FitnesseFoldingBuilder"/>
-    <lang.formatter language="Fitnesse"
-                    implementationClass="fitnesse.idea.formatter.FitnesseFormattingModelBuilder"/>
-
+    <lang.foldingBuilder language="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseFoldingBuilder"/>
+    <lang.formatter language="Fitnesse" implementationClass="fitnesse.idea.formatter.FitnesseFormattingModelBuilder"/>
     <lang.commenter language="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseCommenter"/>
     <lang.namesValidator language="Fitnesse" implementationClass="fitnesse.idea.filetype.FitnesseNamesValidator"/>
 
     <renameHandler implementation="fitnesse.idea.fixtureclass.FixtureClassRenameHandler"/>
     <!--<renamePsiElementProcessor implementation="fitnesse.idea.fixtureclass.RenameFixtureClassProcessor"/>-->
     <!--<targetElementEvaluator language="Fitnesse" implementationClass="fitnesse.idea.refactoring.FitnesseElementEvaluator"/>-->
+
     <gotoFileContributor implementation="fitnesse.idea.filetype.FitnesseFileNameContributor"/>
 
     <annotator language="Fitnesse" implementationClass="fitnesse.idea.fixturemethod.MissingReferencesAnnotator"/>
 
+    <!-- Usage -->
     <usageTypeProvider implementation="fitnesse.idea.usage.FitNesseUsageTypeProvider" />
+    <implicitUsageProvider implementation="fitnesse.idea.usage.FitnesseImplicitUsageProvider"/>
 
+    <!-- Stubs -->
     <stubElementTypeHolder class="fitnesse.idea.parser.FitnesseElementType"/>
 
     <stubIndex implementation="fitnesse.idea.fixtureclass.FixtureClassIndex"/>
     <stubIndex implementation="fitnesse.idea.fixturemethod.FixtureMethodIndex"/>
     <stubIndex implementation="fitnesse.idea.scenariotable.ScenarioNameIndex"/>
-
-    <implicitUsageProvider implementation="fitnesse.idea.usage.FitnesseImplicitUsageProvider"/>
 
 
     <!-- TODO: Need something like code inspections-->
