@@ -18,11 +18,5 @@ class QueryOutput(node: ASTNode) extends ASTWrapperPsiElement(node) with Cell wi
 
   override def getName: String = fixtureMethodName
 
-  // Update ASTNode instead?
-  override def setName(newName: String): PsiElement = {
-    //    val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
-    //    this.replace(newElement)
-    //    newElement
-    this
-  }
+  override def setName(newName: String): PsiElement = this
 }
