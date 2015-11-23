@@ -115,6 +115,7 @@
                     implementationClass="fitnesse.idea.formatter.FitnesseFormattingModelBuilder"/>
 
     <lang.commenter language="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseCommenter"/>
+    <lang.namesValidator language="Fitnesse" implementationClass="fitnesse.idea.filetype.FitnesseNamesValidator"/>
 
     <gotoFileContributor implementation="fitnesse.idea.filetype.FitnesseFileNameContributor"/>
 
