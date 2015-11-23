@@ -117,6 +117,9 @@
     <lang.commenter language="Fitnesse" implementationClass="fitnesse.idea.highlighting.FitnesseCommenter"/>
     <lang.namesValidator language="Fitnesse" implementationClass="fitnesse.idea.filetype.FitnesseNamesValidator"/>
 
+    <renameHandler implementation="fitnesse.idea.fixtureclass.FixtureClassRenameHandler"/>
+    <!--<renamePsiElementProcessor implementation="fitnesse.idea.fixtureclass.RenameFixtureClassProcessor"/>-->
+    <!--<targetElementEvaluator language="Fitnesse" implementationClass="fitnesse.idea.refactoring.FitnesseElementEvaluator"/>-->
     <gotoFileContributor implementation="fitnesse.idea.filetype.FitnesseFileNameContributor"/>
 
     <annotator language="Fitnesse" implementationClass="fitnesse.idea.fixturemethod.MissingReferencesAnnotator"/>
