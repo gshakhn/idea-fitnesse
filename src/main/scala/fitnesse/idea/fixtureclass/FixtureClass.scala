@@ -56,16 +56,15 @@ trait FixtureClassImpl extends ScalaFriendlyStubBasedPsiElementBase[FixtureClass
 
   override def getName: String = name
 
-  // Update ASTNode instead?
   override def setName(newName: String): PsiElement = {
-//    FixtureClassElementType.createFixtureClass(getProject, newName)
-//    val dummyFixtureClass = FixtureClassElementType.createFixtureClass(getProject, newName)
-//    this.getNode.getTreeParent.replaceChild(this.getNode, dummyFixtureClass.getNode)
-//    this.setNode(dummyFixtureClass.getNode)
-//    this
+    // Update ASTNode instead?
+    //    FixtureClassElementType.createFixtureClass(getProject, newName)
+    //    val dummyFixtureClass = FixtureClassElementType.createFixtureClass(getProject, newName)
+    //    this.getNode.getTreeParent.replaceChild(this.getNode, dummyFixtureClass.getNode)
+    //    this.setNode(dummyFixtureClass.getNode)
+    //    this
     val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
     this.replace(newElement)
-    newElement
   }
 
   override def getPresentation: ItemPresentation = new ItemPresentation {
