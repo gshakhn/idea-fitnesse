@@ -95,8 +95,13 @@ class ScenarioNameElementType(debugName: String) extends IStubElementType[Scenar
   override def createPsi(stub: ScenarioNameStub): ScenarioName = ScenarioNameImpl(stub)
 
   override def indexStub(stub: ScenarioNameStub, sink: IndexSink): Unit = {
-    sink.occurrence(ScenarioNameIndex.KEY, disgraceClassName(stub.name))
-    sink.occurrence(ScenarioNameIndex.KEY, disgraceMethodName(stub.name))
+    val className = disgraceClassName(stub.name)
+    sink.occurrence(ScenarioNameIndex.KEY, className)
+
+    val methodName = disgraceMethodName(stub.name)
+    if (className != methodName) {
+      sink.occurrence(ScenarioNameIndex.KEY, methodName)
+    }
   }
 
   override def serialize(t: ScenarioNameStub, stubOutputStream: StubOutputStream): Unit = {
