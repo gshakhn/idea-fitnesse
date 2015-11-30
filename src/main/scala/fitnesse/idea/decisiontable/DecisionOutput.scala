@@ -2,10 +2,13 @@ package fitnesse.idea.decisiontable
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
+import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.stubs._
+import fitnesse.idea.etc.Regracer
 import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex}
 import fitnesse.idea.filetype.FitnesseLanguage
+import fitnesse.idea.psi.FitnesseElementFactory._
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
 import fitnesse.idea.table.Cell
 import fitnesse.testsystems.slim.tables.Disgracer._
@@ -45,12 +48,9 @@ trait DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
 
   override def getName: String = name
 
-  // Update ASTNode instead?
   override def setName(newName: String): PsiElement = {
-    //    val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
-    //    this.replace(newElement)
-    //    newElement
-    this
+    val newElement = DecisionOutputElementType.createDecisionOutput(getProject, newName)
+    this.replace(newElement)
   }
 }
 
@@ -85,4 +85,11 @@ class DecisionOutputElementType(debugName: String) extends IStubElementType[Deci
 
 object DecisionOutputElementType {
   val INSTANCE: IStubElementType[DecisionOutputStub, DecisionOutput] = new DecisionOutputElementType("DECISION_OUTPUT")
+
+  def createDecisionOutput(project : Project, methodName : String) = {
+    val text = "|foo|\n|" + Regracer.regrace(methodName) + "?|"
+    // Why parse text as a file and retrieve the fixtureClass from there?
+    val file = createFile(project, text)
+    file.getTables(0).rows(1).findInRow(classOf[DecisionOutput])
+  }
 }

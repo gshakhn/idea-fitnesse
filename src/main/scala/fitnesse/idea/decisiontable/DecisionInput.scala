@@ -2,10 +2,15 @@ package fitnesse.idea.decisiontable
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
+import com.intellij.openapi.project.Project
 import com.intellij.psi._
+import com.intellij.psi.impl.source.tree.TreeElement
 import com.intellij.psi.stubs._
+import com.intellij.util.IncorrectOperationException
+import fitnesse.idea.etc.Regracer
 import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex}
 import fitnesse.idea.filetype.FitnesseLanguage
+import fitnesse.idea.psi.FitnesseElementFactory._
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
 import fitnesse.idea.table.Cell
 import fitnesse.testsystems.slim.tables.Disgracer._
@@ -45,13 +50,13 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
 
   override def getName: String = name
 
-  // Update ASTNode instead?
   override def setName(newName: String): PsiElement = {
-//    val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
-//    this.replace(newElement)
-//    newElement
-    this
+    println(s"Update decision input name ${name} to ${newName}")
+    val newElement = DecisionInputElementType.createDecisionInput(getProject, newName)
+    this.replace(newElement)
   }
+
+
 }
 
 object DecisionInputImpl {
@@ -62,7 +67,9 @@ object DecisionInputImpl {
 class DecisionInputElementType(debugName: String) extends IStubElementType[DecisionInputStub, DecisionInput](debugName, FitnesseLanguage.INSTANCE) {
   override def getExternalId: String = "fitnesse.decisionInput"
 
-  override def createStub(psi: DecisionInput, parentStub: StubElement[_ <: PsiElement]): DecisionInputStub = new DecisionInputStubImpl(parentStub, psi.name)
+  override def createStub(psi: DecisionInput, parentStub: StubElement[_ <: PsiElement]): DecisionInputStub = {
+    new DecisionInputStubImpl(parentStub, psi.name)
+  }
 
   override def createPsi(stub: DecisionInputStub): DecisionInput = DecisionInputImpl(stub)
 
@@ -84,4 +91,11 @@ class DecisionInputElementType(debugName: String) extends IStubElementType[Decis
 
 object DecisionInputElementType {
   val INSTANCE: IStubElementType[DecisionInputStub, DecisionInput] = new DecisionInputElementType("DECISION_INPUT")
+
+  def createDecisionInput(project : Project, methodName : String) = {
+    val text = "|foo|\n|" + Regracer.regrace(methodName) + "|"
+    // Why parse text as a file and retrieve the fixtureClass from there?
+    val file = createFile(project, text)
+    file.getTables(0).rows(1).findInRow(classOf[DecisionInput])
+  }
 }
