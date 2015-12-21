@@ -91,7 +91,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
                 Span span = (Span) node;
                 sb.append(colorResult(span.getAttribute("class")))
                     .append(span.getChildrenHTML())
-                    .append("\u001B[0m ");
+                    .append("\u001B[0m");
             } else if (node instanceof Tag && "BR".equals(((Tag) node).getTagName())) {
                 sb.append(NEWLINE);
             } else if (node.getChildren() != null) {

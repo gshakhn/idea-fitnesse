@@ -11,8 +11,8 @@ import static fitnesse.idea.rt.FuncUtils.zip;
 import static java.util.Collections.max;
 
 public class TableFormatter {
-    public final static String CELL_SEPARATOR = " | ";
-    public final static int MIN_PADDING = 1;
+    public final static String CELL_SEPARATOR = "|";
+    public final static int MIN_PADDING = 0;
 
     private final List<List<Integer>> table;
     private final List<Integer> columnsPerRow;
@@ -69,7 +69,7 @@ public class TableFormatter {
     }
 
     public char[] leftPaddingString() {
-        return new char[] { ' ' };
+        return new char[] { };
     }
 
     public int rightPadding(int row, int col) {

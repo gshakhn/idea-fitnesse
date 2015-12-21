@@ -68,7 +68,7 @@ class TableBlock(node: ASTNode) extends BasicASTBlock(node) {
 
   def calculateWidths(blocks: List[ASTBlock]): List[Int] = blocks match {
     case (barBlock @ BarBlock(bar)) :: (cellBlock: CellBlock) :: rest if bar.getElementType == FitnesseTokenType.TABLE_START =>
-      (barBlock.width - TableFormatter.MIN_PADDING + cellBlock.width) :: calculateWidths(rest)
+      (barBlock.width - TableFormatter.MIN_PADDING + cellBlock.width - TableFormatter.CELL_SEPARATOR.length) :: calculateWidths(rest)
     case (cellBlock: CellBlock) :: rest =>
       cellBlock.width :: calculateWidths(rest)
     case (cellBlock: EmptyCellBarBlock) :: rest =>

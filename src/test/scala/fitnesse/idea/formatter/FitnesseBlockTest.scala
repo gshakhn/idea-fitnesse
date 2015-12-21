@@ -106,11 +106,11 @@ class FitnesseBlockTest extends ParserSuite {
     println(table.cellBlocks)
     val formatter = table.tableFormatter
 
-    assert(formatter.rightPadding(0, 0) == 6)
-    assert(formatter.rightPadding(1, 0) == 1)
-    assert(formatter.rightPadding(1, 1) == 1)
-    assert(formatter.rightPadding(2, 0) == 9)
-    assert(formatter.rightPadding(2, 1) == 5)
+    assert(formatter.rightPadding(0, 0) == 3)
+    assert(formatter.rightPadding(1, 0) == 0)
+    assert(formatter.rightPadding(1, 1) == 0)
+    assert(formatter.rightPadding(2, 0) == 8)
+    assert(formatter.rightPadding(2, 1) == 4)
   }
 
   test("create width for escaped tables") {
@@ -121,11 +121,11 @@ class FitnesseBlockTest extends ParserSuite {
     println(table.cellBlocks)
     val formatter = table.tableFormatter
 
-    assert(formatter.rightPadding(0, 0) == 5)
-    assert(formatter.rightPadding(1, 0) == 1)
-    assert(formatter.rightPadding(1, 1) == 1)
-    assert(formatter.rightPadding(2, 0) == 9)
-    assert(formatter.rightPadding(2, 1) == 5)
+    assert(formatter.rightPadding(0, 0) == 2)
+    assert(formatter.rightPadding(1, 0) == 0)
+    assert(formatter.rightPadding(1, 1) == 0)
+    assert(formatter.rightPadding(2, 0) == 8)
+    assert(formatter.rightPadding(2, 1) == 4)
   }
 
   test("create width for table with empty cell") {
@@ -136,11 +136,11 @@ class FitnesseBlockTest extends ParserSuite {
     println(table.cellBlocks)
     val formatter = table.tableFormatter
 
-    assert(formatter.rightPadding(0, 0) == 6)
-    assert(formatter.rightPadding(1, 0) == 1)
-    assert(formatter.rightPadding(1, 1) == 1)
-    assert(formatter.rightPadding(2, 0) == 11)
-    assert(formatter.rightPadding(2, 1) == 5)
+    assert(formatter.rightPadding(0, 0) == 3)
+    assert(formatter.rightPadding(1, 0) == 0)
+    assert(formatter.rightPadding(1, 1) == 0)
+    assert(formatter.rightPadding(2, 0) == 10)
+    assert(formatter.rightPadding(2, 1) == 4)
   }
 
   test("create width for table with empty row") {
@@ -151,9 +151,9 @@ class FitnesseBlockTest extends ParserSuite {
     println(table.cellBlocks)
     val formatter = table.tableFormatter
 
-    assert(formatter.rightPadding(0, 0) == 1)
-    assert(formatter.rightPadding(1, 0) == 5)
-    assert(formatter.rightPadding(2, 0) == 18)
+    assert(formatter.rightPadding(0, 0) == 0)
+    assert(formatter.rightPadding(1, 0) == 4)
+    assert(formatter.rightPadding(2, 0) == 17)
   }
 
 
