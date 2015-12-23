@@ -220,7 +220,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     private void print(String s) throws IOException {
-        OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+        OutputStreamWriter writer = new OutputStreamWriter(out);
         StringEscapeUtils.unescapeXml(writer, s);
         writer.flush();
     }
