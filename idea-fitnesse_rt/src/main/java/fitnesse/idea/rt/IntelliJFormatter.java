@@ -6,6 +6,7 @@ import fitnesse.testrunner.WikiTestPageUtil;
 import fitnesse.testsystems.*;
 import fitnesse.wiki.WikiPage;
 import fitnesse.wiki.fs.FileSystemPage;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.Tag;
@@ -22,10 +23,13 @@ import org.htmlparser.util.SimpleNodeIterator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static java.lang.String.format;
 
@@ -34,6 +38,8 @@ import static java.lang.String.format;
  */
 public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     private static final String NEWLINE = System.getProperty("line.separator");
+    public static final String CSI = "\u001B["; // "Control Sequence Initiator"
+    public static final Pattern ANSI_ESCAPE_PATTERN = Pattern.compile("\u001B\\[.*?m");
 
     private final PrintStream out;
 
@@ -91,7 +97,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
                 Span span = (Span) node;
                 sb.append(colorResult(span.getAttribute("class")))
                     .append(span.getChildrenHTML())
-                    .append("\u001B[0m");
+                    .append(CSI + "0m");
             } else if (node instanceof Tag && "BR".equals(((Tag) node).getTagName())) {
                 sb.append(NEWLINE);
             } else if (node.getChildren() != null) {
@@ -105,13 +111,13 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     // See https://en.wikipedia.org/wiki/ANSI_escape_code for the codes
     private String colorResult(String result) {
         if ("pass".equals(result)) {
-            return "\u001B[30;42m";
+            return CSI + "30;42m";
         } else if ("fail".equals(result)) {
-            return "\u001B[30;41m";
+            return CSI + "30;41m";
         } else if ("error".equals(result)) {
-            return "\u001B[30;43m";
+            return CSI + "30;43m";
         } else if ("ignore".equals(result)) {
-            return "\u001B[30;46m";
+            return CSI + "30;46m";
         }
         return "";
     }
@@ -210,14 +216,17 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
 
     private void log(String s, Object... args) {
         out.println(format(s, args));
+        out.flush();
     }
 
     private void print(String s) throws IOException {
-        out.print(s);
+        OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+        StringEscapeUtils.unescapeXml(writer, s);
+        writer.flush();
     }
 
     private static int cellLength(String tableCell) {
-        return tableCell.replaceAll("\u001B.*?m", "").split("\n")[0].length();
+        return ANSI_ESCAPE_PATTERN.matcher(tableCell.split("\n")[0]).replaceAll("").length();
     }
 
 }

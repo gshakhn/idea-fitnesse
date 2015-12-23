@@ -153,9 +153,9 @@ public class IntelliJFormatterTest {
                 "</table>");
 
         System.out.println(out.toString());
-        assertThat(out.toString().replace('\u001B', '^'), is(
+        assertThat(out.toString(), is(
                 "|import  |\n" +
-                "|^[30;42mfixtures^[0m|\n"));
+                "|\u001B[30;42mfixtures\u001B[0m|\n"));
     }
 
     @Test
