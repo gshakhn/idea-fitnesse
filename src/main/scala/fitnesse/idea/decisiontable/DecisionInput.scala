@@ -51,7 +51,6 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
   override def getName: String = name
 
   override def setName(newName: String): PsiElement = {
-    println(s"Update decision input name ${name} to ${newName}")
     val newElement = DecisionInputElementType createDecisionInput(getProject, DecisionInputElementType.regrace(newName))
     this.replace(newElement)
   }
