@@ -3,7 +3,9 @@ package fitnesse.idea.querytable
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.{PsiElement, PsiType}
-import fitnesse.idea.fixturemethod.{FixtureMethod, MethodReference}
+import fitnesse.idea.fixturemethod.ReturnType.ReturnType
+import fitnesse.idea.fixturemethod.ReturnType.ReturnType
+import fitnesse.idea.fixturemethod.{ReturnType, FixtureMethod, MethodReference}
 import fitnesse.idea.table.Cell
 
 class QueryOutput(node: ASTNode) extends ASTWrapperPsiElement(node) with Cell with FixtureMethod {
@@ -14,7 +16,7 @@ class QueryOutput(node: ASTNode) extends ASTWrapperPsiElement(node) with Cell wi
 
   override def getReference = new MethodReference(this)
 
-  override def returnType: PsiType = PsiType.getTypeByName("java.util.List", getProject, getResolveScope)
+  override def returnType: ReturnType = ReturnType.List
 
   override def getName: String = fixtureMethodName
 

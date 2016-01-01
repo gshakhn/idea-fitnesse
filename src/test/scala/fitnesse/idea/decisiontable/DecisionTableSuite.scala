@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs._
+import fitnesse.idea.fixturemethod.ReturnType
 import fitnesse.idea.parser.FitnesseElementType
 import fitnesse.idea.psi.{MockIndexSink, PsiSuite}
 import fitnesse.idea.scenariotable._
@@ -97,7 +98,7 @@ class DecisionTableSuite extends PsiSuite {
 
   test("return for input fields") {
     val input = table.rows(1).cells(0).asInstanceOf[DecisionInput]
-    assertResult(PsiType.VOID) {
+    assertResult(ReturnType.Void) {
       input.returnType
     }
   }
@@ -114,7 +115,7 @@ class DecisionTableSuite extends PsiSuite {
   test("return for output fields") {
     val output = table.rows(1).cells(4).asInstanceOf[DecisionOutput]
 
-    assertResult(psiClassType("java.lang.String")) {
+    assertResult(ReturnType.String) {
       output.returnType
     }
   }
@@ -154,7 +155,7 @@ class DecisionTableSuite extends PsiSuite {
 
     assertResult("a") { decisionInputPsi.name }
     assertResult("a" :: Nil) { decisionInputPsi.parameters }
-    assertResult(PsiType.VOID) { decisionInputPsi.returnType }
+    assertResult(ReturnType.Void) { decisionInputPsi.returnType }
   }
 
   test("can create stubs for decision table output") {

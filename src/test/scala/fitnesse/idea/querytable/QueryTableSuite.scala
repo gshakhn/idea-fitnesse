@@ -2,6 +2,7 @@ package fitnesse.idea.querytable
 
 import com.intellij.psi._
 import com.intellij.psi.search.GlobalSearchScope
+import fitnesse.idea.fixturemethod.ReturnType
 import fitnesse.idea.psi.PsiSuite
 import fitnesse.idea.table.Table
 import org.mockito.Matchers.{any, anyBoolean, eq => m_eq}
@@ -49,7 +50,7 @@ class QueryTableSuite extends PsiSuite {
   }
 
   test("return type for query table query") {
-    assertResult(psiClassType("java.util.List")) {
+    assertResult(ReturnType.List) {
       output.returnType
     }
   }

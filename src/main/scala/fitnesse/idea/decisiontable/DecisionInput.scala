@@ -9,7 +9,7 @@ import com.intellij.psi._
 import com.intellij.psi.stubs._
 import fitnesse.idea.etc.Regracer
 import fitnesse.idea.filetype.FitnesseLanguage
-import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex, MethodOrScenarioArgumentReference}
+import fitnesse.idea.fixturemethod.{ReturnType, FixtureMethod, FixtureMethodIndex, MethodOrScenarioArgumentReference}
 import fitnesse.idea.psi.FitnesseElementFactory._
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
 import fitnesse.idea.table.Cell
@@ -39,7 +39,7 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
 
   override def parameters = disgraceMethodName(name) :: Nil
 
-  def returnType = PsiType.VOID
+  def returnType = ReturnType.Void
 
   override def name = source match {
     case STUB => getStub.name

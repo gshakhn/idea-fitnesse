@@ -60,7 +60,14 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
     val javaLangString = PsiType.getJavaLangString(aClass.getManager, aClass.getResolveScope)
     val factory = JavaPsiFacade.getInstance(project).getElementFactory
 
-    val method: PsiMethod = factory.createMethod(fixtureMethod.fixtureMethodName, fixtureMethod.returnType)
+    val method: PsiMethod = factory.createMethod(fixtureMethod.fixtureMethodName, fixtureMethod.returnType match {
+      case ReturnType.Void => PsiType.VOID
+      case ReturnType.Boolean => PsiType.BOOLEAN
+      case ReturnType.String => PsiType.getJavaLangString(aClass.getManager, aClass.getResolveScope)
+      case ReturnType.List => PsiType.getTypeByName("java.util.List", aClass.getProject, aClass.getResolveScope)
+      case ReturnType.Object => PsiType.getJavaLangObject(aClass.getManager, aClass.getResolveScope)
+    })
+
     fixtureMethod.parameters.foreach(parameterName => {
       val param = factory.createParameter(parameterName, javaLangString)
       method.getParameterList.add(param)
@@ -71,9 +78,9 @@ class CreateMethodQuickFix(_refElement: FixtureMethod) extends BaseIntentionActi
     val buffer = new StringBuilder
     buffer.append("{\n")
     buffer.append(fixtureMethod.returnType match {
-      case PsiType.BOOLEAN => "return false;\n"
-      case _: PsiClassType => "return null;\n"
-      case _ => ""
+      case ReturnType.Boolean => "return false;\n"
+      case ReturnType.Void => ""
+      case _ => "return null;\n"
     })
     buffer.append("}")
     val body: PsiCodeBlock = factory.createCodeBlockFromText(buffer.toString(), null)

@@ -48,10 +48,10 @@ trait ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
   }
 
   override def returnType = cells.map(_.getText.trim) match {
-    case ("check" | "check not" ) :: _ => PsiType.getJavaLangString(getManager, getResolveScope)
-    case ( "reject" | "ensure") :: _ => PsiType.BOOLEAN
-    case ("show" | symbolAssignment()) :: _ => PsiType.getJavaLangObject(getManager, getResolveScope)
-    case method => PsiType.BOOLEAN
+    case ("check" | "check not" ) :: _ => ReturnType.String
+    case ( "reject" | "ensure") :: _ => ReturnType.Boolean
+    case ("show" | symbolAssignment()) :: _ => ReturnType.Object
+    case method => ReturnType.Boolean
   }
 
   override def name = source match {

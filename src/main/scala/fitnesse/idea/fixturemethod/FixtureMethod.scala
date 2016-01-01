@@ -2,6 +2,7 @@ package fitnesse.idea.fixturemethod
 
 import com.intellij.psi._
 import fitnesse.idea.fixtureclass.FixtureClass
+import fitnesse.idea.fixturemethod.ReturnType.ReturnType
 
 trait FixtureMethod extends PsiNamedElement {
 
@@ -11,7 +12,7 @@ trait FixtureMethod extends PsiNamedElement {
 
   def parameters: List[String]
 
-  def returnType: PsiType
+  def returnType: ReturnType
 
   override def getReference: MethodReference
 }

@@ -5,6 +5,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.Stub
 import com.intellij.psi.{PsiClass, PsiMethod, PsiReference}
 import fitnesse.idea.filetype.FitnesseLanguage
+import fitnesse.idea.fixturemethod.ReturnType
 import fitnesse.idea.parser.FitnesseElementType
 import fitnesse.idea.psi.{FitnesseFile, MockIndexSink, PsiSuite}
 import fitnesse.idea.scenariotable.{ScenarioNameIndex, ScenarioName}
@@ -84,7 +85,7 @@ class ScriptTableSuite extends PsiSuite {
       output.parameters
     }
 
-    assertResult(psiClassType("java.lang.String")) {
+    assertResult(ReturnType.String) {
       output.returnType
     }
 
