@@ -1,15 +1,15 @@
 package fitnesse.idea.decisiontable
 
+import java.beans.Introspector.decapitalize
+
 import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.project.Project
 import com.intellij.psi._
-import com.intellij.psi.impl.source.tree.TreeElement
 import com.intellij.psi.stubs._
-import com.intellij.util.IncorrectOperationException
 import fitnesse.idea.etc.Regracer
-import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex}
 import fitnesse.idea.filetype.FitnesseLanguage
+import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex, MethodOrScenarioArgumentReference}
 import fitnesse.idea.psi.FitnesseElementFactory._
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
 import fitnesse.idea.table.Cell
@@ -46,13 +46,13 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
     case NODE => getNode.getText
   }
 
-  override def getReference = new DecisionInputReference(this)
+  override def getReference = new MethodOrScenarioArgumentReference(this)
 
   override def getName: String = name
 
   override def setName(newName: String): PsiElement = {
     println(s"Update decision input name ${name} to ${newName}")
-    val newElement = DecisionInputElementType.createDecisionInput(getProject, newName)
+    val newElement = DecisionInputElementType createDecisionInput(getProject, DecisionInputElementType.regrace(newName))
     this.replace(newElement)
   }
 
@@ -92,8 +92,16 @@ class DecisionInputElementType(debugName: String) extends IStubElementType[Decis
 object DecisionInputElementType {
   val INSTANCE: IStubElementType[DecisionInputStub, DecisionInput] = new DecisionInputElementType("DECISION_INPUT")
 
+  def regrace(newElementName: String) = {
+    if (newElementName.startsWith("set")) {
+      Regracer.regrace(decapitalize(newElementName.substring(3)))
+    } else {
+      Regracer.regrace(newElementName)
+    }
+
+  }
   def createDecisionInput(project : Project, methodName : String) = {
-    val text = "|foo|\n|" + Regracer.regrace(methodName) + "|"
+    val text = "|foo|\n|" + methodName + "|"
     // Why parse text as a file and retrieve the fixtureClass from there?
     val file = createFile(project, text)
     file.getTables(0).rows(1).findInRow(classOf[DecisionInput])

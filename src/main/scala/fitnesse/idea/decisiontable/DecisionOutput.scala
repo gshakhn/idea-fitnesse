@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi._
 import com.intellij.psi.stubs._
 import fitnesse.idea.etc.Regracer
-import fitnesse.idea.fixturemethod.{FixtureMethod, FixtureMethodIndex}
+import fitnesse.idea.fixturemethod.{MethodOrScenarioArgumentReference, FixtureMethod, FixtureMethodIndex}
 import fitnesse.idea.filetype.FitnesseLanguage
 import fitnesse.idea.psi.FitnesseElementFactory._
 import fitnesse.idea.psi.ScalaFriendlyStubBasedPsiElementBase
@@ -44,7 +44,7 @@ trait DecisionOutputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionOu
     case NODE => getNode.getText
   }
 
-  override def getReference = new DecisionOutputReference(this)
+  override def getReference = new MethodOrScenarioArgumentReference(this)
 
   override def getName: String = name
 
