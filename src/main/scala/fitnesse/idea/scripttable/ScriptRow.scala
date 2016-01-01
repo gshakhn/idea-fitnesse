@@ -3,10 +3,12 @@ package fitnesse.idea.scripttable
 import com.intellij.lang.ASTNode
 import com.intellij.psi._
 import com.intellij.psi.stubs._
+import fitnesse.idea.etc.Regracer
 import fitnesse.idea.fixtureclass.FixtureClass
 import fitnesse.idea.fixturemethod._
 import fitnesse.idea.filetype.FitnesseLanguage
 import fitnesse.idea.parser.FitnesseElementType
+import fitnesse.idea.psi.FitnesseElementFactory._
 import fitnesse.idea.psi.{ScalaFriendlyStubBasedPsiElementBase, StubBasedPsiElementBase2}
 import fitnesse.idea.table.{Cell, Row}
 import fitnesse.testsystems.slim.tables.Disgracer
@@ -93,10 +95,8 @@ trait ScriptRowImpl extends ScalaFriendlyStubBasedPsiElementBase[ScriptRowStub] 
 
   // Update ASTNode instead?
   override def setName(newName: String): PsiElement = {
-    //    val newElement = FixtureClassElementType.createFixtureClass(getProject, newName)
-    //    this.replace(newElement)
-    //    newElement
-    this
+    val newElement = ScriptRowElementType.createScriptRow(this, Regracer.regrace(newName))
+    this.replace(newElement)
   }
 }
 
@@ -132,5 +132,35 @@ class ScriptRowElementType(debugName: String) extends IStubElementType[ScriptRow
 
 
 object ScriptRowElementType {
+
+  def interleave(methodNames: List[String], parameters: List[String]): List[String] = {
+    val lists: List[List[String]] = List(methodNames, parameters)
+    lists.map(_.map(Some(_)).padTo(lists.map(_.length).max, None)).transpose.flatten.flatten
+  }
+
+
+  def chopMethodName(scriptRow: ScriptRow, methodName: String): List[String] = {
+    val impl = scriptRow.asInstanceOf[ScriptRowImpl]
+    val rowNameParts = impl.processMethod(texts => texts)
+    if (rowNameParts.get(0).endsWith(";")) {
+      List(methodName + ";")
+    } else {
+      val nParts = (rowNameParts.size + 1) / 2
+      // How to do some sort of best effort replacement?
+      val methodNameParts = methodName.split(" ", nParts)
+      if (methodNameParts.size < nParts) {
+        List(methodName + ";")
+      } else {
+        methodNameParts.toList
+      }
+    }
+  }
+
+  def createScriptRow(scriptRow: ScriptRow, methodName: String) = {
+    val text = "|script|\n|" + interleave(chopMethodName(scriptRow, methodName), scriptRow.parameters).mkString("|") + "|"
+    val file = createFile(scriptRow.getProject, text)
+    file.getTables(0).rows(1).asInstanceOf[ScriptRow]
+  }
+
   val INSTANCE: IStubElementType[ScriptRowStub, ScriptRow] = new ScriptRowElementType("SCRIPT_ROW")
 }
