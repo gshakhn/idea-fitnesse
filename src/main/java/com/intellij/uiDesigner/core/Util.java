@@ -85,7 +85,7 @@ public final class Util {
    * @param elimitated output parameter; will be filled indices (Integers) of eliminated cells. May be null. 
    * @return
    */ 
-  public static int eliminate(final int[] cellIndices, final int[] spans, final ArrayList elimitated) {
+  public static int eliminate(final int[] cellIndices, final int[] spans, final ArrayList<Integer> elimitated) {
     final int size = cellIndices.length;
     if (size != spans.length){
       throw new IllegalArgumentException("size mismatch: " + size + ", " + spans.length);
@@ -99,7 +99,7 @@ public final class Util {
       cellCount = Math.max(cellCount, cellIndices[i] + spans[i]);
     }
 
-    outer: for (int cell=cellCount - 1; cell >= 0; cell--) {
+    for (int cell=cellCount - 1; cell >= 0; cell--) {
       // check if we should eliminate cell
 
       boolean starts = false;
@@ -119,7 +119,7 @@ public final class Util {
       }
 
       if (elimitated != null){
-        elimitated.add(new Integer(cell));
+        elimitated.add(cell);
       }
       
       // eliminate cell

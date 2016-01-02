@@ -56,7 +56,7 @@ public abstract class DimensionInfo {
     }
     //TODO[anton,vova] handle stretches
 
-    final ArrayList elimitated = new ArrayList();
+    final ArrayList<Integer> elimitated = new ArrayList<Integer>();
     mySpansAfterElimination = (int[])mySpan.clone();
     Util.eliminate((int[])myCell.clone(), mySpansAfterElimination, elimitated);
 
@@ -117,13 +117,13 @@ public abstract class DimensionInfo {
     return myCellSizePolicies[cellIndex];
   }
   
-  private int getCellSizePolicyImpl(final int cellIndex, final ArrayList eliminatedCells){
+  private int getCellSizePolicyImpl(final int cellIndex, final ArrayList<Integer> eliminatedCells){
     int policyFromChild = getCellSizePolicyFromInheriting(cellIndex);
     if (policyFromChild != -1) {
       return policyFromChild;
     }
     for (int i = eliminatedCells.size() - 1; i >= 0; i--) {
-      if (cellIndex == ((Integer)eliminatedCells.get(i)).intValue()) {
+      if (cellIndex == eliminatedCells.get(i)) {
         return GridConstraints.SIZEPOLICY_CAN_SHRINK;
       }
     }
