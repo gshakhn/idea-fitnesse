@@ -5,9 +5,12 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
-1.3.2
+1.4.0
 
- * Refactor a Java method and the FitNesse reference is updated (for decision and script tables
+ * Rename a Java class and the FitNesse reference is updated
+ * Rename a Java method and the FitNesse reference is updated (decision and script table)
+ * Fix Java 1.6 compliance for FitNesse formatter
+ * Upgrade FitNesse to 20151230
 
 1.3.1
 
