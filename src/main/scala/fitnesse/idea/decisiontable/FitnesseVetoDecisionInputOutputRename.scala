@@ -7,6 +7,6 @@ import fitnesse.idea.table.Table
 class FitnesseVetoDecisionInputOutputRename extends Condition[PsiElement] {
 
   // Return true if rename should be veto'ed.
-  override def value(t: PsiElement): Boolean = t.isInstanceOf[DecisionInput] || t.isInstanceOf[DecisionOutput] || (!t.isInstanceOf[Table] && value(t.getParent))
+  override def value(t: PsiElement): Boolean = t.isInstanceOf[DecisionInput] || t.isInstanceOf[DecisionOutput] || (!t.isInstanceOf[Table] && t.getParent != null && value(t.getParent))
 
 }

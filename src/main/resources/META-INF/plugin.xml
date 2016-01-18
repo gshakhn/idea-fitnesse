@@ -5,6 +5,10 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.4.1
+
+ * Fix Veto handler failing with NPE
+
 1.4.0
 
  * Rename a Java class and the FitNesse reference is updated
