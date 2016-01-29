@@ -61,8 +61,8 @@ class FixtureClassReference(referer: FixtureClass) extends PsiPolyVariantReferen
   private def createReference(element: PsiElement): ResolveResult = new PsiElementResolveResult(element)
 
   protected def getReferencedClasses: Seq[ResolveResult] = fixtureClassName match {
+    case _ if !referer.isValid => Seq()
     case Some(className) if isQualifiedName =>
-//      JavaPsiFacade.getInstance(project).findClasses(className, GlobalSearchScope.projectScope(project)).map(createReference)
       JavaPsiFacade.getInstance(project).findClasses(className, FixtureClassReference.moduleWithDependenciesScope(module)).map(createReference)
     case Some(className) =>
       PsiShortNamesCache.getInstance(project).getClassesByName(shortName.get, FixtureClassReference.moduleWithDependenciesScope(module)).map(createReference)

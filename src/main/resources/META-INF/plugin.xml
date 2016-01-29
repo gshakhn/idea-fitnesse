@@ -5,6 +5,10 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.4.2
+
+ * Fix NPE in fixture class reference code
+
 1.4.1
 
  * Fix Veto handler failing with NPE
