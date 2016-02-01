@@ -14,7 +14,7 @@ import scala.collection.JavaConversions._
 class FixtureClassReference(referer: FixtureClass) extends PsiPolyVariantReferenceBase[FixtureClass](referer, new TextRange(0, referer.getTextLength)) {
 
   val project = referer.getProject
-  def module = ModuleUtilCore.findModuleForPsiElement(referer)
+  def module = Option(ModuleUtilCore.findModuleForPsiElement(referer))
 
   private def table = referer match {
     case impl: FixtureClassImpl => impl.table
@@ -61,7 +61,6 @@ class FixtureClassReference(referer: FixtureClass) extends PsiPolyVariantReferen
   private def createReference(element: PsiElement): ResolveResult = new PsiElementResolveResult(element)
 
   protected def getReferencedClasses: Seq[ResolveResult] = fixtureClassName match {
-    case _ if !referer.isValid => Seq()
     case Some(className) if isQualifiedName =>
       JavaPsiFacade.getInstance(project).findClasses(className, FixtureClassReference.moduleWithDependenciesScope(module)).map(createReference)
     case Some(className) =>
@@ -87,14 +86,12 @@ object FixtureClassReference {
    */
   var scopeForTesting: Option[GlobalSearchScope] = None
 
-  def moduleWithDependenciesScope(module: Module): GlobalSearchScope = scopeForTesting match {
+  def moduleWithDependenciesScope(module: Option[Module]): GlobalSearchScope = scopeForTesting match {
     case Some(scope) => scope
-    case None => GlobalSearchScope.moduleWithDependenciesScope(module)
-  }
-
-  def moduleScope(module: Module): GlobalSearchScope = scopeForTesting match {
-    case Some(scope) => scope
-    case None => GlobalSearchScope.moduleScope(module)
+    case None => module match {
+      case Some(m) => GlobalSearchScope.moduleWithDependenciesScope(m)
+      case _ => GlobalSearchScope.EMPTY_SCOPE
+    }
   }
 
   def projectScope(project: Project): GlobalSearchScope = scopeForTesting match {
