@@ -5,6 +5,10 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.4.3
+
+ * Fix NPE in fixture class reference code, hopefully for good now
+
 1.4.2
 
  * Fix NPE in fixture class reference code
