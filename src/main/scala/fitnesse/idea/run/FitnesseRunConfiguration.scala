@@ -1,6 +1,7 @@
 package fitnesse.idea.run
 
 import java.io.File
+import java.util
 import java.util.Properties
 
 import com.intellij.execution._
@@ -9,7 +10,7 @@ import com.intellij.execution.configurations._
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.{ExecutionEnvironment, ProgramRunner}
 import com.intellij.execution.testframework.sm.SMTestRunnerConnectionUtil
-import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
+import com.intellij.execution.testframework.sm.runner.{SMTestLocator, SMTRunnerConsoleProperties}
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.util.{JavaParametersUtil, ProgramParametersConfigurator, ProgramParametersUtil}
 import com.intellij.openapi.extensions.Extensions
@@ -18,6 +19,9 @@ import com.intellij.openapi.options.{SettingsEditor, SettingsEditorGroup}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.util.{InvalidDataException, JDOMExternalizer, WriteExternalException}
+import com.intellij.openapi.vfs.{VirtualFileManager, VirtualFile}
+import com.intellij.psi.{PsiElement, PsiManager}
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.PathUtil
 import fitnesse.ConfigurationParameter._
 import fitnesse.components.ComponentFactory
@@ -30,6 +34,8 @@ import fitnesseMain.FitNesseMain
 import org.jdom.Element
 
 import scala.beans.BeanProperty
+
+import scala.collection.JavaConversions._
 
 class FitnesseRunConfiguration(testFrameworkName: String, project: Project, factory: ConfigurationFactory) extends ApplicationConfiguration(testFrameworkName, project, factory) {
 
@@ -92,8 +98,21 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
 
       @throws(classOf[ExecutionException])
       private def createConsole(executor: Executor, processHandler: ProcessHandler): ConsoleView = {
-        val consoleProperties: SMTRunnerConsoleProperties = new SMTRunnerConsoleProperties(FitnesseRunConfiguration.this, testFrameworkName, executor)
-        SMTestRunnerConnectionUtil.createAndAttachConsole(testFrameworkName, processHandler, consoleProperties, getEnvironment)
+        val consoleProperties: SMTRunnerConsoleProperties = new SMTRunnerConsoleProperties(FitnesseRunConfiguration.this, testFrameworkName, executor) {
+          override def getTestLocator: SMTestLocator =
+            new SMTestLocator {
+              override def getLocation(protocolId: String, locationData: String, project: Project, globalSearchScope: GlobalSearchScope): util.List[Location[_ <: PsiElement]] =
+                protocolId match {
+                  case "fitnesse" =>
+                    val virtualFile: VirtualFile = VirtualFileManager.getInstance().findFileByUrl(VirtualFileManager.constructUrl("file", locationData))
+                    val psiFile = PsiManager.getInstance(project).findFile(virtualFile)
+                    List(PsiLocation.fromPsiElement(project, psiFile))
+                  case _ =>
+                    List[Location[_ <: PsiElement]]()
+                }
+            }
+        }
+        SMTestRunnerConnectionUtil.createAndAttachConsole(testFrameworkName, processHandler, consoleProperties)
       }
 
       @throws(classOf[ExecutionException])

@@ -3,8 +3,7 @@ package fitnesse.idea.fixtureclass
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Segment
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.{PsiElement, PsiFile, SmartPsiElementPointer, SmartPointerManager}
-import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
+import com.intellij.psi.{PsiFile, SmartPointerManager, SmartPsiElementPointer}
 import fitnesse.idea.psi.PsiSuite
 import org.mockito.Mockito._
 

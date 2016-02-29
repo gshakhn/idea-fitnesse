@@ -1,16 +1,11 @@
 package fitnesse.idea.psi
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, File}
-import java.util
 
-import com.intellij.codeInsight.FileModificationService
 import com.intellij.lang.FileASTNode
 import com.intellij.mock.{MockPsiDocumentManager, MockResolveScopeManager}
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi._
 import com.intellij.psi.impl.ResolveScopeManager
-import com.intellij.psi.impl.smartPointers.SmartPointerManagerImpl
 import com.intellij.psi.search.{GlobalSearchScope, ProjectScopeBuilder, ProjectScopeBuilderImpl, PsiShortNamesCache}
 import com.intellij.psi.stubs._
 import com.intellij.util.io.PersistentStringEnumerator

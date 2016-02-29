@@ -97,7 +97,7 @@
   </change-notes>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+  <idea-version since-build="143"/>
 
   <depends>com.intellij.modules.java</depends>
 
@@ -177,7 +177,6 @@
     <!-- Execution -->
     <runConfigurationProducer implementation="fitnesse.idea.run.FitNesseTestRunConfigurationProducer"/>
     <configurationType implementation="fitnesse.idea.run.FitnesseRunConfigurationType"/>
-    <testSrcLocator implementation="fitnesse.idea.run.FitnesseTestLocationProvider"/>
 
   </extensions>
 </idea-plugin>

@@ -38,12 +38,27 @@ ext {
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that
 // Older versions:
 //  - IDEA_ID = 'IC-139.1603.1', IDEA_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
-def IDEA_ID = 'IC-141.2735.5'
-def IDEA_URL = 'http://download.jetbrains.com/idea/ideaIC-14.1.5.tar.gz'
-def IDEA_CSUM = 'b866babcc49e549718ef9527a07ac0aa54814c23'
 
-def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA_ID}"
-def IDEA_LIB = "lib/sdk/idea-${IDEA_ID}/lib"
+def IDEA_VERSIONS = [
+    15: [
+        ID: 'IC-143.2287.1',
+        URL: 'http://download.jetbrains.com/idea/ideaIC-15.0.4.tar.gz',
+        CSUM: '7653edd0687de6948b3c5b128c0683c96f89dea96bedd995a279f4d359816a16',
+        JAVA: '1.6'
+    ],
+    16: [
+        ID: 'IC-144.4199.23',
+        URL: 'https://download.jetbrains.com/idea/ideaIC-16-Preview-no-jdk.tar.gz',
+        CSUM: '252540db5f0ceb2b9b8c716fe6a084534e903d00ef014ac9e9bdbff5163e0a82',
+        JAVA: '1.8'
+    ]
+]
+
+def idea_version = System.getenv('IDEA_VERSION')
+def IDEA = IDEA_VERSIONS[idea_version ? idea_version.toInteger() : 15]
+
+def IDEA_SDK_NAME = "IntelliJ IDEA Community Edition ${IDEA.ID}"
+def IDEA_LIB = "lib/sdk/idea-${IDEA.ID}/lib"
 
 configurations {
     ideaSdk
@@ -81,26 +96,26 @@ dependencies {
     scoverage 'org.scoverage:scalac-scoverage-runtime_2.11:1.1.1'
 }
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+sourceCompatibility = IDEA.JAVA
+targetCompatibility = IDEA.JAVA
 
 task downloadIdeaSdk(type: de.undercouch.gradle.tasks.download.Verify) {
     description 'Download IDEA SDK from the interwebz'
     doFirst {
         download {
-            src IDEA_URL
-            dest file("lib/idea-${IDEA_ID}.tar.gz")
+            src IDEA.URL
+            dest file("lib/idea-${IDEA.ID}.tar.gz")
             overwrite false
         }
     }
-    src file("lib/idea-${IDEA_ID}.tar.gz")
-    algorithm 'SHA-1'
-    checksum IDEA_CSUM
+    src file("lib/idea-${IDEA.ID}.tar.gz")
+    algorithm 'SHA-256'
+    checksum IDEA.CSUM
 }
 
 task extractIdeaSdk(type: Copy, dependsOn: [downloadIdeaSdk]) {
     description 'Extract IDEA SDK'
-    def zipFile = file("lib/idea-${IDEA_ID}.tar.gz")
+    def zipFile = file("lib/idea-${IDEA.ID}.tar.gz")
     def outputDir = file("lib/sdk")
 
     from tarTree(resources.gzip(zipFile))
@@ -158,7 +173,7 @@ task coverage {
 
 idea {
     project {
-        languageLevel = '1.6'
+        languageLevel = IDEA.JAVA
         jdkName = IDEA_SDK_NAME
 
         ipr {

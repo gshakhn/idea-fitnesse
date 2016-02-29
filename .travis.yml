@@ -1,9 +1,10 @@
 language: java
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - openjdk7
-  - openjdk6
+
+env:
+  - IDEA_VERSION=15
+  - IDEA_VERSION=16
 
 install: ./gradlew extractIdeaSdk
 
