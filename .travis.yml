@@ -2,19 +2,20 @@ language: java
 jdk:
 - oraclejdk8
 env:
-- IDEA_VERSION=15
-- IDEA_VERSION=16
+  matrix:
+  - IDEA_VERSION=15
+  - IDEA_VERSION=16
 install: ./gradlew extractIdeaSdk
 script: ./gradlew test dist
 deploy:
   provider: releases
   api_key:
-    secure: ee9tjq45j1F1eUNmDw6eXf0KRWb/i6zHIUIi6ahJcQEcmfl6X3AfZ2lqhkClunnTj9SrtKB9zgz8ad+DftRhfcRvZ/SgJxXgL5OZF0Nj+8lKIn4c7f8vG0xomeVSJV6/DVz6ejNADgCGcWKfcBUEqUx3oDVTPyBN5DG/mGRvprI=
-  file: build/distributions/idea-fitnesse-*.zip
+    secure: HFLxsw+X2QpVZz5mlFrr2QoKu5044uutpfzVl06114RooZpQPB5rmRJi5PEprL0VZOdFfnKquNUElJbKkk8jIiJlUDQm3FWtFcS+lA3vRRVXbT6dUaL5uzF47kYkEHcOMP6uL/jHn2DfjQoRlSgmNREgV71tJIC9E4XPEfsNkoWpcCpUncLtLi6qJPlFbT248VjSKsisYo7k9Ruhj6lwVqcUYYQY0LJ7IA4x5RcJyg0nTpoclwLFi/+burXk/OUjJzcgX8x+bQuJf0ajLWKYYz+wHBa1xVncUtH3cFpaS/TubJfAt6cUPTFz+XcAUwBpHQP9btOINHHEauX/vxeP64R7NCaF974CtXlsJzOYl7o09woCVRYogGRk3WKsxLxcK0fJ3IyEjElDTMbZPtzxV/vU4DdgZp8aP+9luC+twa3iFP3zkp0CHbGxcElO+DeshHu+YocHL1E2bBr1QXwU9cBvHRNZPgWocv/S909ZDGr5Hnc8ewudtQBSwZHaWMkLa6u3GRm1CTT1aaKD6sMQJcL+0FkObZ1ic7C5J0d2Lars4nl3QiE13xYq4MRK4HFEP0LZQyiIprsDQlvEGhgQysXXHLKBDr0pmZzDDInd5vbVHrvGHkJ+HbAFjyrJfSzFptNzr/uWoFog5DMEXLoqL/vTeNVq7Fw/XqnknhO+rtc=
+  file: build/distributions/idea-fitnesse-1.4.4.zip
   on:
     repo: fitnesse/idea-fitnesse
     tags: true
-    condition: IDEA_VERSION = 15
+    condition: $IDEA_VERSION = 15
 sudo: false
 cache:
   directories:
