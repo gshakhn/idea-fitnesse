@@ -5,6 +5,10 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.4.4
+
+ * Update code for IntelliJ 15
+
 1.4.3
 
  * Fix NPE in fixture class reference code, hopefully for good now
