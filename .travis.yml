@@ -1,14 +1,20 @@
 language: java
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 env:
-  - IDEA_VERSION=15
-  - IDEA_VERSION=16
-
+- IDEA_VERSION=15
+- IDEA_VERSION=16
 install: ./gradlew extractIdeaSdk
-
 script: ./gradlew test dist
+deploy:
+  provider: releases
+  api_key:
+    secure: ee9tjq45j1F1eUNmDw6eXf0KRWb/i6zHIUIi6ahJcQEcmfl6X3AfZ2lqhkClunnTj9SrtKB9zgz8ad+DftRhfcRvZ/SgJxXgL5OZF0Nj+8lKIn4c7f8vG0xomeVSJV6/DVz6ejNADgCGcWKfcBUEqUx3oDVTPyBN5DG/mGRvprI=
+  file: build/distributions/idea-fitnesse-*.zip
+  on:
+    repo: fitnesse/idea-fitnesse
+    tags: true
+    condition: IDEA_VERSION = 15
 sudo: false
 cache:
   directories:
