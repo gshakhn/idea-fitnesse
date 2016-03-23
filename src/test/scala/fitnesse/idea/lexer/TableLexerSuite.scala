@@ -363,4 +363,24 @@ class TableLexerSuite extends LexerSuite {
       lex("|Some table|\n|\n\nHello")
     }
   }
+
+  test("Misformed table with !define statement") {
+    assertResult(
+      List(
+        (FitnesseTokenType.TABLE_START, "|!-ArrangementToOrderV1-!|\n|!define ArrangementToOrderAccountNumber {125673051}|\n"),
+        (FitnesseTokenType.ROW_START,"!-ArrangementToOrderV1-!|\n|"),
+        (FitnesseTokenType.CELL_START,"!-ArrangementToOrderV1-!|\n|"),
+        (FitnesseTokenType.WORD, "!-ArrangementToOrderV1-!"),
+        (FitnesseTokenType.CELL_END,"|\n|"),
+        (FitnesseTokenType.ROW_END, "|\n|"),
+        (FitnesseTokenType.ROW_START,"!define ArrangementToOrderAccountNumber {125673051}|\n"),
+        (FitnesseTokenType.CELL_START,"!define ArrangementToOrderAccountNumber {125673051}|\n"),
+        (FitnesseTokenType.WORD, "!define ArrangementToOrderAccountNumber {125673051}"),
+        (FitnesseTokenType.CELL_END, "|\n"),
+        (FitnesseTokenType.ROW_END,"|\n"),
+        (FitnesseTokenType.TABLE_END,"|\n")
+      )) {
+      lex("|!-ArrangementToOrderV1-!|\n|!define ArrangementToOrderAccountNumber {125673051}|\n")
+    }
+  }
 }

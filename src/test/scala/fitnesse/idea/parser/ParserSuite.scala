@@ -106,8 +106,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   private def convertToTree(node: ASTNode): Tree = {
     if (node.isInstanceOf[CompositeElement]) {
       val children = node.getChildren(null)
-      val leaves = children. //filterNot(child => child.getElementType == FitnesseTokenType.LINE_TERMINATOR).
-                            map(child => convertToTree(child)).toList
+      val leaves = children.map(child => convertToTree(child)).toList
       Node(node.getElementType, leaves)
     } else {
       Leaf(node.getElementType, node.getText)

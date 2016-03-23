@@ -58,4 +58,15 @@ class PagesFoundInTheWildSuite extends ParserSuite {
       verifyLengthAddsUp(node)
       node.getTextLength + calculateLength(node.getNextSibling)
   }
+
+  test("GitHub issue 23 - endless loop in parsing wiki page") {
+    val text = "|!-ArrangementToOrderV1-!                           |\n|!define ArrangementToOrderAccountNumber {125673051}|\n"
+
+    val virtualFile: LightVirtualFile = new LightVirtualFile("content.txt", FitnesseLanguage.INSTANCE, text)
+    val viewProvider = new SingleRootFileViewProvider(myPsiManager, virtualFile, true)
+    val file: PsiElement = parserDefinition.createFile(viewProvider)
+
+    assertResult(file.getTextLength) { verifyLengthAddsUp(file) }
+
+  }
 }
