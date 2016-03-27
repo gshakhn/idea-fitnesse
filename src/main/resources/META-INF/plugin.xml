@@ -8,6 +8,7 @@
 1.4.4
 
  * Update code for IntelliJ 15
+ * Fix issue that caused FitNesse parser to hang when parsing !define statement inside a table
 
 1.4.3
 
