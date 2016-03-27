@@ -3,10 +3,10 @@ jdk:
 - oraclejdk8
 env:
   matrix:
-  - IDEA_VERSION=15
-  - IDEA_VERSION=16
+  - IDEA_VERSION=15.0.5
+  - IDEA_VERSION=2016.1
 install: ./gradlew extractIdeaSdk
-script: ./gradlew test dist
+script: ./gradlew build -PideaVersion=${IDEA_VERSION} -Pversion=${TRAVIS_TAG:-dev}
 deploy:
   provider: releases
   api_key:
@@ -15,7 +15,7 @@ deploy:
   on:
     repo: fitnesse/idea-fitnesse
     tags: true
-    condition: $IDEA_VERSION = 15
+    condition: $IDEA_VERSION = 15.0.5
 sudo: false
 cache:
   directories:

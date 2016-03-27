@@ -1,7 +1,9 @@
 <idea-plugin version="2">
   <name>FitNesse</name>
-  <description><![CDATA[@description@]]></description>
-  <version>@version@</version>
+  <description><![CDATA[<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
+<p>This plugin provides syntax highlighting, auto-completion and execution of FitNesse test suites all from within your IDE.</p>
+]]></description>
+  <version>dev</version>
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
