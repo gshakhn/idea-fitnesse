@@ -172,6 +172,7 @@ task coverage {
 // ========= Workspace setup tasks ========= //
 
 idea {
+    targetVersion = '14'
     project {
         languageLevel = IDEA.JAVA
         jdkName = IDEA_SDK_NAME
