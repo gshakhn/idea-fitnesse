@@ -210,5 +210,5 @@ idea {
 ideaProject.dependsOn extractIdeaSdk
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.7'
+    gradleVersion = '2.12'
 }
