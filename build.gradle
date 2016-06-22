@@ -31,8 +31,8 @@ repositories {
 }
 
 ext {
-    FITNESSE_VERSION = '20151230'
-    SCALA_VERSION = '2.11.7'
+    FITNESSE_VERSION = '20160618'
+    SCALA_VERSION = '2.11.8'
 }
 
 // Pick the Linux version, as it is a tar.gz, since we can simply extract that

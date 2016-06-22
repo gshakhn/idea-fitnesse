@@ -37,8 +37,8 @@ import static java.lang.String.format;
  */
 public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     private static final String NEWLINE = System.getProperty("line.separator");
-    public static final String CSI = "\u001B["; // "Control Sequence Initiator"
-    public static final Pattern ANSI_ESCAPE_PATTERN = Pattern.compile("\u001B\\[.*?m");
+    private static final String CSI = "\u001B["; // "Control Sequence Initiator"
+    private static final Pattern ANSI_ESCAPE_PATTERN = Pattern.compile("\u001B\\[.*?m");
 
     private final PrintStream out;
 
@@ -53,25 +53,31 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     @Override
-    public void testSystemStarted(TestSystem testSystem) throws IOException {
+    public void testSystemStarted(TestSystem testSystem) {
         log("##teamcity[testSuiteStarted name='%s' locationHint='' captureStandardOutput='true']", testSystem.getName());
     }
 
     @Override
-    public void testStarted(TestPage testPage) throws IOException {
+    public void testStarted(TestPage testPage) {
         log("##teamcity[testStarted name='%s' locationHint='%s' captureStandardOutput='true']", testPage.getFullPath(), locationHint(testPage));
     }
 
-    private String locationHint(TestPage testPage) throws IOException {
+    private String locationHint(TestPage testPage) {
         WikiPage wikiPage = WikiTestPageUtil.getSourcePage(testPage);
         if (wikiPage instanceof FileSystemPage) {
-            return "fitnesse://" + new File(((FileSystemPage) wikiPage).getFileSystemPath(), "content.txt").getCanonicalPath();
+            File fileSystemPath = ((FileSystemPage) wikiPage).getFileSystemPath();
+            try {
+                return "fitnesse://" + new File(fileSystemPath, "content.txt").getCanonicalPath();
+            } catch (IOException e) {
+                error("Can not determine canonical file location for " + fileSystemPath, e);
+                return "";
+            }
         }
         return "";
     }
 
     @Override
-    public void testOutputChunk(String output) throws IOException {
+    public void testOutputChunk(String output) {
         try {
             NodeList nodes = new Parser(new Lexer(output)).parse(null);
             print(translate(nodes));
@@ -80,13 +86,13 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
         }
     }
 
-    private String translate(NodeList nodes) throws IOException {
+    private String translate(NodeList nodes) {
         StringBuilder sb = new StringBuilder();
         translate(nodes, sb);
         return sb.toString();
     }
 
-    private void translate(NodeList nodes, StringBuilder sb) throws IOException {
+    private void translate(NodeList nodes, StringBuilder sb) {
         if (nodes == null) return;
 
         for (Node node : nodeListIterator(nodes)) {
@@ -121,7 +127,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
         return "";
     }
 
-    private String translateTable(NodeList nodes) throws IOException {
+    private String translateTable(NodeList nodes) {
         List<List<Integer>> table = new ArrayList<List<Integer>>();
         for (Node row : rowIterator(nodes)) {
             List<Integer> tableRow = new ArrayList<Integer>();
@@ -172,7 +178,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     @Override
-    public void testComplete(TestPage testPage, TestSummary summary) throws IOException {
+    public void testComplete(TestPage testPage, TestSummary summary) {
         String fullPath = testPage.getFullPath();
         if (exceptionOccurred != null) {
             log("##teamcity[testFailed name='%s' message='%s' error='true']", fullPath, exceptionOccurred.getMessage() != null ? exceptionOccurred.getMessage().replace("'", "|'") : exceptionOccurred.toString());
@@ -208,7 +214,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     }
 
     @Override
-    public void unableToStartTestSystem(String s, Throwable throwable) throws IOException {
+    public void unableToStartTestSystem(String s, Throwable throwable) {
         log("Unable to start test system %s", s);
         throwable.printStackTrace(out);
     }
@@ -218,10 +224,19 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
         out.flush();
     }
 
-    private void print(String s) throws IOException {
+    private void print(String s) {
         OutputStreamWriter writer = new OutputStreamWriter(out);
-        StringEscapeUtils.unescapeXml(writer, s);
-        writer.flush();
+        try {
+            StringEscapeUtils.unescapeXml(writer, s);
+            writer.flush();
+        } catch (IOException e) {
+            error("Unable to write output", e);
+        }
+    }
+
+    private void error(String message, Throwable cause) {
+        System.err.println(message);
+        cause.printStackTrace(System.err);
     }
 
     private static int cellLength(String tableCell) {
