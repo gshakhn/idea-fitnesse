@@ -1,5 +1,6 @@
 package fitnesse.idea.run;
 
+import com.intellij.application.options.ModulesComboBox;
 import com.intellij.execution.ui.CommonJavaParametersPanel;
 import com.intellij.execution.ui.ConfigurationModuleSelector;
 import com.intellij.openapi.module.Module;
@@ -23,7 +24,7 @@ public class FitnesseApplicationConfigurable extends SettingsEditor<FitnesseRunC
 
   // These fields are injected from the form:
   private JPanel myWholePanel;
-  private LabeledComponent<JComboBox> myModule;
+  private LabeledComponent<ModulesComboBox> myModule;
   private LabeledComponent<RawCommandLineEditor> myFitnesseRoot;
   private LabeledComponent<RawCommandLineEditor> myWikiPageName;
   private JCheckBox myFitNesseJar;
@@ -68,8 +69,7 @@ public class FitnesseApplicationConfigurable extends SettingsEditor<FitnesseRunC
 
     configuration.setFitnesseRoot(myFitnesseRoot.getComponent().getText());
     configuration.setWikiPageName(myWikiPageName.getComponent().getText());
-    Module selectedModule = (Module)myModule.getComponent().getSelectedItem();
-    configuration.setModule(selectedModule);
+    configuration.setModule(myModule.getComponent().getSelectedModule());
     configuration.setUseFitNesseJar(myFitNesseJar.isSelected());
   }
 
