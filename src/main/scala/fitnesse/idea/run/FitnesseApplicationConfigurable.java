@@ -26,6 +26,7 @@ public class FitnesseApplicationConfigurable extends SettingsEditor<FitnesseRunC
   private LabeledComponent<JComboBox> myModule;
   private LabeledComponent<RawCommandLineEditor> myFitnesseRoot;
   private LabeledComponent<RawCommandLineEditor> myWikiPageName;
+  private JCheckBox myFitNesseJar;
   private CommonJavaParametersPanel myCommonProgramParameters;
 
   public FitnesseApplicationConfigurable(Project project) {
@@ -57,6 +58,7 @@ public class FitnesseApplicationConfigurable extends SettingsEditor<FitnesseRunC
     myCommonProgramParameters.reset(configuration);
     myFitnesseRoot.getComponent().setText(configuration.getFitnesseRoot());
     myWikiPageName.getComponent().setText(configuration.getWikiPageName());
+    myFitNesseJar.setSelected(configuration.getUseFitNesseJar());
   }
 
   @Override
@@ -68,6 +70,7 @@ public class FitnesseApplicationConfigurable extends SettingsEditor<FitnesseRunC
     configuration.setWikiPageName(myWikiPageName.getComponent().getText());
     Module selectedModule = (Module)myModule.getComponent().getSelectedItem();
     configuration.setModule(selectedModule);
+    configuration.setUseFitNesseJar(myFitNesseJar.isSelected());
   }
 
   @NotNull

@@ -48,6 +48,9 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
   @BeanProperty
   var configFile: String = null
 
+  @BeanProperty
+  var useFitNesseJar: Boolean = true
+
   override def suggestedName = wikiPageName
 
   override def getActionName = wikiPageName
@@ -74,7 +77,7 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
         val classPathType: Int = JavaParameters.JDK_AND_CLASSES_AND_TESTS
 
         params.getClassPath.add(getFormatterPath)
-        params.getClassPath.add(getFitNesseMainPath)
+        if (useFitNesseJar) params.getClassPath.add(getFitNesseMainPath)
 
         val jreHome = if (FitnesseRunConfiguration.this.ALTERNATIVE_JRE_PATH_ENABLED) ALTERNATIVE_JRE_PATH else null
         JavaParametersUtil.configureModule(module, params, classPathType, jreHome)
@@ -175,5 +178,4 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
     JDOMExternalizer.write(element, "wikiPageName", wikiPageName)
     JDOMExternalizer.write(element, "fitnesseRoot", fitnesseRoot)
   }
-
 }
