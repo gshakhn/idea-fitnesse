@@ -5,6 +5,13 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.5.0
+
+ * Add option to not use the FitNesse jar bundled with the plugin when executing tests
+ * Upgrade FitNesse to 20160618
+ * Upgrade Scala library to 2.11.8
+ * Built with Gradle 2.13
+
 1.4.4
 
  * Update code for IntelliJ 15
