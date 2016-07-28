@@ -23,15 +23,17 @@ description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse
 <p>This plugin provides syntax highlighting, auto-completion and execution of FitNesse test suites all from within your IDE.</p>
 """
 
-repositories {
-    mavenCentral()
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots/"
+allprojects {
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://dl.bintray.com/fitnesse/edge"
+        }
     }
 }
 
 ext {
-    FITNESSE_VERSION = '20160618'
+    FITNESSE_VERSION = '20160728'
     SCALA_VERSION = '2.11.8'
 }
 

@@ -351,6 +351,99 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+
+  test("Ordered query table") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.QUERY_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "ordered"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "query")
+            )),
+            Leaf(FitnesseTokenType.COLON, ":"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.WORD, "stuff")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "param1")
+            ))
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
+              Leaf(FitnesseTokenType.WORD, "foo"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
+              Leaf(FitnesseTokenType.WORD, "bar"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            ))
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
+              Leaf(FitnesseTokenType.WORD, "1")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.QUERY_OUTPUT, List(
+              Leaf(FitnesseTokenType.WORD, "2")
+            ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
+      ))
+    ) {
+      parse("|ordered query:stuff|param1|\n|foo field|bar field|\n|1|2|")
+    }
+  }
+
+  test("Escaped script table with colon separator") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCRIPT_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "!|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "script")
+            )),
+            Leaf(FitnesseTokenType.COLON, ":"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.WORD, "stuff")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "param1")
+            ))
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.SCRIPT_ROW, List(
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "foo"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "bar"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
+      ))
+    ) {
+      parse("!|script:stuff|param1|\n|foo field|bar field|")
+    }
+  }
+
   test("Script tablewith colon separator") {
     assertResult(
       Node(FitnesseElementType.FILE, List(

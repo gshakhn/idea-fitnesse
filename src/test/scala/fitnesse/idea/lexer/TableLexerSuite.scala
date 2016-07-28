@@ -243,6 +243,26 @@ class TableLexerSuite extends LexerSuite {
     }
   }
 
+  test("Escaped table") {
+    assertResult(
+      List(
+        (FitnesseTokenType.TABLE_START, "!|Query:some stuff|\n"),
+        (FitnesseTokenType.ROW_START, "Query:some stuff|\n"),
+        (FitnesseTokenType.CELL_START, "Query:some stuff|\n"),
+        (FitnesseTokenType.WORD, "Query"),
+        (FitnesseTokenType.COLON, ":"),
+        (FitnesseTokenType.WORD, "some"),
+        (FitnesseTokenType.WHITE_SPACE, " "),
+        (FitnesseTokenType.WORD, "stuff"),
+        (FitnesseTokenType.CELL_END, "|\n"),
+        (FitnesseTokenType.ROW_END, "|\n"),
+        (FitnesseTokenType.TABLE_END, "|\n"),
+        (FitnesseTokenType.LINE_TERMINATOR, "\n")
+      )) {
+      lex("!|Query:some stuff|\n\n")
+    }
+  }
+
   test("Table with empty cell") {
     assertResult(
       List(
