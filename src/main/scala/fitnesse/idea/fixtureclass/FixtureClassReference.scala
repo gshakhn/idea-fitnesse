@@ -7,6 +7,7 @@ import com.intellij.psi._
 import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
 import fitnesse.idea.decisiontable.DecisionTable
 import fitnesse.idea.etc.Regracer
+import fitnesse.idea.etc.SearchScope.searchScope
 import fitnesse.idea.scenariotable.ScenarioNameIndex
 
 import scala.collection.JavaConversions._
@@ -89,13 +90,13 @@ object FixtureClassReference {
   def moduleWithDependenciesScope(module: Option[Module]): GlobalSearchScope = scopeForTesting match {
     case Some(scope) => scope
     case None => module match {
-      case Some(m) => GlobalSearchScope.moduleWithDependenciesScope(m)
+      case Some(m) => searchScope(m.getProject)
       case _ => GlobalSearchScope.EMPTY_SCOPE
     }
   }
 
   def projectScope(project: Project): GlobalSearchScope = scopeForTesting match {
     case Some(scope) => scope
-    case None => GlobalSearchScope.projectScope(project)
+    case None => searchScope(project)
   }
 }

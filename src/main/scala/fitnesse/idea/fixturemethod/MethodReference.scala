@@ -2,8 +2,9 @@ package fitnesse.idea.fixturemethod
 
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi._
-import com.intellij.psi.search.{GlobalSearchScope, PsiShortNamesCache}
+import com.intellij.psi.search.PsiShortNamesCache
 import fitnesse.idea.etc.Regracer
+import fitnesse.idea.etc.SearchScope.searchScope
 import fitnesse.idea.scenariotable.ScenarioName
 
 class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBase[FixtureMethod](referer, new TextRange(0, referer.getTextLength)) {
@@ -34,7 +35,7 @@ class MethodReference(referer: FixtureMethod) extends PsiPolyVariantReferenceBas
       }
     case None =>
       val cache = PsiShortNamesCache.getInstance(project)
-      cache.getMethodsByName(referer.fixtureMethodName, GlobalSearchScope.projectScope(project)).map(createReference)
+      cache.getMethodsByName(referer.fixtureMethodName, searchScope(project)).map(createReference)
   }
 
   override def handleElementRename(newElementName: String): PsiElement = {

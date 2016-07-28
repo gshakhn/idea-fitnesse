@@ -1,8 +1,8 @@
 package fitnesse.idea.fixturemethod
 
 import com.intellij.psi.ResolveResult
-import com.intellij.psi.search.GlobalSearchScope
 import fitnesse.idea.etc.Regracer
+import fitnesse.idea.etc.SearchScope.searchScope
 import fitnesse.idea.scenariotable.ScenarioNameIndex
 
 import scala.collection.JavaConversions._
@@ -25,6 +25,6 @@ class MethodOrScenarioReference(referer: FixtureMethod) extends MethodReference(
 //  }
 
   protected def getReferencedScenarios: Seq[ResolveResult] = {
-    ScenarioNameIndex.INSTANCE.get(referer.fixtureMethodName, project, GlobalSearchScope.projectScope(project)).map(createReference).toSeq
+    ScenarioNameIndex.INSTANCE.get(referer.fixtureMethodName, project, searchScope(project)).map(createReference).toSeq
   }
 }

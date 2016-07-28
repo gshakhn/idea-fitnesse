@@ -5,8 +5,8 @@ import java.util
 import com.intellij.codeInsight.daemon.{RelatedItemLineMarkerInfo, RelatedItemLineMarkerProvider}
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.openapi.project.Project
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.{PsiClass, PsiElement, PsiIdentifier}
+import fitnesse.idea.etc.SearchScope.searchScope
 import fitnesse.idea.filetype.FitnesseFileType
 
 
@@ -30,6 +30,6 @@ class FitNesseLineMarkerProvider extends RelatedItemLineMarkerProvider {
   def findFixtureClasses(project: Project, key: PsiIdentifier): util.Collection[FixtureClass] = {
     val className = key.getText
     
-    FixtureClassIndex.INSTANCE.get(className, project, GlobalSearchScope.allScope(project))
+    FixtureClassIndex.INSTANCE.get(className, project, searchScope(project))
   }
 }
