@@ -1,7 +1,7 @@
 package fitnesse.idea.refactoring
 
-import com.intellij.codeInsight.{TargetElementUtilBase, TargetElementEvaluator}
-import com.intellij.psi.{PsiReference, PsiElement}
+import com.intellij.codeInsight.{TargetElementEvaluator, TargetElementUtil}
+import com.intellij.psi.{PsiElement, PsiReference}
 import fitnesse.idea.fixtureclass.FixtureClass
 
 // This class acts as a workaround, to make sure the right element is used to do the rename,
@@ -13,7 +13,7 @@ class FitnesseTargetElementEvaluator extends TargetElementEvaluator {
   override def getElementByReference(psiReference: PsiReference, flags: Int): PsiElement = {
     if (psiReference.getElement.isInstanceOf[FixtureClass]) {
       psiReference.resolve
-    } else if ((flags & TargetElementUtilBase.ELEMENT_NAME_ACCEPTED) != 0) {
+    } else if ((flags & TargetElementUtil.ELEMENT_NAME_ACCEPTED) != 0) {
       psiReference.getElement
     } else {
       psiReference.resolve
