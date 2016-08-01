@@ -6,7 +6,7 @@ env:
   - IDEA_VERSION=15
   - IDEA_VERSION=16
 install: ./gradlew extractIdeaSdk
-script: ./gradlew test dist
+script: ./gradlew test dist -Pversion=${TRAVIS_TAG:-wip}
 deploy:
   provider: releases
   api_key:
