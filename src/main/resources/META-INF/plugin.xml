@@ -5,6 +5,12 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.5.1
+
+ * FitNesse did hide all unused classes and methods, now only the classes and methods used by wiki pages are referenced
+ * Use project scope everywhere (fixture classes used module scope)
+ * Upgrade FitNesse to 20160728 (snapshot) so escaped tables with "<type>:<fixture>" notation are handled propely
+
 1.5.0
 
  * Add option to not use the FitNesse jar bundled with the plugin when executing tests
