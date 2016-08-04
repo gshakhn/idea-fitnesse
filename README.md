@@ -44,7 +44,7 @@ Participating
 
 If you want to help out with the plugin, please check the [wiki] for tasks that are still to be done.
 
-To develop on the plugin you'll need IntelliJ (14).
+To develop on the plugin you'll need IntelliJ (16).
 
 Make sure the following plugins are enabled:
 
