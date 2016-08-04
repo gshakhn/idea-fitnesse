@@ -39,7 +39,7 @@ trait DecisionInputImpl extends ScalaFriendlyStubBasedPsiElementBase[DecisionInp
 
   override def parameters = disgraceMethodName(name) :: Nil
 
-  def returnType = ReturnType.Void
+  override def returnType = ReturnType.Void
 
   override def name = source match {
     case STUB => getStub.name
