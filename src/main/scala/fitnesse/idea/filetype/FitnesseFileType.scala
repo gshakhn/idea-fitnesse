@@ -1,6 +1,6 @@
 package fitnesse.idea.filetype
 
-import com.intellij.openapi.fileTypes.LanguageFileType
+import com.intellij.openapi.fileTypes.{ExtensionFileNameMatcher, LanguageFileType}
 import com.intellij.openapi.util.IconLoader
 
 class FitnesseFileType extends LanguageFileType(FitnesseLanguage.INSTANCE) {
@@ -16,5 +16,7 @@ class FitnesseFileType extends LanguageFileType(FitnesseLanguage.INSTANCE) {
 object FitnesseFileType {
   final val INSTANCE = new FitnesseFileType
   final val FILE_ICON = IconLoader.getIcon("/fitnesse/idea/filetype/FitNesseLogo.png")
-  final val FILE_NAME = "content.txt"
+  final val CONTENT_TXT_NAME = "content.txt"
+  final val WIKI_FILE_EXTENSION = "wiki"
+  final val WIKI_FILE_EXTENSION_MATCHER = new ExtensionFileNameMatcher(WIKI_FILE_EXTENSION)
 }

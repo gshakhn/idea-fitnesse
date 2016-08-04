@@ -21,7 +21,7 @@ class WikiLinkReference(element: WikiLink) extends PsiReferenceBase[WikiLink](el
 
     targetDir match {
       case null => null
-      case _ => targetDir.findFile(FitnesseFileType.FILE_NAME)
+      case _ => targetDir.findFile(FitnesseFileType.CONTENT_TXT_NAME)
     }
   }
 

@@ -4,6 +4,7 @@ import com.intellij.openapi.fileTypes.{ExactFileNameMatcher, FileTypeConsumer, F
 
 class FitnesseFileTypeFactory extends FileTypeFactory {
   def createFileTypes(consumer: FileTypeConsumer): Unit = {
-    consumer.consume(FitnesseFileType.INSTANCE, new ExactFileNameMatcher(FitnesseFileType.FILE_NAME))
+    consumer.consume(FitnesseFileType.INSTANCE, new ExactFileNameMatcher(FitnesseFileType.CONTENT_TXT_NAME))
+    consumer.consume(FitnesseFileType.INSTANCE, FitnesseFileType.WIKI_FILE_EXTENSION_MATCHER)
   }
 }

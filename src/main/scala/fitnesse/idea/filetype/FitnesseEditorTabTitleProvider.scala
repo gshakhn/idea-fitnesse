@@ -6,7 +6,7 @@ import com.intellij.openapi.vfs.VirtualFile
 
 class FitnesseEditorTabTitleProvider extends EditorTabTitleProvider {
   override def getEditorTabTitle(project: Project, virtualFile: VirtualFile): String = {
-    if (virtualFile.getName == FitnesseFileType.FILE_NAME) {
+    if (virtualFile.getName == FitnesseFileType.CONTENT_TXT_NAME) {
       virtualFile.getParent.getName
     } else {
       null

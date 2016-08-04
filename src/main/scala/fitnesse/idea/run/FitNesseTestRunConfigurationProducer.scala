@@ -63,12 +63,12 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
         } else {
           None
         }
-      case Some(elem: PsiElement) =>
+      case Some(elem: PsiElement) if elem.getContainingFile.getFileType == FitnesseFileType.INSTANCE =>
         val file = elem.getContainingFile
-        if (file.getFileType == FitnesseFileType.INSTANCE) {
-          Some(file.getParent.getVirtualFile)
-        } else {
-          None
+        file.getName match {
+          case FitnesseFileType.CONTENT_TXT_NAME => Some(file.getParent.getVirtualFile)
+          case name if FitnesseFileType.WIKI_FILE_EXTENSION_MATCHER.accept(name) => Some(file.getVirtualFile)
+          case _ => None
         }
       case _ => None
     }
@@ -84,7 +84,12 @@ class FitNesseTestRunConfigurationProducer extends JavaRunConfigurationProducerB
   }
 
   def makeWikiPageName(fitnesseRoot: VirtualFile, wikiPageFile: VirtualFile) = {
-    VfsUtilCore.getRelativePath(wikiPageFile, fitnesseRoot, '.')
+    val pagePath = VfsUtilCore.getRelativePath(wikiPageFile, fitnesseRoot, '.')
+    if (FitnesseFileType.WIKI_FILE_EXTENSION_MATCHER.accept(wikiPageFile.getName)) {
+      pagePath.substring(0, pagePath.length - FitnesseFileType.WIKI_FILE_EXTENSION.length - 1)
+    } else {
+      pagePath
+    }
   }
 }
 

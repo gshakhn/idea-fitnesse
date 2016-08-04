@@ -6,10 +6,6 @@ import org.scalatest.mock.MockitoSugar
 
 class FitNesseTestRunConfigurationProducerTest extends ParserSuite with MockitoSugar {
 
-  override protected def beforeAll(): Unit = {
-    super.beforeAll()
-  }
-
   test("should retrieve wiki page name") {
 
     val producer = new FitNesseTestRunConfigurationProducer
@@ -27,6 +23,18 @@ class FitNesseTestRunConfigurationProducerTest extends ParserSuite with MockitoS
     val fitnesseRoot = new MockVirtualFile(true, "FitNesseRoot")
     val wikiSuitePageFile = new MockVirtualFile(true, "SuitePage")
     val wikiPageFile = new MockVirtualFile(true, "TestPage")
+    wikiSuitePageFile.setParent(fitnesseRoot)
+    wikiPageFile.setParent(wikiSuitePageFile)
+    assertResult("SuitePage.TestPage") {
+      producer.makeWikiPageName(fitnesseRoot, wikiPageFile)
+    }
+  }
+
+  test("should remove extension from .wiki files") {
+    val producer = new FitNesseTestRunConfigurationProducer
+    val fitnesseRoot = new MockVirtualFile(true, "FitNesseRoot")
+    val wikiSuitePageFile = new MockVirtualFile(true, "SuitePage")
+    val wikiPageFile = new MockVirtualFile(true, "TestPage.wiki")
     wikiSuitePageFile.setParent(fitnesseRoot)
     wikiPageFile.setParent(wikiSuitePageFile)
     assertResult("SuitePage.TestPage") {
