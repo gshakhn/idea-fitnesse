@@ -5,6 +5,10 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+1.6.0
+
+ * Support new .wiki file format
+
 1.5.1
 
  * FitNesse did hide all unused classes and methods, now only the classes and methods used by wiki pages are referenced

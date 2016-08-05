@@ -2,7 +2,10 @@ package fitnesse.idea.filetype
 
 import com.intellij.ide.actions.{CreateFileFromTemplateDialog, CreateFromTemplateAction}
 import com.intellij.openapi.project.{DumbAware, Project}
+import com.intellij.openapi.ui.InputValidator
 import com.intellij.psi.{PsiDirectory, PsiFile}
+import fitnesse.wiki.PathParser
+import fitnesse.wikitext.parser.WikiWordBuilder
 
 class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNesse File", "Creates a FitNesse test/suite/static page", FitnesseFileType.FILE_ICON) with DumbAware {
 
@@ -11,6 +14,11 @@ class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNes
       .addKind("Test page", FitnesseFileType.FILE_ICON, "TestPage")
       .addKind("Suite page", FitnesseFileType.FILE_ICON, "SuitePage")
       .addKind("Static page", FitnesseFileType.FILE_ICON, "StaticPage")
+        .setValidator(new InputValidator {
+          override def checkInput(s: String): Boolean = PathParser.isSingleWikiWord(s)
+
+          override def canClose(s: String): Boolean = checkInput(s)
+        })
   }
 
   override def getActionName(directory: PsiDirectory, newName: String, templateName: String): String =
