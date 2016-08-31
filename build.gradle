@@ -1,22 +1,12 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.scoverage:gradle-scoverage:1.0.9'
-    }
-}
-
 plugins {
     id 'scala'
     id 'idea'
-    id 'com.github.maiflai.scalatest' version '0.9'
-    id "de.undercouch.download" version "3.0.0"
+    id 'com.github.maiflai.scalatest' version '0.14'
+    id "de.undercouch.download" version "3.1.1"
 }
-apply plugin: 'scoverage'
 
 description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
 
@@ -91,11 +81,6 @@ dependencies {
     // Scalatest requires:
     testRuntime 'org.pegdown:pegdown:1.1.0'
     testRuntime files("$jdkHome/lib/tools.jar")
-
-    // task testScoverage
-    scoverage "org.scala-lang:scala-library:${SCALA_VERSION}"
-    scoverage 'org.scoverage:scalac-scoverage-plugin_2.11:1.1.1'
-    scoverage 'org.scoverage:scalac-scoverage-runtime_2.11:1.1.1'
 }
 
 sourceCompatibility = IDEA.JAVA
@@ -148,7 +133,7 @@ task dist(type: Zip, dependsOn: [jar, test]) {
 
 compileScala {
     dependsOn extractIdeaSdk
-    doLast{
+    doLast {
         ant {
             println "Instrumenting form classes..."
             taskdef(name: "instrumentIdeaExtensions",
@@ -164,11 +149,6 @@ compileScala {
             )
         }
     }
-}
-
-task coverage {
-    dependsOn 'testScoverage'
-    dependsOn 'reportScoverage'
 }
 
 // ========= Workspace setup tasks ========= //
@@ -213,5 +193,5 @@ idea {
 ideaProject.dependsOn extractIdeaSdk
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.13'
+    gradleVersion = '3.0'
 }
