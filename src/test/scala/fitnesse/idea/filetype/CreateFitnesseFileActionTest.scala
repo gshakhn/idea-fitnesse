@@ -19,24 +19,32 @@ class CreateFitnesseFileActionTest extends ParserSuite with BeforeAndAfter {
     }
   }
 
-  test("create FitNesse file in directory") {
+  test("create FitNesse file name") {
+    val dir = new MyMockPsiDirectory("root")
+    assertResult ("NewPage.wiki") {
+      val contentFile = action.createFile("NewPage", "TestPage", dir)
+      contentFile.getVirtualFile.getName
+    }
+  }
+
+  test("create old style FitNesse file in directory") {
     val dir = new MyMockPsiDirectory("root")
     assertResult ("NewPage") {
-      val contentFile = action.createFile("NewPage", "TestPage", dir)
+      val contentFile = action.createFile("NewPage", "OldStyleTestPage", dir)
       contentFile.getParent.getName
     }
   }
 
-  test("properties file for test page") {
+  test("old style properties file for test page") {
     val dir = new MyMockPsiDirectory("root")
-    val propertiesXml = action.createPropertiesFileContent("TestPage")
+    val propertiesXml = action.createPropertiesFileContent("OldStyleTestPage")
 
     assert(propertiesXml.contains("<Test/>"))
   }
 
-  test("properties file for suite page") {
+  test("old style properties file for suite page") {
     val dir = new MyMockPsiDirectory("root")
-    val propertiesXml = action.createPropertiesFileContent("SuitePage")
+    val propertiesXml = action.createPropertiesFileContent("OldStyleSuitePage")
 
     assert(propertiesXml.contains("<Suite/>"))
   }

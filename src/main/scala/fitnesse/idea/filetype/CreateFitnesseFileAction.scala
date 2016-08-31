@@ -5,20 +5,21 @@ import com.intellij.openapi.project.{DumbAware, Project}
 import com.intellij.openapi.ui.InputValidator
 import com.intellij.psi.{PsiDirectory, PsiFile}
 import fitnesse.wiki.PathParser
-import fitnesse.wikitext.parser.WikiWordBuilder
 
-class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNesse File", "Creates a FitNesse test/suite/static page", FitnesseFileType.FILE_ICON) with DumbAware {
+class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNesse Page", "Creates a FitNesse test/suite/static page", FitnesseFileType.FILE_ICON) with DumbAware {
 
   override def buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder): Unit = {
     builder.setTitle("New FitNesse page")
       .addKind("Test page", FitnesseFileType.FILE_ICON, "TestPage")
       .addKind("Suite page", FitnesseFileType.FILE_ICON, "SuitePage")
       .addKind("Static page", FitnesseFileType.FILE_ICON, "StaticPage")
-        .setValidator(new InputValidator {
-          override def checkInput(s: String): Boolean = PathParser.isSingleWikiWord(s)
-
-          override def canClose(s: String): Boolean = checkInput(s)
-        })
+      .addKind("Test page (old style)", FitnesseFileType.FILE_ICON, "OldStyleTestPage")
+      .addKind("Suite page (old style)", FitnesseFileType.FILE_ICON, "OldStyleSuitePage")
+      .addKind("Static page (old style)", FitnesseFileType.FILE_ICON, "OldStyleStaticPage")
+      .setValidator(new InputValidator {
+        override def checkInput(s: String): Boolean = PathParser.isSingleWikiWord(s)
+        override def canClose(s: String): Boolean = checkInput(s)
+      })
   }
 
   override def getActionName(directory: PsiDirectory, newName: String, templateName: String): String =
@@ -27,6 +28,35 @@ class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNes
   }
 
   override def createFile(name: String, templateName: String, psiDirectory: PsiDirectory): PsiFile = {
+    if (templateName.startsWith("OldStyle")) {
+      createOldStyleFile(name, templateName, psiDirectory)
+    } else {
+      createSinglePageFile(name, templateName, psiDirectory)
+    }
+  }
+
+
+  def createSinglePageFile(name: String, templateName: String, psiDirectory: PsiDirectory): PsiFile = {
+    val wikiFile = psiDirectory.createFile(s"${name}.wiki")
+    wikiFile.getVirtualFile.setBinaryContent(createWikiFileContent(templateName).getBytes("UTF-8"))
+    wikiFile
+  }
+
+  def createWikiFileContent(templateName: String) = templateName match {
+    case "TestPage" =>
+      """---
+        |Test
+        |---
+        |""".stripMargin
+    case "SuitePage" =>
+      """---
+        |Suite
+        |---
+        |""".stripMargin
+    case "StaticPage" => ""
+  }
+
+  def createOldStyleFile(name: String, templateName: String, psiDirectory: PsiDirectory): PsiFile = {
     val pageDir = psiDirectory.createSubdirectory(name)
     val contentFile = pageDir.createFile("content.txt")
     val propertiesFile = pageDir.createFile("properties.xml")
@@ -35,7 +65,7 @@ class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNes
     contentFile
   }
 
-  def createPropertiesFileContent(templateName: String): String = {
+  def createPropertiesFileContent(templateName: String): String =
     """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
       |<properties>
       |<Edit/>
@@ -50,9 +80,8 @@ class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNes
       |<WhereUsed/>
       |</properties>
       |""".stripMargin.replace("@@", templateName match {
-      case "TestPage" => "<Test/>\n"
-      case "SuitePage" => "<Suite/>\n"
+      case "OldStyleTestPage" => "<Test/>\n"
+      case "OldStyleSuitePage" => "<Suite/>\n"
       case _ => ""
     })
-  }
 }
