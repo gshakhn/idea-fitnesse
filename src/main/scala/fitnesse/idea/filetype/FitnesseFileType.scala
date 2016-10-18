@@ -19,4 +19,5 @@ object FitnesseFileType {
   final val CONTENT_TXT_NAME = "content.txt"
   final val WIKI_FILE_EXTENSION = "wiki"
   final val WIKI_FILE_EXTENSION_MATCHER = new ExtensionFileNameMatcher(WIKI_FILE_EXTENSION)
+  final val FITNESSE_ROOT = "FitNesseRoot"
 }

@@ -10,7 +10,7 @@ import com.intellij.execution.configurations._
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.{ExecutionEnvironment, ProgramRunner}
 import com.intellij.execution.testframework.sm.SMTestRunnerConnectionUtil
-import com.intellij.execution.testframework.sm.runner.{SMTestLocator, SMTRunnerConsoleProperties}
+import com.intellij.execution.testframework.sm.runner.{SMTRunnerConsoleProperties, SMTestLocator}
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.util.{JavaParametersUtil, ProgramParametersConfigurator, ProgramParametersUtil}
 import com.intellij.openapi.extensions.Extensions
@@ -19,13 +19,14 @@ import com.intellij.openapi.options.{SettingsEditor, SettingsEditorGroup}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.util.{InvalidDataException, JDOMExternalizer, WriteExternalException}
-import com.intellij.openapi.vfs.{VirtualFileManager, VirtualFile}
+import com.intellij.openapi.vfs.{VirtualFile, VirtualFileManager}
 import com.intellij.psi.{PsiElement, PsiManager}
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.PathUtil
 import fitnesse.ConfigurationParameter._
 import fitnesse.components.ComponentFactory
 import fitnesse.idea.etc.FitnesseBundle
+import fitnesse.idea.filetype.FitnesseFileType
 import fitnesse.idea.rt.IntelliJFormatter
 import fitnesse.wiki.fs.FileSystemPageFactory
 import fitnesse.wiki.{PathParser, SystemVariableSource}
@@ -34,7 +35,6 @@ import fitnesseMain.FitNesseMain
 import org.jdom.Element
 
 import scala.beans.BeanProperty
-
 import scala.collection.JavaConversions._
 
 class FitnesseRunConfiguration(testFrameworkName: String, project: Project, factory: ConfigurationFactory) extends ApplicationConfiguration(testFrameworkName, project, factory) {
@@ -43,7 +43,7 @@ class FitnesseRunConfiguration(testFrameworkName: String, project: Project, fact
   var wikiPageName: String = null
 
   @BeanProperty
-  var fitnesseRoot: String = "FitNesseRoot"
+  var fitnesseRoot: String = FitnesseFileType.FITNESSE_ROOT
 
   @BeanProperty
   var configFile: String = null

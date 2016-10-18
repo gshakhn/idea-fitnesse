@@ -15,7 +15,7 @@ import scala.collection.JavaConversions._
 class FixtureClassReference(referer: FixtureClass) extends PsiPolyVariantReferenceBase[FixtureClass](referer, new TextRange(0, referer.getTextLength)) {
 
   val project = referer.getProject
-  def module = Option(ModuleUtilCore.findModuleForPsiElement(referer))
+  lazy val module = Option(ModuleUtilCore.findModuleForPsiElement(referer))
 
   private def table = referer match {
     case impl: FixtureClassImpl => impl.table
