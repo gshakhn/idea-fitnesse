@@ -31,6 +31,9 @@ ext {
 // Older versions:
 //  - IDEA_ID = 'IC-139.1603.1', IDEA_URL = 'http://download.jetbrains.com/idea/ideaIC-14.0.4.tar.gz'
 
+// Check out https://confluence.jetbrains.com/display/IntelliJIDEA/Previous+IntelliJ+IDEA+Releases
+// for the versions available.
+
 def IDEA_VERSIONS = [
     15: [
         ID: 'IC-143.2370.31',
