@@ -15,7 +15,7 @@ description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse
 
 allprojects {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             url "http://dl.bintray.com/fitnesse/edge"
         }
