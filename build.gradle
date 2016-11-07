@@ -42,9 +42,9 @@ def IDEA_VERSIONS = [
         JAVA: '1.8'
     ],
     16: [
-        ID: 'IC-145.1617.8',
-        URL: 'https://download.jetbrains.com/idea/ideaIC-2016.1.3.tar.gz',
-        CSUM: 'd1cd3f9fd650c00ba85181da6d66b4b80b8e48ce5f4f15b5f4dc67453e96a179',
+        ID: 'IC-145.2070.6',
+        URL: 'https://download.jetbrains.com/idea/ideaIC-2016.1.4.tar.gz',
+        CSUM: 'b64767d87dbaae7e1511666fc032cf356e326770090e3a141969909d09670345',
         JAVA: '1.8'
     ]
 ]
