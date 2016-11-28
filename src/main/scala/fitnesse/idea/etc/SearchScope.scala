@@ -8,5 +8,5 @@ import com.intellij.psi.search.GlobalSearchScope
   */
 object SearchScope {
 
-  def searchScope(project: Project) = GlobalSearchScope.projectScope(project)
+  def searchScope(project: Project) = GlobalSearchScope.allScope(project)
 }

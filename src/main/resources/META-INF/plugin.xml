@@ -7,9 +7,10 @@
     <![CDATA[<pre>
 1.6.0
 
- * Support new .wiki file format supported by FitNesse 20160831 and up
+ * Support new .wiki file format supported by FitNesse 20161106 and up
  * Support wiki page references.
    `.Absolute.PagePath`, `<Uncle.PagePath`, `>ChildPage`, `~ChildPage` and `SiblingPage` links are supported when used in text, not in tables.
+ * The search base for fixtures now also includes libraries
 
 1.5.1
 
