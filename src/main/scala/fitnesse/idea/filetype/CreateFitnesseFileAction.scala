@@ -37,10 +37,12 @@ class CreateFitnesseFileAction extends CreateFromTemplateAction[PsiFile]("FitNes
 
 
   def createSinglePageFile(name: String, templateName: String, psiDirectory: PsiDirectory): PsiFile = {
+    if ("SuitePage".equals(templateName)) {
+      val pageDir = psiDirectory.createSubdirectory(s"${name}")
+    }
     val wikiFile = psiDirectory.createFile(s"${name}.wiki")
     wikiFile.getVirtualFile.setBinaryContent(createWikiFileContent(templateName).getBytes("UTF-8"))
     wikiFile
-    case "SuitePage" => val pageDir = psiDirectory.createSubdirectory(name)
   }
 
   def createWikiFileContent(templateName: String) = templateName match {
