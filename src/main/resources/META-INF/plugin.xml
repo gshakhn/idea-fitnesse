@@ -5,6 +5,12 @@
   <vendor>George Shakhnazaryan, Arjan Molenaar</vendor>
   <change-notes>
     <![CDATA[<pre>
+
+1.7.0
+
+ * New suite page now also creates a folder for child pages, thanks to @keetron and @fhoeben.
+ * New suite page will contain a !contents line.
+
 1.6.0
 
  * Support new .wiki file format supported by FitNesse 20161106 and up
