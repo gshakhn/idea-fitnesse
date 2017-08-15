@@ -5,6 +5,7 @@ idea-fitnesse_rt/build/*
 classes/*
 projectFilesBackup*/
 .gradle/*
+.gradletasknamecache
 out/*
 lib/*
 idea-sdk.tar.gz
