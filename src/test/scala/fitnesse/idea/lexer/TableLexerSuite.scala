@@ -403,4 +403,44 @@ class TableLexerSuite extends LexerSuite {
       lex("|!-ArrangementToOrderV1-!|\n|!define ArrangementToOrderAccountNumber {125673051}|\n")
     }
   }
+
+  test("Table offsets should not overlap") {
+
+    //  | START_TABLE (impl START_ROW + START_CELL) [WORD]
+    //
+    assertResult(
+      List(
+        // (FitnesseTokenType.TABLE_START, 0, 1, "|"),
+        (FitnesseTokenType.TABLE_START, 0, 5, "||\n||"),
+        (FitnesseTokenType.ROW_START,   1, 4, "|\n|"),
+        (FitnesseTokenType.CELL_START,  1, 4, "|\n|"),
+        (FitnesseTokenType.CELL_END,    1, 4, "|\n|"),
+        (FitnesseTokenType.ROW_END,     1, 4, "|\n|"),
+        (FitnesseTokenType.ROW_START,   4, 5, "|"),
+        (FitnesseTokenType.CELL_START,  4, 5, "|"),
+        (FitnesseTokenType.CELL_END,    4, 5, "|"),
+        (FitnesseTokenType.ROW_END,     4, 5, "|"),
+        (FitnesseTokenType.TABLE_END,   4, 5, "|")
+      )) {
+      lexWithOffset("||\n||")
+    }
+  }
+
+  test("Escaped table offsets should not overlap") {
+    assertResult(
+      List(
+        (FitnesseTokenType.TABLE_START, 0, 6, "!||\n||"),
+        (FitnesseTokenType.ROW_START,   2, 5, "|\n|"),
+        (FitnesseTokenType.CELL_START,  2, 5, "|\n|"),
+        (FitnesseTokenType.CELL_END,    2, 5, "|\n|"),
+        (FitnesseTokenType.ROW_END,     2, 5, "|\n|"),
+        (FitnesseTokenType.ROW_START,   5, 6, "|"),
+        (FitnesseTokenType.CELL_START,  5, 6, "|"),
+        (FitnesseTokenType.CELL_END,    5, 6, "|"),
+        (FitnesseTokenType.ROW_END,     5, 6, "|"),
+        (FitnesseTokenType.TABLE_END,   5, 6, "|")
+      )) {
+      lexWithOffset("!||\n||")
+    }
+  }
 }

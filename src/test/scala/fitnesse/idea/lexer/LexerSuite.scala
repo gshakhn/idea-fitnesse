@@ -18,4 +18,17 @@ trait LexerSuite extends FunSuite with Matchers {
     }
     lexedTokens.toList
   }
+
+  def lexWithOffset(text: String, lexer: Lexer = new FitnesseLexer) = {
+    val lexedTokens = new mutable.ListBuffer[Tuple4[IElementType, Int, Int, String]]()
+    lexer.start(text)
+    while (lexer.getTokenType != null) {
+      val tokenType = lexer.getTokenType
+      val tokenText = lexer.getBufferSequence.subSequence(lexer.getTokenStart, lexer.getTokenEnd).toString
+      lexedTokens += new Tuple4(tokenType, lexer.getTokenStart, lexer.getTokenEnd, tokenText)
+      lexer.advance()
+    }
+    lexedTokens.toList
+  }
+
 }
