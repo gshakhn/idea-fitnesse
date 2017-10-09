@@ -64,7 +64,7 @@ trait PsiSuite extends ParserSuite with MockitoSugar {
     assert(fileNode.isParsed)
     val indexFile: File = File.createTempFile("idea", "fitnesse")
     val persistentStringEnumerator = new PersistentStringEnumerator(indexFile)
-    val stubSerializationHelper = new StubSerializationHelper(persistentStringEnumerator)
+    val stubSerializationHelper = new StubSerializationHelper(persistentStringEnumerator, myProject)
 
     stubSerializationHelper.assignId(PsiFileStubImpl.TYPE)
     stubSerializationHelper.assignId(FitnesseElementType.DECISION_INPUT)
