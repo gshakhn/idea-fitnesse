@@ -3,6 +3,7 @@ package fitnesse.idea.lexer
 import com.intellij.lexer.LexerBase
 import com.intellij.psi.tree.IElementType
 import fitnesse.wikitext.parser._
+import fitnesse.idea.lexer.FitnesseLexer._
 
 import scala.collection.JavaConversions._
 
@@ -38,16 +39,34 @@ class FitnesseLexer extends LexerBase {
 
   override def advance(): Unit = {
     state += 1
-    symbolList = fetchNextSymbol()
+    symbolList = fetchNextSymbols()
 
-    symbolList.headOption match {
-      case Some(symbol) if !symbol.hasOffset => advance()
-      case Some(symbol) if symbol.getType eq SymbolType.SymbolList => advance()
+    // if TABLE_START, ROW_START -> reduce to TABLE_START, fix offsets
+    // drop all CELL_START | ROW_START -> advance
+    // CELL_END, ROW_END -> advance to ROW_END
+    // ROW_END, TABLE_END -> advance to TABLE_END
+
+    symbolList match {
+      case symbol :: _ if !symbol.hasOffset => advance()
+      case LexerSymbol(FitnesseTokenType.ROW_END, _, _) :: LexerSymbol(FitnesseTokenType.TABLE_END, _, _) :: _ =>
+        advance()
+      case LexerSymbol(FitnesseTokenType.CELL_END, _, _) :: LexerSymbol(FitnesseTokenType.ROW_END, _, _) :: _ =>
+        advance()
+      case symbol :: _ => symbol.getType match {
+        case SymbolType.SymbolList   => advance()
+        case Table.tableRow          => advance()
+        case Table.tableCell         => advance()
+        case table: ColoredSlimTable =>
+          // Fetch new simples to ensure the table contents are properly parsed.
+          symbolList = LexerSymbol(FitnesseTokenType.TABLE_START, symbol.getStartOffset, symbol.getChildren.get(0).getStartOffset) :: fetchNextSymbols()
+        case _ =>
+      }
       case _ =>
     }
   }
-  
-  private def fetchNextSymbol(): List[Symbol] = {
+
+  // Lazily evaluate the
+  private def fetchNextSymbols(): List[Symbol] = {
     def parseSymbol: List[Symbol] = {
       specification.parseSymbol(parser, scanner) match {
         case parsedSymbol if parsedSymbol.isNothing =>
@@ -79,19 +98,19 @@ class FitnesseLexer extends LexerBase {
   override def getTokenType: IElementType = {
     symbolList match {
       case Nil => null
+      case LexerSymbol(elementType, _, _) :: _ => elementType
       case symbol :: _ => symbol.getType match {
-        case FitnesseLexer.LexerSymbolType(elementType) => elementType
-        case _: WikiWord => FitnesseTokenType.WIKI_WORD
-        case _: Collapsible => FitnesseTokenType.COLLAPSIBLE_START
-        case SymbolType.Bold => FitnesseTokenType.BOLD
-        case SymbolType.Italic => FitnesseTokenType.ITALIC
+        case _: WikiWord           => FitnesseTokenType.WIKI_WORD
+        case _: Collapsible        => FitnesseTokenType.COLLAPSIBLE_START
+        case SymbolType.Bold       => FitnesseTokenType.BOLD
+        case SymbolType.Italic     => FitnesseTokenType.ITALIC
         case SymbolType.Whitespace => FitnesseTokenType.WHITE_SPACE
-        case SymbolType.Newline => FitnesseTokenType.LINE_TERMINATOR
-        case _: ColoredSlimTable => FitnesseTokenType.TABLE_START
-        case Table.tableRow => FitnesseTokenType.ROW_START
-        case Table.tableCell => FitnesseTokenType.CELL_START
-        case SymbolType.Colon => FitnesseTokenType.COLON
-        case _ => FitnesseTokenType.WORD
+        case SymbolType.Newline    => FitnesseTokenType.LINE_TERMINATOR
+        case _: ColoredSlimTable   => FitnesseTokenType.TABLE_START
+        case Table.tableRow        => FitnesseTokenType.ROW_START
+        case Table.tableCell       => FitnesseTokenType.CELL_START
+        case SymbolType.Colon      => FitnesseTokenType.COLON
+        case _                     => FitnesseTokenType.WORD
       }
     }
   }
@@ -114,20 +133,17 @@ class FitnesseLexer extends LexerBase {
 }
 
 object FitnesseLexer {
-  final val TABLE_END = LexerSymbolType(FitnesseTokenType.TABLE_END)
-  final val TABLE_ROW_END = LexerSymbolType(FitnesseTokenType.ROW_END)
-  final val TABLE_CELL_END = LexerSymbolType(FitnesseTokenType.CELL_END)
-  final val COLLAPSIBLE_END = LexerSymbolType(FitnesseTokenType.COLLAPSIBLE_END)
 
-  case class LexerSymbolType(elementType: IElementType) extends SymbolType(elementType.toString)
+  case class LexerSymbol(elementType: IElementType, start: Int, end: Int) extends Symbol(new SymbolType(elementType.toString), "", start, end)
 
   def terminatorFor(symbol: Symbol): Option[Symbol] = {
     val startOffset = if (lastChild(symbol).getEndOffset == symbol.getEndOffset) lastChild(symbol).getStartOffset else lastChild(symbol).getEndOffset
+
     symbol.getType match {
-      case _ : ColoredSlimTable => Some(new Symbol(TABLE_END, "", startOffset, symbol.getEndOffset))
-      case _ : Collapsible => Some(new Symbol(COLLAPSIBLE_END, "", lastChild(symbol).getEndOffset, symbol.getEndOffset))
-      case s if s eq Table.tableRow => Some(new Symbol(TABLE_ROW_END, "", startOffset, symbol.getEndOffset))
-      case s if s eq Table.tableCell => Some(new Symbol(TABLE_CELL_END, "", startOffset, symbol.getEndOffset))
+      case _ : ColoredSlimTable      => Some(LexerSymbol(FitnesseTokenType.TABLE_END, startOffset, symbol.getEndOffset))
+      case _ : Collapsible           => Some(LexerSymbol(FitnesseTokenType.COLLAPSIBLE_END, lastChild(symbol).getEndOffset, symbol.getEndOffset))
+      case s if s eq Table.tableRow  => Some(LexerSymbol(FitnesseTokenType.ROW_END, startOffset, symbol.getEndOffset))
+      case s if s eq Table.tableCell => Some(LexerSymbol(FitnesseTokenType.CELL_END, startOffset, symbol.getEndOffset))
       case _ => None
     }
   }

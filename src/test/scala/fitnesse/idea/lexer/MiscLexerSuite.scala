@@ -59,17 +59,10 @@ class MiscLexerSuite extends LexerSuite {
   test("Table that has regular text right after it") {
     assertResult(
       List(
-        (FitnesseTokenType.TABLE_START, "|abc|\n|xyz|\n"),
-        (FitnesseTokenType.ROW_START, "abc|\n|"),
-        (FitnesseTokenType.CELL_START, "abc|\n|"),
+        (FitnesseTokenType.TABLE_START, "|"),
         (FitnesseTokenType.WORD, "abc"),
-        (FitnesseTokenType.CELL_END, "|\n|"),
         (FitnesseTokenType.ROW_END, "|\n|"),
-        (FitnesseTokenType.ROW_START, "xyz|\n"),
-        (FitnesseTokenType.CELL_START, "xyz|\n"),
         (FitnesseTokenType.WORD, "xyz"),
-        (FitnesseTokenType.CELL_END, "|\n"),
-        (FitnesseTokenType.ROW_END, "|\n"),
         (FitnesseTokenType.TABLE_END, "|\n"),
         (FitnesseTokenType.WORD, "some"),
         (FitnesseTokenType.WHITE_SPACE, " "),
@@ -82,19 +75,12 @@ class MiscLexerSuite extends LexerSuite {
   test("Table that has spaces regular text right after it") {
     assertResult(
       List(
-        (FitnesseTokenType.TABLE_START, "| abc |\n|xyz|\n"),
-        (FitnesseTokenType.ROW_START, " abc |\n|"),
-        (FitnesseTokenType.CELL_START, " abc |\n|"),
+        (FitnesseTokenType.TABLE_START, "|"),
         (FitnesseTokenType.WHITE_SPACE, " "),
         (FitnesseTokenType.WORD, "abc"),
         (FitnesseTokenType.WHITE_SPACE, " "),
-        (FitnesseTokenType.CELL_END, "|\n|"),
         (FitnesseTokenType.ROW_END, "|\n|"),
-        (FitnesseTokenType.ROW_START, "xyz|\n"),
-        (FitnesseTokenType.CELL_START, "xyz|\n"),
         (FitnesseTokenType.WORD, "xyz"),
-        (FitnesseTokenType.CELL_END, "|\n"),
-        (FitnesseTokenType.ROW_END, "|\n"),
         (FitnesseTokenType.TABLE_END, "|\n"),
         (FitnesseTokenType.WORD, "some"),
         (FitnesseTokenType.WHITE_SPACE, " "),
@@ -107,17 +93,10 @@ class MiscLexerSuite extends LexerSuite {
   test("Table that has a WikiWord right after it") {
     assertResult(
       List(
-        (FitnesseTokenType.TABLE_START, "|abc|\n|xyz|\n"),
-        (FitnesseTokenType.ROW_START, "abc|\n|"),
-        (FitnesseTokenType.CELL_START, "abc|\n|"),
+        (FitnesseTokenType.TABLE_START, "|"),
         (FitnesseTokenType.WORD, "abc"),
-        (FitnesseTokenType.CELL_END, "|\n|"),
         (FitnesseTokenType.ROW_END, "|\n|"),
-        (FitnesseTokenType.ROW_START, "xyz|\n"),
-        (FitnesseTokenType.CELL_START, "xyz|\n"),
         (FitnesseTokenType.WORD, "xyz"),
-        (FitnesseTokenType.CELL_END, "|\n"),
-        (FitnesseTokenType.ROW_END, "|\n"),
         (FitnesseTokenType.TABLE_END, "|\n"),
         (FitnesseTokenType.WIKI_WORD, "WikiWord")
       )) {
@@ -145,17 +124,10 @@ class MiscLexerSuite extends LexerSuite {
       List(
         (FitnesseTokenType.COLLAPSIBLE_START, "!* title\n|abc|\n|xyz|\n*!"),
         (FitnesseTokenType.WORD, "title"),
-        (FitnesseTokenType.TABLE_START, "|abc|\n|xyz|\n"),
-        (FitnesseTokenType.ROW_START, "abc|\n|"),
-        (FitnesseTokenType.CELL_START, "abc|\n|"),
+        (FitnesseTokenType.TABLE_START, "|"),
         (FitnesseTokenType.WORD, "abc"),
-        (FitnesseTokenType.CELL_END, "|\n|"),
         (FitnesseTokenType.ROW_END, "|\n|"),
-        (FitnesseTokenType.ROW_START, "xyz|\n"),
-        (FitnesseTokenType.CELL_START, "xyz|\n"),
         (FitnesseTokenType.WORD, "xyz"),
-        (FitnesseTokenType.CELL_END, "|\n"),
-        (FitnesseTokenType.ROW_END, "|\n"),
         (FitnesseTokenType.TABLE_END, "|\n"),
         (FitnesseTokenType.COLLAPSIBLE_END, "|\n*!")
       )) {
