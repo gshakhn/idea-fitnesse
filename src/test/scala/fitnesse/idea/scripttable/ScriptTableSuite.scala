@@ -116,7 +116,7 @@ class ScriptTableSuite extends PsiSuite {
     assertCommentRow("| # | this is a comment |")
   }
 
-  test("rows starting with black first cell should be considered comments") {
+  ignore("rows starting with black first cell should be considered comments") {
     assertCommentRow("| | this is a comment |")
   }
 
