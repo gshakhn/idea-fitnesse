@@ -22,6 +22,6 @@ class FitnesseColorSettingsPage extends ColorSettingsPage {
 object FitnesseColorSettingsPage {
   final val DESCRIPTORS = Array(
     new AttributesDescriptor("WikiWord", FitnesseHighlighter.WIKI_WORD),
-    new AttributesDescriptor("Table", FitnesseHighlighter.TABLE_START)
+    new AttributesDescriptor("Table", FitnesseHighlighter.TABLE)
   )
 }
