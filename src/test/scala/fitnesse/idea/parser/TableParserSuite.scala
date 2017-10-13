@@ -101,6 +101,7 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+
   test("Empty cells 1/2") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
@@ -111,9 +112,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "A")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.CELL_END, "|"),
-            Leaf(FitnesseTokenType.WHITE_SPACE, "  ")
+            Leaf(FitnesseTokenType.CELL_END, "|")
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
           Leaf(FitnesseTokenType.TABLE_END,"|")
         ))
       ))
@@ -567,8 +568,8 @@ class TableParserSuite extends ParserSuite {
             ))
           )),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "note")
             )),
@@ -577,12 +578,12 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "comment")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "#")
             )),
@@ -591,12 +592,12 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "comment")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "*")
             )),
@@ -605,19 +606,19 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "comment")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
-          Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+          Node(FitnesseElementType.SCRIPT_ROW, List(
             Leaf(FitnesseTokenType.CELL_END, "|"),
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "comment")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.TABLE_END, "|")
         ))
       ))
@@ -631,8 +632,8 @@ class TableParserSuite extends ParserSuite {
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.SCRIPT_TABLE, List(
           Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
             Node(FitnesseElementType.TABLE_TYPE, List(
               Leaf(FitnesseTokenType.WORD, "script")
             )),
@@ -641,12 +642,12 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
             Node(FitnesseElementType.FIXTURE_CLASS, List(
               Leaf(FitnesseTokenType.WORD, "stuff")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, "  ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
           Node(FitnesseElementType.SCRIPT_ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "foo"),
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
@@ -659,9 +660,9 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "bar"),
               Leaf(FitnesseTokenType.WHITE_SPACE, " "),
               Leaf(FitnesseTokenType.WORD, "field")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, "  ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
           Leaf(FitnesseTokenType.TABLE_END, "|")
         ))
       ))
@@ -764,8 +765,8 @@ class TableParserSuite extends ParserSuite {
               Leaf(FitnesseTokenType.WORD, "scenario")
             )),
             Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
             Node(FitnesseElementType.SCENARIO_NAME, List(
-              Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
               Node(FitnesseElementType.CELL, List(
                 Leaf(FitnesseTokenType.WORD, "stuff")
               )),
@@ -837,21 +838,21 @@ class TableParserSuite extends ParserSuite {
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.IMPORT_TABLE, List(
           Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.TABLE_TYPE, List(
               Leaf(FitnesseTokenType.WORD, "import")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.IMPORT, List(
               Leaf(FitnesseTokenType.WORD, "fixtures")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.TABLE_END, "|")
         ))
       ))
@@ -865,21 +866,21 @@ class TableParserSuite extends ParserSuite {
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.LIBRARY_TABLE, List(
           Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.TABLE_TYPE, List(
               Leaf(FitnesseTokenType.WORD, "library")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.FIXTURE_CLASS, List(
               Leaf(FitnesseTokenType.WORD, "fixtures")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.TABLE_END, "|")
         ))
       ))
@@ -893,16 +894,16 @@ class TableParserSuite extends ParserSuite {
       Node(FitnesseElementType.FILE, List(
         Node(TableElementType.LIBRARY_TABLE, List(
           Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.TABLE_TYPE, List(
               Leaf(FitnesseTokenType.WORD, "library")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Node(FitnesseElementType.ROW, List(
-            Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.FIXTURE_CLASS, List(
               Leaf(FitnesseTokenType.WORD, "fixtures")
             )),
@@ -911,9 +912,9 @@ class TableParserSuite extends ParserSuite {
             Leaf(FitnesseTokenType.WHITE_SPACE, " "),
             Node(FitnesseElementType.CELL, List(
               Leaf(FitnesseTokenType.WORD, "arg")
-            )),
-            Leaf(FitnesseTokenType.WHITE_SPACE, " ")
+            ))
           )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, " "),
           Leaf(FitnesseTokenType.TABLE_END, "|")
         ))
       ))
@@ -925,7 +926,7 @@ class TableParserSuite extends ParserSuite {
   test("partial table") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
-        Node(TableElementType.UNKNOWN_TABLE, List(
+        Node(TableElementType.DECISION_TABLE, List(
           Leaf(FitnesseTokenType.TABLE_START, "|"),
           Node(FitnesseElementType.ROW, List(
           ))

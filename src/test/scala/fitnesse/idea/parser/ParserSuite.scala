@@ -87,7 +87,7 @@ trait ParserSuite extends FunSuite with Matchers with BeforeAndAfterAll {
   case class Node(elementType: IElementType, children: List[Tree]) extends Tree
   case class Leaf(elementType: IElementType, text: String) extends Tree
 
-  def parse(text: String) = {
+  def parse(text: String): Tree = {
     convertToTree(parseFile(text))
   }
 
