@@ -6,6 +6,10 @@
   <change-notes>
     <![CDATA[<pre>
 
+1.8.0
+
+ * Fix copy/paste issue with tables in IntelliJ 2017
+
 1.7.0
 
  * New suite page now also creates a folder for child pages, thanks to @keetron and @fhoeben.
