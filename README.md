@@ -87,10 +87,10 @@ Feel free to fork and submit pull requests. I'll try to get them into the mainli
 [wiki]: https://github.com/amolenaar/idea-fitnesse/wiki
 [Apache License, V2.0]: http://www.apache.org/licenses/LICENSE-2.0
 
-[gh-release-badge]: https://img.shields.io/github/release/gshakhn/idea-fitnesse.svg
-[gh-release]: https://github.com/gshakhn/idea-fitnesse/releases
-[travis-ci-badge]: https://travis-ci.org/gshakhn/idea-fitnesse.svg
-[travis-ci]: https://travis-ci.org/gshakhn/idea-fitnesse
+[gh-release-badge]: https://img.shields.io/github/release/fitnesse/idea-fitnesse.svg
+[gh-release]: https://github.com/fitnesse/idea-fitnesse/releases
+[travis-ci-badge]: https://travis-ci.org/fitnesse/idea-fitnesse.svg
+[travis-ci]: https://travis-ci.org/fitnesse/idea-fitnesse
 [codacy-badge]: https://www.codacy.com/project/badge/655882f037764ee195733a479e0eaaa6
 [codacy]: https://www.codacy.com/app/gshakhn/idea-fitnesse
 [versioneye-badge]: https://www.versioneye.com/user/projects/554989f65d4f9a0b990012e5/badge.svg?style=flat
