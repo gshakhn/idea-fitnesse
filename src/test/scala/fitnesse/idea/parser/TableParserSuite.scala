@@ -671,6 +671,90 @@ class TableParserSuite extends ParserSuite {
     }
   }
 
+  test("Storyboard table with cell separator") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCRIPT_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "storyboard")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.WORD, "stuff")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "param1")
+            ))
+          )),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Node(FitnesseElementType.SCRIPT_ROW, List(
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "foo"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            )),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "bar"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            ))
+          )),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
+      ))
+    ) {
+      parse("|storyboard|stuff|param1|\n|foo field|bar field|")
+    }
+  }
+
+  test("Storyboard table with extra white space") {
+    assertResult(
+      Node(FitnesseElementType.FILE, List(
+        Node(TableElementType.SCRIPT_TABLE, List(
+          Leaf(FitnesseTokenType.TABLE_START, "|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+          Node(FitnesseElementType.ROW, List(
+            Node(FitnesseElementType.TABLE_TYPE, List(
+              Leaf(FitnesseTokenType.WORD, "storyboard")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+            Node(FitnesseElementType.FIXTURE_CLASS, List(
+              Leaf(FitnesseTokenType.WORD, "stuff")
+            ))
+          )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+          Leaf(FitnesseTokenType.ROW_END, "|\n|"),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+          Node(FitnesseElementType.SCRIPT_ROW, List(
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "foo"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            )),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+            Leaf(FitnesseTokenType.CELL_END, "|"),
+            Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+            Node(FitnesseElementType.CELL, List(
+              Leaf(FitnesseTokenType.WORD, "bar"),
+              Leaf(FitnesseTokenType.WHITE_SPACE, " "),
+              Leaf(FitnesseTokenType.WORD, "field")
+            ))
+          )),
+          Leaf(FitnesseTokenType.WHITE_SPACE, "  "),
+          Leaf(FitnesseTokenType.TABLE_END, "|")
+        ))
+      ))
+    ) {
+      parse("|  storyboard  |  stuff  |\n|  foo field  |  bar field  |")
+    }
+  }
+
   test("Scenario table with colon separator") {
     assertResult(
       Node(FitnesseElementType.FILE, List(
