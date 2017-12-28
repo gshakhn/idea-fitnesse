@@ -22,6 +22,18 @@ class ScenarioTableSuite extends PsiSuite {
     }
   }
 
+  test("find table name for table template") {
+    val table = createTable("| table template | my scenario table |")
+
+    assertResult("my scenario table") {
+      scenarioName(table).name
+    }
+
+    assertResult("MyScenarioTable") {
+      scenarioName(table).scenarioName
+    }
+  }
+
   test("find interposed table name") {
     val table = createTable("| scenario | my | val1 |scenario | val2 | table |")
 

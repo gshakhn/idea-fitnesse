@@ -147,6 +147,7 @@ class FitnesseParser extends PsiParser {
     case "table" => TableElementType.TABLE_TABLE
     case "comment" => TableElementType.COMMENT_TABLE
     case "scenario" => TableElementType.SCENARIO_TABLE
+    case "table template" => TableElementType.SCENARIO_TABLE
     case "define table type" => TableElementType.DEFINE_TABLE_TYPE_TABLE
     case "define alias" => TableElementType.DEFINE_ALIAS_TABLE
     case _ => TableElementType.UNKNOWN_TABLE
