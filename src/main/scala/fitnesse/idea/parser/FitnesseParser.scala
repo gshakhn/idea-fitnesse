@@ -141,11 +141,13 @@ class FitnesseParser extends PsiParser {
     case "subset query" => TableElementType.QUERY_TABLE
     case "ordered query" => TableElementType.QUERY_TABLE
     case "script" => TableElementType.SCRIPT_TABLE
+    case "storyboard" => TableElementType.SCRIPT_TABLE
     case "import" => TableElementType.IMPORT_TABLE
     case "library" => TableElementType.LIBRARY_TABLE
     case "table" => TableElementType.TABLE_TABLE
     case "comment" => TableElementType.COMMENT_TABLE
     case "scenario" => TableElementType.SCENARIO_TABLE
+    case "table template" => TableElementType.SCENARIO_TABLE
     case "define table type" => TableElementType.DEFINE_TABLE_TYPE_TABLE
     case "define alias" => TableElementType.DEFINE_ALIAS_TABLE
     case _ => TableElementType.UNKNOWN_TABLE
