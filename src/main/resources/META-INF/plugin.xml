@@ -6,6 +6,10 @@
   <change-notes>
     <![CDATA[<pre>
 
+1.8.1
+
+ * Support storyboard and table-template tables from HSAC plugin.
+
 1.8.0
 
  * Fix copy/paste issue with tables in IntelliJ 2017
