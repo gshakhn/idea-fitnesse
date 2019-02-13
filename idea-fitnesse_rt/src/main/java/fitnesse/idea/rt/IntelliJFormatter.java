@@ -6,7 +6,7 @@ import fitnesse.testrunner.WikiTestPageUtil;
 import fitnesse.testsystems.*;
 import fitnesse.wiki.WikiPage;
 import fitnesse.wiki.fs.FileSystemPage;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.Tag;
@@ -227,7 +227,7 @@ public class IntelliJFormatter implements Formatter, TestsRunnerListener {
     private void print(String s) {
         OutputStreamWriter writer = new OutputStreamWriter(out);
         try {
-            StringEscapeUtils.unescapeXml(writer, s);
+            StringEscapeUtils.UNESCAPE_XML.translate(s, writer);
             writer.flush();
         } catch (IOException e) {
             error("Unable to write output", e);

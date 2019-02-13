@@ -1,5 +1,7 @@
 package fitnesse.idea.lexer
 
+import java.util
+
 import com.intellij.lexer.LexerBase
 import com.intellij.psi.tree.IElementType
 import fitnesse.wikitext.parser._
@@ -228,5 +230,9 @@ class LexerSourcePage extends SourcePage {
 
   override def compareTo(o: SourcePage): Int = {
     throw new IllegalStateException("FitNesse plugin: method LexerParsingPage.compareTo() has not been implemented")
+  }
+
+  override def getSymbols(symbolType: SymbolType): util.List[Symbol] = {
+    List.empty[Symbol]
   }
 }

@@ -6,6 +6,10 @@
   <change-notes>
     <![CDATA[<pre>
 
+1.9.0
+
+ * Support FitNesse 20190202.
+
 1.8.1
 
  * Support storyboard and table-template tables from HSAC plugin.
