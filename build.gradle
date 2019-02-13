@@ -4,8 +4,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'scala'
     id 'idea'
-    id 'com.github.maiflai.scalatest' version '0.14'
-    id "de.undercouch.download" version "3.1.1"
+    id 'com.github.maiflai.scalatest' version '0.23'
+    id "de.undercouch.download" version "3.4.3"
 }
 
 description = """<p>Language support for <a href="http://fitnesse.org>">FitNesse</a>, the fully integrated standalone wiki and acceptance testing framework.</p>
@@ -194,7 +194,3 @@ idea {
     }
 }
 ideaProject.dependsOn extractIdeaSdk
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.0'
-}
