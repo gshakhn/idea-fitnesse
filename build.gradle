@@ -23,7 +23,7 @@ allprojects {
 }
 
 ext {
-    FITNESSE_VERSION = '20161106'
+    FITNESSE_VERSION = '20190202'
     SCALA_VERSION = '2.11.8'
 }
 
