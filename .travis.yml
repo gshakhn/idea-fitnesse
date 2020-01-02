@@ -1,6 +1,6 @@
 language: java
 jdk:
-- oraclejdk8
+  - openjdk8
 env:
   matrix:
   - IDEA_VERSION=15
@@ -17,6 +17,7 @@ deploy:
     repo: fitnesse/idea-fitnesse
     tags: true
     condition: $IDEA_VERSION = 15
+dist: xenial
 sudo: false
 cache:
   directories:
